@@ -86,7 +86,7 @@ export default function MenuBar() {
   ];
 
   return (
-    <div className={`bg-background border-b `}>
+    <div className="bg-background border-b">
       <div className="flex items-center h-6 px-2 text-[13px]">
         {menus.map((menu) => (
           <div

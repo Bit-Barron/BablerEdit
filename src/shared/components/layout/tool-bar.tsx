@@ -100,7 +100,7 @@ export default function Toolbar({
   ];
 
   return (
-    <div className={`border-b bg-muted/30 `}>
+    <div className="border-b bg-muted/30">
       <div className="flex items-center justify-center h-[60px] px-2 gap-0.5 overflow-x-auto">
         {buttons.map((button) => (
           <button
