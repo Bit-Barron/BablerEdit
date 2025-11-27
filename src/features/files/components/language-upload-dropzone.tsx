@@ -1,3 +1,4 @@
+// src/features/files/components/language-upload-dropzone.tsx
 "use client";
 
 import { Button } from "@/shared/components/ui/button";
@@ -13,18 +14,36 @@ import {
 } from "@/shared/components/ui/file-upload";
 import { Upload, X } from "lucide-react";
 import { useFilesStore } from "../store/file-store";
+import { useMemo } from "react";
+import { getFrameworkConfig } from "@/shared/lib/framework-config";
 
 export function FrameworkDropzone() {
-  const { translationFiles, setTranslationFiles, onFileReject } =
-    useFilesStore();
+  const {
+    translationFiles,
+    validateAndAddFiles,
+    selectedFramework,
+    onFileReject,
+  } = useFilesStore();
+
+  const config = useMemo(() => {
+    if (!selectedFramework) return null;
+    return getFrameworkConfig(selectedFramework);
+  }, [selectedFramework]);
+
+  if (!config) return null;
+
+  const acceptedTypes = config.acceptedExtensions.join(",");
 
   return (
     <FileUpload
-      maxFiles={2}
-      maxSize={5 * 1024 * 1024}
+      maxFiles={config.maxFiles}
+      maxSize={config.maxSize}
+      accept={acceptedTypes}
       className="w-full"
       value={translationFiles}
-      onValueChange={setTranslationFiles}
+      onValueChange={async (files) => {
+        await validateAndAddFiles(files);
+      }}
       onFileReject={onFileReject}
       multiple
     >
@@ -33,9 +52,13 @@ export function FrameworkDropzone() {
           <div className="flex items-center justify-center rounded-full border p-2.5">
             <Upload className="size-6 text-muted-foreground" />
           </div>
-          <p className="font-medium text-sm">Drag & drop files here</p>
+          <p className="font-medium text-sm">
+            Drag & drop {config.name} files here
+          </p>
           <p className="text-muted-foreground text-xs">
-            Or click to browse (max 2 files, up to 5MB each)
+            Accepted: {config.acceptedExtensions.join(", ")} (max{" "}
+            {config.maxFiles} files, up to {config.maxSize / 1024 / 1024}MB
+            each)
           </p>
         </div>
         <FileUploadTrigger asChild>
