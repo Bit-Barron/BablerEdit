@@ -21,13 +21,10 @@ export async function createProject(
     );
   }
 
-  console.log(`Parsing primary language: ${primaryLanguage}`);
   const primaryData = await parseJSONFile(primaryFile);
   const primaryFlattened = flattenJson(primaryData);
 
   const allKeys = Object.keys(primaryFlattened).sort();
-
-  console.log(`Found ${allKeys.length} keys in primary language`);
 
   const languages = new Map<string, LanguageData>();
   languages.set(primaryLanguage, {
@@ -46,8 +43,6 @@ export async function createProject(
     if (langCode === primaryLanguage) {
       continue;
     }
-
-    console.log(`Parsing language: ${langCode}`);
 
     try {
       const data = await parseJSONFile(file);

@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from "../../../shared/components/ui/dialog";
 import { FrameworkDropzone } from "./files-language-upload-dropzone";
-import { LanguageList } from "./files-language-list";
 import { useFilesStore } from "../store/file-store";
 
 interface FrameworkDialogProps {
@@ -24,9 +23,9 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
-      <DialogContent className="sm:max-w-[700px] p-0">
-        <DialogHeader className="px-6 pt-6 pb-4">
-          <DialogTitle className="text-xl font-semibold">
+      <DialogContent className="sm:max-w-[600px] max-h-[85vh] p-0 flex flex-col">
+        <DialogHeader className="px-6 pt-6 pb-3 shrink-0">
+          <DialogTitle className="text-lg font-semibold">
             Configure languages
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-1">
@@ -34,12 +33,10 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
           </p>
         </DialogHeader>
 
-        <div className="px-6 pb-6">
+        <div className="px-6 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
             <FrameworkDropzone />
           </section>
-
-          <LanguageList />
 
           <div className="mt-2">
             <Button size="sm" variant="ghost">

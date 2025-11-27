@@ -43,7 +43,7 @@ export function flattenJson(
 
   for (const key in obj) {
     const value = obj[key];
-    console.log("Current key:", key, "Value:", value);
+    console.log("TESTTTT Current key:", key, "Value:", value);
     const new_path = [...current_path, key];
 
     if (typeof value === "object" && value !== null) {
@@ -56,4 +56,3 @@ export function flattenJson(
 
   return result;
 }
-

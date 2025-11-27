@@ -126,7 +126,6 @@ export default function MenuBar() {
                         key={item.label}
                         className="w-full flex items-center justify-between px-3 py-1.5 text-[13px] hover:bg-accent transition-colors text-left"
                         onClick={() => {
-                          console.log("Menu item clicked:", item.label);
                           setActiveMenu(null);
                         }}
                       >

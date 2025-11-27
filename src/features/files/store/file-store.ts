@@ -165,8 +165,6 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
     }
 
     try {
-      console.log("Starting parse...");
-
       const project = await createProject(
         translationFiles,
         selectedFramework,
