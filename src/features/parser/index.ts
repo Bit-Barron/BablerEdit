@@ -1,0 +1,76 @@
+import {
+  extractLanguageCode,
+  parseJSONFile,
+  flattenJson,
+} from "./lib/json-parser";
+import { ParsedProject, LanguageData } from "./types";
+
+export async function createProject(
+  files: File[],
+  framework: string,
+  primaryLanguage: string = "en"
+): Promise<ParsedProject> {
+  const primaryFile = files.find(
+    (file) => extractLanguageCode(file.name) === primaryLanguage
+  );
+
+  if (!primaryFile) {
+    throw new Error(
+      `Primary language file "${primaryLanguage}.json" not found! ` +
+        `Please upload a file named "${primaryLanguage}.json"`
+    );
+  }
+
+  console.log(`Parsing primary language: ${primaryLanguage}`);
+  const primaryData = await parseJSONFile(primaryFile);
+  const primaryFlattened = flattenJson(primaryData);
+
+  const allKeys = Object.keys(primaryFlattened).sort();
+
+  console.log(`Found ${allKeys.length} keys in primary language`);
+
+  const languages = new Map<string, LanguageData>();
+  languages.set(primaryLanguage, {
+    languageCode: primaryLanguage,
+    translations: primaryFlattened,
+  });
+
+  for (const file of files) {
+    const langCode = extractLanguageCode(file.name);
+
+    if (!langCode) {
+      console.warn(`Could not extract language code from: ${file.name}`);
+      continue;
+    }
+
+    if (langCode === primaryLanguage) {
+      continue;
+    }
+
+    console.log(`Parsing language: ${langCode}`);
+
+    try {
+      const data = await parseJSONFile(file);
+      const flattened = flattenJson(data);
+
+      languages.set(langCode, {
+        languageCode: langCode,
+        translations: flattened,
+      });
+
+      console.log(
+        `✓ Parsed ${langCode}: ${Object.keys(flattened).length} keys`
+      );
+    } catch (error) {
+      console.error(`Failed to parse ${file.name}:`, error);
+      throw new Error(`Failed to parse ${file.name}: ${error}`);
+    }
+  }
+
+  return {
+    framework,
+    primaryLanguage,
+    allKeys,
+    languages,
+  };
+}

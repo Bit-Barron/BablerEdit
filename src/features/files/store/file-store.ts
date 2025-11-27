@@ -1,14 +1,8 @@
 import { toast } from "sonner";
 import { create } from "zustand";
-import type { FrameworkType } from "@/shared/types/framework";
 import { getFrameworkConfig } from "@/shared/lib/framework-config";
-
-interface Language {
-  id: string;
-  name: string;
-  code: string;
-  file: File;
-}
+import { ParsedProject } from "@/features/parser/types";
+import { createProject } from "@/features/parser";
 
 interface FilesStore {
   selectedFramework: FrameworkType | "";
@@ -19,6 +13,7 @@ interface FilesStore {
 
   translationFiles: File[];
   setTranslationFiles: (files: File[]) => void;
+  removeTranslationFile: (fileToRemove: File) => void;
   validateAndAddFiles: (files: File[]) => Promise<void>;
 
   languages: Language[];
@@ -29,6 +24,10 @@ interface FilesStore {
 
   defaultLanguageCode?: string;
   setDefaultLanguageCode?: (code: string) => void;
+
+  parsedProject: ParsedProject | null;
+  setParsedProject: (project: ParsedProject | null) => void;
+  parseFiles: () => Promise<void>;
 }
 
 export const useFilesStore = create<FilesStore>((set, get) => ({
@@ -42,8 +41,16 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
   translationFiles: [],
   setTranslationFiles: (files: File[]) => set({ translationFiles: files }),
 
+  removeTranslationFile: (fileToRemove: File) => {
+    set((state) => ({
+      translationFiles: state.translationFiles.filter(
+        (file) => file !== fileToRemove
+      ),
+    }));
+  },
+
   validateAndAddFiles: async (files: File[]) => {
-    const { selectedFramework } = get();
+    const { selectedFramework, translationFiles: currentFiles } = get();
     if (!selectedFramework) {
       toast.error("Please select a framework first");
       return;
@@ -55,9 +62,24 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
       return;
     }
 
+    const newFiles = files.filter(
+      (file) =>
+        !currentFiles.some(
+          (existing) =>
+            existing.name === file.name && existing.size === file.size
+        )
+    );
+
+    if (newFiles.length === 0) {
+      toast.info("No new files to add", {
+        description: "All selected files are already added",
+      });
+      return;
+    }
+
     const validatedFiles: File[] = [];
 
-    for (const file of files) {
+    for (const file of newFiles) {
       const ext = `.${file.name.split(".").pop()?.toLowerCase()}`;
       if (!config.acceptedExtensions.includes(ext)) {
         toast.error(`Invalid file type for ${config.name}`, {
@@ -68,7 +90,6 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
         continue;
       }
 
-      // Check file size
       if (file.size > config.maxSize) {
         toast.error("File too large", {
           description: `"${file.name}" exceeds ${
@@ -78,7 +99,6 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
         continue;
       }
 
-      // Run custom validator if exists
       if (config.validator) {
         const validation = await config.validator(file);
         if (!validation.valid) {
@@ -92,7 +112,6 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
       validatedFiles.push(file);
     }
 
-    const currentFiles = get().translationFiles;
     const totalFiles = currentFiles.length + validatedFiles.length;
 
     if (totalFiles > config.maxFiles) {
@@ -128,4 +147,44 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
 
   defaultLanguageCode: "en",
   setDefaultLanguageCode: (code: string) => set({ defaultLanguageCode: code }),
+
+  parsedProject: null,
+  setParsedProject: (project) => set({ parsedProject: project }),
+
+  parseFiles: async () => {
+    const { translationFiles, selectedFramework, defaultLanguageCode } = get();
+
+    if (translationFiles.length === 0) {
+      toast.error("No files to parse");
+      return;
+    }
+
+    if (!selectedFramework) {
+      toast.error("No framework selected");
+      return;
+    }
+
+    try {
+      console.log("Starting parse...");
+
+      const project = await createProject(
+        translationFiles,
+        selectedFramework,
+        defaultLanguageCode || "en"
+      );
+
+      set({ parsedProject: project });
+
+      toast.success("Files parsed successfully!", {
+        description: `${project.languages.size} language(s) with ${project.allKeys.length} keys`,
+      });
+
+      console.log("Parsed project:", project);
+    } catch (error) {
+      console.error("Parse error:", error);
+      toast.error("Failed to parse files", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  },
 }));

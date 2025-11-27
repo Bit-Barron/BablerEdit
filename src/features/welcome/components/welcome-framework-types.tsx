@@ -11,7 +11,7 @@ export const WelcomeFrameworkTypes: React.FC<
   const { setSelectedFramework, setFrameworkDialogOpen } = useFilesStore();
 
   const handleFrameworkSelect = (typeId: string) => {
-    setSelectedFramework(typeId);
+    setSelectedFramework(typeId as FrameworkType);
 
     setFrameworkDialogOpen(true);
   };

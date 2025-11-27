@@ -1,4 +1,4 @@
-export type FrameworkType =
+type FrameworkType =
   | "json"
   | "yaml"
   | "i18next"
@@ -13,7 +13,7 @@ export type FrameworkType =
   | "java"
   | "resx";
 
-export interface FrameworkConfig {
+interface FrameworkConfig {
   id: FrameworkType;
   name: string;
   acceptedExtensions: string[];

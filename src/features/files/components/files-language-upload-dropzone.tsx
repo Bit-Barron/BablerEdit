@@ -1,4 +1,3 @@
-// src/features/files/components/language-upload-dropzone.tsx
 "use client";
 
 import { Button } from "@/shared/components/ui/button";
@@ -20,6 +19,7 @@ import { getFrameworkConfig } from "@/shared/lib/framework-config";
 export function FrameworkDropzone() {
   const {
     translationFiles,
+    removeTranslationFile,
     validateAndAddFiles,
     selectedFramework,
     onFileReject,
@@ -34,6 +34,12 @@ export function FrameworkDropzone() {
 
   const acceptedTypes = config.acceptedExtensions.join(",");
 
+  const handleFilesChange = async (files: File[]) => {
+    if (files.length > translationFiles.length) {
+      await validateAndAddFiles(files);
+    }
+  };
+
   return (
     <FileUpload
       maxFiles={config.maxFiles}
@@ -41,9 +47,7 @@ export function FrameworkDropzone() {
       accept={acceptedTypes}
       className="w-full"
       value={translationFiles}
-      onValueChange={async (files) => {
-        await validateAndAddFiles(files);
-      }}
+      onValueChange={handleFilesChange}
       onFileReject={onFileReject}
       multiple
     >
@@ -69,11 +73,22 @@ export function FrameworkDropzone() {
       </FileUploadDropzone>
       <FileUploadList>
         {translationFiles.map((file, index) => (
-          <FileUploadItem key={index} value={file}>
+          <FileUploadItem
+            key={`${file.name}-${file.size}-${index}`}
+            value={file}
+          >
             <FileUploadItemPreview />
             <FileUploadItemMetadata />
             <FileUploadItemDelete asChild>
-              <Button variant="ghost" size="icon" className="size-7">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-7"
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeTranslationFile(file);
+                }}
+              >
                 <X />
               </Button>
             </FileUploadItemDelete>

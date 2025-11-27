@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../../../shared/components/ui/dialog";
-import { FrameworkDropzone } from "./language-upload-dropzone";
-import { LanguageList } from "./language-list";
+import { FrameworkDropzone } from "./files-language-upload-dropzone";
+import { LanguageList } from "./files-language-list";
 import { useFilesStore } from "../store/file-store";
 
 interface FrameworkDialogProps {
@@ -20,7 +20,7 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { defaultLanguageCode } = useFilesStore();
+  const { defaultLanguageCode, parseFiles } = useFilesStore();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -42,7 +42,7 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
           <LanguageList />
 
           <div className="mt-2">
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="ghost">
               Primary Language: {defaultLanguageCode}
             </Button>
           </div>
@@ -67,7 +67,10 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
             </Button>
             <Button
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={async () => {
+                await parseFiles();
+                onOpenChange(false);
+              }}
               className="min-w-[100px]"
             >
               Save
