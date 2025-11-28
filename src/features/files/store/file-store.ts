@@ -145,7 +145,7 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
     });
   },
 
-  defaultLanguageCode: "en",
+  defaultLanguageCode: "de",
   setDefaultLanguageCode: (code: string) => set({ defaultLanguageCode: code }),
 
   parsedProject: null,

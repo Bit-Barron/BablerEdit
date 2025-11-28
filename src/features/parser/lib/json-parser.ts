@@ -43,7 +43,6 @@ export function flattenJson(
 
   for (const key in obj) {
     const value = obj[key];
-    console.log("TESTTTT Current key:", key, "Value:", value);
     const new_path = [...current_path, key];
 
     if (typeof value === "object" && value !== null) {

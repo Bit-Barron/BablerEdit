@@ -9,6 +9,7 @@ import {
 } from "../../../shared/components/ui/dialog";
 import { FrameworkDropzone } from "./files-language-upload-dropzone";
 import { useFilesStore } from "../store/file-store";
+import { useNavigate } from "react-router-dom";
 
 interface FrameworkDialogProps {
   open: boolean;
@@ -20,6 +21,14 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
   onOpenChange,
 }) => {
   const { defaultLanguageCode, parseFiles } = useFilesStore();
+  const navigate = useNavigate();
+
+  const handleClickSave = async () => {
+    await parseFiles();
+    onOpenChange(false);
+
+    navigate("/editor");
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -64,10 +73,7 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
             </Button>
             <Button
               variant="outline"
-              onClick={async () => {
-                await parseFiles();
-                onOpenChange(false);
-              }}
+              onClick={handleClickSave}
               className="min-w-[100px]"
             >
               Save
