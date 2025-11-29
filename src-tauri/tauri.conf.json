@@ -12,12 +12,11 @@
   "app": {
     "windows": [
       {
-        "title": "Babel Edit - Translation Editor",
         "width": 1400,
         "height": 900,
         "minWidth": 1000,
         "minHeight": 600,
-        "decorations": true,
+        "decorations": false,
         "resizable": true,
         "fullscreen": false,
         "center": true

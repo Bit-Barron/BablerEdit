@@ -1,18 +1,21 @@
 import React from "react";
+import { NodeApi } from "react-arborist";
 import { Input } from "@/core/components/ui/input";
 import { Label } from "@/core/components/ui/label";
 import { Checkbox } from "@/core/components/ui/checkbox";
+import { TreeNode } from "../types/editor";
+import { ParsedProject } from "@/features/parser/types/parser";
 
 interface TranslationDetailProps {
-  selectedNode: any;
-  project: any;
+  selectedNode: NodeApi<TreeNode> | null;
+  project: ParsedProject | null;
 }
 
 export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  if (!selectedNode || !selectedNode.isLeaf) {
+  if (!selectedNode || !selectedNode.isLeaf || !project) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground">
         Select a translation key
@@ -30,7 +33,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
       <div className="flex-1 overflow-auto">
         <div className="divide-y">
-          {(Array.from(project.languages.entries()) as [string, any][]).map(
+          {Array.from(project.languages.entries()).map(
             ([langCode, langData]) => {
               const value = langData.translations[translationKey] || "";
 

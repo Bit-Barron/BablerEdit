@@ -22,10 +22,10 @@ interface FilesStore {
   addLanguage: (language: Omit<Language, "id">) => void;
   removeLanguage: (id: string) => void;
 
-  onFileReject?: (file: File, message: string) => void;
+  onFileReject: (file: File, message: string) => void;
 
-  defaultLanguageCode?: string;
-  setDefaultLanguageCode?: (code: string) => void;
+  defaultLanguageCode: string;
+  setDefaultLanguageCode: (code: string) => void;
 
   parsedProject: ParsedProject | null;
   setParsedProject: (project: ParsedProject | null) => void;
@@ -53,6 +53,7 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
 
   validateAndAddFiles: async (files: File[]) => {
     const { selectedFramework, translationFiles: currentFiles } = get();
+
     if (!selectedFramework) {
       toast.error("Please select a framework first");
       return;
@@ -140,10 +141,10 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
     })),
 
   onFileReject: (file: File, message: string) => {
+    const truncatedName =
+      file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name;
     toast.error(message, {
-      description: `"${
-        file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name
-      }" has been rejected`,
+      description: `"${truncatedName}" has been rejected`,
     });
   },
 
@@ -170,7 +171,7 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
       const project = await createProject(
         translationFiles,
         selectedFramework,
-        defaultLanguageCode || "en"
+        defaultLanguageCode
       );
 
       set({ parsedProject: project });

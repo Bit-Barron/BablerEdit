@@ -54,7 +54,11 @@ export async function createProject(
       });
     } catch (error) {
       console.error(`Failed to parse ${file.name}:`, error);
-      throw new Error(`Failed to parse ${file.name}: ${error}`);
+      throw new Error(
+        `Failed to parse ${file.name}: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     }
   }
 

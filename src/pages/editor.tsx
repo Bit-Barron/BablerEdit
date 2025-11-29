@@ -4,12 +4,10 @@ import React, { useEffect } from "react";
 import { Tree } from "react-arborist";
 import { useNavigate } from "react-router-dom";
 import { useEditorPageStore } from "@/features/editor/store/editor-store";
-import { TreeNode } from "@/features/editor/components/editor-tree-node";
+import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
 
-interface EditorPageProps {}
-
-export const EditorPage: React.FC<EditorPageProps> = ({}) => {
+export const EditorPage: React.FC = () => {
   const { parsedProject, defaultLanguageCode } = useFilesStore();
   const { selectedNode, setSelectedNode } = useEditorPageStore();
   const navigate = useNavigate();
@@ -20,8 +18,13 @@ export const EditorPage: React.FC<EditorPageProps> = ({}) => {
     }
   }, [parsedProject, navigate]);
 
-  const primaryLanguageData =
-    parsedProject && parsedProject.languages.get(defaultLanguageCode || "en");
+  if (!parsedProject) {
+    return null;
+  }
+
+  const primaryLanguageData = parsedProject.languages.get(
+    defaultLanguageCode || "en"
+  );
 
   const treeData = buildTranslationTree(primaryLanguageData);
 
@@ -45,7 +48,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({}) => {
               }
             }}
           >
-            {(props) => <TreeNode {...props} />}
+            {(props) => <TreeNodeComponent {...props} />}
           </Tree>
         </div>
       </div>

@@ -4,3 +4,10 @@ export interface Language {
   code: string;
   file: File;
 }
+
+export interface FileType {
+  id: string;
+  name: string;
+  subtitle: string;
+  color: string;
+}

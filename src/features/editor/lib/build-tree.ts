@@ -1,7 +1,14 @@
+import { LanguageData } from "@/features/parser/types/parser";
 import { TreeNode } from "../types/editor";
 
-export const buildTranslationTree = (obj: any): TreeNode[] => {
-  const translations = obj?.translations || {};
+export const buildTranslationTree = (
+  languageData: LanguageData | undefined
+): TreeNode[] => {
+  if (!languageData) {
+    return [];
+  }
+
+  const translations = languageData.translations;
   const allKeys = Object.keys(translations).sort();
 
   const buildNode = (keys: string[], depth: number = 0): TreeNode[] => {
