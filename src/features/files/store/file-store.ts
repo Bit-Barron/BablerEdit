@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { create } from "zustand";
-import { getFrameworkConfig } from "@/shared/lib/framework-config";
+import { getFrameworkConfig } from "@/core/lib/frameworks";
 import { ParsedProject } from "@/features/parser/types";
 import { createProject } from "@/features/parser";
 

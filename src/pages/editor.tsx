@@ -1,4 +1,4 @@
-import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
+import { buildTranslationTree } from "@/features/editor/lib/build-tree";
 import { TranslationDetail } from "@/features/editor/components/translation-detail";
 import { useFilesStore } from "@/features/files/store/file-store";
 import React, { useEffect } from "react";

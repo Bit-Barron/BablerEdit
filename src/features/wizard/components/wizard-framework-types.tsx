@@ -1,5 +1,5 @@
-import { Card } from "@/shared/components/ui/card";
-import { FILETYPES, getFrameworkIcon } from "@/shared/lib/constants";
+import { Card } from "@/core/components/ui/card";
+import { FILETYPES, getFrameworkIcon } from "@/core/lib/constants";
 import React from "react";
 import { useFilesStore } from "@/features/files/store/file-store";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/shared/components/ui/button";
+import { Button } from "@/core/components/ui/button";
 import {
   FileUpload,
   FileUploadDropzone,
@@ -10,11 +10,11 @@ import {
   FileUploadItemPreview,
   FileUploadItemMetadata,
   FileUploadItemDelete,
-} from "@/shared/components/ui/file-upload";
+} from "@/core/components/ui/file-upload";
 import { Upload, X } from "lucide-react";
 import { useFilesStore } from "../store/file-store";
 import { useMemo } from "react";
-import { getFrameworkConfig } from "@/shared/lib/framework-config";
+import { getFrameworkConfig } from "@/core/lib/frameworks";
 
 export function FrameworkDropzone() {
   const {

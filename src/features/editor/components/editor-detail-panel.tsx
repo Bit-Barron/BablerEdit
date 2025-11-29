@@ -1,7 +1,7 @@
 import React from "react";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
-import { Checkbox } from "@/shared/components/ui/checkbox";
+import { Input } from "@/core/components/ui/input";
+import { Label } from "@/core/components/ui/label";
+import { Checkbox } from "@/core/components/ui/checkbox";
 
 interface TranslationDetailProps {
   selectedNode: any;
