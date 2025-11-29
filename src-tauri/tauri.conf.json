@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "bableredit",
+  "productName": "Babel Edit",
   "version": "0.1.0",
   "identifier": "com.barron.bableredit",
   "build": {
@@ -12,10 +12,15 @@
   "app": {
     "windows": [
       {
-        "title": "bableredit",
-        "width": 300,
-        "height": 200,
-        "decorations": false
+        "title": "Babel Edit - Translation Editor",
+        "width": 1400,
+        "height": 900,
+        "minWidth": 1000,
+        "minHeight": 600,
+        "decorations": true,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
       }
     ],
     "security": {

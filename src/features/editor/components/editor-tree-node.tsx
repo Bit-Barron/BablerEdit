@@ -1,11 +1,12 @@
 import { Folder, FolderOpen, ChevronRight, FileText } from "lucide-react";
 import React, { CSSProperties } from "react";
 import { NodeApi, TreeApi } from "react-arborist";
+import { TreeNode as TreeNodeType } from "../types/editor";
 
-export interface TreeNodeProps {
+interface TreeNodeProps {
   style: CSSProperties;
-  node: NodeApi<TreeNode>;
-  tree: TreeApi<TreeNode>;
+  node: NodeApi<TreeNodeType>;
+  tree: TreeApi<TreeNodeType>;
   dragHandle?: (el: HTMLDivElement | null) => void;
   preview?: boolean;
 }
@@ -16,8 +17,6 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
   dragHandle,
 }) => {
   const isFolder = !node.isLeaf;
-
-  console.log("Rendering node:", node.data);
 
   return (
     <div

@@ -2,6 +2,7 @@ import { Card } from "@/core/components/ui/card";
 import { FILETYPES, getFrameworkIcon } from "@/core/lib/constants";
 import React from "react";
 import { useFilesStore } from "@/features/files/store/file-store";
+import { FrameworkType } from "@/core/types/framework";
 
 interface WizzardFrameworkTypesProps {}
 

@@ -4,7 +4,7 @@ import "../app/App.css";
 import { WizzardFrameworkTypes } from "@/features/wizzard/components/wizzard-framework-types";
 import { WizzardRecentProjects } from "@/features/wizzard/components/wizzard-recent-projects";
 
-export default function WelcomePage() {
+export default function WizzardPage() {
   const { isFrameworkDialogOpen, setFrameworkDialogOpen } = useFilesStore();
 
   return (

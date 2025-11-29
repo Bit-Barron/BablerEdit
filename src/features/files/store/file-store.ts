@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
 import { createProject } from "@/features/parser";
 import { ParsedProject } from "@/features/parser/types/parser";
+import { FrameworkType } from "@/core/types/framework";
+import { Language } from "../types/files";
 
 interface FilesStore {
   selectedFramework: FrameworkType | "";
@@ -176,8 +178,6 @@ export const useFilesStore = create<FilesStore>((set, get) => ({
       toast.success("Files parsed successfully!", {
         description: `${project.languages.size} language(s) with ${project.allKeys.length} keys`,
       });
-
-      console.log("Parsed project:", project);
     } catch (error) {
       console.error("Parse error:", error);
       toast.error("Failed to parse files", {

@@ -20,13 +20,8 @@ export const EditorPage: React.FC<EditorPageProps> = ({}) => {
     }
   }, [parsedProject, navigate]);
 
-  if (!parsedProject) {
-    return null;
-  }
-
-  const primaryLanguageData = parsedProject.languages.get(
-    defaultLanguageCode || "en"
-  );
+  const primaryLanguageData =
+    parsedProject && parsedProject.languages.get(defaultLanguageCode || "en");
 
   const treeData = buildTranslationTree(primaryLanguageData);
 

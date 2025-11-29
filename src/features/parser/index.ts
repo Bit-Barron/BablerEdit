@@ -52,10 +52,6 @@ export async function createProject(
         languageCode: langCode,
         translations: flattened,
       });
-
-      console.log(
-        `✓ Parsed ${langCode}: ${Object.keys(flattened).length} keys`
-      );
     } catch (error) {
       console.error(`Failed to parse ${file.name}:`, error);
       throw new Error(`Failed to parse ${file.name}: ${error}`);

@@ -1,3 +1,5 @@
+import { FrameworkConfig } from "../types/framework";
+
 export const FRAMEWORK_CONFIGS: Record<string, FrameworkConfig> = {
   json: {
     id: "json",

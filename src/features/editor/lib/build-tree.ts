@@ -1,3 +1,5 @@
+import { TreeNode } from "../types/editor";
+
 export const buildTranslationTree = (obj: any): TreeNode[] => {
   const translations = obj?.translations || {};
   const allKeys = Object.keys(translations).sort();
@@ -6,7 +8,6 @@ export const buildTranslationTree = (obj: any): TreeNode[] => {
     const grouped = new Map<string, string[]>();
 
     keys.forEach((key) => {
-      console.log("Keys", key);
       const parts = key.split(".");
       const currentPart = parts[depth];
 
@@ -17,8 +18,6 @@ export const buildTranslationTree = (obj: any): TreeNode[] => {
       }
       grouped.get(currentPart)!.push(key);
     });
-
-    console.log("Grouped at depth",  grouped);
 
     return Array.from(grouped.entries()).map(([part, partKeys]) => {
       const hasDeeper = partKeys.some((k) => k.split(".").length > depth + 1);

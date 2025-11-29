@@ -43,14 +43,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   <div className="flex-1">
                     <Input
                       value={value}
-                      onChange={(e) => {
-                        console.log(
-                          "Update:",
-                          translationKey,
-                          langCode,
-                          e.target.value
-                        );
-                      }}
                       className="font-sans"
                       placeholder={
                         langCode === project.primaryLanguage
