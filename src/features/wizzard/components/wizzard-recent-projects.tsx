@@ -1,10 +1,10 @@
 import React from "react";
 import { useWelcomeStore } from "../store/welcome-store";
 
-interface WelcomeRecentProjectsProps {}
+interface WizzardRecentProjectsProps {}
 
-export const WelcomeRecentProjects: React.FC<
-  WelcomeRecentProjectsProps
+export const WizzardRecentProjects: React.FC<
+  WizzardRecentProjectsProps
 > = ({}) => {
   const { recentProjects } = useWelcomeStore();
 

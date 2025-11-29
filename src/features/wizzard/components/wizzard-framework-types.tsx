@@ -3,10 +3,10 @@ import { FILETYPES, getFrameworkIcon } from "@/shared/lib/constants";
 import React from "react";
 import { useFilesStore } from "@/features/files/store/file-store";
 
-interface WelcomeFrameworkTypesProps {}
+interface WizzardFrameworkTypesProps {}
 
-export const WelcomeFrameworkTypes: React.FC<
-  WelcomeFrameworkTypesProps
+export const WizzardFrameworkTypes: React.FC<
+  WizzardFrameworkTypesProps
 > = ({}) => {
   const { setSelectedFramework, setFrameworkDialogOpen } = useFilesStore();
 

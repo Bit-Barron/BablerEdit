@@ -1,8 +1,8 @@
 import { FrameworkDialog } from "@/features/files/components/files-language-config-dialog";
 import { useFilesStore } from "@/features/files/store/file-store";
-import { WelcomeFrameworkTypes } from "@/features/welcome/components/welcome-framework-types";
-import { WelcomeRecentProjects } from "@/features/welcome/components/welcome-recent-projects";
-import "../App.css";
+import "../app/App.css";
+import { WizzardRecentProjects } from "@/features/wizzard/components/wizzard-recent-projects";
+import { WizzardFrameworkTypes } from "@/features/wizzard/components/wizzard-framework-types";
 
 export default function WelcomePage() {
   const { isFrameworkDialogOpen, setFrameworkDialogOpen } = useFilesStore();
@@ -24,8 +24,8 @@ export default function WelcomePage() {
             </p>
           </header>
 
-          <WelcomeFrameworkTypes />
-          <WelcomeRecentProjects />
+          <WizzardFrameworkTypes />
+          <WizzardRecentProjects />
         </div>
       </div>
 
