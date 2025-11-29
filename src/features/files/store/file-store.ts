@@ -1,8 +1,8 @@
 import { toast } from "sonner";
 import { create } from "zustand";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
-import { ParsedProject } from "@/features/parser/types";
 import { createProject } from "@/features/parser";
+import { ParsedProject } from "@/features/parser/types/parser";
 
 interface FilesStore {
   selectedFramework: FrameworkType | "";

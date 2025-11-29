@@ -1,11 +1,11 @@
 import { buildTranslationTree } from "@/features/editor/lib/build-tree";
-import { TranslationDetail } from "@/features/editor/components/translation-detail";
 import { useFilesStore } from "@/features/files/store/file-store";
 import React, { useEffect } from "react";
 import { Tree } from "react-arborist";
 import { useNavigate } from "react-router-dom";
-import { TreeNode } from "@/features/editor/components/editor-tree-node";
 import { useEditorPageStore } from "@/features/editor/store/editor-store";
+import { TreeNode } from "@/features/editor/components/editor-tree-node";
+import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
 
 interface EditorPageProps {}
 

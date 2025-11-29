@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface WelcomeStore {
+interface WizardStore {
   recentProjects: string[];
   addRecentProject: (projectPath: string) => void;
 }
 
-export const useWelcomeStore = create<WelcomeStore>((set) => ({
+export const useWizardStore = create<WizardStore>((set) => ({
   recentProjects: [
     "dispotool-translations.babel",
     "my-app-locales.json",

@@ -3,14 +3,13 @@ import {
   parseJSONFile,
   flattenJson,
 } from "./lib/json-parser";
-import { ParsedProject, LanguageData } from "./types";
+import { LanguageData, ParsedProject } from "./types/parser";
 
 export async function createProject(
   files: File[],
   framework: string,
   primaryLanguage: string = "en"
 ): Promise<ParsedProject> {
-
   const primaryFile = files.find(
     (file) => extractLanguageCode(file.name) === primaryLanguage
   );

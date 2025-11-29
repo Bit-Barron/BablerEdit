@@ -1,12 +1,12 @@
 import React from "react";
-import { useWelcomeStore } from "../store/welcome-store";
+import { useWizardStore } from "../store/wizard-store";
 
 interface WizzardRecentProjectsProps {}
 
 export const WizzardRecentProjects: React.FC<
   WizzardRecentProjectsProps
 > = ({}) => {
-  const { recentProjects } = useWelcomeStore();
+  const { recentProjects } = useWizardStore();
 
   return (
     <div>

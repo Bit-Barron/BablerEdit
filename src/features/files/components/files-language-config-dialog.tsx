@@ -1,15 +1,11 @@
 import { Plus, Minus } from "lucide-react";
 import React from "react";
-import { Button } from "../../../shared/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "../../../shared/components/ui/dialog";
+
 import { FrameworkDropzone } from "./files-language-upload-dropzone";
 import { useFilesStore } from "../store/file-store";
 import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/core/components/ui/dialog";
+import { Button } from "@/core/components/ui/button";
 
 interface FrameworkDialogProps {
   open: boolean;
