@@ -1,3 +1,5 @@
+// src/features/translation-parser/lib/parser.ts
+
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 type JsonObject = { [key: string]: JsonValue };
 type JsonArray = JsonValue[];
@@ -22,25 +24,6 @@ export async function parseJSONFile(file: File): Promise<JsonObject> {
     };
     reader.readAsText(file);
   });
-}
-
-export function extractLanguageCode(filename: string): string | null {
-  const nameWithoutExt = filename.replace(/\.(json|yaml|yml|arb|resx)$/i, "");
-
-  const patterns = [
-    /^([a-z]{2}(-[A-Z]{2})?)$/,
-    /\.([a-z]{2}(-[A-Z]{2})?)$/,
-    /_([a-z]{2}(-[A-Z]{2})?)$/,
-  ];
-
-  for (const pattern of patterns) {
-    const match = nameWithoutExt.match(pattern);
-    if (match) {
-      return match[1];
-    }
-  }
-
-  return null;
 }
 
 export function flattenJson(

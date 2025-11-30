@@ -1,8 +1,5 @@
-import {
-  extractLanguageCode,
-  parseJSONFile,
-  flattenJson,
-} from "./lib/json-parser";
+import { extractLanguageCode } from "./lib/lang-detector";
+import { parseJSONFile, flattenJson } from "./lib/parser";
 import { LanguageData, ParsedProject } from "./types/parser.types";
 
 export async function createProject(
