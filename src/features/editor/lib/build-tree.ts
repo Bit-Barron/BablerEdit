@@ -4,11 +4,10 @@ import { TreeNode } from "../types/editor";
 export const buildTranslationTree = (
   languageData: LanguageData | undefined
 ): TreeNode[] => {
-  if (!languageData) {
-    return [];
-  }
+  if (!languageData) return [];
 
   const translations = languageData.translations;
+
   const allKeys = Object.keys(translations).sort();
 
   const buildNode = (keys: string[], depth: number = 0): TreeNode[] => {
@@ -17,8 +16,6 @@ export const buildTranslationTree = (
     keys.forEach((key) => {
       const parts = key.split(".");
       const currentPart = parts[depth];
-
-      if (!currentPart) return;
 
       if (!grouped.has(currentPart)) {
         grouped.set(currentPart, []);

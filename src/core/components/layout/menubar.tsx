@@ -19,13 +19,9 @@ export default function MenuBar() {
                 {menu.label}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="min-w-[220px] bg-popover border rounded-md shadow-lg py-1">
+                <div className="min-w-[220px] bg-popover rounded-md shadow-lg py-1">
                   {menu.items.map((item, index) => (
-                    <MenuItem
-                      key={item.label || `divider-${index}`}
-                      item={item}
-                      index={index}
-                    />
+                    <MenuItem item={item} index={index} />
                   ))}
                 </div>
               </NavigationMenuContent>

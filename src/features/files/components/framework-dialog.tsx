@@ -1,10 +1,15 @@
 import { Plus, Minus } from "lucide-react";
 import React from "react";
 
-import { FrameworkDropzone } from "./files-language-upload-dropzone";
+import { FrameworkDropzone } from "./framework-dialog-dropzone";
 import { useFilesStore } from "../store/file-store";
 import { useNavigate } from "react-router-dom";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/core/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
 
 interface FrameworkDialogProps {
@@ -18,13 +23,6 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
 }) => {
   const { defaultLanguageCode, parseFiles } = useFilesStore();
   const navigate = useNavigate();
-
-  const handleClickSave = async () => {
-    await parseFiles();
-    onOpenChange(false);
-
-    navigate("/editor");
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -69,7 +67,12 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
             </Button>
             <Button
               variant="outline"
-              onClick={handleClickSave}
+              onClick={async () => {
+                await parseFiles();
+                onOpenChange(false);
+
+                navigate("/editor");
+              }}
               className="min-w-[100px]"
             >
               Save

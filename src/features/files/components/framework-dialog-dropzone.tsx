@@ -11,34 +11,22 @@ import {
   FileUploadItemMetadata,
   FileUploadItemDelete,
 } from "@/core/components/ui/file-upload";
-import { Upload, X } from "lucide-react";
-import { useFilesStore } from "../store/file-store";
-import { useMemo } from "react";
-import { getFrameworkConfig } from "@/core/lib/frameworks";
+import { X } from "lucide-react";
+import { DropzoneContent } from "./framework-dropzone-content";
+import { useFrameworkDropzone } from "../hooks/use-framework";
 
 export function FrameworkDropzone() {
   const {
+    config,
     translationFiles,
-    removeTranslationFile,
-    validateAndAddFiles,
-    selectedFramework,
+    acceptedTypes,
+    maxSizeInMB,
+    handleFilesChange,
+    handleFileDelete,
     onFileReject,
-  } = useFilesStore();
-
-  const config = useMemo(() => {
-    if (!selectedFramework) return null;
-    return getFrameworkConfig(selectedFramework);
-  }, [selectedFramework]);
+  } = useFrameworkDropzone();
 
   if (!config) return null;
-
-  const acceptedTypes = config.acceptedExtensions.join(",");
-
-  const handleFilesChange = async (files: File[]) => {
-    if (files.length > translationFiles.length) {
-      await validateAndAddFiles(files);
-    }
-  };
 
   return (
     <FileUpload
@@ -52,25 +40,14 @@ export function FrameworkDropzone() {
       multiple
     >
       <FileUploadDropzone>
-        <div className="flex flex-col items-center gap-1 text-center">
-          <div className="flex items-center justify-center rounded-full border p-2.5">
-            <Upload className="size-6 text-muted-foreground" />
-          </div>
-          <p className="font-medium text-sm">
-            Drag & drop {config.name} files here
-          </p>
-          <p className="text-muted-foreground text-xs">
-            Accepted: {config.acceptedExtensions.join(", ")} (max{" "}
-            {config.maxFiles} files, up to {config.maxSize / 1024 / 1024}MB
-            each)
-          </p>
-        </div>
+        <DropzoneContent config={config} maxSizeInMB={maxSizeInMB} />
         <FileUploadTrigger asChild>
           <Button variant="outline" size="sm" className="mt-2 w-fit">
             Browse files
           </Button>
         </FileUploadTrigger>
       </FileUploadDropzone>
+
       <FileUploadList>
         {translationFiles.map((file, index) => (
           <FileUploadItem
@@ -84,12 +61,10 @@ export function FrameworkDropzone() {
                 variant="ghost"
                 size="icon"
                 className="size-7"
-                onClick={(e) => {
-                  e.preventDefault();
-                  removeTranslationFile(file);
-                }}
+                onClick={handleFileDelete(file)}
+                aria-label={`Remove ${file.name}`}
               >
-                <X />
+                <X className="size-4" />
               </Button>
             </FileUploadItemDelete>
           </FileUploadItem>

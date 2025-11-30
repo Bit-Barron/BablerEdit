@@ -1,4 +1,14 @@
 import { FileType, Menu, ToolbarButton } from "../types";
+import {
+  FolderOpen,
+  Save,
+  Plus,
+  Trash2,
+  Filter,
+  Languages,
+  Bot,
+  Globe,
+} from "lucide-react";
 
 const FRAMEWORK_ICONS: Record<string, string> = {
   angular: "🅰️",
@@ -121,50 +131,50 @@ export const MENUS: Menu[] = [
 export const TOOLBAR_BUTTONS: ToolbarButton[] = [
   {
     id: "open",
-    icon: "FolderOpen",
+    icon: FolderOpen,
     label: "Open project",
     onClick: "onOpenProject",
   },
   {
     id: "save",
-    icon: "Save",
+    icon: Save,
     label: "Save project",
     onClick: "onSaveProject",
     disabled: true,
   },
   {
     id: "add-id",
-    icon: "Plus",
+    icon: Plus,
     label: "Add ID",
     disabled: true,
   },
   {
     id: "remove-ids",
-    icon: "Trash2",
+    icon: Trash2,
     label: "Remove IDs",
     disabled: true,
   },
   {
     id: "filter",
-    icon: "Filter",
+    icon: Filter,
     label: "Set Filter",
     disabled: true,
   },
   {
     id: "pre-translate",
-    icon: "Languages",
+    icon: Languages,
     label: "Pre-Translate",
     disabled: true,
   },
   {
     id: "consistency",
-    icon: "Bot",
+    icon: Bot,
     label: "ConsistencyAI",
     disabled: true,
   },
   {
     id: "languages",
-    icon: "Globe",
+    icon: Globe,
     label: "Languages",
     disabled: true,
   },

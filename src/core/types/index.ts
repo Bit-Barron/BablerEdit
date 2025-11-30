@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 type MenuItemBase = {
   label: string;
 };
@@ -33,9 +35,8 @@ export type Menu = {
 };
 
 export interface ToolbarButton {
-  groupEnd: boolean;
   id: string;
-  icon: string;
+  icon: LucideIcon;
   label: string;
   onClick?: string;
   disabled?: boolean;

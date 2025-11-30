@@ -18,7 +18,7 @@ export const EditorPage: React.FC = () => {
     }
   }, [parsedProject, navigate]);
 
-  if (!parsedProject) {
+  if (!parsedProject) { 
     return null;
   }
 
@@ -31,7 +31,7 @@ export const EditorPage: React.FC = () => {
   return (
     <div className="fixed inset-0 top-[89px] flex">
       <div className="w-[400px] border-r flex flex-col bg-background">
-        <div className="border-b px-4 py-2.5 bg-muted/30 shrink-0">
+        <div className="border-b px-4 py-3 bg-muted/30 shrink-0">
           <h2 className="font-semibold text-sm">Translation IDs</h2>
         </div>
 

@@ -1,4 +1,4 @@
-import { FrameworkDialog } from "@/features/files/components/files-language-config-dialog";
+import { FrameworkDialog } from "@/features/files/components/framework-dialog";
 import { useFilesStore } from "@/features/files/store/file-store";
 import "../app/App.css";
 import { WizzardFrameworkTypes } from "@/features/wizzard/components/wizzard-framework-types";

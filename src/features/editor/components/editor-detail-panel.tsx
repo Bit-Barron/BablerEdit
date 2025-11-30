@@ -19,9 +19,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   const { editTranslations, updateTranslation, hasChanges } =
     useEditorPageStore();
 
-  const translationKey = selectedNode?.data.id as string;
-
-  if (!selectedNode || !selectedNode.isLeaf || !project) return;
+  if (!selectedNode || !selectedNode.isLeaf || !project) return null;
 
   return (
     <section>
@@ -35,15 +33,15 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
       <div className="flex flex-col h-full">
         <div className="border-b px-4 py-3 bg-muted/30 shrink-0">
-          <h2 className="font-semibold text-sm">{translationKey}</h2>
+          <h2 className="font-semibold text-sm">{selectedNode?.data.id}</h2>
         </div>
 
         <div className="flex-1 overflow-auto">
           <div className="divide-y">
             {Array.from(project.languages.entries()).map(
               ([langCode, langData]) => {
-                const value = langData.translations[translationKey] || "";
-                const isChanged = hasChanges(selectedNode.data.id, langCode);
+                const value =
+                  langData.translations[selectedNode!.data.id as string];
 
                 return (
                   <div key={langCode} className="p-4 flex items-center gap-4">
@@ -54,16 +52,18 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                     <div className="flex-1">
                       <Input
                         className={`w-full ${
-                          isChanged ? "border-yellow-400" : ""
+                          hasChanges(selectedNode!.data.id, langCode)
+                            ? "border-yellow-400"
+                            : ""
                         }`}
                         value={
                           editTranslations
-                            .get(selectedNode.data.id)
+                            .get(selectedNode!.data.id)
                             ?.get(langCode) ?? value
                         }
                         onChange={(e) =>
                           updateTranslation(
-                            selectedNode.data.id,
+                            selectedNode!.data.id,
                             langCode,
                             e.target.value
                           )
