@@ -141,7 +141,7 @@ export const TOOLBAR_BUTTONS: ToolbarButton[] = [
     icon: Save,
     label: "Save project",
     onClick: "onSaveProject",
-    disabled: true,
+    disabled: false,
   },
   {
     id: "add-id",

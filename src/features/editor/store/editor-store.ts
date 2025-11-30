@@ -16,11 +16,13 @@ interface EditorPageState {
   ) => void;
 
   hasChanges: (nodeId: string, language: string) => boolean;
+  setDirty: (dirty: boolean) => void;
 }
 
 export const useEditorPageStore = create<EditorPageState>((set, get) => ({
   selectedNode: null,
   setSelectedNode: (node) => set({ selectedNode: node }),
+  setDirty: (dirty) => set({ isDirty: dirty }),
 
   editTranslations: new Map(),
   isDirty: false,

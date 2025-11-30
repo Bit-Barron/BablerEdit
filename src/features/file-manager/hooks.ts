@@ -2,6 +2,12 @@ import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFileManagerStore } from "./store/file-manager-store";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
+import { useEditorPageStore } from "../editor/store/editor-store";
+import { toast } from "sonner";
+import { save } from "@tauri-apps/plugin-dialog";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { generateTranslationFiles } from "./lib/translation-file-generator";
+import { generateBablerProject } from "./lib/babler-generator";
 
 export const useFileManagerHook = () => {
   const {
@@ -10,10 +16,11 @@ export const useFileManagerHook = () => {
     validateAndAddFiles,
     selectedFramework,
     onFileReject,
+    parsedProject,
   } = useFileManagerStore();
 
   const navigate = useNavigate();
-  const { parseFiles, parsedProject } = useFileManagerStore();
+  const { parseFiles } = useFileManagerStore();
 
   const parseAndNavigate = useCallback(async () => {
     await parseFiles();
@@ -56,4 +63,66 @@ export const useFileManagerHook = () => {
     parseAndNavigate,
     parsedProject,
   };
+};
+
+export const useSaveProject = () => {
+  const { parsedProject } = useFileManagerStore();
+  const { editTranslations, setDirty } = useEditorPageStore();
+
+  const saveProject = useCallback(async () => {
+    if (!parsedProject) {
+      toast.error("No project to save");
+      return;
+    }
+
+    try {
+      const bablerPath = await save({
+        filters: [
+          {
+            name: "Babler Project",
+            extensions: ["babler"],
+          },
+        ],
+        defaultPath: "project.babler",
+      });
+
+      if (!bablerPath) {
+        return;
+      }
+
+      const filename = bablerPath.split("/").pop() || "project.babler";
+      const bablerProject = generateBablerProject(
+        parsedProject,
+        filename,
+        editTranslations
+      );
+
+      await writeTextFile(bablerPath, JSON.stringify(bablerProject, null, 2));
+
+      const translationFiles = generateTranslationFiles(
+        parsedProject,
+        editTranslations
+      );
+
+      const projectDir = bablerPath.substring(0, bablerPath.lastIndexOf("/"));
+
+      for (const [filename, content] of translationFiles.entries()) {
+        const filePath = `${projectDir}/${filename}`;
+        await writeTextFile(filePath, content);
+      }
+
+      setDirty(false);
+
+      toast.success("Project saved successfully!", {
+        description: `Saved ${translationFiles.size + 1} files`,
+      });
+    } catch (error) {
+      console.error("Save error:", error);
+      toast.error("Failed to save project", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  }, [parsedProject, editTranslations, setDirty]);
+
+  return { saveProject };
 };
