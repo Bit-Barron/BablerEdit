@@ -2,13 +2,13 @@
 
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import WelcomePage from "../pages/wizzard";
 import { EditorPage } from "../pages/editor";
+import { WizzardPage } from "@/pages/wizzard";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<WelcomePage />} />
+      <Route path="/" element={<WizzardPage />} />
       <Route path="/editor" element={<EditorPage />} />
     </Routes>
   );

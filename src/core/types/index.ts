@@ -39,3 +39,10 @@ export interface ToolbarButton {
   onClick?: string;
   disabled?: boolean;
 }
+
+export interface FileType {
+  id: string;
+  name: string;
+  subtitle: string;
+  color: string;
+}

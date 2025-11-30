@@ -1,11 +1,4 @@
-import { Menu, ToolbarButton } from "../types";
-
-interface FileType {
-  id: string;
-  name: string;
-  subtitle: string;
-  color: string;
-}
+import { FileType, Menu, ToolbarButton } from "../types";
 
 const FRAMEWORK_ICONS: Record<string, string> = {
   angular: "🅰️",
