@@ -1,33 +1,16 @@
-import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager-store";
-import React, { useEffect } from "react";
+import React from "react";
 import { Tree } from "react-arborist";
-import { useNavigate } from "react-router-dom";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
-import { useEditor } from "@/features/editor/hooks/use-editor";
+import { useEditorHook } from "@/features/editor/hook";
 
 export const EditorPage: React.FC = () => {
-  const { parsedProject, defaultLanguageCode } = useFileManagerStore();
-  const { handleNodeSelect, selectedNode } = useEditor();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!parsedProject) {
-      navigate("/");
-    }
-  }, [parsedProject, navigate]);
+  const { parsedProject, treeData, selectedNode, handleNodeSelect } =
+    useEditorHook();
 
   if (!parsedProject) {
     return null;
   }
-
-  const primaryLanguageData = parsedProject.languages.get(
-    defaultLanguageCode || "en"
-  );
-
-  const treeData = buildTranslationTree(primaryLanguageData);
 
   return (
     <div className="fixed inset-0 top-[89px] flex">
@@ -49,6 +32,7 @@ export const EditorPage: React.FC = () => {
           </Tree>
         </div>
       </div>
+
       <div className="flex-1 overflow-hidden">
         <TranslationDetail
           selectedNode={selectedNode}

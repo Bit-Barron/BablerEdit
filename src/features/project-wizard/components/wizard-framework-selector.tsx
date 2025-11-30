@@ -2,14 +2,14 @@ import { Card } from "@/core/components/ui/card";
 import { FILETYPES, getFrameworkIcon } from "@/core/lib/constants";
 import React from "react";
 import { FrameworkType } from "@/core/types/framework.types";
-import { useWizardDialog } from "../hooks/use-wizzard";
+import { useWizardDialogHook } from "../hooks";
 
 interface WizardFrameworkSelectorProps {}
 
 export const WizardFrameworkSelector: React.FC<
   WizardFrameworkSelectorProps
 > = ({}) => {
-  const { openFrameworkDialog } = useWizardDialog();
+  const { openFrameworkDialog } = useWizardDialogHook();
 
   return (
     <div className="grid grid-cols-4 gap-3 mb-6">

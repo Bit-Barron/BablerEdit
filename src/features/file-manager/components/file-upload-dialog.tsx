@@ -9,8 +9,8 @@ import {
   DialogTitle,
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
-import { useFileParser } from "../hooks/use-file-parser";
 import { FileUploadDropzone } from "./file-upload-dropzone";
+import { useFileManagerHook } from "../hooks";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -22,7 +22,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   onOpenChange,
 }) => {
   const { defaultLanguageCode } = useFileManagerStore();
-  const { parseAndNavigate } = useFileParser();
+  const { parseAndNavigate } = useFileManagerHook();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>

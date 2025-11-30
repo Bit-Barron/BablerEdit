@@ -3,7 +3,6 @@ import { create } from "zustand";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
 import { ParsedProject } from "@/features/translation-parser/types/parser.types";
 import { FrameworkType } from "@/core/types/framework.types";
-import { Language } from "../types/file-manager.types";
 import { createProject } from "@/features/translation-parser";
 
 interface FileManagerStore {
@@ -17,10 +16,6 @@ interface FileManagerStore {
   setTranslationFiles: (files: File[]) => void;
   removeTranslationFile: (fileToRemove: File) => void;
   validateAndAddFiles: (files: File[]) => Promise<void>;
-
-  languages: Language[];
-  addLanguage: (language: Omit<Language, "id">) => void;
-  removeLanguage: (id: string) => void;
 
   onFileReject: (file: File, message: string) => void;
 
@@ -129,16 +124,6 @@ export const useFileManagerStore = create<FileManagerStore>((set, get) => ({
       toast.success(`Added ${validatedFiles.length} file(s)`);
     }
   },
-
-  languages: [],
-  addLanguage: (language) =>
-    set((state) => ({
-      languages: [...state.languages, { ...language, id: crypto.randomUUID() }],
-    })),
-  removeLanguage: (id: string) =>
-    set((state) => ({
-      languages: state.languages.filter((l) => l.id !== id),
-    })),
 
   onFileReject: (file: File, message: string) => {
     const truncatedName =

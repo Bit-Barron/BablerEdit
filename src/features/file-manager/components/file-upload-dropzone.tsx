@@ -12,8 +12,8 @@ import {
 } from "@/core/components/ui/file-upload";
 import { X } from "lucide-react";
 import { DropzoneContent } from "./file-dropzone-content";
-import { useFileUploadDropzone } from "../hooks/use-file-upload";
 import { FileUploadDropzone as FileUploadDropzoneComponent } from "@/core/components/ui/file-upload";
+import { useFileManagerHook } from "../hooks";
 
 export function FileUploadDropzone() {
   const {
@@ -24,7 +24,7 @@ export function FileUploadDropzone() {
     handleFilesChange,
     handleFileDelete,
     onFileReject,
-  } = useFileUploadDropzone();
+  } = useFileManagerHook();
 
   if (!config) return null;
 

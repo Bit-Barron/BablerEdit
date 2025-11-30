@@ -1,8 +1,9 @@
 import { useCallback, useMemo } from "react";
-import { useFileManagerStore } from "../store/file-manager-store";
+import { useNavigate } from "react-router-dom";
+import { useFileManagerStore } from "./store/file-manager-store";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
 
-export function useFileUploadDropzone() {
+export const useFileManagerHook = () => {
   const {
     translationFiles,
     removeTranslationFile,
@@ -11,9 +12,17 @@ export function useFileUploadDropzone() {
     onFileReject,
   } = useFileManagerStore();
 
+  const navigate = useNavigate();
+  const { parseFiles, parsedProject } = useFileManagerStore();
+
+  const parseAndNavigate = useCallback(async () => {
+    await parseFiles();
+    navigate("/editor");
+  }, [parseFiles, navigate]);
+
   const config = useMemo(() => {
     return selectedFramework ? getFrameworkConfig(selectedFramework) : null;
-  }, [selectedFramework]); 
+  }, [selectedFramework]);
 
   const handleFilesChange = useCallback(
     async (files: File[]) => {
@@ -44,5 +53,7 @@ export function useFileUploadDropzone() {
     handleFilesChange,
     handleFileDelete,
     onFileReject,
+    parseAndNavigate,
+    parsedProject,
   };
-}
+};
