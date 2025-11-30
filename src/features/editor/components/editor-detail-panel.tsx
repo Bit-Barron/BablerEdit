@@ -5,9 +5,10 @@ import { Label } from "@/core/components/ui/label";
 import { Checkbox } from "@/core/components/ui/checkbox";
 import { TreeNode } from "../types/editor";
 import { ParsedProject } from "@/features/parser/types/parser";
+import { useEditorPageStore } from "../store/editor-store";
 
 interface TranslationDetailProps {
-  selectedNode: NodeApi<TreeNode>;
+  selectedNode: NodeApi<TreeNode> | null;
   project: ParsedProject;
 }
 
@@ -15,7 +16,12 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const translationKey = selectedNode.data.id;
+  const { editTranslations, updateTranslation, hasChanges } =
+    useEditorPageStore();
+
+  const translationKey = selectedNode?.data.id as string;
+
+  if (!selectedNode || !selectedNode.isLeaf || !project) return;
 
   return (
     <section>
@@ -37,6 +43,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
             {Array.from(project.languages.entries()).map(
               ([langCode, langData]) => {
                 const value = langData.translations[translationKey] || "";
+                const isChanged = hasChanges(selectedNode.data.id, langCode);
 
                 return (
                   <div key={langCode} className="p-4 flex items-center gap-4">
@@ -46,8 +53,21 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
                     <div className="flex-1">
                       <Input
-                        value={value}
-                        className="font-sans"
+                        className={`w-full ${
+                          isChanged ? "border-yellow-400" : ""
+                        }`}
+                        value={
+                          editTranslations
+                            .get(selectedNode.data.id)
+                            ?.get(langCode) ?? value
+                        }
+                        onChange={(e) =>
+                          updateTranslation(
+                            selectedNode.data.id,
+                            langCode,
+                            e.target.value
+                          )
+                        }
                         placeholder={
                           langCode === project.primaryLanguage
                             ? "Enter translation..."

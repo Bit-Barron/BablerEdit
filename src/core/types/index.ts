@@ -33,6 +33,7 @@ export type Menu = {
 };
 
 export interface ToolbarButton {
+  groupEnd: boolean;
   id: string;
   icon: string;
   label: string;
