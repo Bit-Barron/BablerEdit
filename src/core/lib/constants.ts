@@ -1,4 +1,4 @@
-import { FileType, Menu, ToolbarButton } from "../types";
+import { FileType } from "@/features/file-manager/types/file-manager.types";
 import {
   FolderOpen,
   Save,
@@ -9,6 +9,7 @@ import {
   Bot,
   Globe,
 } from "lucide-react";
+import { Menu, ToolbarButton } from "../types/common.types";
 
 const FRAMEWORK_ICONS: Record<string, string> = {
   angular: "🅰️",

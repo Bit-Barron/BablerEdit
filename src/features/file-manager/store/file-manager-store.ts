@@ -1,17 +1,17 @@
 import { toast } from "sonner";
 import { create } from "zustand";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
-import { createProject } from "@/features/parser";
-import { ParsedProject } from "@/features/parser/types/parser";
-import { FrameworkType } from "@/core/types/framework";
-import { Language } from "../types/files";
+import { ParsedProject } from "@/features/translation-parser/types/parser.types";
+import { FrameworkType } from "@/core/types/framework.types";
+import { Language } from "../types/file-manager.types";
+import { createProject } from "@/features/translation-parser";
 
-interface FilesStore {
+interface FileManagerStore {
   selectedFramework: FrameworkType | "";
   setSelectedFramework: (typeId: FrameworkType | "") => void;
 
-  isFrameworkDialogOpen: boolean;
-  setFrameworkDialogOpen: (isOpen: boolean) => void;
+  isFileUploadDialogOpen: boolean;
+  setFileUploadDialogOpen: (isOpen: boolean) => void;
 
   translationFiles: File[];
   setTranslationFiles: (files: File[]) => void;
@@ -32,13 +32,13 @@ interface FilesStore {
   parseFiles: () => Promise<void>;
 }
 
-export const useFilesStore = create<FilesStore>((set, get) => ({
+export const useFileManagerStore = create<FileManagerStore>((set, get) => ({
   selectedFramework: "",
   setSelectedFramework: (typeId) => set({ selectedFramework: typeId }),
 
-  isFrameworkDialogOpen: false,
-  setFrameworkDialogOpen: (isOpen: boolean) =>
-    set({ isFrameworkDialogOpen: isOpen }),
+  isFileUploadDialogOpen: false,
+  setFileUploadDialogOpen: (isOpen: boolean) =>
+    set({ isFileUploadDialogOpen: isOpen }),
 
   translationFiles: [],
   setTranslationFiles: (files: File[]) => set({ translationFiles: files }),

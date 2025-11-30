@@ -1,5 +1,5 @@
-import { LanguageData } from "@/features/parser/types/parser";
-import { TreeNode } from "../types/editor";
+import { LanguageData } from "@/features/translation-parser/types/parser.types";
+import { TreeNode } from "../types/editor.types";
 
 export const buildTranslationTree = (
   languageData: LanguageData | undefined

@@ -3,7 +3,7 @@ import {
   parseJSONFile,
   flattenJson,
 } from "./lib/json-parser";
-import { LanguageData, ParsedProject } from "./types/parser";
+import { LanguageData, ParsedProject } from "./types/parser.types";
 
 export async function createProject(
   files: File[],

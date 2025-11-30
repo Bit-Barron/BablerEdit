@@ -1,10 +1,10 @@
 import React from "react";
-import { useWizardStore } from "../store/wizzard-store";
+import { useWizardStore } from "../store/wizard-store";
 
-interface WizzardRecentProjectsProps {}
+interface WizardRecentProjectsProps {}
 
-export const WizzardRecentProjects: React.FC<
-  WizzardRecentProjectsProps
+export const WizardRecentProjects: React.FC<
+  WizardRecentProjectsProps
 > = ({}) => {
   const { recentProjects } = useWizardStore();
 

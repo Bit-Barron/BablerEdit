@@ -1,7 +1,7 @@
 import { Folder, FolderOpen, ChevronRight, FileText } from "lucide-react";
 import React, { CSSProperties } from "react";
 import { NodeApi, TreeApi } from "react-arborist";
-import { TreeNode as TreeNodeType } from "../types/editor";
+import { TreeNode as TreeNodeType } from "../types/editor.types";
 
 interface TreeNodeProps {
   style: CSSProperties;

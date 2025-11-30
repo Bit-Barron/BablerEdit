@@ -1,11 +1,12 @@
-import { FrameworkDialog } from "@/features/files/components/framework-dialog";
-import { useFilesStore } from "@/features/files/store/file-store";
+import { useFileManagerStore } from "@/features/file-manager/store/file-manager-store";
 import "../app/App.css";
-import { WizzardFrameworkTypes } from "@/features/wizzard/components/wizzard-framework-types";
-import { WizzardRecentProjects } from "@/features/wizzard/components/wizzard-recent-projects";
+import { FileUploadDialog } from "@/features/file-manager/components/file-upload-dialog";
+import { WizardFrameworkSelector } from "@/features/project-wizard/components/wizard-framework-selector";
+import { WizardRecentProjects } from "@/features/project-wizard/components/wizard-recent-projects";
 
-export const WizzardPage: React.FC = () => {
-  const { isFrameworkDialogOpen, setFrameworkDialogOpen } = useFilesStore();
+export const WizardPage: React.FC = () => {
+  const { isFileUploadDialogOpen, setFileUploadDialogOpen } =
+    useFileManagerStore();
 
   return (
     <div className="flex flex-col overflow-hidden bg-background">
@@ -24,14 +25,14 @@ export const WizzardPage: React.FC = () => {
             </p>
           </header>
 
-          <WizzardFrameworkTypes />
-          <WizzardRecentProjects />
+          <WizardFrameworkSelector />
+          <WizardRecentProjects />
         </div>
       </div>
 
-      <FrameworkDialog
-        onOpenChange={(isOpen) => setFrameworkDialogOpen(isOpen)}
-        open={isFrameworkDialogOpen}
+      <FileUploadDialog
+        onOpenChange={(isOpen) => setFileUploadDialogOpen(isOpen)}
+        open={isFileUploadDialogOpen}
       />
     </div>
   );

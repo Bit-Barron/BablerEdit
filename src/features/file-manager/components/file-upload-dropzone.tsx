@@ -3,7 +3,6 @@
 import { Button } from "@/core/components/ui/button";
 import {
   FileUpload,
-  FileUploadDropzone,
   FileUploadTrigger,
   FileUploadList,
   FileUploadItem,
@@ -12,10 +11,11 @@ import {
   FileUploadItemDelete,
 } from "@/core/components/ui/file-upload";
 import { X } from "lucide-react";
-import { DropzoneContent } from "./framework-dropzone-content";
-import { useFrameworkDropzone } from "../hooks/use-framework";
+import { DropzoneContent } from "./file-dropzone-content";
+import { useFileUploadDropzone } from "../hooks/use-file-upload";
+import { FileUploadDropzone as FileUploadDropzoneComponent } from "@/core/components/ui/file-upload";
 
-export function FrameworkDropzone() {
+export function FileUploadDropzone() {
   const {
     config,
     translationFiles,
@@ -24,7 +24,7 @@ export function FrameworkDropzone() {
     handleFilesChange,
     handleFileDelete,
     onFileReject,
-  } = useFrameworkDropzone();
+  } = useFileUploadDropzone();
 
   if (!config) return null;
 
@@ -39,14 +39,14 @@ export function FrameworkDropzone() {
       onFileReject={onFileReject}
       multiple
     >
-      <FileUploadDropzone>
+      <FileUploadDropzoneComponent>
         <DropzoneContent config={config} maxSizeInMB={maxSizeInMB} />
         <FileUploadTrigger asChild>
           <Button variant="outline" size="sm" className="mt-2 w-fit">
             Browse files
           </Button>
         </FileUploadTrigger>
-      </FileUploadDropzone>
+      </FileUploadDropzoneComponent>
 
       <FileUploadList>
         {translationFiles.map((file, index) => (

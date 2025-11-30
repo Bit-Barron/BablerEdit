@@ -1,15 +1,15 @@
 import { useCallback, useMemo } from "react";
-import { useFilesStore } from "../store/file-store";
+import { useFileManagerStore } from "../store/file-manager-store";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
 
-export function useFrameworkDropzone() {
+export function useFileUploadDropzone() {
   const {
     translationFiles,
     removeTranslationFile,
     validateAndAddFiles,
     selectedFramework,
     onFileReject,
-  } = useFilesStore();
+  } = useFileManagerStore();
 
   const config = useMemo(() => {
     return selectedFramework ? getFrameworkConfig(selectedFramework) : null;

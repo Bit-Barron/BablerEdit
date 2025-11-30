@@ -3,8 +3,8 @@ import { NodeApi } from "react-arborist";
 import { Input } from "@/core/components/ui/input";
 import { Label } from "@/core/components/ui/label";
 import { Checkbox } from "@/core/components/ui/checkbox";
-import { TreeNode } from "../types/editor";
-import { ParsedProject } from "@/features/parser/types/parser";
+import { TreeNode } from "../types/editor.types";
+import { ParsedProject } from "@/features/translation-parser/types/parser.types";
 import { useEditorPageStore } from "../store/editor-store";
 
 interface TranslationDetailProps {

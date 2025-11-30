@@ -1,9 +1,7 @@
 import { Plus, Minus } from "lucide-react";
 import React from "react";
 
-import { FrameworkDropzone } from "./framework-dialog-dropzone";
-import { useFilesStore } from "../store/file-store";
-import { useNavigate } from "react-router-dom";
+import { useFileManagerStore } from "../store/file-manager-store";
 import {
   Dialog,
   DialogContent,
@@ -11,18 +9,20 @@ import {
   DialogTitle,
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
+import { useFileParser } from "../hooks/use-file-parser";
+import { FileUploadDropzone } from "./file-upload-dropzone";
 
-interface FrameworkDialogProps {
+interface FileUploadDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
+export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { defaultLanguageCode, parseFiles } = useFilesStore();
-  const navigate = useNavigate();
+  const { defaultLanguageCode } = useFileManagerStore();
+  const { parseAndNavigate } = useFileParser();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -38,7 +38,7 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
 
         <div className="px-6 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
-            <FrameworkDropzone />
+            <FileUploadDropzone />
           </section>
 
           <div className="mt-2">
@@ -66,14 +66,10 @@ export const FrameworkDialog: React.FC<FrameworkDialogProps> = ({
               Close
             </Button>
             <Button
-              variant="outline"
               onClick={async () => {
-                await parseFiles();
+                await parseAndNavigate();
                 onOpenChange(false);
-
-                navigate("/editor");
               }}
-              className="min-w-[100px]"
             >
               Save
             </Button>

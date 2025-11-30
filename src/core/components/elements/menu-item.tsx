@@ -1,4 +1,4 @@
-import { MenuItem as MenuItemType } from "@/core/types";
+import { MenuItem as MenuItemType } from "@/core/types/common.types";
 
 interface MenuItemProps {
   item: MenuItemType;

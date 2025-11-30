@@ -1,15 +1,16 @@
-import { buildTranslationTree } from "@/features/editor/lib/build-tree";
-import { useFilesStore } from "@/features/files/store/file-store";
+import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
+import { useFileManagerStore } from "@/features/file-manager/store/file-manager-store";
 import React, { useEffect } from "react";
 import { Tree } from "react-arborist";
 import { useNavigate } from "react-router-dom";
-import { useEditorPageStore } from "@/features/editor/store/editor-store";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
+import { useEditor } from "@/features/editor/hooks/use-editor";
 
 export const EditorPage: React.FC = () => {
-  const { parsedProject, defaultLanguageCode } = useFilesStore();
-  const { selectedNode, setSelectedNode } = useEditorPageStore();
+  const { parsedProject, defaultLanguageCode } = useFileManagerStore();
+  const { handleNodeSelect, selectedNode } = useEditor();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export const EditorPage: React.FC = () => {
     }
   }, [parsedProject, navigate]);
 
-  if (!parsedProject) { 
+  if (!parsedProject) {
     return null;
   }
 
@@ -42,11 +43,7 @@ export const EditorPage: React.FC = () => {
             width="100%"
             indent={20}
             rowHeight={32}
-            onSelect={(nodes) => {
-              if (nodes.length > 0) {
-                setSelectedNode(nodes[0]);
-              }
-            }}
+            onSelect={handleNodeSelect}
           >
             {(props) => <TreeNodeComponent {...props} />}
           </Tree>
