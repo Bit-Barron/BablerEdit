@@ -12,8 +12,6 @@ export const EditorPage: React.FC = () => {
     return null;
   }
 
-  
-
   return (
     <div className="fixed inset-0 top-[89px] flex">
       <div className="w-[400px] border-r flex flex-col bg-background">

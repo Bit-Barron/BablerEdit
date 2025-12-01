@@ -6,9 +6,6 @@ export function generateTranslationFiles(
 ): Map<string, string> {
   const files = new Map<string, string>();
 
-  console.log("Generating translation files with edits:", editTranslations);
-  console.log("Parsed project data:", parsedProject);
-
   parsedProject.languages.forEach((langData, langCode) => {
     const mergedTranslations: Record<string, string> = {};
 

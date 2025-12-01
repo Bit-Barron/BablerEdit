@@ -13,7 +13,6 @@ export default function Toolbar() {
 
   const handleButtonClick = (buttonId: string) => {
     try {
-      console.log(buttonId);
       saveProject();
     } catch (err) {
       console.error(err);

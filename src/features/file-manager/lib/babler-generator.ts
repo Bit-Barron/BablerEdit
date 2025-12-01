@@ -11,8 +11,6 @@ export function generateBablerProject(
     name: code.toUpperCase(),
   }));
 
-  console.log(editTranslations)
-
   return {
     version: "1.0",
     framework: parsedProject.framework,
