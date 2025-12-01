@@ -10,7 +10,7 @@ import { ThemeProvider } from "./core/components/providers/theme-provider";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider>
-      <Toaster richColors />
+      <Toaster richColors position="top-right" />
       <MenuBar />
       <Toolbar />
       <HashRouter>

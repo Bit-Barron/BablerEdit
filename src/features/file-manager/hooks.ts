@@ -64,7 +64,6 @@ export const useFileManagerHook = () => {
     parsedProject,
   };
 };
-
 export const useSaveProject = () => {
   const { parsedProject } = useFileManagerStore();
   const { editTranslations, setDirty } = useEditorPageStore();
@@ -76,6 +75,7 @@ export const useSaveProject = () => {
     }
 
     try {
+      // Let user select where to save
       const bablerPath = await save({
         filters: [
           {
@@ -87,7 +87,7 @@ export const useSaveProject = () => {
       });
 
       if (!bablerPath) {
-        return;
+        return; // User cancelled
       }
 
       const filename = bablerPath.split("/").pop() || "project.babler";
@@ -106,10 +106,14 @@ export const useSaveProject = () => {
 
       const projectDir = bablerPath.substring(0, bablerPath.lastIndexOf("/"));
 
-      for (const [filename, content] of translationFiles.entries()) {
-        const filePath = `${projectDir}/${filename}`;
-        await writeTextFile(filePath, content);
-      }
+      const savePromises = Array.from(translationFiles.entries()).map(
+        async ([filename, content]) => {
+          const filePath = `${projectDir}/${filename}`;
+          await writeTextFile(filePath, content);
+        }
+      );
+
+      await Promise.all(savePromises);
 
       setDirty(false);
 
