@@ -1,5 +1,5 @@
 import React from "react";
-import { useWizardStore } from "../store/wizard.store";
+import { useWizardStore } from "../store/project-wizard.store";
 
 interface WizardRecentProjectsProps {}
 

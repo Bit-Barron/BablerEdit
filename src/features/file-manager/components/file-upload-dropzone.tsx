@@ -9,10 +9,10 @@ import {
   FileUploadItemPreview,
   FileUploadItemMetadata,
   FileUploadItemDelete,
-} from "@/core/components/ui/file-upload";
+} from "@/core/components/elements/file-upload";
 import { X } from "lucide-react";
 import { DropzoneContent } from "./file-dropzone-content";
-import { FileUploadDropzone as FileUploadDropzoneComponent } from "@/core/components/ui/file-upload";
+import { FileUploadDropzone as FileUploadDropzoneComponent } from "@/core/components/elements/file-upload";
 import { useFileManager } from "../hooks/use-file-manager";
 
 export function FileUploadDropzone() {
