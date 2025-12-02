@@ -1,6 +1,6 @@
-import { FrameworkConfig } from "../types/framework.types";
+import { FrameworkConfig, FrameworkType } from "../types/framework.types";
 
-export const FRAMEWORK_CONFIGS: Record<string, FrameworkConfig> = {
+export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
   json: {
     id: "json",
     name: "Generic JSON",
@@ -156,5 +156,5 @@ export const FRAMEWORK_CONFIGS: Record<string, FrameworkConfig> = {
 export function getFrameworkConfig(
   frameworkId: string
 ): FrameworkConfig | undefined {
-  return FRAMEWORK_CONFIGS[frameworkId];
+  return FRAMEWORK_CONFIGS[frameworkId as FrameworkType];
 }

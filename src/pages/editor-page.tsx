@@ -1,10 +1,9 @@
-import React from "react";
-import { Tree } from "react-arborist";
-import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
+import { AutoSizedTree } from "@/core/components/elements/auto-sized-tree";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
 import { buildTranslationTree } from "@/features/editor/lib/build-translation-tree";
 import { useEditorStore } from "@/features/editor/store/editor-page.store";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useFileManagerStore();
@@ -19,22 +18,19 @@ export const EditorPage: React.FC = () => {
           <h2 className="font-semibold text-sm">Translation IDs</h2>
         </div>
 
-        <div className="flex-1 overflow-hidden">
-          <Tree
-            initialData={buildTranslationTree(parsedProject)}
-            openByDefault={false}
-            width="100%"
-            indent={20}
-            rowHeight={32}
-            onSelect={(nodes) => {
-              if (nodes.length > 0) {
-                setSelectedNode(nodes[0]);
-              }
-            }}
-          >
-            {(props) => <TreeNodeComponent {...props} />}
-          </Tree>
-        </div>
+        <AutoSizedTree
+          initialData={buildTranslationTree(parsedProject)}
+          openByDefault={false}
+          indent={20}
+          rowHeight={32}
+          onSelect={(nodes) => {
+            if (nodes.length > 0) {
+              setSelectedNode(nodes[0] as any);
+            }
+          }}
+        >
+          {(props) => <TreeNodeComponent {...(props as any)} />}
+        </AutoSizedTree>
       </div>
 
       <div className="flex-1 overflow-hidden">

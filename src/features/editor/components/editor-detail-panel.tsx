@@ -29,8 +29,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   };
 
   return (
-    <section className="h-full flex flex-col bg-background">
-      <div className="px-6 py-2.5 bg-muted border-b">
+    <section className="flex flex-col bg-background">
+      <div className="px-6 py-2.5 bg-muted/30 border-b">
         <h2 className="font-semibold tracking-wide">{key}</h2>
       </div>
 

@@ -37,7 +37,7 @@ export async function createProject(
     version: "1.0.0",
     be_version: "1.0.0",
     framework,
-    filename: "project.json",
+    filename: "project.babler",
     source_root_dir: "/",
     is_template_project: false,
 
