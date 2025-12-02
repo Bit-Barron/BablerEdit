@@ -1,0 +1,310 @@
+version: "1.3"
+be_version: "5.2.0"
+framework: "generic-json"
+filename: "Test.babel"
+source_root_dir: "../../"
+is_template_project: false
+
+languages:
+  - code: "de-DE"
+  - code: "fr-FR"
+  - code: "it-IT"
+
+translation_packages:
+  - name: "main"
+    translation_urls:
+      - path: "de.json"
+        language: "de-DE"
+      - path: "fr.json"
+        language: "fr-FR"
+      - path: "it.json"
+        language: "it-IT"
+
+editor_configuration:
+  save_empty_translations: true
+  translation_order: "alphabetically"
+  copy_templates:
+    - "'%1'"
+    - ""
+    - ""
+  custom_languages: []
+  id_extractor_ignores: []
+
+primary_language: null
+
+configuration:
+  indent: "tab"
+  format: "namespaced-json"
+  support_arrays: true
+
+preset_collections: []
+
+folder_structure:
+  name: ""
+  children:
+    - type: "package"
+      name: "main"
+      children:
+        - type: "folder"
+          name: "AUFTRAG"
+          children:
+            - type: "concept"
+              name: "ADD_TERMIN"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "ADD_YEAR"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "AENDERUNGSHISTORIE"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "ART"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "AUFTRAG"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "BANK"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "BANK_AUSWAHL"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+        - type: "folder"
+          name: "COMMON"
+          children:
+            - type: "folder"
+              name: "CONFIRM"
+              children:
+                - type: "concept"
+                  name: "ALL"
+                  description: ""
+                  comment: ""
+                  translations:
+                    - language: "de-DE"
+                      approved: false
+                    - language: "fr-FR"
+                      approved: false
+                    - language: "it-IT"
+                      approved: false
+
+                - type: "concept"
+                  name: "COPY_MESSAGE"
+                  description: ""
+                  comment: ""
+                  translations:
+                    - language: "de-DE"
+                      approved: false
+                    - language: "fr-FR"
+                      approved: false
+                    - language: "it-IT"
+                      approved: false
+
+                - type: "concept"
+                  name: "DELETE"
+                  description: ""
+                  comment: ""
+                  translations:
+                    - language: "de-DE"
+                      approved: false
+                    - language: "fr-FR"
+                      approved: false
+                    - language: "it-IT"
+                      approved: false
+
+            - type: "folder"
+              name: "ENUM"
+              children:
+                - type: "concept"
+                  name: "AKTIV"
+                  description: ""
+                  comment: ""
+                  translations:
+                    - language: "de-DE"
+                      approved: false
+                    - language: "fr-FR"
+                      approved: false
+                    - language: "it-IT"
+                      approved: false
+
+                - type: "concept"
+                  name: "ALL"
+                  description: ""
+                  comment: ""
+                  translations:
+                    - language: "de-DE"
+                      approved: false
+                    - language: "fr-FR"
+                      approved: false
+                    - language: "it-IT"
+                      approved: false
+
+            - type: "folder"
+              name: "ERROR"
+              children:
+                - type: "concept"
+                  name: "403"
+                  description: ""
+                  comment: ""
+                  translations:
+                    - language: "de-DE"
+                      approved: false
+                    - language: "fr-FR"
+                      approved: false
+                    - language: "it-IT"
+                      approved: false
+
+                - type: "concept"
+                  name: "404"
+                  description: ""
+                  comment: ""
+                  translations:
+                    - language: "de-DE"
+                      approved: false
+                    - language: "fr-FR"
+                      approved: false
+                    - language: "it-IT"
+                      approved: false
+
+        - type: "folder"
+          name: "DASHBOARD"
+          children:
+            - type: "concept"
+              name: "ANZAHL_CLIENT"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "WELCOME"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+        - type: "folder"
+          name: "MENU"
+          children:
+            - type: "concept"
+              name: "AUFTRAG"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "NAVIGATION"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+        - type: "folder"
+          name: "SETTINGS"
+          children:
+            - type: "concept"
+              name: "FRONTEND"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false
+
+            - type: "concept"
+              name: "LANGUAGE"
+              description: ""
+              comment: ""
+              translations:
+                - language: "de-DE"
+                  approved: false
+                - language: "fr-FR"
+                  approved: false
+                - language: "it-IT"
+                  approved: false

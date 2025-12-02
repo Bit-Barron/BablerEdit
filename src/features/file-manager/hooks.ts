@@ -1,13 +1,6 @@
 import { useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { useFileManagerStore } from "./store/file-manager-store";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
-import { useEditorPageStore } from "../editor/store/editor-store";
-import { toast } from "sonner";
-import { save } from "@tauri-apps/plugin-dialog";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { generateTranslationFiles } from "./lib/translation-file-generator";
-import { generateBablerProject } from "./lib/babler-generator";
 
 export const useFileManagerHook = () => {
   const {
@@ -18,14 +11,6 @@ export const useFileManagerHook = () => {
     onFileReject,
     parsedProject,
   } = useFileManagerStore();
-
-  const navigate = useNavigate();
-  const { parseFiles } = useFileManagerStore();
-
-  const parseAndNavigate = useCallback(async () => {
-    await parseFiles();
-    navigate("/editor");
-  }, [parseFiles, navigate]);
 
   const config = useMemo(() => {
     return selectedFramework ? getFrameworkConfig(selectedFramework) : null;
@@ -60,73 +45,42 @@ export const useFileManagerHook = () => {
     handleFilesChange,
     handleFileDelete,
     onFileReject,
-    parseAndNavigate,
     parsedProject,
   };
 };
+
 export const useSaveProject = () => {
-  const { parsedProject } = useFileManagerStore();
-  const { editTranslations, setDirty } = useEditorPageStore();
-
-  const saveProject = useCallback(async () => {
-    if (!parsedProject) {
-      toast.error("No project to save");
-      return;
-    }
-
-    try {
-      // Let user select where to save
-      const bablerPath = await save({
-        filters: [
-          {
-            name: "Babler Project",
-            extensions: ["babler"],
-          },
-        ],
-        defaultPath: "project.babler",
-      });
-
-      if (!bablerPath) {
-        return; // User cancelled
-      }
-
-      const filename = bablerPath.split("/").pop() || "project.babler";
-      const bablerProject = generateBablerProject(
-        parsedProject,
-        filename,
-        editTranslations
-      );
-
-      await writeTextFile(bablerPath, JSON.stringify(bablerProject, null, 2));
-
-      const translationFiles = generateTranslationFiles(
-        parsedProject,
-        editTranslations
-      );
-
-      const projectDir = bablerPath.substring(0, bablerPath.lastIndexOf("/"));
-
-      const savePromises = Array.from(translationFiles.entries()).map(
-        async ([filename, content]) => {
-          const filePath = `${projectDir}/${filename}`;
-          await writeTextFile(filePath, content);
-        }
-      );
-
-      await Promise.all(savePromises);
-
-      setDirty(false);
-
-      toast.success("Project saved successfully!", {
-        description: `Saved ${translationFiles.size + 1} files`,
-      });
-    } catch (error) {
-      console.error("Save error:", error);
-      toast.error("Failed to save project", {
-        description: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
-  }, [parsedProject, editTranslations, setDirty]);
-
-  return { saveProject };
+  // if (!parsedProject) return;
+  // const ymlStructure = {
+  //   version: "1.3",
+  //   be_version: "5.2.0",
+  //   framework: parsedProject.framework,
+  //   filename: "test.bable",
+  //   source_root_dir: "../../",
+  //   is_template_project: false,
+  //   languages: {
+  //     code: Array.from(parsedProject.languages.keys()),
+  //   },
+  //   translation_packages: {
+  //     name: "main",
+  //     translation_urls: {
+  //       path: Array.from(parsedProject.languages.keys()),
+  //       language: Array.from(parsedProject.languages.keys()),
+  //     },
+  //   },
+  //   editor_configuration: {
+  //     save_empty_translations: true,
+  //     translation_order: "alphabetically",
+  //   },
+  //   primary_language: parsedProject.primary_language,
+  //   folder_structure: {
+  //     name: "",
+  //     children: {
+  //       type: "package",
+  //       name: "main",
+  //       children: Array.from(parsedProject.languages),
+  //     },
+  //   },
+  // };
+  // return ymlStructure;
 };

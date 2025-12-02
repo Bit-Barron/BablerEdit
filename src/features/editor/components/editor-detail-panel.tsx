@@ -1,11 +1,8 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
-import { Input } from "@/core/components/ui/input";
-import { Label } from "@/core/components/ui/label";
-import { Checkbox } from "@/core/components/ui/checkbox";
-import { TreeNode } from "../types/editor.types";
 import { ParsedProject } from "@/features/translation-parser/types/parser.types";
-import { useEditorPageStore } from "../store/editor-store";
+import { TreeNode } from "@/features/editor/types/editor.types";
+import { Checkbox } from "@/core/components/ui/checkbox";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNode> | null;
@@ -16,81 +13,57 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const { editTranslations, updateTranslation, hasChanges } =
-    useEditorPageStore();
+  if (!selectedNode || !selectedNode.isLeaf) return null;
+  const key = selectedNode.data.id;
 
-  if (!selectedNode || !selectedNode.isLeaf || !project) return null;
+  const findTranslationForKey = () => {
+    const key = selectedNode.data.id;
+    const mainPackage = project.folder_structure.children[0];
+
+    console.log("Main Package:", mainPackage);
+
+    const conceptNode = mainPackage.children.find(
+      (child) => child.name === key
+    );
+
+    return conceptNode?.translations || null;
+  };
 
   return (
-    <section>
-      {!selectedNode ||
-        !selectedNode.isLeaf ||
-        (!project && (
-          <div className="flex items-center justify-center h-full text-muted-foreground">
-            Select a translation key
-          </div>
-        ))}
+    <section className="h-full flex flex-col bg-background">
+      <div className="px-6 py-2.5 bg-mu border-b">
+        <h2 className="font-semibold tracking-wide">{key}</h2>
+      </div>
 
-      <div className="flex flex-col h-full">
-        <div className="border-b px-4 py-3 bg-muted/30 shrink-0">
-          <h2 className="font-semibold text-sm">{selectedNode?.data.id}</h2>
-        </div>
-
-        <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-y-auto">
+        {findTranslationForKey() ? (
           <div className="divide-y">
-            {Array.from(project.languages.entries()).map(
-              ([langCode, langData]) => {
-                const value =
-                  langData.translations[selectedNode!.data.id as string];
+            {findTranslationForKey()!.map((t) => (
+              <div key={t.language} className="px-6 py-5">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-semibold text-sm tracking-wider text-muted-foreground">
+                    {t.language.toUpperCase()}
+                  </span>
+                  <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+                    <Checkbox className="w-3.5 h-3.5" />
+                    <span>Approved</span>
+                  </button>
+                </div>
 
-                return (
-                  <div key={langCode} className="p-4 flex items-center gap-4">
-                    <div className="w-16 text-sm font-medium uppercase">
-                      {langCode}
-                    </div>
-
-                    <div className="flex-1">
-                      <Input
-                        className={`w-full ${
-                          hasChanges(selectedNode!.data.id, langCode)
-                            ? "border-yellow-400"
-                            : ""
-                        }`}
-                        value={
-                          editTranslations
-                            .get(selectedNode!.data.id)
-                            ?.get(langCode) ?? value
-                        }
-                        onChange={(e) =>
-                          updateTranslation(
-                            selectedNode!.data.id,
-                            langCode,
-                            e.target.value
-                          )
-                        }
-                        placeholder={
-                          langCode === project.primaryLanguage
-                            ? "Enter translation..."
-                            : ""
-                        }
-                      />
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Checkbox id={`approved-${langCode}`} />
-                      <Label
-                        htmlFor={`approved-${langCode}`}
-                        className="text-xs text-muted-foreground"
-                      >
-                        Approved
-                      </Label>
-                    </div>
-                  </div>
-                );
-              }
-            )}
+                <input
+                  type="text"
+                  defaultValue={t.value}
+                  className="w-full bg-muted/50 border border-border rounded px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                  placeholder={`Enter ${t.language} translation...`}
+                />
+              </div>
+            ))}
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">
+            No translations available
+          </div>
+        )}
       </div>
     </section>
   );

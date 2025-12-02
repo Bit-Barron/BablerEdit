@@ -3,7 +3,6 @@ import { create } from "zustand";
 import { getFrameworkConfig } from "@/core/lib/frameworks";
 import { ParsedProject } from "@/features/translation-parser/types/parser.types";
 import { FrameworkType } from "@/core/types/framework.types";
-import { createProject } from "@/features/translation-parser";
 
 interface FileManagerStore {
   selectedFramework: FrameworkType | "";
@@ -22,9 +21,8 @@ interface FileManagerStore {
   defaultLanguageCode: string;
   setDefaultLanguageCode: (code: string) => void;
 
-  parsedProject: ParsedProject | null;
-  setParsedProject: (project: ParsedProject | null) => void;
-  parseFiles: () => Promise<void>;
+  parsedProject: ParsedProject;
+  setParsedProject: (project: ParsedProject) => void;
 }
 
 export const useFileManagerStore = create<FileManagerStore>((set, get) => ({
@@ -136,39 +134,6 @@ export const useFileManagerStore = create<FileManagerStore>((set, get) => ({
   defaultLanguageCode: "de",
   setDefaultLanguageCode: (code: string) => set({ defaultLanguageCode: code }),
 
-  parsedProject: null,
+  parsedProject: {} as ParsedProject,
   setParsedProject: (project) => set({ parsedProject: project }),
-
-  parseFiles: async () => {
-    const { translationFiles, selectedFramework, defaultLanguageCode } = get();
-
-    if (translationFiles.length === 0) {
-      toast.error("No files to parse");
-      return;
-    }
-
-    if (!selectedFramework) {
-      toast.error("No framework selected");
-      return;
-    }
-
-    try {
-      const project = await createProject(
-        translationFiles,
-        selectedFramework,
-        defaultLanguageCode
-      );
-
-      set({ parsedProject: project });
-
-      toast.success("Files parsed successfully!", {
-        description: `${project.languages.size} language(s) with ${project.allKeys.length} keys`,
-      });
-    } catch (error) {
-      console.error("Parse error:", error);
-      toast.error("Failed to parse files", {
-        description: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
-  },
 }));

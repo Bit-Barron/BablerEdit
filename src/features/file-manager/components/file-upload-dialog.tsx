@@ -10,7 +10,9 @@ import {
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
 import { FileUploadDropzone } from "./file-upload-dropzone";
-import { useFileManagerHook } from "../hooks";
+import { createProject } from "@/features/translation-parser";
+import { useNavigate } from "react-router-dom";
+import { ParsedProject } from "@/features/translation-parser/types/parser.types";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -21,8 +23,29 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { defaultLanguageCode } = useFileManagerStore();
-  const { parseAndNavigate } = useFileManagerHook();
+  const {
+    defaultLanguageCode,
+    translationFiles,
+    selectedFramework,
+    setParsedProject,
+  } = useFileManagerStore();
+  const navigate = useNavigate();
+
+  const parseProject = async () => {
+    const project = await createProject(
+      translationFiles,
+      selectedFramework,
+      defaultLanguageCode
+    );
+
+    console.log("Created project:", project);
+
+    setParsedProject(project as ParsedProject);
+
+    navigate("/editor");
+
+    onOpenChange(false);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -65,14 +88,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
             >
               Close
             </Button>
-            <Button
-              onClick={async () => {
-                await parseAndNavigate();
-                onOpenChange(false);
-              }}
-            >
-              Save
-            </Button>
+            <Button onClick={parseProject}>Save</Button>
           </div>
         </div>
       </DialogContent>

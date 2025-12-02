@@ -3,14 +3,16 @@ import { Tree } from "react-arborist";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
 import { useEditorHook } from "@/features/editor/hook";
+import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
+import { useEditorPageStore } from "@/features/editor/store/editor-store";
 
 export const EditorPage: React.FC = () => {
-  const { parsedProject, treeData, selectedNode, handleNodeSelect } =
-    useEditorHook();
+  const { parsedProject, selectedNode } = useEditorHook();
+  const { setSelectedNode } = useEditorPageStore();
 
-  if (!parsedProject) {
-    return null;
-  }
+  if (!parsedProject) return null;
+
+  buildTranslationTree(parsedProject);
 
   return (
     <div className="fixed inset-0 top-[89px] flex">
@@ -21,12 +23,12 @@ export const EditorPage: React.FC = () => {
 
         <div className="flex-1 overflow-hidden">
           <Tree
-            initialData={treeData}
+            initialData={buildTranslationTree(parsedProject)}
             openByDefault={false}
             width="100%"
             indent={20}
             rowHeight={32}
-            onSelect={handleNodeSelect}
+            onSelect={(nodes) => setSelectedNode(nodes[0] || null)}
           >
             {(props) => <TreeNodeComponent {...props} />}
           </Tree>

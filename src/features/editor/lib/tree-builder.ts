@@ -1,48 +1,44 @@
-import { LanguageData } from "@/features/translation-parser/types/parser.types";
+import { ParsedProject } from "@/features/translation-parser/types/parser.types";
 import { TreeNode } from "../types/editor.types";
 
 export const buildTranslationTree = (
-  languageData: LanguageData | undefined
+  projectData: ParsedProject
 ): TreeNode[] => {
-  if (!languageData) return [];
+  if (!projectData?.folder_structure) return [];
 
-  const translations = languageData.translations;
+  const allKeys = projectData.folder_structure.children.flatMap((pkg) =>
+    pkg.children.map((concept) => concept.name)
+  );
 
-  const allKeys = Object.keys(translations).sort();
+  const tree: any = {};
 
-  const buildNode = (keys: string[], depth: number = 0): TreeNode[] => {
-    const grouped = new Map<string, string[]>();
+  allKeys.forEach((key) => {
+    const parts = key.split(".");
+    let current = tree;
 
-    keys.forEach((key) => {
-      const parts = key.split(".");
-      const currentPart = parts[depth];
-
-      if (!grouped.has(currentPart)) {
-        grouped.set(currentPart, []);
+    parts.forEach((part, idx) => {
+      if (!current[part]) {
+        current[part] = idx === parts.length - 1 ? null : {};
       }
-      grouped.get(currentPart)!.push(key);
+      current = current[part];
     });
+  });
 
-    return Array.from(grouped.entries()).map(([part, partKeys]) => {
-      const hasDeeper = partKeys.some((k) => k.split(".").length > depth + 1);
+  const convert = (obj: any, parentPath: string = ""): TreeNode[] => {
+    return Object.entries(obj).map(([name, child]) => {
+      const fullPath = parentPath ? `${parentPath}.${name}` : name;
 
-      if (!hasDeeper) {
-        return {
-          id: partKeys[0],
-          name: part,
-        };
+      if (child === null) {
+        return { id: fullPath, name } as TreeNode;
       }
 
       return {
-        id: partKeys[0]
-          .split(".")
-          .slice(0, depth + 1)
-          .join("."),
-        name: part,
-        children: buildNode(partKeys, depth + 1),
-      };
+        id: fullPath,
+        name,
+        children: convert(child, fullPath),
+      } as TreeNode;
     });
   };
 
-  return buildNode(allKeys);
+  return convert(tree);
 };
