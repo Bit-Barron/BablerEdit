@@ -2,9 +2,10 @@ import { toast } from "sonner";
 import { parseJSONFile, flattenJson } from "./lib/parser";
 import { ParsedProject } from "./types/parser.types";
 import { extractLanguageCode } from "./lib/lang-detector";
+import { FileWithPath } from "../file-manager/types/file-manager.types";
 
 export async function createProject(
-  files: File[],
+  files: FileWithPath[],
   framework: string,
   primaryLanguage: string
 ): Promise<ParsedProject | void> {
@@ -20,13 +21,25 @@ export async function createProject(
     if (file.name === `${primaryLanguage}.json`) {
       foundPrimaryLanguage = true;
 
-      const json = await parseJSONFile(file);
+      const json = await parseJSONFile({
+        name: file.name,
+        path: file.path,
+        content: file.content,
+        size: file.size,
+      });
+
       primaryFlat = flattenJson(json);
 
       toast.success(`Primary language file "${primaryLanguage}.json" found.`);
       break;
     }
   }
+
+  const firstFilePath = files[0].path;
+  const source_root_dir =
+    firstFilePath.substring(0, firstFilePath.lastIndexOf("/") + 1) ||
+    firstFilePath.substring(0, firstFilePath.lastIndexOf("\\") + 1) ||
+    "/";
 
   if (!foundPrimaryLanguage) {
     toast.error(`Primary language file "${primaryLanguage}.json" is missing.`);
@@ -38,7 +51,7 @@ export async function createProject(
     be_version: "1.0.0",
     framework,
     filename: "project.babler",
-    source_root_dir: "/",
+    source_root_dir: source_root_dir,
     is_template_project: false,
 
     languages: langCodes.map((code) => ({ code })),

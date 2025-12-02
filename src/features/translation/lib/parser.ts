@@ -1,6 +1,9 @@
-export async function parseJSONFile(file: File): Promise<Record<string, any>> {
-  const text = await file.text();
-  const json = JSON.parse(text);
+import { FileWithPath } from "@/features/file-manager/types/file-manager.types";
+
+export async function parseJSONFile(
+  file: FileWithPath
+): Promise<Record<string, any>> {
+  const json = JSON.parse(file.content);
 
   if (typeof json !== "object" || json === null || Array.isArray(json)) {
     throw new Error("JSON file must contain an object");

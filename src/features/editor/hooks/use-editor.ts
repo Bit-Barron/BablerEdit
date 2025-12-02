@@ -4,14 +4,14 @@ import { save } from "@tauri-apps/plugin-dialog";
 
 export const useEditorHook = () => {
   const saveProject = async (project: ParsedProject) => {
-    console.log("PROJECTTT", project);
     try {
+      console.log("PROJECT", project)
       const path = await save({
         defaultPath: project.filename || "Project.babler",
         filters: [
           {
             name: "BabelEdit Project ",
-            extensions: ["babler"],
+            extensions: ["yml"],
           },
         ],
       });
@@ -20,7 +20,7 @@ export const useEditorHook = () => {
 
       const bablerProject: ParsedProject = {
         version: "1.0.0",
-        be_version: "0.1.0",
+        be_version: "1.0.0",
         framework: project.framework,
         filename: project.filename,
         source_root_dir: project.source_root_dir,
@@ -31,7 +31,19 @@ export const useEditorHook = () => {
         primary_language: project.primary_language,
         configuration: project.configuration,
         preset_collections: project.preset_collections,
-        folder_structure: project.folder_structure,
+        folder_structure: {
+          ...project.folder_structure,
+          children: project.folder_structure.children.map((pkg) => ({
+            ...pkg,
+            children: pkg.children.map((concept) => ({
+              ...concept,
+              translations: concept.translations.map((t) => ({
+                language: t.language,
+                approved: t.approved,
+              })),
+            })),
+          })),
+        } as any,
       };
 
       await writeTextFile(path, JSON.stringify(bablerProject, null, 2));

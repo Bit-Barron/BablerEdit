@@ -1,8 +1,8 @@
 import { toast } from "sonner";
 import { create } from "zustand";
-import { getFrameworkConfig } from "@/core/config/frameworks.config";
 import { ParsedProject } from "@/features/translation/types/parser.types";
 import { FrameworkType } from "@/core/types/framework.types";
+import { FileWithPath } from "../types/file-manager.types";
 
 interface FileManagerStore {
   selectedFramework: FrameworkType | "";
@@ -11,10 +11,9 @@ interface FileManagerStore {
   isFileUploadDialogOpen: boolean;
   setFileUploadDialogOpen: (isOpen: boolean) => void;
 
-  translationFiles: File[];
-  setTranslationFiles: (files: File[]) => void;
-  removeTranslationFile: (fileToRemove: File) => void;
-  validateAndAddFiles: (files: File[]) => Promise<void>;
+  translationFiles: FileWithPath[];
+  setTranslationFiles: (files: FileWithPath[]) => void;
+  removeTranslationFile: (fileToRemove: FileWithPath) => void;
 
   onFileReject: (file: File, message: string) => void;
 
@@ -34,93 +33,15 @@ export const useFileManagerStore = create<FileManagerStore>((set, get) => ({
     set({ isFileUploadDialogOpen: isOpen }),
 
   translationFiles: [],
-  setTranslationFiles: (files: File[]) => set({ translationFiles: files }),
+  setTranslationFiles: (files: FileWithPath[]) =>
+    set({ translationFiles: files }),
 
-  removeTranslationFile: (fileToRemove: File) => {
+  removeTranslationFile: (fileToRemove: FileWithPath) => {
     set((state) => ({
       translationFiles: state.translationFiles.filter(
-        (file) => file !== fileToRemove
+        (file) => file.path !== fileToRemove.path
       ),
     }));
-  },
-
-  validateAndAddFiles: async (files: File[]) => {
-    const { selectedFramework, translationFiles: currentFiles } = get();
-
-    if (!selectedFramework) {
-      toast.error("Please select a framework first");
-      return;
-    }
-
-    const config = getFrameworkConfig(selectedFramework);
-    if (!config) {
-      toast.error("Invalid framework configuration");
-      return;
-    }
-
-    const newFiles = files.filter(
-      (file) =>
-        !currentFiles.some(
-          (existing) =>
-            existing.name === file.name && existing.size === file.size
-        )
-    );
-
-    if (newFiles.length === 0) {
-      toast.info("No new files to add", {
-        description: "All selected files are already added",
-      });
-      return;
-    }
-
-    const validatedFiles: File[] = [];
-
-    for (const file of newFiles) {
-      const ext = `.${file.name.split(".").pop()?.toLowerCase()}`;
-      if (!config.acceptedExtensions.includes(ext)) {
-        toast.error(`Invalid file type for ${config.name}`, {
-          description: `"${
-            file.name
-          }" must be one of: ${config.acceptedExtensions.join(", ")}`,
-        });
-        continue;
-      }
-
-      if (file.size > config.maxSize) {
-        toast.error("File too large", {
-          description: `"${file.name}" exceeds ${
-            config.maxSize / 1024 / 1024
-          }MB`,
-        });
-        continue;
-      }
-
-      if (config.validator) {
-        const validation = await config.validator(file);
-        if (!validation.valid) {
-          toast.error("Validation failed", {
-            description: `"${file.name}": ${validation.error}`,
-          });
-          continue;
-        }
-      }
-
-      validatedFiles.push(file);
-    }
-
-    const totalFiles = currentFiles.length + validatedFiles.length;
-
-    if (totalFiles > config.maxFiles) {
-      toast.error("Too many files", {
-        description: `Maximum ${config.maxFiles} files allowed for ${config.name}`,
-      });
-      return;
-    }
-
-    if (validatedFiles.length > 0) {
-      set({ translationFiles: [...currentFiles, ...validatedFiles] });
-      toast.success(`Added ${validatedFiles.length} file(s)`);
-    }
   },
 
   onFileReject: (file: File, message: string) => {

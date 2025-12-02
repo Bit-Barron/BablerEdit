@@ -33,7 +33,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
 
   const parseProject = async () => {
     const project = await createProject(
-      translationFiles,
+      translationFiles.map((file) => ({
+        name: file.name,
+        path: file.path,
+        content: file.content,
+        size: file.size,
+      })),
       selectedFramework,
       defaultLanguageCode
     );
