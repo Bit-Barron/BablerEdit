@@ -48,39 +48,3 @@ export const useFileManagerHook = () => {
     parsedProject,
   };
 };
-
-export const useSaveProject = () => {
-  // if (!parsedProject) return;
-  // const ymlStructure = {
-  //   version: "1.3",
-  //   be_version: "5.2.0",
-  //   framework: parsedProject.framework,
-  //   filename: "test.bable",
-  //   source_root_dir: "../../",
-  //   is_template_project: false,
-  //   languages: {
-  //     code: Array.from(parsedProject.languages.keys()),
-  //   },
-  //   translation_packages: {
-  //     name: "main",
-  //     translation_urls: {
-  //       path: Array.from(parsedProject.languages.keys()),
-  //       language: Array.from(parsedProject.languages.keys()),
-  //     },
-  //   },
-  //   editor_configuration: {
-  //     save_empty_translations: true,
-  //     translation_order: "alphabetically",
-  //   },
-  //   primary_language: parsedProject.primary_language,
-  //   folder_structure: {
-  //     name: "",
-  //     children: {
-  //       type: "package",
-  //       name: "main",
-  //       children: Array.from(parsedProject.languages),
-  //     },
-  //   },
-  // };
-  // return ymlStructure;
-};

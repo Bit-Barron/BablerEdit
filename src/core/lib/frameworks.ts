@@ -34,7 +34,6 @@ export const FRAMEWORK_CONFIGS: Record<string, FrameworkConfig> = {
       return { valid: true };
     },
     parser: async (content) => {
-      // You'll implement actual YAML parser later
       return content;
     },
   },
@@ -49,7 +48,6 @@ export const FRAMEWORK_CONFIGS: Record<string, FrameworkConfig> = {
       try {
         const content = await file.text();
         const data = JSON.parse(content);
-        // i18next specific validation (nested structure check)
         if (typeof data !== "object") {
           return { valid: false, error: "i18next files must be objects" };
         }

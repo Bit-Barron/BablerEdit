@@ -34,7 +34,7 @@ export type Menu = {
   items: MenuItem[];
 };
 
-export interface ToolbarButton {
+export interface ToolbarType {
   id: string;
   icon: LucideIcon;
   label: string;

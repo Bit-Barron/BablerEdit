@@ -2,12 +2,24 @@ import { toast } from "sonner";
 import { parseJSONFile, flattenJson } from "./lib/parser";
 import { ParsedProject } from "./types/parser.types";
 
-export const extractLangCode = (filename: string[]): string[] => {
-  return filename.map((file) => {
-    const splitFiles = file.split(".");
-    return splitFiles[0];
-  });
-};
+export function extractLanguageCode(filename: string): string | null {
+  const nameWithoutExt = filename.replace(/\.(json|yaml|yml|arb|resx)$/i, "");
+
+  const patterns = [
+    /^([a-z]{2}(-[A-Z]{2})?)$/, // en, en-US
+    /\.([a-z]{2}(-[A-Z]{2})?)$/, // messages.en.json
+    /_([a-z]{2}(-[A-Z]{2})?)$/, // messages_en.json
+  ];
+
+  for (const pattern of patterns) {
+    const match = nameWithoutExt.match(pattern);
+    if (match) {
+      return match[1];
+    }
+  }
+
+  return null;
+}
 
 export async function createProject(
   files: File[],
@@ -16,7 +28,9 @@ export async function createProject(
 ): Promise<ParsedProject | void> {
   let foundPrimaryLanguage = false;
 
-  const langCodes = extractLangCode(files.map((file) => file.name));
+  const langCodes = files.map(
+    (file) => extractLanguageCode(file.name) ?? file.name.split(".")[0]
+  );
 
   let primaryFlat: Record<string, string> = {};
 

@@ -8,7 +8,7 @@ import {
   Bot,
   Globe,
 } from "lucide-react";
-import { FileType, Menu, ToolbarButton } from "../types/common.types";
+import { FileType, Menu, ToolbarType } from "../types/common.types";
 
 const FRAMEWORK_ICONS: Record<string, string> = {
   angular: "🅰️",
@@ -128,7 +128,7 @@ export const MENUS: Menu[] = [
   },
 ];
 
-export const TOOLBAR_BUTTONS: ToolbarButton[] = [
+export const TOOLBAR: ToolbarType[] = [
   {
     id: "open",
     icon: FolderOpen,

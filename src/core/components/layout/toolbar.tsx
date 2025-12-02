@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { TOOLBAR_BUTTONS } from "@/core/lib/constants";
+import { TOOLBAR } from "@/core/lib/constants";
 import { Button } from "../ui/button";
 
 export default function Toolbar() {
@@ -12,7 +12,7 @@ export default function Toolbar() {
     <div className="border-b border-zinc-800 bg-zinc-900">
       <div className="flex items-center h-15 px-3 gap-1 overflow-x-auto">
         <TooltipProvider>
-          {TOOLBAR_BUTTONS.map((button) => {
+          {TOOLBAR.map((button) => {
             return (
               <Tooltip key={button.id}>
                 <TooltipTrigger asChild>

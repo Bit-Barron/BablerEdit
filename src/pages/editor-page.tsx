@@ -4,15 +4,11 @@ import { TreeNode as TreeNodeComponent } from "@/features/editor/components/edit
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
 import { useEditorHook } from "@/features/editor/hook";
 import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
-import { useEditorPageStore } from "@/features/editor/store/editor-store";
 
 export const EditorPage: React.FC = () => {
-  const { parsedProject, selectedNode } = useEditorHook();
-  const { setSelectedNode } = useEditorPageStore();
+  const { parsedProject, selectedNode, handleNodeSelect } = useEditorHook();
 
   if (!parsedProject) return null;
-
-  buildTranslationTree(parsedProject);
 
   return (
     <div className="fixed inset-0 top-[89px] flex">
@@ -28,7 +24,7 @@ export const EditorPage: React.FC = () => {
             width="100%"
             indent={20}
             rowHeight={32}
-            onSelect={(nodes) => setSelectedNode(nodes[0] || null)}
+            onSelect={handleNodeSelect}
           >
             {(props) => <TreeNodeComponent {...props} />}
           </Tree>

@@ -16,13 +16,13 @@ export default function MenuBar() {
         <NavigationMenuList className="space-x-0">
           {MENUS.map((menu) => (
             <NavigationMenuItem key={menu.label}>
-              <NavigationMenuTrigger className="h-6 px-2 py-0.5 text-[13px] font-normal hover:bg-accent data-[state=open]:bg-accent rounded-sm">
+              <NavigationMenuTrigger className="h-6 px-2 py-0.5 text-xs font-normal hover:bg-accent data-[state=open]:bg-accent rounded-sm">
                 {menu.label}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <div className="min-w-[220px] bg-popover rounded-md shadow-lg py-1">
                   {menu.items.map((item: MenuItemType, index: number) => (
-                    <MenuItem item={item} index={index} />
+                    <MenuItem key={`${menu.label}-${index}`} item={item} />
                   ))}
                 </div>
               </NavigationMenuContent>

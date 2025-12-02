@@ -5,12 +5,7 @@ export type FrameworkType =
   | "react"
   | "flutter"
   | "laravel"
-  | "ember"
   | "ruby"
-  | "angular"
-  | "vue"
-  | "svelte"
-  | "java"
   | "resx";
 
 export interface FrameworkConfig {

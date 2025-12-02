@@ -4,11 +4,7 @@ import React from "react";
 import { FrameworkType } from "@/core/types/framework.types";
 import { useWizardDialogHook } from "../hooks";
 
-interface WizardFrameworkSelectorProps {}
-
-export const WizardFrameworkSelector: React.FC<
-  WizardFrameworkSelectorProps
-> = ({}) => {
+export const WizardFrameworkSelector: React.FC = () => {
   const { openFrameworkDialog } = useWizardDialogHook();
 
   return (

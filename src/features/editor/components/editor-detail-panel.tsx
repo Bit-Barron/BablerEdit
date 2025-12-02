@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/features/translation-parser/types/parser.types";
 import { TreeNode } from "@/features/editor/types/editor.types";
@@ -14,31 +14,27 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   project,
 }) => {
   if (!selectedNode || !selectedNode.isLeaf) return null;
+
   const key = selectedNode.data.id;
 
-  const findTranslationForKey = () => {
-    const key = selectedNode.data.id;
+  const translations = useMemo(() => {
     const mainPackage = project.folder_structure.children[0];
-
-    console.log("Main Package:", mainPackage);
-
     const conceptNode = mainPackage.children.find(
       (child) => child.name === key
     );
-
-    return conceptNode?.translations || null;
-  };
+    return conceptNode?.translations ?? null;
+  }, [project.folder_structure, key]);
 
   return (
     <section className="h-full flex flex-col bg-background">
-      <div className="px-6 py-2.5 bg-mu border-b">
+      <div className="px-6 py-2.5 bg-muted border-b">
         <h2 className="font-semibold tracking-wide">{key}</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {findTranslationForKey() ? (
+        {translations && translations.length > 0 ? (
           <div className="divide-y">
-            {findTranslationForKey()!.map((t) => (
+            {translations.map((t) => (
               <div key={t.language} className="px-6 py-5">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-semibold text-sm tracking-wider text-muted-foreground">

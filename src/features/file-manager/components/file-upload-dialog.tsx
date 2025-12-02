@@ -38,12 +38,10 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
       defaultLanguageCode
     );
 
-    console.log("Created project:", project);
+    if (!project) return;
 
     setParsedProject(project as ParsedProject);
-
     navigate("/editor");
-
     onOpenChange(false);
   };
 
