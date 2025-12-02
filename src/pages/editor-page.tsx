@@ -2,11 +2,13 @@ import React from "react";
 import { Tree } from "react-arborist";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
-import { useEditorPage } from "@/features/editor/hooks/use-editor-page";
 import { buildTranslationTree } from "@/features/editor/lib/build-translation-tree";
+import { useEditorStore } from "@/features/editor/store/editor-page.store";
+import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 
 export const EditorPage: React.FC = () => {
-  const { parsedProject, selectedNode, handleNodeSelect } = useEditorPage();
+  const { parsedProject } = useFileManagerStore();
+  const { selectedNode, setSelectedNode } = useEditorStore();
 
   if (!parsedProject) return null;
 
@@ -24,7 +26,11 @@ export const EditorPage: React.FC = () => {
             width="100%"
             indent={20}
             rowHeight={32}
-            onSelect={handleNodeSelect}
+            onSelect={(nodes) => {
+              if (nodes.length > 0) {
+                setSelectedNode(nodes[0]);
+              }
+            }}
           >
             {(props) => <TreeNodeComponent {...props} />}
           </Tree>
