@@ -2,11 +2,11 @@ import React from "react";
 import { Tree } from "react-arborist";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
-import { useEditorHook } from "@/features/editor/hook";
-import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
+import { useEditorPage } from "@/features/editor/hooks/use-editor-page";
+import { buildTranslationTree } from "@/features/editor/lib/build-translation-tree";
 
 export const EditorPage: React.FC = () => {
-  const { parsedProject, selectedNode, handleNodeSelect } = useEditorHook();
+  const { parsedProject, selectedNode, handleNodeSelect } = useEditorPage();
 
   if (!parsedProject) return null;
 

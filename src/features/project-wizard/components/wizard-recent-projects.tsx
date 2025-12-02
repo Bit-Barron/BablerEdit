@@ -1,5 +1,5 @@
 import React from "react";
-import { useWizardStore } from "../store/wizard-store";
+import { useWizardStore } from "../store/wizard.store";
 
 interface WizardRecentProjectsProps {}
 
@@ -14,7 +14,7 @@ export const WizardRecentProjects: React.FC<
         Recent projects:
       </h2>
       <div className="space-y-1">
-        {recentProjects.map((project, index) => (
+        {recentProjects.map((project: string, index: number) => (
           <button
             key={index}
             className="w-full text-left px-4 py-2 text-primary hover:bg-accent rounded-sm transition-colors text-[13px]"

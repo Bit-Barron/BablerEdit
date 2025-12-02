@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager-store";
+import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { FrameworkType } from "@/core/types/framework.types";
 
-export const useWizardDialogHook = () => {
+export const useWizardDialog = () => {
   const {
     setSelectedFramework,
     setFileUploadDialogOpen,

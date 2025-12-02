@@ -10,7 +10,7 @@ export async function parseJSONFile(file: File): Promise<Record<string, any>> {
 }
 
 export function flattenJson(
-  obj: Record<string, any>,
+  obj: Record<string, string>,
   currentPath: string[] = []
 ): Record<string, string> {
   const result: Record<string, string> = {};

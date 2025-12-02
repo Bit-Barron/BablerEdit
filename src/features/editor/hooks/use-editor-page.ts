@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NodeApi } from "react-arborist";
-import { TreeNode } from "./types/editor.types";
-import { useEditorPageStore } from "./store/editor-store";
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager-store";
+import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { TreeNode } from "../types/editor.types";
+import { useEditorPageStore } from "../store/editor-page.store";
 
-export const useEditorHook = () => {
+export const useEditorPage = () => {
   const navigate = useNavigate();
   const { parsedProject } = useFileManagerStore();
   const { selectedNode, setSelectedNode } = useEditorPageStore();

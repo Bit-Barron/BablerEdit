@@ -1,4 +1,4 @@
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager-store";
+import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import "../app/App.css";
 import { FileUploadDialog } from "@/features/file-manager/components/file-upload-dialog";
 import { WizardFrameworkSelector } from "@/features/project-wizard/components/wizard-framework-selector";

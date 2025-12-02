@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { NodeApi } from "react-arborist";
-import { ParsedProject } from "@/features/translation-parser/types/parser.types";
+import { ParsedProject } from "@/features/translation/types/parser.types";
 import { TreeNode } from "@/features/editor/types/editor.types";
 import { Checkbox } from "@/core/components/ui/checkbox";
 
@@ -17,13 +17,16 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
   const key = selectedNode.data.id;
 
-  const translations = useMemo(() => {
+  const findTranslationForKey = () => {
+    const key = selectedNode.data.id;
     const mainPackage = project.folder_structure.children[0];
+
     const conceptNode = mainPackage.children.find(
       (child) => child.name === key
     );
-    return conceptNode?.translations ?? null;
-  }, [project.folder_structure, key]);
+
+    return conceptNode?.translations || null;
+  };
 
   return (
     <section className="h-full flex flex-col bg-background">
@@ -32,9 +35,9 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {translations && translations.length > 0 ? (
+        {findTranslationForKey() && findTranslationForKey()!.length > 0 ? (
           <div className="divide-y">
-            {translations.map((t) => (
+            {findTranslationForKey()!.map((t) => (
               <div key={t.language} className="px-6 py-5">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-semibold text-sm tracking-wider text-muted-foreground">

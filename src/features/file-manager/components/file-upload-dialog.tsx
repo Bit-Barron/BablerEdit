@@ -1,7 +1,6 @@
 import { Plus, Minus } from "lucide-react";
 import React from "react";
 
-import { useFileManagerStore } from "../store/file-manager-store";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +9,10 @@ import {
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
 import { FileUploadDropzone } from "./file-upload-dropzone";
-import { createProject } from "@/features/translation-parser";
+import { createProject } from "@/features/translation";
 import { useNavigate } from "react-router-dom";
-import { ParsedProject } from "@/features/translation-parser/types/parser.types";
+import { ParsedProject } from "@/features/translation/types/parser.types";
+import { useFileManagerStore } from "../store/file-manager.store";
 
 interface FileUploadDialogProps {
   open: boolean;

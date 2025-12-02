@@ -13,7 +13,7 @@ import {
 import { X } from "lucide-react";
 import { DropzoneContent } from "./file-dropzone-content";
 import { FileUploadDropzone as FileUploadDropzoneComponent } from "@/core/components/ui/file-upload";
-import { useFileManagerHook } from "../hooks";
+import { useFileManager } from "../hooks/use-file-manager";
 
 export function FileUploadDropzone() {
   const {
@@ -24,7 +24,7 @@ export function FileUploadDropzone() {
     handleFilesChange,
     handleFileDelete,
     onFileReject,
-  } = useFileManagerHook();
+  } = useFileManager();
 
   if (!config) return null;
 
@@ -49,7 +49,7 @@ export function FileUploadDropzone() {
       </FileUploadDropzoneComponent>
 
       <FileUploadList>
-        {translationFiles.map((file, index) => (
+        {translationFiles.map((file: File, index: number) => (
           <FileUploadItem
             key={`${file.name}-${file.size}-${index}`}
             value={file}

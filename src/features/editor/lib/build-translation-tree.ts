@@ -1,4 +1,4 @@
-import { ParsedProject } from "@/features/translation-parser/types/parser.types";
+import { ParsedProject } from "@/features/translation/types/parser.types";
 import { TreeNode } from "../types/editor.types";
 
 export const buildTranslationTree = (

@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { useFileManagerStore } from "./store/file-manager-store";
-import { getFrameworkConfig } from "@/core/lib/frameworks";
+import { getFrameworkConfig } from "@/core/config/frameworks.config";
+import { useFileManagerStore } from "../store/file-manager.store";
 
-export const useFileManagerHook = () => {
+export const useFileManager = () => {
   const {
     translationFiles,
     removeTranslationFile,

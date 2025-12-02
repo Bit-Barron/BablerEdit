@@ -1,4 +1,4 @@
-import { MENUS } from "@/core/lib/constants";
+import { MENUS } from "@/core/config/constants";
 import {
   NavigationMenu,
   NavigationMenuContent,

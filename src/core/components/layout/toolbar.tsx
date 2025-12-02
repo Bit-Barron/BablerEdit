@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { TOOLBAR } from "@/core/lib/constants";
+import { TOOLBAR } from "@/core/config/constants";
 import { Button } from "../ui/button";
 
 export default function Toolbar() {
