@@ -19,14 +19,15 @@ export const WizardRecentProjects: React.FC<
       </h2>
       <div className="space-y-1">
         {projects.map((project: string, index: number) => {
-          console.log("project", project);
           return (
-            <button
-              key={index}
-              className="w-full p-2 text-left text-primary hover:bg-accent rounded-sm transition-colors"
-            >
-              - {project}
-            </button>
+            <section className="flex justify-between hover:bg-accent">
+              <button
+                key={index}
+                className="w-full p-2 text-left text-primary rounded-sm transition-colors"
+              >
+                - {project}
+              </button>
+            </section>
           );
         })}
       </div>

@@ -1,7 +1,7 @@
 import { SETTINGS_FILE } from "@/core/config/constants";
 import { appDataDir } from "@tauri-apps/api/path";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { SettingsState } from "../types/settings.types";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 export const saveToFile = async (state: SettingsState) => {
   try {

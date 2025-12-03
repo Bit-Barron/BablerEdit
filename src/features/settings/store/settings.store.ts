@@ -21,6 +21,18 @@ export const useSettingsStore = create<SettingsState>((set) => ({
     });
   },
 
+  removeRecentProject: (path: string) => {
+    set((state) => {
+      const newState = {
+        recentProjects: state.recentProjects.filter(
+          (project) => project.path !== path
+        ),
+      };
+
+      return newState;
+    });
+  },
+
   updateRecentProjects: (projects: RecentProjectProps[]) => {
     set((state) => {
       const newState = { recentProjects: projects };
