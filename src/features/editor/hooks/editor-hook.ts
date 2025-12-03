@@ -77,7 +77,16 @@ export const useEditorHook = () => {
   };
   const openProject = async () => {
     try {
-      const openFile = await open({ multiple: false, directory: false });
+      const openFile = await open({
+        multiple: false,
+        directory: false,
+        filters: [
+          {
+            extensions: ["babler"],
+            name: "BablerEdit Project",
+          },
+        ],
+      });
       if (!openFile) return;
 
       const fileContent = await readTextFile(openFile);

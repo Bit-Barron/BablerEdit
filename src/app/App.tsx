@@ -6,11 +6,11 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { EditorPage } from "@/pages/editor-page";
 import Toolbar from "@/core/components/layout/toolbar";
 import MenuBar from "@/core/components/layout/menubar";
-import { useEditorHook } from "@/features/editor/hooks/use-editor";
+import { useEditorHook } from "@/features/editor/hooks/editor-hook";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
-import { useSettingsPersistence } from "@/features/settings/hooks/use-settings";
 import { useEffect } from "react";
 import { useToolbarStore } from "@/core/store/toolbar-store";
+import { useSettingsHook } from "@/features/settings/hooks/use-settings";
 
 export default function App() {
   const { saveProject, openProject } = useEditorHook();
@@ -19,7 +19,7 @@ export default function App() {
 
   const { setCurrentPage } = useToolbarStore();
 
-  useSettingsPersistence();
+  useSettingsHook();
 
   useEffect(() => {
     if (location.pathname === "/editor") {

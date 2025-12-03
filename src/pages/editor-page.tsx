@@ -11,6 +11,8 @@ export const EditorPage: React.FC = () => {
   const { parsedProject } = useFileManagerStore();
   const { selectedNode, setSelectedNode } = useEditorStore();
 
+  console.log("PARSEDPROJECT", parsedProject);
+
   if (!parsedProject) return null;
 
   return (

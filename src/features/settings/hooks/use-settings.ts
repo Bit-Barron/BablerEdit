@@ -4,7 +4,7 @@ import { readTextFile, exists } from "@tauri-apps/plugin-fs";
 import { SETTINGS_FILE } from "@/core/config/constants";
 import { useSettingsStore } from "../store/settings.store";
 
-export const useSettingsPersistence = () => {
+export const useSettingsHook = () => {
   useEffect(() => {
     const loadUserSettings = async () => {
       try {

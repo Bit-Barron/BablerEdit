@@ -1,13 +1,13 @@
 import { FileWithPath } from "@/features/file-manager/types/file-manager.types";
+import parseJson from "parse-json";
 
 export async function parseJSONFile(
   file: FileWithPath
-): Promise<Record<string, string>> {
-  const json = JSON.parse(file.content);
+): Promise<Record<string, any>> {
+  const json = parseJson(file.content);
 
-  if (typeof json !== "object" || json === null || Array.isArray(json)) {
-    throw new Error("JSON file must contain an object");
-  }
+  if (!json || typeof json !== "object")
+    throw new Error("Invalid JSON content");
 
   return json;
 }

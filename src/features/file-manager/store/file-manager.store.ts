@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import { create } from "zustand";
 import { ParsedProject } from "@/features/translation/types/parser.types";
 import { FrameworkType } from "@/core/types/framework.types";
@@ -14,10 +13,8 @@ interface FileManagerStore {
   translationFiles: FileWithPath[];
   setTranslationFiles: (files: FileWithPath[]) => void;
 
-  onFileReject: (file: File, message: string) => void;
-
-  defaultLanguageCode: string;
-  setDefaultLanguageCode: (code: string) => void;
+  primaryLanguageCode: string;
+  setPrimaryLanguageCode: (code: string) => void;
 
   parsedProject: ParsedProject;
   setParsedProject: (project: ParsedProject) => void;
@@ -35,16 +32,8 @@ export const useFileManagerStore = create<FileManagerStore>((set) => ({
   setTranslationFiles: (files: FileWithPath[]) =>
     set({ translationFiles: files }),
 
-  onFileReject: (file: File, message: string) => {
-    const truncatedName =
-      file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name;
-    toast.error(message, {
-      description: `"${truncatedName}" has been rejected`,
-    });
-  },
-
-  defaultLanguageCode: "de",
-  setDefaultLanguageCode: (code: string) => set({ defaultLanguageCode: code }),
+  primaryLanguageCode: "de",
+  setPrimaryLanguageCode: (code: string) => set({ primaryLanguageCode: code }),
 
   parsedProject: {} as ParsedProject,
   setParsedProject: (project) => set({ parsedProject: project }),

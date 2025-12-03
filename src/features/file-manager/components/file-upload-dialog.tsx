@@ -11,7 +11,6 @@ import { Button } from "@/core/components/ui/button";
 import { FileUploadDropzone } from "./file-upload-dropzone";
 import { createProject } from "@/features/translation";
 import { useNavigate } from "react-router-dom";
-import { ParsedProject } from "@/features/translation/types/parser.types";
 import { useFileManagerStore } from "../store/file-manager.store";
 
 interface FileUploadDialogProps {
@@ -24,7 +23,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   onOpenChange,
 }) => {
   const {
-    defaultLanguageCode,
+    primaryLanguageCode,
     translationFiles,
     selectedFramework,
     setParsedProject,
@@ -40,12 +39,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
         size: file.size,
       })),
       selectedFramework,
-      defaultLanguageCode
+      primaryLanguageCode
     );
 
     if (!project) return;
 
-    setParsedProject(project as ParsedProject);
+    setParsedProject(project);
     navigate("/editor");
     onOpenChange(false);
   };
@@ -69,7 +68,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
 
           <div className="mt-2">
             <Button size="sm" variant="ghost">
-              Primary Language: {defaultLanguageCode}
+              Primary Language: {primaryLanguageCode}
             </Button>
           </div>
           <div className="flex items-center gap-2 mt-4">

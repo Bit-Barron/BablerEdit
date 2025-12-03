@@ -3,45 +3,13 @@
 import { Button } from "@/core/components/ui/button";
 import { X } from "lucide-react";
 import { Upload } from "lucide-react";
-import { open } from "@tauri-apps/plugin-dialog";
-import { readTextFile } from "@tauri-apps/plugin-fs";
 import { useFileManagerStore } from "../store/file-manager.store";
 import { FileWithPath } from "../types/file-manager.types";
+import { useFileManagerHook } from "../hooks/file-manager-hook";
 
 export function FileUploadDropzone() {
   const { translationFiles, setTranslationFiles } = useFileManagerStore();
-
-  const handleBrowseFiles = async () => {
-    const selected = await open({
-      multiple: true,
-      filters: [
-        {
-          name: "Translation Files",
-          extensions: ["json"],
-        },
-      ],
-    });
-
-    if (!selected) return;
-
-    const paths = Array.isArray(selected) ? selected : [selected];
-
-    const filesWithPaths = await Promise.all(
-      paths.map(async (path) => {
-        const content = await readTextFile(path);
-        const fileName = path.split("/").pop() || path.split("\\").pop() || "";
-
-        return {
-          name: fileName,
-          path: path,
-          content: content,
-          size: content.length,
-        };
-      })
-    );
-
-    setTranslationFiles(filesWithPaths);
-  };
+  const { handleJsonFiles } = useFileManagerHook();
 
   return (
     <div className="w-full space-y-4">
@@ -54,7 +22,7 @@ export function FileUploadDropzone() {
           variant="outline"
           size="sm"
           className="mt-2"
-          onClick={handleBrowseFiles}
+          onClick={handleJsonFiles}
         >
           Browse files
         </Button>
