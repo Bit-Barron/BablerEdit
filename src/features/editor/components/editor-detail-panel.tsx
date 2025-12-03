@@ -4,6 +4,7 @@ import { ParsedProject } from "@/features/translation/types/translation.types";
 import { TreeNode } from "@/features/editor/types/editor.types";
 import { Checkbox } from "@/core/components/ui/checkbox";
 import { Input } from "@/core/components/ui/input";
+import { useEditorStore } from "../store/editor.store";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNode> | null;
@@ -13,6 +14,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
+  const { setUpdateTranslation } = useEditorStore();
   if (!selectedNode || !selectedNode.isLeaf) return null;
 
   const key = selectedNode.data.id;
@@ -50,7 +52,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   type="text"
                   value={t.value}
                   onChange={(e) => {
-                    console.log("Changed:", e.target.value);
+                    setUpdateTranslation(e.target.value);
                   }}
                   className="w-full border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                   placeholder={`Enter ${t.language} translation...`}
