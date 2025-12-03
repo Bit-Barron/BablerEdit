@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { parseJSONFile, flattenJson } from "./lib/parser";
-import { ParsedProject } from "./types/parser.types";
+import { ParsedProject } from "./types/translation.types";
 import { extractLanguageCode } from "./lib/lang-detector";
 import { FileWithPath } from "../file-manager/types/file-manager.types";
 

@@ -1,4 +1,4 @@
-import { ParsedProject } from "@/features/translation/types/parser.types";
+import { ParsedProject } from "@/features/translation/types/translation.types";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { save, open } from "@tauri-apps/plugin-dialog";
 import yaml from "js-yaml";

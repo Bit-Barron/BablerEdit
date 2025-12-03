@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ParsedProject } from "@/features/translation/types/parser.types";
+import { ParsedProject } from "@/features/translation/types/translation.types";
 import { FrameworkType } from "@/core/types/framework.types";
 import { FileWithPath } from "../types/file-manager.types";
 
