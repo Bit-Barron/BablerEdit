@@ -8,17 +8,21 @@ import Toolbar from "@/core/components/layout/toolbar";
 import MenuBar from "@/core/components/layout/menubar";
 import { useEditorHook } from "@/features/editor/hooks/use-editor";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { useSettingsPersistence } from "@/features/settings/hooks/use-settings";
 
 export default function App() {
   const { saveProject } = useEditorHook();
   const { parsedProject } = useFileManagerStore();
+
+  useSettingsPersistence();
 
   return (
     <section>
       <MenuBar />
       <Toolbar actions={{ onSaveProject: () => saveProject(parsedProject) }} />
 
-      <Routes>cl
+      <Routes>
+        cl
         <Route path="/" element={<WizardPage />} />
         <Route path="/editor" element={<EditorPage />} />
       </Routes>

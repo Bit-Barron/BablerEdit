@@ -1,12 +1,14 @@
 import { ParsedProject } from "@/features/translation/types/parser.types";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { save } from "@tauri-apps/plugin-dialog";
-import yaml from "js-yaml"; 
+import yaml from "js-yaml";
+import { useSettingsStore } from "@/features/settings/store/settings.store";
 
 export const useEditorHook = () => {
+  const { addRecentProject } = useSettingsStore();
+
   const saveProject = async (project: ParsedProject) => {
     try {
-      console.log("PROJECT", project);
       const path = await save({
         defaultPath: project.filename || "Project.babler",
         filters: [
@@ -54,6 +56,13 @@ export const useEditorHook = () => {
       });
 
       await writeTextFile(path, yamlContent);
+
+      addRecentProject({
+        path: path,
+        name: project.filename || "Unnamed Project",
+        framework: project.framework,
+        language: project.primary_language,
+      });
 
       return bablerProject;
     } catch (err) {

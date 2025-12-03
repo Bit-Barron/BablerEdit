@@ -13,7 +13,6 @@ interface FileManagerStore {
 
   translationFiles: FileWithPath[];
   setTranslationFiles: (files: FileWithPath[]) => void;
-  removeTranslationFile: (fileToRemove: FileWithPath) => void;
 
   onFileReject: (file: File, message: string) => void;
 
@@ -35,14 +34,6 @@ export const useFileManagerStore = create<FileManagerStore>((set) => ({
   translationFiles: [],
   setTranslationFiles: (files: FileWithPath[]) =>
     set({ translationFiles: files }),
-
-  removeTranslationFile: (fileToRemove: FileWithPath) => {
-    set((state) => ({
-      translationFiles: state.translationFiles.filter(
-        (file) => file.path !== fileToRemove.path
-      ),
-    }));
-  },
 
   onFileReject: (file: File, message: string) => {
     const truncatedName =

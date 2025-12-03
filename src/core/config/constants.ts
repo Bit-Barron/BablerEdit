@@ -179,3 +179,5 @@ export const TOOLBAR: ToolbarType[] = [
     disabled: true,
   },
 ];
+
+export const SETTINGS_FILE = "settings.json";
