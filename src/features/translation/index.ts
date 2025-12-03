@@ -95,6 +95,8 @@ export async function createProject(
             Object.keys(primaryFlat).map(async (key) => ({
               type: "folder",
               name: key,
+              description: "",
+              comment: "",
               translations: await Promise.all(
                 files.map(async (file) => {
                   const langCode = file.name.split(".")[0];
@@ -110,7 +112,7 @@ export async function createProject(
             }))
           ),
         },
-      ] as any,
+      ],
     },
   };
 }

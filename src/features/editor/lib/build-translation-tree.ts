@@ -10,7 +10,7 @@ export const buildTranslationTree = (
     pkg.children.map((concept) => concept.name)
   );
 
-  const tree: any = {};
+  const tree: Record<string, any> = {};
 
   allKeys.forEach((key) => {
     const parts = key.split(".");
@@ -24,7 +24,10 @@ export const buildTranslationTree = (
     });
   });
 
-  const convert = (obj: any, parentPath: string = ""): TreeNode[] => {
+  const convert = (
+    obj: Record<string, any>,
+    parentPath: string = ""
+  ): TreeNode[] => {
     return Object.entries(obj).map(([name, child]) => {
       const fullPath = parentPath ? `${parentPath}.${name}` : name;
 

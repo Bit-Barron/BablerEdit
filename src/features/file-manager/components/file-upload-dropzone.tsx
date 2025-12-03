@@ -6,6 +6,7 @@ import { Upload } from "lucide-react";
 import { open } from "@tauri-apps/plugin-dialog";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { useFileManagerStore } from "../store/file-manager.store";
+import { FileWithPath } from "../types/file-manager.types";
 
 export function FileUploadDropzone() {
   const { translationFiles, setTranslationFiles } = useFileManagerStore();
@@ -39,7 +40,7 @@ export function FileUploadDropzone() {
       })
     );
 
-    setTranslationFiles(filesWithPaths as any);
+    setTranslationFiles(filesWithPaths);
   };
 
   return (
@@ -61,7 +62,7 @@ export function FileUploadDropzone() {
 
       {translationFiles.length > 0 && (
         <div className="space-y-2">
-          {translationFiles.map((file: any, index: number) => (
+          {translationFiles.map((file: FileWithPath, index: number) => (
             <div
               key={`${file.name}-${index}`}
               className="flex items-center gap-2.5 rounded-md border p-3"
@@ -78,7 +79,9 @@ export function FileUploadDropzone() {
                 className="size-7"
                 onClick={() => {
                   setTranslationFiles(
-                    translationFiles.filter((f: any) => f.path !== file.path)
+                    translationFiles.filter(
+                      (f: FileWithPath) => f.path !== file.path
+                    )
                   );
                 }}
               >

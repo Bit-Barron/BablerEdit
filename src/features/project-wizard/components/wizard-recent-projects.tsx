@@ -8,7 +8,7 @@ export const WizardRecentProjects: React.FC<
 > = ({}) => {
   const { recentProjects } = useSettingsStore();
 
-  const projects: any = Object.values(recentProjects)
+  const projects = Object.values(recentProjects)
     .slice(0, 5)
     .map((proj) => proj.name);
 

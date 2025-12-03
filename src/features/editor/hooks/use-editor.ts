@@ -47,11 +47,12 @@ export const useEditorHook = () => {
               ...concept,
               translations: concept.translations.map((t) => ({
                 language: t.language,
+                value: t.value,
                 approved: t.approved,
               })),
             })),
           })),
-        } as any,
+        },
       };
 
       const yamlContent = yaml.dump(bablerProject, {
@@ -74,76 +75,43 @@ export const useEditorHook = () => {
       console.error("Error saving project:", err);
     }
   };
-
   const openProject = async () => {
     try {
-      const path = await open({
-        multiple: false,
-        directory: false,
-      });
+      const openFile = await open({ multiple: false, directory: false });
+      if (!openFile) return;
 
-      if (!path) return;
-
-      const fileContent = await readTextFile(path);
+      const fileContent = await readTextFile(openFile);
       const parsedProject = yaml.load(fileContent) as ParsedProject;
 
-      const jsonPath = parsedProject.source_root_dir;
-      const translations =
-        parsedProject.translation_packages[0].translation_urls;
-
       const loadedTranslations = await Promise.all(
-        translations.map(async (trans) => {
-          const fullPath = `${jsonPath}${trans.path}`;
-          console.log("📂 Reading:", fullPath);
-
-          const jsonContent = await readTextFile(fullPath);
-          const jsonData = JSON.parse(jsonContent);
-
-          console.log(`✅ Loaded ${trans.language}:`, jsonData);
-
-          return {
-            language: trans.language,
-            data: flattenJson(jsonData),
-          };
-        })
+        parsedProject.translation_packages[0].translation_urls.map(
+          async (trans) => {
+            const fullPath = `${parsedProject.source_root_dir}${trans.path}`;
+            const jsonContent = await readTextFile(fullPath);
+            return {
+              language: trans.language,
+              data: flattenJson(JSON.parse(jsonContent)),
+            };
+          }
+        )
       );
 
-      const mainPackage = parsedProject.folder_structure.children[0];
+      parsedProject.folder_structure.children[0].children.forEach((concept) => {
+        concept.translations.forEach((trans) => {
+          const langData = loadedTranslations.find(
+            (td) => td.language === trans.language
+          );
+          trans.value = langData?.data[concept.name] || "";
+        });
+      });
 
-      const updatedPackage = {
-        ...mainPackage,
-        children: mainPackage.children.map((concept) => ({
-          ...concept,
-          translations: concept.translations.map((trans) => {
-            const langData = loadedTranslations.find(
-              (td) => td.language === trans.language
-            );
-
-            return {
-              ...trans,
-              value: langData?.data[concept.name] || "",
-            };
-          }),
-        })),
-      };
-
-      const completeProject: ParsedProject = {
-        ...parsedProject,
-        folder_structure: {
-          ...parsedProject.folder_structure,
-          children: [updatedPackage],
-        },
-      };
-
-      console.log("🚀 Complete project:", completeProject);
-
-      setParsedProject(completeProject);
-
+      setParsedProject(parsedProject);
       navigate("/editor");
     } catch (err) {
-      console.error("❌ Error:", err);
+      console.error("Error:", err);
     }
   };
+
   return {
     saveProject,
     openProject,

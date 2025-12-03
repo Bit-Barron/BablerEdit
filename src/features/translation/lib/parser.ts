@@ -2,7 +2,7 @@ import { FileWithPath } from "@/features/file-manager/types/file-manager.types";
 
 export async function parseJSONFile(
   file: FileWithPath
-): Promise<Record<string, any>> {
+): Promise<Record<string, string>> {
   const json = JSON.parse(file.content);
 
   if (typeof json !== "object" || json === null || Array.isArray(json)) {
