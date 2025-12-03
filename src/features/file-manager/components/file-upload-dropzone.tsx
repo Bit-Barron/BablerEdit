@@ -30,7 +30,6 @@ export function FileUploadDropzone() {
         const content = await readTextFile(path);
         const fileName = path.split("/").pop() || path.split("\\").pop() || "";
 
-        console.log("TESTTT", path);
         return {
           name: fileName,
           path: path,

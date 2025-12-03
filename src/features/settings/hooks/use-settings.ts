@@ -5,8 +5,6 @@ import { SETTINGS_FILE } from "@/core/config/constants";
 import { useSettingsStore } from "../store/settings.store";
 
 export const useSettingsPersistence = () => {
-  const { updateRecentProjects } = useSettingsStore();
-
   useEffect(() => {
     const loadUserSettings = async () => {
       try {
