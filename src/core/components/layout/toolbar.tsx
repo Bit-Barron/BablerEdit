@@ -6,6 +6,7 @@ import {
 } from "../ui/tooltip";
 import { TOOLBAR } from "@/core/config/constants";
 import { Button } from "../ui/button";
+import { useToolbarStore } from "@/core/store/toolbar-store";
 
 type ToolbarActions = {
   onOpenProject?: () => void;
@@ -15,8 +16,9 @@ type ToolbarActions = {
 type ToolbarProps = {
   actions: ToolbarActions;
 };
-
 export default function Toolbar({ actions }: ToolbarProps) {
+  const { isToolbarItemEnabled } = useToolbarStore();
+
   return (
     <div className="border-b border-zinc-800 bg-zinc-900">
       <div className="flex items-center h-15 px-3 gap-1 overflow-x-auto">
@@ -36,8 +38,8 @@ export default function Toolbar({ actions }: ToolbarProps) {
                     onClick={handler}
                     variant="ghost"
                     size="sm"
-                    disabled={button.disabled || !handler}
-                    className="flex items-center gap-2 h-9 px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                    disabled={!isToolbarItemEnabled(button.id)}
+                    className="flex items-center gap-2 h-9 px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <button.icon className="h-4 w-4" />
                     <span className="text-xs whitespace-nowrap">
