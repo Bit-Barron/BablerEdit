@@ -85,21 +85,21 @@ export const useEditorHook = () => {
       if (!path) return;
 
       const fileContent = await readTextFile(path);
-
       const parsedProject = yaml.load(fileContent) as ParsedProject;
 
       const jsonPath = parsedProject.source_root_dir;
-
       const translations =
         parsedProject.translation_packages[0].translation_urls;
 
-      await Promise.all(
+      const loadedTranslations = await Promise.all(
         translations.map(async (trans) => {
           const fullPath = `${jsonPath}${trans.path}`;
+          console.log("📂 Reading:", fullPath);
 
           const jsonContent = await readTextFile(fullPath);
-
           const jsonData = JSON.parse(jsonContent);
+
+          console.log(`✅ Loaded ${trans.language}:`, jsonData);
 
           return {
             language: trans.language,
@@ -108,14 +108,42 @@ export const useEditorHook = () => {
         })
       );
 
-      setParsedProject(parsedProject);
+      const mainPackage = parsedProject.folder_structure.children[0];
+
+      const updatedPackage = {
+        ...mainPackage,
+        children: mainPackage.children.map((concept) => ({
+          ...concept,
+          translations: concept.translations.map((trans) => {
+            const langData = loadedTranslations.find(
+              (td) => td.language === trans.language
+            );
+
+            return {
+              ...trans,
+              value: langData?.data[concept.name] || "",
+            };
+          }),
+        })),
+      };
+
+      const completeProject: ParsedProject = {
+        ...parsedProject,
+        folder_structure: {
+          ...parsedProject.folder_structure,
+          children: [updatedPackage],
+        },
+      };
+
+      console.log("🚀 Complete project:", completeProject);
+
+      setParsedProject(completeProject);
 
       navigate("/editor");
     } catch (err) {
-      console.error(err);
+      console.error("❌ Error:", err);
     }
   };
-
   return {
     saveProject,
     openProject,

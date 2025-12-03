@@ -8,7 +8,6 @@ interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNode> | null;
   project: ParsedProject;
 }
-
 export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
@@ -18,13 +17,10 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   const key = selectedNode.data.id;
 
   const findTranslationForKey = () => {
-    const key = selectedNode.data.id;
     const mainPackage = project.folder_structure.children[0];
-
     const conceptNode = mainPackage.children.find(
       (child) => child.name === key
     );
-
     return conceptNode?.translations || null;
   };
 
@@ -51,7 +47,10 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
                 <input
                   type="text"
-                  defaultValue={t.value}
+                  value={t.value}
+                  onChange={(e) => {
+                    console.log("Changed:", e.target.value);
+                  }}
                   className="w-full bg-muted/50 border border-border rounded px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
                   placeholder={`Enter ${t.language} translation...`}
                 />
