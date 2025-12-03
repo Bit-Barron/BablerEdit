@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useToolbarStore } from "@/core/store/toolbar-store";
 
 export default function App() {
-  const { saveProject } = useEditorHook();
+  const { saveProject, openProject } = useEditorHook();
   const { parsedProject } = useFileManagerStore();
   const location = useLocation();
 
@@ -34,10 +34,14 @@ export default function App() {
   return (
     <section>
       <MenuBar />
-      <Toolbar actions={{ onSaveProject: () => saveProject(parsedProject) }} />
+      <Toolbar
+        actions={{
+          onSaveProject: () => saveProject(parsedProject),
+          onOpenProject: () => openProject(),
+        }}
+      />
 
       <Routes>
-        cl
         <Route path="/" element={<WizardPage />} />
         <Route path="/editor" element={<EditorPage />} />
       </Routes>

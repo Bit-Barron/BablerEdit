@@ -1,11 +1,16 @@
 import { ParsedProject } from "@/features/translation/types/parser.types";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { save } from "@tauri-apps/plugin-dialog";
+import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { save, open } from "@tauri-apps/plugin-dialog";
 import yaml from "js-yaml";
 import { useSettingsStore } from "@/features/settings/store/settings.store";
+import { useNavigate } from "react-router-dom";
+import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { flattenJson } from "@/features/translation/lib/parser";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
+  const { setParsedProject } = useFileManagerStore();
+  const navigate = useNavigate();
 
   const saveProject = async (project: ParsedProject) => {
     try {
@@ -70,7 +75,49 @@ export const useEditorHook = () => {
     }
   };
 
+  const openProject = async () => {
+    try {
+      const path = await open({
+        multiple: false,
+        directory: false,
+      });
+
+      if (!path) return;
+
+      const fileContent = await readTextFile(path);
+
+      const parsedProject = yaml.load(fileContent) as ParsedProject;
+
+      const jsonPath = parsedProject.source_root_dir;
+
+      const translations =
+        parsedProject.translation_packages[0].translation_urls;
+
+      await Promise.all(
+        translations.map(async (trans) => {
+          const fullPath = `${jsonPath}${trans.path}`;
+
+          const jsonContent = await readTextFile(fullPath);
+
+          const jsonData = JSON.parse(jsonContent);
+
+          return {
+            language: trans.language,
+            data: flattenJson(jsonData),
+          };
+        })
+      );
+
+      setParsedProject(parsedProject);
+
+      navigate("/editor");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return {
     saveProject,
+    openProject,
   };
 };
