@@ -3,6 +3,7 @@ import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/features/translation/types/parser.types";
 import { TreeNode } from "@/features/editor/types/editor.types";
 import { Checkbox } from "@/core/components/ui/checkbox";
+import { Input } from "@/core/components/ui/input";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNode> | null;
@@ -20,8 +21,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     const mainPackage = project.folder_structure.children[0];
     const conceptNode = mainPackage.children.find(
       (child) => child.name === key
-    );
-    return conceptNode?.translations || null;
+    )?.translations;
+    return conceptNode;
   };
 
   return (
@@ -39,19 +40,19 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   <span className="font-semibold text-sm tracking-wider text-muted-foreground">
                     {t.language.toUpperCase()}
                   </span>
-                  <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  <label className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
                     <Checkbox className="w-3.5 h-3.5" />
                     <span>Approved</span>
-                  </button>
+                  </label>
                 </div>
 
-                <input
+                <Input
                   type="text"
                   value={t.value}
                   onChange={(e) => {
                     console.log("Changed:", e.target.value);
                   }}
-                  className="w-full bg-muted/50 border border-border rounded px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                  className="w-full border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                   placeholder={`Enter ${t.language} translation...`}
                 />
               </div>
