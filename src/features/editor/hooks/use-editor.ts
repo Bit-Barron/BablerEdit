@@ -1,17 +1,18 @@
 import { ParsedProject } from "@/features/translation/types/parser.types";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { save } from "@tauri-apps/plugin-dialog";
+import yaml from "js-yaml"; 
 
 export const useEditorHook = () => {
   const saveProject = async (project: ParsedProject) => {
     try {
-      console.log("PROJECT", project)
+      console.log("PROJECT", project);
       const path = await save({
         defaultPath: project.filename || "Project.babler",
         filters: [
           {
-            name: "BabelEdit Project ",
-            extensions: ["yml"],
+            name: "BablerEdit Project",
+            extensions: ["babler"],
           },
         ],
       });
@@ -46,7 +47,13 @@ export const useEditorHook = () => {
         } as any,
       };
 
-      await writeTextFile(path, JSON.stringify(bablerProject, null, 2));
+      const yamlContent = yaml.dump(bablerProject, {
+        indent: 2,
+        lineWidth: -1,
+        noRefs: true,
+      });
+
+      await writeTextFile(path, yamlContent);
 
       return bablerProject;
     } catch (err) {

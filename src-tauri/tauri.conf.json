@@ -35,6 +35,15 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "ext": ["babler"],
+        "name": "BablerEdit Project",
+        "description": "BablerEdit translation project file",
+        "mimeType": "application/x-yaml",
+        "role": "Editor"
+      }
     ]
   }
 }

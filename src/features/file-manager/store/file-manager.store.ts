@@ -24,7 +24,7 @@ interface FileManagerStore {
   setParsedProject: (project: ParsedProject) => void;
 }
 
-export const useFileManagerStore = create<FileManagerStore>((set, get) => ({
+export const useFileManagerStore = create<FileManagerStore>((set) => ({
   selectedFramework: "",
   setSelectedFramework: (typeId) => set({ selectedFramework: typeId }),
 
