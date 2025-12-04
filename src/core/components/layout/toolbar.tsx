@@ -1,5 +1,5 @@
 import { TOOLBAR } from "@/core/config/constants";
-import { useToolbarStore } from "@/core/store/toolbar-store";
+import { useToolbarStore } from "@/core/store/toolbar.store";
 import { useLocation } from "react-router-dom";
 
 import { Button } from "../ui/button";
