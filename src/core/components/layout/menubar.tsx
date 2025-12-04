@@ -11,7 +11,7 @@ import { MenuItem as MenuItemType } from "@/core/types/common.types";
 
 export default function MenuBar() {
   return (
-    <div className="bg-background border-b">
+    <div className="border-b">
       <NavigationMenu className="h-6">
         <NavigationMenuList className="space-x-0">
           {MENUS.map((menu) => (

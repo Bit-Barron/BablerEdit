@@ -1,5 +1,4 @@
-import { Plus, Minus } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Dialog,
@@ -8,6 +7,9 @@ import {
   DialogTitle,
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
+import { Input } from "@/core/components/ui/input";
+import { useIdStore } from "../store/id.store";
+import { useEditorStore } from "@/features/editor/store/editor.store";
 
 interface OpenIdDialogProps {
   open: boolean;
@@ -18,29 +20,41 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
   open,
   onOpenChange,
 }) => {
+  const { selectedNode } = useEditorStore();
+  const { value, setValue } = useIdStore();
+
+  if (!selectedNode) return null;
+
+  const newValue = selectedNode.data.id.split(".").slice(0, -1).join(".");
+
+  useEffect(() => {
+    const handleOpenChange = (newOpen: boolean) => {
+      if (newOpen) {
+        setValue(newValue);
+      }
+      onOpenChange(newOpen);
+    };
+    handleOpenChange(open);
+  }, [open, newValue, setValue]);
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
+    <Dialog open={open} modal={false}>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] p-0 flex flex-col">
         <DialogHeader className="px-6 pt-6 pb-3 shrink-0">
           <DialogTitle className="text-lg font-semibold">
-            Configure languages
+            Add Translation ID
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-1">
-            Add or remove languages and their corresponding translation files:
+            - Please enter an ID for the translation. <br />
+            - use '.' to create hierarchy, e.g., "menu.file.new". <br />
           </p>
         </DialogHeader>
 
         <div className="px-6 pb-6 overflow-y-auto flex-1">
-          <div className="flex items-center gap-2 mt-4">
-            <Button variant="outline" size="sm" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add language
-            </Button>
-            <Button variant="outline" size="sm" className="gap-2" disabled>
-              <Minus className="h-4 w-4" />
-              Remove language
-            </Button>
-          </div>
+          <Input
+            value={`${value}.`}
+            onChange={(e) => setValue(e.target.value)}
+          />
 
           <div className="flex justify-end mt-6 gap-2">
             <Button

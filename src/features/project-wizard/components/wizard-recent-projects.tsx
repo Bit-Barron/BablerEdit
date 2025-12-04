@@ -20,7 +20,10 @@ export const WizardRecentProjects: React.FC<
       <div className="space-y-1">
         {projects.map((project: string, index: number) => {
           return (
-            <section className="flex justify-between hover:bg-accent">
+            <section
+              key={index}
+              className="flex justify-between hover:bg-accent"
+            >
               <button
                 key={index}
                 className="w-full p-2 text-left text-primary rounded-sm transition-colors"
