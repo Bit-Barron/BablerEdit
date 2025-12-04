@@ -23,23 +23,19 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
   const { selectedNode } = useEditorStore();
   const { value, setValue } = useIdStore();
 
-  
-  if (!selectedNode) return null;
-
-  const newValue = selectedNode.data.id.split(".").slice(0, -1).join(".");
+  const newValue =
+    selectedNode?.data.id.split(".").slice(0, -1).join(".") || "";
 
   useEffect(() => {
-    const handleOpenChange = (newOpen: boolean) => {
-      if (newOpen) {
-        setValue(newValue);
-      }
-      onOpenChange(newOpen);
-    };
-    handleOpenChange(open);
-  }, [open, newValue, setValue]);
+    if (open && selectedNode) {
+      setValue(newValue);
+    }
+  }, [open, newValue, setValue, selectedNode]);
+
+  if (!selectedNode) return null;
 
   return (
-    <Dialog open={open} modal={false}>
+    <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] p-0 flex flex-col">
         <DialogHeader className="px-6 pt-6 pb-3 shrink-0">
           <DialogTitle className="text-lg font-semibold">

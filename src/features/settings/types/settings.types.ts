@@ -15,7 +15,6 @@ export interface SettingsState {
   recentProjects: RecentProjectProps[];
   addRecentProject: (project: RecentProjectProps) => void;
   updateRecentProjects: (projects: RecentProjectProps[]) => void;
-  removeRecentProject: (path: string) => void;
 
   updateSettings: (settings: UpdateSettingsState) => void;
 }

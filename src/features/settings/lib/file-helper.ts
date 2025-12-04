@@ -12,17 +12,12 @@ export const saveToFile = async (state: SettingsState) => {
 
     const settingsPath = `${normalizedPath}${SETTINGS_FILE}`;
 
-    await writeTextFile(
-      settingsPath,
-      JSON.stringify(
-        {
-          recentProjects: state.recentProjects,
-          darkMode: state.darkMode,
-        },
-        null,
-        2
-      )
-    );
+    const jsonContent: Record<string, unknown> = {
+      recentProjects: state.recentProjects,
+      darkMode: state.darkMode,
+    };
+
+    await writeTextFile(settingsPath, JSON.stringify(jsonContent, null, 2));
   } catch (error) {
     console.error("Failed to save settings:", error);
   }

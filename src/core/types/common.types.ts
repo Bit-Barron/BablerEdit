@@ -1,4 +1,3 @@
-// src/core/types/common.types.ts
 import { LucideIcon } from "lucide-react";
 
 type MenuItemBase = {
