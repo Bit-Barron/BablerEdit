@@ -22,8 +22,7 @@ export const useFileManagerHook = () => {
     const filesWithPaths = await Promise.all(
       selected.map(async (path) => {
         const content = await readTextFile(path);
-        const fileName = path.split("/").pop() || path.split("\\").pop() || "";
-
+        const fileName = path.split(/[/\\]/).pop() || ""; // en.json, C:\path\to\file\en.json
         return {
           name: fileName,
           path: path,

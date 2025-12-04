@@ -46,14 +46,6 @@ export const useSettingsStore = create<SettingsState>((set) => ({
     });
   },
 
-  setDarkMode: (darkMode: boolean) => {
-    set((state) => {
-      const newState = { darkMode };
-      saveToFile({ ...state, ...newState });
-      return newState;
-    });
-  },
-
   updateSettings: (settings: UpdateSettingsState) => {
     set((state) => {
       saveToFile({ ...state, ...settings });

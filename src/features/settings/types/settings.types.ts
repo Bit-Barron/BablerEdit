@@ -18,5 +18,4 @@ export interface SettingsState {
   removeRecentProject: (path: string) => void;
 
   updateSettings: (settings: UpdateSettingsState) => void;
-  setDarkMode: (darkMode: boolean) => void;
 }
