@@ -1,0 +1,1 @@
+User system settings = "/home/bitbarron/.local/share/com.barron.bableredit/settings.json"

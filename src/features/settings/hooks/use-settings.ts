@@ -5,6 +5,8 @@ import { SETTINGS_FILE } from "@/core/config/constants";
 import { useSettingsStore } from "../store/settings.store";
 
 export const useSettingsHook = () => {
+  const { updateSettings } = useSettingsStore();
+
   useEffect(() => {
     const loadUserSettings = async () => {
       try {
@@ -14,13 +16,15 @@ export const useSettingsHook = () => {
           : `${appDataPath}/`;
 
         const settingsPath = `${normalizedPath}${SETTINGS_FILE}`;
+
+        console.log("SETTINGS PATH:", settingsPath);
         const fileExists = await exists(settingsPath);
 
         if (fileExists) {
           const content = await readTextFile(settingsPath);
           const savedSettings = JSON.parse(content);
 
-          useSettingsStore.setState({
+          updateSettings({
             recentProjects: savedSettings.recentProjects || [],
             darkMode: savedSettings.darkMode || false,
           });

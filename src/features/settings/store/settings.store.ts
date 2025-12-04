@@ -1,5 +1,9 @@
 import { create } from "zustand";
-import { RecentProjectProps, SettingsState } from "../types/settings.types";
+import {
+  RecentProjectProps,
+  SettingsState,
+  UpdateSettingsState,
+} from "../types/settings.types";
 import { saveToFile } from "../lib/file-helper";
 
 export const useSettingsStore = create<SettingsState>((set) => ({
@@ -29,6 +33,7 @@ export const useSettingsStore = create<SettingsState>((set) => ({
         ),
       };
 
+      saveToFile({ ...state, ...newState });
       return newState;
     });
   },
@@ -38,6 +43,21 @@ export const useSettingsStore = create<SettingsState>((set) => ({
       const newState = { recentProjects: projects };
       saveToFile({ ...state, ...newState });
       return newState;
+    });
+  },
+
+  setDarkMode: (darkMode: boolean) => {
+    set((state) => {
+      const newState = { darkMode };
+      saveToFile({ ...state, ...newState });
+      return newState;
+    });
+  },
+
+  updateSettings: (settings: UpdateSettingsState) => {
+    set((state) => {
+      saveToFile({ ...state, ...settings });
+      return settings;
     });
   },
 }));
