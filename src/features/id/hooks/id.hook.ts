@@ -1,3 +1,4 @@
+import { buildTranslationTree } from "@/features/editor/lib/translation-tree";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 
@@ -7,11 +8,9 @@ export const useIdHook = () => {
   const addIdToJson = async (value: string) => {
     const translationFiles =
       parsedProject.translation_packages[0].translation_urls;
-    console.log(translationFiles);
 
     for (let path in translationFiles) {
       const filePath = translationFiles[path].path;
-      console.log(filePath);
 
       const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
       const content = await readTextFile(jsonFilePath);
@@ -23,12 +22,12 @@ export const useIdHook = () => {
         .map(([key, val]) => ({ key, val }))
         .find((e) => e.key === getKey);
 
-      if (entries && getValue) {
+      if (entries && getValue !== "") {
         const addToVal = entries.val as Record<string, unknown>;
 
-        addToVal[getValue] = "";
+        addToVal[getValue] = ""; // add new id with empty string
 
-        obj[getKey] = addToVal;
+        obj[getKey] = addToVal; // update the main object
 
         const updatedContent = JSON.stringify(obj, null, 2);
 
