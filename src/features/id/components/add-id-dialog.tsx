@@ -23,6 +23,7 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
   const { selectedNode } = useEditorStore();
   const { value, setValue } = useIdStore();
 
+  
   if (!selectedNode) return null;
 
   const newValue = selectedNode.data.id.split(".").slice(0, -1).join(".");

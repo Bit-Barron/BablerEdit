@@ -17,7 +17,6 @@ export default function App() {
   useSettingsHook();
   const { parsedProject } = useFileManagerStore();
   const { setOpenIdDialog } = useIdStore();
-
   const location = useLocation();
 
   useEffect(() => {

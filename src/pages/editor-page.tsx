@@ -6,7 +6,7 @@ import { useFileManagerStore } from "@/features/file-manager/store/file-manager.
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TreeNode } from "@/features/editor/types/editor.types";
 import { NodeApi, NodeRendererProps } from "react-arborist";
-import { OpenIdDialog } from "@/features/id/components/open-id-dialog";
+import { OpenIdDialog } from "@/features/id/components/add-id-dialog";
 import { useIdStore } from "@/features/id/store/id.store";
 
 export const EditorPage: React.FC = () => {

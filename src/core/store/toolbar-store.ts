@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
 interface ToolbarStore {
-  onProjectClick?: string;
-  setOnProjectClick?: (id: string) => void;
+  onProjectClick: string;
+  setOnProjectClick: (id: string) => void;
 
   currentRoute: string;
   setCurrentRoute: (route: string) => void;
 
   disabledButtons: boolean;
-  setDisabledButtons?: (disabled: boolean) => void;
+  setDisabledButtons: (disabled: boolean) => void;
 }
 
 export const useToolbarStore = create<ToolbarStore>((set) => ({

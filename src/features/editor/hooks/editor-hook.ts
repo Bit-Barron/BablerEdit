@@ -6,6 +6,7 @@ import { useSettingsStore } from "@/features/settings/store/settings.store";
 import { useNavigate } from "react-router-dom";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { flattenJson } from "@/features/translation/lib/parser";
+import { ProjectHelper } from "../lib/project-helper";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
@@ -14,7 +15,7 @@ export const useEditorHook = () => {
 
   const saveProject = async (project: ParsedProject) => {
     try {
-      const path = await save({
+      const saveFile = await save({
         defaultPath: project.filename || "Project.babler",
         filters: [
           {
@@ -24,36 +25,9 @@ export const useEditorHook = () => {
         ],
       });
 
-      if (!path) return;
+      if (!saveFile) return;
 
-      const bablerProject: ParsedProject = {
-        version: "1.0.0",
-        be_version: "1.0.0",
-        framework: project.framework,
-        filename: project.filename,
-        source_root_dir: project.source_root_dir,
-        is_template_project: project.is_template_project,
-        languages: project.languages,
-        translation_packages: project.translation_packages,
-        editor_configuration: project.editor_configuration,
-        primary_language: project.primary_language,
-        configuration: project.configuration,
-        preset_collections: project.preset_collections,
-        folder_structure: {
-          ...project.folder_structure,
-          children: project.folder_structure.children.map((pkg) => ({
-            ...pkg,
-            children: pkg.children.map((concept) => ({
-              ...concept,
-              translations: concept.translations.map((t) => ({
-                language: t.language,
-                value: t.value,
-                approved: t.approved,
-              })),
-            })),
-          })),
-        },
-      };
+      const bablerProject = ProjectHelper(project);
 
       const yamlContent = yaml.dump(bablerProject, {
         indent: 2,
@@ -61,10 +35,10 @@ export const useEditorHook = () => {
         noRefs: true,
       });
 
-      await writeTextFile(path, yamlContent);
+      await writeTextFile(saveFile, yamlContent);
 
       addRecentProject({
-        path: path,
+        path: saveFile,
         name: project.filename || "Unnamed Project",
         framework: project.framework,
         language: project.primary_language,
@@ -75,6 +49,7 @@ export const useEditorHook = () => {
       console.error("Error saving project:", err);
     }
   };
+
   const openProject = async () => {
     try {
       const openFile = await open({
@@ -97,6 +72,7 @@ export const useEditorHook = () => {
           async (trans) => {
             const fullPath = `${parsedProject.source_root_dir}${trans.path}`;
             const jsonContent = await readTextFile(fullPath);
+
             return {
               language: trans.language,
               data: flattenJson(JSON.parse(jsonContent)),

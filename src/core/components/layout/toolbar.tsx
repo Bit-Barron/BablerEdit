@@ -25,7 +25,7 @@ export default function Toolbar() {
               <Tooltip key={button.id}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={() => setOnProjectClick!(button.id)}
+                    onClick={() => setOnProjectClick(button.id)}
                     variant="ghost"
                     size="sm"
                     disabled={!isEnabled}

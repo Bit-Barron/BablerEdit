@@ -4,11 +4,13 @@ import { TreeNode } from "../types/editor.types";
 export const buildTranslationTree = (
   projectData: ParsedProject
 ): TreeNode[] => {
-  if (!projectData?.folder_structure) return [];
+  if (!projectData) return [];
 
-  const allKeys = projectData.folder_structure.children.flatMap((pkg) =>
-    pkg.children.map((concept) => concept.name)
-  );
+  const allKeys: string[] = [];
+
+  for (let i of projectData.folder_structure.children[0].children) {
+    allKeys.push(i.name);
+  }
 
   const tree: Record<string, any> = {};
 

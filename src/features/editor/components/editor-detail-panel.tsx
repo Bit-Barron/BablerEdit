@@ -17,12 +17,10 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   const { setUpdateTranslation } = useEditorStore();
   if (!selectedNode || !selectedNode.isLeaf) return null;
 
-  const key = selectedNode.data.id;
-
   const findTranslationForKey = () => {
     const mainPackage = project.folder_structure.children[0];
     const conceptNode = mainPackage.children.find(
-      (child) => child.name === key
+      (child) => child.name === selectedNode.data.id
     )?.translations;
     return conceptNode;
   };
@@ -30,11 +28,11 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   return (
     <section className="flex flex-col bg-background">
       <div className="px-6 py-2.5 bg-muted/30 border-b">
-        <h2 className="font-semibold tracking-wide">{key}</h2>
+        <h2 className="font-semibold tracking-wide">{selectedNode.data.id}</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {findTranslationForKey() && findTranslationForKey()!.length > 0 ? (
+        {findTranslationForKey() && (
           <div className="divide-y">
             {findTranslationForKey()!.map((t) => (
               <div key={t.language} className="px-6 py-5">
@@ -59,10 +57,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 />
               </div>
             ))}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">
-            No translations available
           </div>
         )}
       </div>
