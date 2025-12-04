@@ -1,4 +1,3 @@
-// src/core/components/layout/toolbar.tsx
 import { TOOLBAR } from "@/core/config/constants";
 import { useToolbarStore } from "@/core/store/toolbar-store";
 import { useLocation } from "react-router-dom";
