@@ -4,10 +4,10 @@ interface ToolbarStore {
   onProjectClick?: string;
   setOnProjectClick?: (id: string) => void;
 
-  currentRoute?: string;
-  setCurrentRoute?: (route: string) => void;
+  currentRoute: string;
+  setCurrentRoute: (route: string) => void;
 
-  disabledButtons?: boolean;
+  disabledButtons: boolean;
   setDisabledButtons?: (disabled: boolean) => void;
 }
 

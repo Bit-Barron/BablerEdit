@@ -5,7 +5,7 @@ import { useEditorStore } from "@/features/editor/store/editor.store";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TreeNode } from "@/features/editor/types/editor.types";
-import { NodeApi } from "react-arborist";
+import { NodeApi, NodeRendererProps } from "react-arborist";
 import { OpenIdDialog } from "@/features/id/components/open-id-dialog";
 import { useIdStore } from "@/features/id/store/id.store";
 
@@ -34,7 +34,9 @@ export const EditorPage: React.FC = () => {
             }
           }}
         >
-          {(props) => <TreeNodeComponent {...(props as any)} />}
+          {(props) => (
+            <TreeNodeComponent {...(props as NodeRendererProps<TreeNode>)} />
+          )}
         </AutoSizedTree>
       </div>
 

@@ -1,3 +1,4 @@
+// src/core/types/common.types.ts
 import { LucideIcon } from "lucide-react";
 
 type MenuItemBase = {
@@ -39,7 +40,7 @@ export interface ToolbarType {
   icon: LucideIcon;
   label: string;
   onClick?: string;
-  allowedIn?: string;
+  enabledIn: string[];
 }
 
 export interface FileType {

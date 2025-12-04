@@ -35,7 +35,7 @@ export default function App() {
 
   useEffect(() => {
     const currentRoute = location.pathname.split("/")[1] || "wizard";
-    setCurrentRoute!(currentRoute);
+    setCurrentRoute(currentRoute);
   }, [location.pathname]);
 
   return (
