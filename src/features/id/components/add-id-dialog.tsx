@@ -10,6 +10,7 @@ import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
 import { useIdStore } from "../store/id.store";
 import { useEditorStore } from "@/features/editor/store/editor.store";
+import { useIdHook } from "../hooks/id.hook";
 
 interface OpenIdDialogProps {
   open: boolean;
@@ -22,13 +23,14 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
 }) => {
   const { selectedNode } = useEditorStore();
   const { value, setValue } = useIdStore();
+  const { addIdToJson } = useIdHook();
 
   const newValue =
     selectedNode?.data.id.split(".").slice(0, -1).join(".") || "";
 
   useEffect(() => {
     if (open && selectedNode) {
-      setValue(newValue);
+      setValue(newValue + ".");
     }
   }, [open, newValue, setValue, selectedNode]);
 
@@ -48,10 +50,7 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
         </DialogHeader>
 
         <div className="px-6 pb-6 overflow-y-auto flex-1">
-          <Input
-            value={`${value}.`}
-            onChange={(e) => setValue(e.target.value)}
-          />
+          <Input value={value} onChange={(e) => setValue(e.target.value)} />
 
           <div className="flex justify-end mt-6 gap-2">
             <Button
@@ -61,7 +60,14 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
             >
               Close
             </Button>
-            <Button>Save</Button>
+            <Button
+              onClick={() => {
+                addIdToJson(value);
+                onOpenChange(false);
+              }}
+            >
+              Save
+            </Button>
           </div>
         </div>
       </DialogContent>

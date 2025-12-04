@@ -13,7 +13,9 @@ export const useEditorHook = () => {
   const { setParsedProject } = useFileManagerStore();
   const navigate = useNavigate();
 
-  const saveProject = async (project: ParsedProject) => {
+  const saveProject = async (
+    project: ParsedProject
+  ): Promise<ParsedProject | void> => {
     try {
       const saveFile = await save({
         defaultPath: project.filename || "Project.babler",
@@ -39,7 +41,7 @@ export const useEditorHook = () => {
 
       addRecentProject({
         path: saveFile,
-        name: project.filename || "Unnamed Project",
+        name: project.filename,
         framework: project.framework,
         language: project.primary_language,
       });

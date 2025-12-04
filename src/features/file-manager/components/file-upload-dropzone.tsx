@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import { Upload } from "lucide-react";
 import { useFileManagerStore } from "../store/file-manager.store";
 import { FileWithPath } from "../types/file-manager.types";
-import { useFileManagerHook } from "../hooks/file-manager-hook";
+import { useFileManagerHook } from "../hooks/file-manager.hook";
 
 export function FileUploadDropzone() {
   const { translationFiles, setTranslationFiles } = useFileManagerStore();

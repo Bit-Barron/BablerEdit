@@ -33,15 +33,13 @@ export const buildTranslationTree = (
     return Object.entries(obj).map(([name, child]) => {
       const fullPath = parentPath ? `${parentPath}.${name}` : name;
 
-      if (child === null) {
-        return { id: fullPath, name } as TreeNode;
-      }
+      if (!child) return { id: fullPath, name };
 
       return {
         id: fullPath,
         name,
         children: convert(child, fullPath),
-      } as TreeNode;
+      };
     });
   };
 

@@ -1,10 +1,10 @@
 import MenuBar from "@/core/components/layout/menubar";
 import Toolbar from "@/core/components/layout/toolbar";
 import { useToolbarStore } from "@/core/store/toolbar-store";
-import { useEditorHook } from "@/features/editor/hooks/editor-hook";
+import { useEditorHook } from "@/features/editor/hooks/editor.hook";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { useIdStore } from "@/features/id/store/id.store";
-import { useSettingsHook } from "@/features/settings/hooks/use-settings";
+import { useSettingsHook } from "@/features/settings/hooks/settings.hook";
 import { EditorPage } from "@/pages/editor-page";
 import { WizardPage } from "@/pages/wizard-page";
 import { useEffect } from "react";
