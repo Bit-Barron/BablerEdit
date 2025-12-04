@@ -1,44 +1,30 @@
+import { TOOLBAR } from "@/core/config/constants";
+import { useToolbarStore } from "@/core/store/toolbar-store";
+
+import { Button } from "../ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { TOOLBAR } from "@/core/config/constants";
-import { Button } from "../ui/button";
-import { useToolbarStore } from "@/core/store/toolbar-store";
 
-type ToolbarActions = {
-  onOpenProject?: () => void;
-  onSaveProject?: () => void;
-};
-
-type ToolbarProps = {
-  actions: ToolbarActions;
-};
-export default function Toolbar({ actions }: ToolbarProps) {
-  const { isToolbarItemEnabled } = useToolbarStore();
+export default function Toolbar() {
+  const { setOnProjectClick, currentRoute } = useToolbarStore();
 
   return (
     <div className="border-b border-zinc-800 bg-zinc-900">
       <div className="flex items-center h-15 px-3 gap-1 overflow-x-auto">
         <TooltipProvider>
           {TOOLBAR.map((button) => {
-            const handler =
-              button.onClick &&
-              typeof actions[button.onClick as keyof ToolbarActions] ===
-                "function"
-                ? actions[button.onClick as keyof ToolbarActions]
-                : undefined;
-
             return (
               <Tooltip key={button.id}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={handler}
+                    onClick={() => setOnProjectClick!(button.id)}
                     variant="ghost"
                     size="sm"
-                    disabled={!isToolbarItemEnabled(button.id)}
+                    disabled={currentRoute !== button.allowedIn}
                     className="flex items-center gap-2 h-9 px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <button.icon className="h-4 w-4" />

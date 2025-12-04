@@ -6,12 +6,13 @@ import { useFileManagerStore } from "@/features/file-manager/store/file-manager.
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TreeNode } from "@/features/editor/types/editor.types";
 import { NodeApi } from "react-arborist";
+import { OpenIdDialog } from "@/features/id/components/open-id-dialog";
+import { useIdStore } from "@/features/id/store/id.store";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useFileManagerStore();
   const { selectedNode, setSelectedNode } = useEditorStore();
-
-  console.log("PARSEDPROJECT", parsedProject);
+  const { openIdDialog, setOpenIdDialog } = useIdStore();
 
   if (!parsedProject) return null;
 
@@ -42,6 +43,8 @@ export const EditorPage: React.FC = () => {
           selectedNode={selectedNode}
           project={parsedProject}
         />
+
+        <OpenIdDialog open={openIdDialog} onOpenChange={setOpenIdDialog} />
       </div>
     </div>
   );

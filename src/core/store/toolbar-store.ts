@@ -1,35 +1,22 @@
 import { create } from "zustand";
 
 interface ToolbarStore {
-  currentPage: "editor" | "save-project" | "wizard";
-  setCurrentPage: (page: "editor" | "save-project" | "wizard") => void;
-  isToolbarItemEnabled: (itemId: string) => boolean;
+  onProjectClick?: string;
+  setOnProjectClick?: (id: string) => void;
+
+  currentRoute?: string;
+  setCurrentRoute?: (route: string) => void;
+
+  disabledButtons?: boolean;
+  setDisabledButtons?: (disabled: boolean) => void;
 }
-export const useToolbarStore = create<ToolbarStore>((set, get) => ({
-  currentPage: "wizard",
 
-  isToolbarItemEnabled: (itemId: string) => {
-    const page = get().currentPage;
+export const useToolbarStore = create<ToolbarStore>((set) => ({
+  onProjectClick: "",
+  setOnProjectClick: (id: string) => set({ onProjectClick: id }),
 
-    if (itemId === "open") {
-      return page === "wizard";
-    }
-    if (itemId === "save") {
-      return page === "editor";
-    }
-    if (itemId === "add-id") {
-      return page === "editor";
-    }
-    if (itemId === "remove-ids") {
-      return page === "editor";
-    }
-    if (itemId === "filter") return false;
-    if (itemId === "pre-translate") return false;
-    if (itemId === "consistency") return false;
-    if (itemId === "languages") return false;
-
-    return false;
-  },
-
-  setCurrentPage: (page) => set({ currentPage: page }),
+  currentRoute: "wizard",
+  setCurrentRoute: (route: string) => set({ currentRoute: route }),
+  disabledButtons: false,
+  setDisabledButtons: (disabled: boolean) => set({ disabledButtons: disabled }),
 }));

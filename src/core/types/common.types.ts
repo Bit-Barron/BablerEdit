@@ -39,7 +39,7 @@ export interface ToolbarType {
   icon: LucideIcon;
   label: string;
   onClick?: string;
-  disabled?: boolean;
+  allowedIn?: string;
 }
 
 export interface FileType {

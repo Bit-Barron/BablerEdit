@@ -17,7 +17,6 @@ export const useSettingsHook = () => {
 
         const settingsPath = `${normalizedPath}${SETTINGS_FILE}`;
 
-        console.log("SETTINGS PATH:", settingsPath);
         const fileExists = await exists(settingsPath);
 
         if (fileExists) {
