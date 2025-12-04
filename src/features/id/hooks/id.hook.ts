@@ -1,5 +1,5 @@
-import { buildTranslationTree } from "@/features/editor/lib/translation-tree";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { flattenJson } from "@/features/translation/lib/parser";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 
 export const useIdHook = () => {
@@ -32,6 +32,10 @@ export const useIdHook = () => {
         const updatedContent = JSON.stringify(obj, null, 2);
 
         await writeTextFile(jsonFilePath, updatedContent);
+
+        const flat = flattenJson(obj);
+
+        console.log("Updated flat JSON:", flat);
       }
     }
   };

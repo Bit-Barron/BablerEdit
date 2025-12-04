@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/features/translation/types/translation.types";
 import { TreeNode } from "@/features/editor/types/editor.types";
 import { Checkbox } from "@/core/components/ui/checkbox";
 import { Input } from "@/core/components/ui/input";
 import { useEditorStore } from "../store/editor.store";
+import { buildTranslationTree } from "../lib/translation-tree";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNode> | null;
@@ -24,6 +25,10 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     )?.translations;
     return conceptNode;
   };
+
+  useEffect(() => {
+    buildTranslationTree(project);
+  }, [buildTranslationTree, project]);
 
   return (
     <section className="flex flex-col bg-background">

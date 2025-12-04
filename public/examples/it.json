@@ -75,7 +75,11 @@
     "test": "",
     "asd": "",
     "mynigga": "",
-    "Nigga123": ""
+    "Nigga123": "",
+    "thisisaniggatest": "",
+    "TESTTESTTEST": "",
+    "xyl": "",
+    "lilbastard": ""
   },
   "COMMON": {
     "CONFIRM": {
@@ -204,7 +208,10 @@
     "NEW_SINCE_LAST_WEEK": "{{count}} dalla scorsa settimana",
     "QUICK_ENTRY": "Inserimento rapido",
     "RESET_FILTERS": "Reset",
-    "WELCOME": "Benvenuti in MyRB IT-Budget!"
+    "WELCOME": "Benvenuti in MyRB IT-Budget!",
+    "mynameisnigga": "",
+    "mynameislilnigga": "",
+    "ThisisAtest": ""
   },
   "MENU": {
     "AUFTRAG": "Ordine",

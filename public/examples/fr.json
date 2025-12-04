@@ -73,7 +73,10 @@
     "": "",
     "asd": "",
     "mynigga": "",
-    "Nigga123": ""
+    "Nigga123": "",
+    "TESTTESTTEST": "",
+    "xyl": "",
+    "lilbastard": ""
   },
   "COMMON": {
     "CONFIRM": {
@@ -202,7 +205,8 @@
     "NEW_SINCE_LAST_WEEK": "{{count}} depuis la semaine dernière",
     "QUICK_ENTRY": "Saisie rapide",
     "RESET_FILTERS": "Réinitialiser",
-    "WELCOME": "Bienvenue dans le budget IT MyBR!"
+    "WELCOME": "Bienvenue dans le budget IT MyBR!",
+    "mynameislilnigga": ""
   },
   "MENU": {
     "AUFTRAG": "Mission",

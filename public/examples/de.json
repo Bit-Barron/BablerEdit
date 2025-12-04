@@ -71,9 +71,13 @@
     "TITLE": "Auftrag",
     "AAAA": "",
     "": "",
-    "asd": "",
+    "asdasd": "",
     "mynigga": "",
-    "Nigga123": ""
+    "Nigga123": "",
+    "TESTTESTTEST": "",
+    "xyl": "",
+    "lilbastard": "",
+    "asd": ""
   },
   "COMMON": {
     "CONFIRM": {
@@ -202,7 +206,8 @@
     "NEW_SINCE_LAST_WEEK": "{{count}} seit Letzter Woche",
     "QUICK_ENTRY": "Schnellerfassung",
     "RESET_FILTERS": "Reset",
-    "WELCOME": "Willkommen im MyRB IT-Budget!"
+    "WELCOME": "Willkommen im MyRB IT-Budget!",
+    "mynameislilnigga": ""
   },
   "MENU": {
     "AUFTRAG": "Auftrag",
