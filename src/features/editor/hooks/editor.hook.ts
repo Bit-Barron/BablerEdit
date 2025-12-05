@@ -64,38 +64,16 @@ export const useEditorHook = () => {
           },
         ],
       });
+
       if (!openFile) return;
 
       const fileContent = await readTextFile(openFile);
-      const parsedProject = yaml.load(fileContent) as ParsedProject;
+      const parsedProject = yaml.load(fileContent);
 
-      const loadedTranslations = await Promise.all(
-        parsedProject.translation_packages[0].translation_urls.map(
-          async (trans) => {
-            const fullPath = `${parsedProject.source_root_dir}${trans.path}`;
-            const jsonContent = await readTextFile(fullPath);
-
-            return {
-              language: trans.language,
-              data: flattenJson(JSON.parse(jsonContent)),
-            };
-          }
-        )
-      );
-
-      parsedProject.folder_structure.children[0].children.forEach((concept) => {
-        concept.translations.forEach((trans) => {
-          const langData = loadedTranslations.find(
-            (td) => td.language === trans.language
-          );
-          trans.value = langData?.data[concept.name] || "";
-        });
-      });
-
-      setParsedProject(parsedProject);
+      setParsedProject(parsedProject as ParsedProject);
       navigate("/editor");
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error opening project:", err);
     }
   };
 
