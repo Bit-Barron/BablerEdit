@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import { readTextFile, exists } from "@tauri-apps/plugin-fs";
 import { SETTINGS_FILE } from "@/core/config/constants";
 import { useSettingsStore } from "../store/settings.store";
+import { toast } from "sonner";
+import parseJson from "parse-json";
+import { RecentProjectProps } from "../types/settings.types";
 
 export const useSettingsHook = () => {
   const { updateSettings } = useSettingsStore();
@@ -21,15 +24,17 @@ export const useSettingsHook = () => {
 
         if (fileExists) {
           const content = await readTextFile(settingsPath);
-          const savedSettings = JSON.parse(content);
+          const savedSettings = parseJson(content);
 
           updateSettings({
-            recentProjects: savedSettings.recentProjects || [],
-            darkMode: savedSettings.darkMode || false,
+            recentProjects: savedSettings.recentProjects as unknown as
+              | RecentProjectProps[]
+              | undefined,
+            darkMode: savedSettings.darkMode as boolean,
           });
         }
       } catch (error) {
-        console.error("Failed to load settings:", error);
+        toast.error("Failed to load settings");
       }
     };
 

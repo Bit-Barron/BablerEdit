@@ -4,7 +4,8 @@ import { readTextFile } from "@tauri-apps/plugin-fs";
 
 export const updateProjectFolderStructure = async (
   parsedProject: ParsedProject
-): Promise<ParsedProject> => {
+): Promise<ParsedProject | null> => {
+  if (!parsedProject) return null;
   const loadedTranslations = await Promise.all(
     // Load all translation files
     parsedProject.translation_packages[0].translation_urls.map(
@@ -23,9 +24,8 @@ export const updateProjectFolderStructure = async (
 
   const allKeys = Object.keys(loadedTranslations[0].data); // Get all keys from the first language's data
 
-  console.log("Updated Folder Structure with keys:", allKeys);
-
   const updatedProject: ParsedProject = {
+    // Create updated project structure
     ...parsedProject,
     folder_structure: {
       ...parsedProject.folder_structure,

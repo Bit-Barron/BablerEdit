@@ -20,6 +20,10 @@ export default function App() {
   const { setOpenIdDialog } = useIdStore();
   const { removeIdFromJson } = useIdHook();
 
+  if (!parsedProject) {
+    return <WizardPage />;
+  }
+
   useEffect(() => {
     if (onProjectClick === "save") {
       saveProject(parsedProject);

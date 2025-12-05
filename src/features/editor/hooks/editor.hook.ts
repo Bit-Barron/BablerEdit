@@ -6,6 +6,7 @@ import { useSettingsStore } from "@/features/settings/store/settings.store";
 import { useNavigate } from "react-router-dom";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { ProjectHelper } from "../lib/project-helper";
+import { toast } from "sonner";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
@@ -14,7 +15,7 @@ export const useEditorHook = () => {
 
   const saveProject = async (
     project: ParsedProject
-  ): Promise<ParsedProject | void> => {
+  ): Promise<ParsedProject | null> => {
     try {
       const saveFile = await save({
         defaultPath: project.filename || "Project.babler",
@@ -26,7 +27,7 @@ export const useEditorHook = () => {
         ],
       });
 
-      if (!saveFile) return;
+      if (!saveFile) return null;
 
       const bablerProject = ProjectHelper(project);
 
@@ -47,7 +48,8 @@ export const useEditorHook = () => {
 
       return bablerProject;
     } catch (err) {
-      console.error("Error saving project:", err);
+      toast.error("Error saving project");
+      return null;
     }
   };
 
@@ -72,7 +74,7 @@ export const useEditorHook = () => {
       setParsedProject(parsedProject as ParsedProject);
       navigate("/editor");
     } catch (err) {
-      console.error("Error opening project:", err);
+      toast.error("Error opening project");
     }
   };
 

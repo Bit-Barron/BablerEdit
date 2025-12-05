@@ -2,6 +2,7 @@ import { SETTINGS_FILE } from "@/core/config/constants";
 import { appDataDir } from "@tauri-apps/api/path";
 import { SettingsState } from "../types/settings.types";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { toast } from "sonner";
 
 export const saveToFile = async (state: SettingsState) => {
   try {
@@ -19,6 +20,6 @@ export const saveToFile = async (state: SettingsState) => {
 
     await writeTextFile(settingsPath, JSON.stringify(jsonContent, null, 2));
   } catch (error) {
-    console.error("Failed to save settings:", error);
+    toast.error("Failed to save settings");
   }
 };
