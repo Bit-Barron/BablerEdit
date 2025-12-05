@@ -68,7 +68,10 @@
     "TERMINE": "Termine",
     "TERMINTYP": "Termintyp",
     "TITEL": "Titel",
-    "TITLE": "Auftrag"
+    "TITLE": "Auftrag",
+    "ADD_TERMINNEW": "",
+    "AAA": "",
+    "EVATEST": ""
   },
   "COMMON": {
     "CONFIRM": "",
@@ -290,7 +293,8 @@
       "TITEL": "Title"
     },
     "CURRENT_PAGE_REPORT_TEMPLATE": "Zeigt {first} bis {last} von {totalRecords} Einträgen",
-    "NO_RECORDS_FOUND": "Keine Einträge gefunden"
+    "NO_RECORDS_FOUND": "Keine Einträge gefunden",
+    "AAA": ""
   },
   "TERMIN": {
     "CALENDAR_EVENT_UPDATED": "Termin wurde aktualisiert: {{art}}",

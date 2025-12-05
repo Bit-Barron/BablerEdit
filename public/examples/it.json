@@ -68,7 +68,10 @@
     "TERMINE": "Date",
     "TERMINTYP": "Tipo di appuntamento",
     "TITEL": "Titolo",
-    "TITLE": "Ordine"
+    "TITLE": "Ordine",
+    "ADD_TERMINNEW": "",
+    "AAA": "",
+    "EVATEST": ""
   },
   "COMMON": {
     "CONFIRM": "",
@@ -292,7 +295,8 @@
       "TITEL": "Titolo"
     },
     "CURRENT_PAGE_REPORT_TEMPLATE": "Mostra da {first} a {last} di {totalRecords} voci",
-    "NO_RECORDS_FOUND": "Nessuna voce trovata"
+    "NO_RECORDS_FOUND": "Nessuna voce trovata",
+    "AAA": ""
   },
   "TERMIN": {
     "CALENDAR_EVENT_UPDATED": "La data è stata aggiornata: {{art}}",

@@ -8,11 +8,21 @@ import { TreeNode } from "@/features/editor/types/editor.types";
 import { NodeApi, NodeRendererProps } from "react-arborist";
 import { OpenIdDialog } from "@/features/id/components/add-id-dialog";
 import { useIdStore } from "@/features/id/store/id.store";
+import { useMemo } from "react";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useFileManagerStore();
   const { selectedNode, setSelectedNode } = useEditorStore();
   const { openIdDialog, setOpenIdDialog } = useIdStore();
+
+  // Rebuild tree data when parsedProject changes
+  const treeData = useMemo(() => {
+    if (!parsedProject) return [];
+    return buildTranslationTree(parsedProject);
+  }, [parsedProject]);
+
+  const treeKey =
+    parsedProject?.folder_structure.children[0]?.children.length || 0;
 
   if (!parsedProject) return null;
 
@@ -24,7 +34,8 @@ export const EditorPage: React.FC = () => {
         </div>
 
         <AutoSizedTree
-          initialData={buildTranslationTree(parsedProject)}
+          key={treeKey}
+          initialData={treeData}
           openByDefault={false}
           indent={20}
           rowHeight={32}
