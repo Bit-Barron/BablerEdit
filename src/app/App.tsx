@@ -8,7 +8,8 @@ import { useSettingsHook } from "@/features/settings/hooks/settings.hook";
 import { EditorPage } from "@/pages/editor-page";
 import { WizardPage } from "@/pages/wizard-page";
 import { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import { useIdHook } from "@/features/id/hooks/id.hook";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
@@ -17,7 +18,7 @@ export default function App() {
   useSettingsHook();
   const { parsedProject } = useFileManagerStore();
   const { setOpenIdDialog } = useIdStore();
-  const location = useLocation();
+  const { removeIdFromJson } = useIdHook();
 
   useEffect(() => {
     if (onProjectClick === "save") {
@@ -28,7 +29,10 @@ export default function App() {
       setOnProjectClick!("");
     } else if (onProjectClick === "add-id") {
       setOpenIdDialog(true);
-      setOnProjectClick!("");
+      setOnProjectClick("");
+    } else if (onProjectClick == "remove-ids") {
+      removeIdFromJson();
+      setOnProjectClick("");
     }
   }, [onProjectClick]);
 
@@ -41,7 +45,6 @@ export default function App() {
     <section>
       <MenuBar />
       <Toolbar />
-
       <Routes>
         <Route path="/" element={<WizardPage />} />
         <Route path="/editor" element={<EditorPage />} />

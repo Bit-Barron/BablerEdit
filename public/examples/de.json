@@ -1,15 +1,9 @@
 {
   "AUFTRAG": {
-    "ADD_TERMIN": "Termin hinzufügen",
-    "ADD_YEAR": "Jahr hinzufügen",
-    "AENDERUNGSHISTORIE": "Änderungshistorie",
     "ART": "Auftragsart",
     "AUFTRAG": "Auftrag",
     "BANK": "Bank",
-    "BANK_AUSWAHL": "Bank auswählen",
     "BANKNAME": "Bankname",
-    "BASIC_INFO": "Grundinformationen",
-    "BEMERKUNGEN": "Bemerkungen",
     "CALENDAR_ENTRY_CREATED": "Kalender Eintrag erstellt",
     "CALENDAR_EVENT_UPDATED": "Termin für '{{title}}' wurde aktualisiert",
     "CALENDAR_UPDATE_FAILED": "Der Termin konnte nicht aktualisiert werden",
@@ -19,7 +13,6 @@
     "CONTACT_INFO": "Kontaktinformationen",
     "COPY_AUFTRAG": "Auftrag kopieren",
     "CREATE_AUFTRAG": "Auftrag erstellen",
-    "CREATE_CALENDAR_ENTRY": "Kalendereintrag erstellen",
     "DETAILAUFNAHME_ENDE": "Detailaufnahme Ende",
     "DETAILAUFNAHME_MITARBEITER": "Zuständiger Mitarbeiter",
     "DETAILAUFNAHME_START": "Detailaufnahme Beginn",
@@ -71,10 +64,11 @@
     "TITLE": "Auftrag",
     "ADD_TERMINNEW": "",
     "AAA": "",
-    "EVATEST": ""
+    "EVATEST": "",
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": "",
+    "AAAAAAAAAAAAA": ""
   },
   "COMMON": {
-    "CONFIRM": "",
     "ENUM": {
       "AKTIV": "Aktiv",
       "ALL": "Alle",
@@ -190,7 +184,6 @@
     "ANZAHL_RB": "Anzahl RB",
     "ANZAHL_SERVER": "Anzahl Server RB",
     "FILTER_BY_TYPE": "Ter",
-    "NEW_SINCE_LAST_WEEK": "{{count}} seit Letzter Woche",
     "QUICK_ENTRY": "Schnellerfassung",
     "RESET_FILTERS": "Reset",
     "WELCOME": "Willkommen im MyRB IT-Budget!",
@@ -206,27 +199,20 @@
     "PRODUKTE": "Produkte",
     "STAMMDATEN": "Stammdaten",
     "STARTSEITE": "Kalender",
-    "TERMINTYP": "Termintypen"
+    "TERMINTYP": "Termintypen",
+    "AAA": ""
   },
   "SETTINGS": {
     "FRONTEND": "Frontend",
-    "LANGUAGE": "Sprachen",
     "THEME": "Theme",
     "TITLE": "Benutzer Einstellungen",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "aaa": ""
   },
   "STAMMDATEN": {
-    "AUFTRAG": {
-      "TITLE": "Aufträge"
-    },
+    "AUFTRAG": "",
     "AUFTRAGSART": {
       "TITLE": "Auftragsart"
-    },
-    "KATEGORIE": {
-      "AKTIV": "Aktiv",
-      "BEZEICHNUNG": "Bezeichnung",
-      "TITLE": "Kategorie",
-      "TITLE_PLURAL": "Kategorien"
     },
     "MANDANTTYPE": {
       "TITLE": "Mandanttyp"

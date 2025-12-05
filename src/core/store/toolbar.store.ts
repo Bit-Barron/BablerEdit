@@ -14,9 +14,10 @@ interface ToolbarStore {
 export const useToolbarStore = create<ToolbarStore>((set) => ({
   onProjectClick: "",
   setOnProjectClick: (id: string) => set({ onProjectClick: id }),
-
   currentRoute: "wizard",
   setCurrentRoute: (route: string) => set({ currentRoute: route }),
   disabledButtons: false,
   setDisabledButtons: (disabled: boolean) => set({ disabledButtons: disabled }),
 }));
+
+

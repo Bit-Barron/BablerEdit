@@ -71,7 +71,9 @@
     "TITLE": "Mission",
     "ADD_TERMINNEW": "",
     "AAA": "",
-    "EVATEST": ""
+    "EVATEST": "",
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": "",
+    "AAAAAAAAAAAAA": ""
   },
   "COMMON": {
     "CONFIRM": "",
@@ -206,19 +208,19 @@
     "PRODUKTE": "Produits",
     "STAMMDATEN": "Données de base",
     "STARTSEITE": "Calendrier",
-    "TERMINTYP": "Types de rendez-vous"
+    "TERMINTYP": "Types de rendez-vous",
+    "AAA": ""
   },
   "SETTINGS": {
     "FRONTEND": "Frontend",
     "LANGUAGE": "Langues",
     "THEME": "Theme",
     "TITLE": "Paramètres utilisateur",
-    "VERSION": "Version"
+    "VERSION": "Version",
+    "aaa": ""
   },
   "STAMMDATEN": {
-    "AUFTRAG": {
-      "TITLE": "Commandes"
-    },
+    "AUFTRAG": "",
     "AUFTRAGSART": {
       "TITLE": "Type de mission"
     },

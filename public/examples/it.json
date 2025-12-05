@@ -71,7 +71,9 @@
     "TITLE": "Ordine",
     "ADD_TERMINNEW": "",
     "AAA": "",
-    "EVATEST": ""
+    "EVATEST": "",
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": "",
+    "AAAAAAAAAAAAA": ""
   },
   "COMMON": {
     "CONFIRM": "",
@@ -208,19 +210,19 @@
     "PRODUKTE": "Prodotti",
     "STAMMDATEN": "Dati anagrafici",
     "STARTSEITE": "Calendario",
-    "TERMINTYP": "Tipi di appuntamento"
+    "TERMINTYP": "Tipi di appuntamento",
+    "AAA": ""
   },
   "SETTINGS": {
     "FRONTEND": "Fronte",
     "LANGUAGE": "Le lingue",
     "THEME": "Tema",
     "TITLE": "Impostazioni utente",
-    "VERSION": "Versione"
+    "VERSION": "Versione",
+    "aaa": ""
   },
   "STAMMDATEN": {
-    "AUFTRAG": {
-      "TITLE": "Ordini"
-    },
+    "AUFTRAG": "",
     "AUFTRAGSART": {
       "TITLE": "Tipo di incarico"
     },

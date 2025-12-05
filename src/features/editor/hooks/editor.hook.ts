@@ -5,7 +5,6 @@ import yaml from "js-yaml";
 import { useSettingsStore } from "@/features/settings/store/settings.store";
 import { useNavigate } from "react-router-dom";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
-import { flattenJson } from "@/features/translation/lib/parser";
 import { ProjectHelper } from "../lib/project-helper";
 
 export const useEditorHook = () => {
