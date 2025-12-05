@@ -68,28 +68,10 @@
     "TERMINE": "Date",
     "TERMINTYP": "Tipo di appuntamento",
     "TITEL": "Titolo",
-    "TITLE": "Ordine",
-    "AAAA": "",
-    "": "",
-    "Nigga": "",
-    "test": "",
-    "asd": "",
-    "mynigga": "",
-    "Nigga123": "",
-    "thisisaniggatest": "",
-    "TESTTESTTEST": "",
-    "xyl": "",
-    "lilbastard": ""
+    "TITLE": "Ordine"
   },
   "COMMON": {
-    "CONFIRM": {
-      "ALL": "Tutti {{names}}",
-      "COPY_MESSAGE": "Vuole davvero copiare l'ordine '{{name}}'?",
-      "DELETE": " Cancellare {{name}} ",
-      "DELETE_MESSAGE": " {{name}} dovrebbe davvero essere rimosso?",
-      "MARK_AS_COMPLETED": "Cambiare lo stato?",
-      "MARK_AS_COMPLETED_MESSAGE": " <b>{{name}}</b> dovrebbe essere contrassegnato come completato?"
-    },
+    "CONFIRM": "",
     "ENUM": {
       "AKTIV": "Attivo",
       "ALL": "Tutti",

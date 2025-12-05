@@ -68,25 +68,10 @@
     "TERMINE": "Dates",
     "TERMINTYP": "Type de rendez-vous",
     "TITEL": "Titre",
-    "TITLE": "Mission",
-    "AAAA": "",
-    "": "",
-    "asd": "",
-    "mynigga": "",
-    "Nigga123": "",
-    "TESTTESTTEST": "",
-    "xyl": "",
-    "lilbastard": ""
+    "TITLE": "Mission"
   },
   "COMMON": {
-    "CONFIRM": {
-      "ALL": "Tous {{names}}",
-      "COPY_MESSAGE": "Voulez-vous vraiment copier la commande '{{name}}'?",
-      "DELETE": "{{name}} supprimer",
-      "DELETE_MESSAGE": "Faut-il vraiment supprimer {{name}} ?",
-      "MARK_AS_COMPLETED": "Changer de statut ?",
-      "MARK_AS_COMPLETED_MESSAGE": " <b>{{name}}</b> doit-il être marqué comme terminé ?"
-    },
+    "CONFIRM": "",
     "ENUM": {
       "AKTIV": "Actif",
       "ALL": "Tous les",

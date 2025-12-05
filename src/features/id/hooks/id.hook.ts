@@ -1,9 +1,10 @@
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { flattenJson } from "@/features/translation/lib/parser";
+import { ParsedProject } from "@/features/translation/types/translation.types";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 
 export const useIdHook = () => {
-  const { parsedProject } = useFileManagerStore();
+  const { parsedProject, setParsedProject } = useFileManagerStore();
 
   const addIdToJson = async (value: string) => {
     const translationFiles =
@@ -33,9 +34,32 @@ export const useIdHook = () => {
 
         await writeTextFile(jsonFilePath, updatedContent);
 
-        const flat = flattenJson(obj);
+        const loadedTranslations = await Promise.all(
+          parsedProject.translation_packages[0].translation_urls.map(
+            async (trans) => {
+              const fullPath = `${parsedProject.source_root_dir}${trans.path}`;
+              const jsonContent = await readTextFile(fullPath);
 
-        console.log("Updated flat JSON:", flat);
+              return {
+                language: trans.language,
+                data: flattenJson(JSON.parse(jsonContent)),
+              };
+            }
+          )
+        );
+
+        const updatedProject =
+          parsedProject.folder_structure.children[0].children.forEach(
+            (concept) => {
+              concept.translations.forEach((trans) => {
+                const langData = loadedTranslations.find(
+                  (td) => td.language === trans.language
+                );
+                trans.value = langData?.data[concept.name] || "";
+              });
+            }
+          );
+        setParsedProject(updatedProject as unknown as ParsedProject);
       }
     }
   };
