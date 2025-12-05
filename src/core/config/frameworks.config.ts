@@ -1,3 +1,4 @@
+import parseJson from "parse-json";
 import { FrameworkConfig, FrameworkType } from "../types/framework.types";
 
 export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
@@ -10,7 +11,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     validator: async (file) => {
       try {
         const content = await file.text();
-        JSON.parse(content);
+        parseJson(content);
         return { valid: true };
       } catch (error) {
         return { valid: false, error: "Invalid JSON format" };
@@ -47,7 +48,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     validator: async (file) => {
       try {
         const content = await file.text();
-        const data = JSON.parse(content);
+        const data = parseJson(content);
         if (typeof data !== "object") {
           return { valid: false, error: "i18next files must be objects" };
         }
@@ -68,7 +69,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     validator: async (file) => {
       try {
         const content = await file.text();
-        JSON.parse(content);
+        parseJson(content);
         return { valid: true };
       } catch (error) {
         return { valid: false, error: "Invalid ARB format" };
@@ -86,7 +87,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     validator: async (file) => {
       try {
         const content = await file.text();
-        JSON.parse(content);
+        parseJson(content);
         return { valid: true };
       } catch (error) {
         return { valid: false, error: "Invalid JSON format" };
@@ -106,7 +107,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
       if (ext === "json") {
         try {
           const content = await file.text();
-          JSON.parse(content);
+          parseJson(content);
           return { valid: true };
         } catch (error) {
           return { valid: false, error: "Invalid JSON format" };
@@ -116,7 +117,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     },
     parser: async (content) => {
       // Will handle PHP array parsing later
-      return JSON.parse(content);
+      return parseJson(content);
     },
   },
 

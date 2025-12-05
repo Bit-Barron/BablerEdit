@@ -1,6 +1,7 @@
 import { flattenJson } from "@/features/translation/lib/parser";
 import { ParsedProject } from "@/features/translation/types/translation.types";
 import { readTextFile } from "@tauri-apps/plugin-fs";
+import parseJson from "parse-json";
 
 export const updateProjectFolderStructure = async (
   parsedProject: ParsedProject
@@ -16,7 +17,7 @@ export const updateProjectFolderStructure = async (
         return {
           // Return an object with language and flattened data
           language: trans.language,
-          data: flattenJson(JSON.parse(jsonContent)),
+          data: flattenJson(parseJson(jsonContent) as Record<string, string>),
         };
       }
     )
