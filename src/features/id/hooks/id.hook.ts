@@ -9,10 +9,10 @@ export const useIdHook = () => {
   const { parsedProject, setParsedProject } = useFileManagerStore();
   const { selectedNode } = useEditorStore();
 
-  const TRANSLATION_FILES =
-    parsedProject.translation_packages[0].translation_urls;
-
   const addIdToJson = async (value: string) => {
+    if (!parsedProject || !value) return null;
+    const TRANSLATION_FILES =
+      parsedProject.translation_packages[0].translation_urls;
     for (let path in TRANSLATION_FILES) {
       const filePath = TRANSLATION_FILES[path].path; // Translation file path
       const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`; // full path to the translation JSON files
