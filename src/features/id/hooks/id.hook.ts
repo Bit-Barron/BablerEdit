@@ -2,6 +2,7 @@ import { useFileManagerStore } from "@/features/file-manager/store/file-manager.
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { updateProjectFolderStructure } from "../lib/update-structure";
+import parseJson from "parse-json";
 
 export const useIdHook = () => {
   const { parsedProject, setParsedProject } = useFileManagerStore();
@@ -24,17 +25,16 @@ export const useIdHook = () => {
 
       if (entries && getValue !== "") {
         const addToVal = entries.val as Record<string, unknown>; // Object Values
-
-        addToVal[getValue] = ""; // Add new key with empty string value
+        addToVal[getValue] = ""; // Add the new key with empty string
         obj[getKey] = addToVal; // Update the main object with the new value
         const updatedContent = JSON.stringify(obj, null, 2); // Update the content with stringify
         await writeTextFile(jsonFilePath, updatedContent); // Write the updated content to the file
       }
     }
 
-    const updatedProject = await updateProjectFolderStructure(parsedProject!); // Update the project folder structure
+    const updatedProject = await updateProjectFolderStructure(parsedProject);
 
-    setParsedProject(updatedProject); // Set the updated project
+    setParsedProject(updatedProject);
 
     return updatedProject;
   };
@@ -44,7 +44,7 @@ export const useIdHook = () => {
       const filePath = TRANSLATION_FILES[path].path;
       const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
       const content = await readTextFile(jsonFilePath);
-      const obj = JSON.parse(content);
+      const obj = parseJson(content);
       const getKey = selectedNode.data.id.split(".")[0];
       const getValue = selectedNode.data.id.split(".")[1];
 
@@ -55,7 +55,7 @@ export const useIdHook = () => {
       if (entries && getValue !== "") {
         const removeFromVal = entries.val as Record<string, unknown>; // Object Values
         delete removeFromVal[getValue]; // Remove the key from the object
-        obj[getKey] = removeFromVal; // Update the main object with the new value
+        obj[getKey] = removeFromVal as typeof entries.val; // Update the main object with the new value
         const updatedContent = JSON.stringify(obj, null, 2); // Update the content with stringify
         await writeTextFile(jsonFilePath, updatedContent); // Write the updated content to the file
       }

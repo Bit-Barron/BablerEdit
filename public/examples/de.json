@@ -4,7 +4,6 @@
     "AUFTRAG": "Auftrag",
     "BANK": "Bank",
     "BANKNAME": "Bankname",
-    "CALENDAR_ENTRY_CREATED": "Kalender Eintrag erstellt",
     "CALENDAR_EVENT_UPDATED": "Termin für '{{title}}' wurde aktualisiert",
     "CALENDAR_UPDATE_FAILED": "Der Termin konnte nicht aktualisiert werden",
     "CHANGE_HISTORY": "Änderungsverlauf",
@@ -283,13 +282,9 @@
     "AAA": ""
   },
   "TERMIN": {
-    "CALENDAR_EVENT_UPDATED": "Termin wurde aktualisiert: {{art}}",
-    "CALENDAR_UPDATE_FAILED": "Terminaktualisierung fehlgeschlagen",
     "CANNOT_EDIT_OTHER_AUFTRAG": "Sie können diesen Auftrag hier nicht bearbeiten",
-    "CREATE_TERMIN": "Termin erstellen",
     "EDIT_TERMIN": "Termin bearbeiten",
     "NO_AUFTRAG_REQUIRED": "Erfordert Auftrag: Nein",
-    "RECURRING_DATE_RANGE": "Zeitraum",
     "RECURRING_DESCRIPTION": "Es werden für jeden ausgewählten Wochentage Termine im angegebenen Zeitraum erstellt.",
     "RECURRING_ENABLE": "Serientermin aktivieren",
     "RECURRING_ENDDATE": "Enddatum",
@@ -301,15 +296,9 @@
     "RECURRING_TIME_RANGE": "Uhrzeiten",
     "RECURRING_WEEKDAYS": "Wochentage auswählen",
     "REQUIRES_AUFTRAG": "Erfordert Auftrag: Ja",
-    "WEEKDAY": {
-      "FRI": "Freitag",
-      "MON": "Montag",
-      "SAT": "Samstag",
-      "SUN": "Sonntag",
-      "THU": "Donnerstag",
-      "TUE": "Dienstag",
-      "WED": "Mittwoch"
-    },
-    "asd": ""
+    "WEEKDAY": "",
+    "asd": "",
+    "TEST": "",
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": ""
   }
 }

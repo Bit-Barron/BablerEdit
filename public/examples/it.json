@@ -319,15 +319,9 @@
     "RECURRING_TIME_RANGE": "Volte",
     "RECURRING_WEEKDAYS": "Seleziona i giorni feriali",
     "REQUIRES_AUFTRAG": "Richiede un ordine: Sì",
-    "WEEKDAY": {
-      "FRI": "Venerdì",
-      "MON": "Lunedì",
-      "SAT": "Sabato",
-      "SUN": "Domenica",
-      "THU": "Giovedì",
-      "TUE": "Martedì",
-      "WED": "Mercoledì"
-    },
-    "asd": ""
+    "WEEKDAY": "",
+    "asd": "",
+    "TEST": "",
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": ""
   }
 }

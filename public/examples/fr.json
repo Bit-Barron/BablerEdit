@@ -317,15 +317,9 @@
     "RECURRING_TIME_RANGE": "Fois",
     "RECURRING_WEEKDAYS": "Certains jours de la semaine",
     "REQUIRES_AUFTRAG": "Nécessite un ordre : Oui",
-    "WEEKDAY": {
-      "FRI": "Vendredi",
-      "MON": "Lundi",
-      "SAT": "Samedi",
-      "SUN": "Dimanche",
-      "THU": "Jeudi",
-      "TUE": "Mardi",
-      "WED": "Mercredi"
-    },
-    "asd": ""
+    "WEEKDAY": "",
+    "asd": "",
+    "TEST": "",
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": ""
   }
 }
