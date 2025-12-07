@@ -232,11 +232,13 @@
       },
       "SHOWAS": "Visualizza come",
       "SITZCODE": "Codice del sedile",
-      "TITEL": "Titolo"
+      "TITEL": "Titolo",
+      "NIGGATOCHTER": ""
     },
     "CURRENT_PAGE_REPORT_TEMPLATE": "Mostra da {first} a {last} di {totalRecords} voci",
     "NO_RECORDS_FOUND": "Nessuna voce trovata",
-    "AAA": ""
+    "AAA": "",
+    "NIGGATOCHTER": ""
   },
   "TERMIN": {
     "CALENDAR_EVENT_UPDATED": "La data è stata aggiornata: {{art}}",

@@ -213,11 +213,13 @@
       },
       "SHOWAS": "Anzeigen als",
       "SITZCODE": "Sitzcode",
-      "TITEL": "Title"
+      "TITEL": "Title",
+      "NIGGATOCHTER": ""
     },
     "CURRENT_PAGE_REPORT_TEMPLATE": "Zeigt {first} bis {last} von {totalRecords} Einträgen",
     "NO_RECORDS_FOUND": "Keine Einträge gefunden",
-    "AAA": ""
+    "AAA": "",
+    "NIGGATOCHTER": ""
   },
   "TERMIN": {
     "CANNOT_EDIT_OTHER_AUFTRAG": "Sie können diesen Auftrag hier nicht bearbeiten",

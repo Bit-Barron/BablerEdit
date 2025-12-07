@@ -230,11 +230,13 @@
       },
       "SHOWAS": "Annonces en tant que",
       "SITZCODE": "Code du siège",
-      "TITEL": "Titre"
+      "TITEL": "Titre",
+      "NIGGATOCHTER": ""
     },
     "CURRENT_PAGE_REPORT_TEMPLATE": "Affiche {first} à {last} de {totalRecords} entrées",
     "NO_RECORDS_FOUND": "Aucune entrée trouvée",
-    "AAA": ""
+    "AAA": "",
+    "NIGGATOCHTER": ""
   },
   "TERMIN": {
     "CALENDAR_EVENT_UPDATED": "La date a été mise à jour : {{art}}",
