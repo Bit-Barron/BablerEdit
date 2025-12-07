@@ -23,15 +23,15 @@ export const useIdHook = () => {
       let parrent: any = "";
 
       for (let i = 0; i < splitSelectedNode.length; i++) {
+        parrent = current;
         current = current[splitSelectedNode[i]];
-
-        if (typeof current === "object") {
-          parrent = current;
-          current[value] = "";
-        }
-        parrent[value[i]];
       }
 
+      if (typeof current === "object") {
+        current[value] = "";
+      } else {
+        parrent[value] = "";
+      }
       const updateContent = JSON.stringify(obj, null, 2);
       writeTextFile(jsonFilePath, updateContent);
     }
