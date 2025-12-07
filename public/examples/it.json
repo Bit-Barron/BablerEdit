@@ -77,61 +77,6 @@
   },
   "COMMON": {
     "CONFIRM": "",
-    "ENUM": {
-      "AKTIV": "Attivo",
-      "ALL": "Tutti",
-      "APRIL": "Aprile",
-      "AUGUST": "Agosto",
-      "BLUE": "Blue",
-      "CANCEL": "Annullamento",
-      "CANCELLED": "Non è possibile",
-      "COMPLETE": "Contrassegnare come fatto",
-      "COMPLETED": "Già fatto",
-      "COPY": "Copiare",
-      "CREATE": "Creare",
-      "CSV_EXPORT": "Esportazione in Excel",
-      "CURRENT_MANDANT": "Cliente attuale",
-      "DARK": "Dark",
-      "DE": "Tedesco",
-      "DEACTIVATE": "Disattivare",
-      "DECEMBER": "Dicembre",
-      "DELETE": "Elimina",
-      "DETAILAUFNAHME": "Primo piano",
-      "EDIT": "Modifica",
-      "ERLEDIGT": "Fatto",
-      "FEBRUARY": "Febbraio",
-      "FR": "Francese",
-      "GELIEFERT": "",
-      "INAKTIV": "Inattivo",
-      "INSTALLATION": "Installazione",
-      "IT": "Italiano",
-      "JANUARY": "Gennaio",
-      "JULY": "Luglio",
-      "JUNE": "Giugno",
-      "LIGHT": "Light",
-      "MARCH": "Marzo",
-      "MAY": "Maggio",
-      "NACHBESUCH": "Visita di controllo",
-      "NO": "No",
-      "NOVEMBER": "Novembre",
-      "OCTOBER": "Ottobre",
-      "OFFEN": "Aperto",
-      "PENDENZ": "In attesa",
-      "PROJEKT": "Progetto",
-      "REACTIVE": "Riattivare",
-      "SAVE": "Risparmiare",
-      "SAVE_AND_EDIT": "Salva e modifica",
-      "SELECT": "Selezionare",
-      "SELECT_MANDANT": "Selezionare il cliente",
-      "SEPTEMBER": "Settembre",
-      "STORNIERT": "Annullato",
-      "TEILLIEFERUNG": "",
-      "TERMIN_TYPE": "Tipo di appuntamento",
-      "UPDATE": "Aggiornamento",
-      "VORINSTALLATION": "Pre-installazione",
-      "WARTEN": "",
-      "YES": "Sì"
-    },
     "ERROR": {
       "403": "Oops ...ci scusiamo, non siamo riusciti a riconoscerla.",
       "404": "Oops... La luce è accesa, ma non riusciamo a trovare la pagina web che desidera",
@@ -213,7 +158,6 @@
     "TERMINTYP": "Tipi di appuntamento"
   },
   "SETTINGS": {
-    "FRONTEND": "Fronte",
     "LANGUAGE": "Le lingue",
     "THEME": "Tema",
     "TITLE": "Impostazioni utente",
@@ -222,24 +166,19 @@
   },
   "STAMMDATEN": {
     "AUFTRAG": "",
-    "AUFTRAGSART": {
-      "TITLE": "Tipo di incarico"
-    },
     "KATEGORIE": {
       "AKTIV": "Attivo",
       "BEZEICHNUNG": "Designazione",
       "TITLE": "Categoria",
       "TITLE_PLURAL": "Categorie"
     },
-    "MANDANTTYPE": {
-      "TITLE": "Tipo di Cliente"
-    },
-    "MITARBEITER": {
-      "TITLE": "I dipendenti"
-    },
+    "MANDANTTYPE": {},
     "TERMINTYP": {
       "TITLE": "Tipo di appuntamento"
-    }
+    },
+    "liltweezy": "",
+    "TESTTESTTEST": "",
+    "NIGGGA": ""
   },
   "TABLE": {
     "COLUMNS": {
@@ -320,7 +259,6 @@
     "REQUIRES_AUFTRAG": "Richiede un ordine: Sì",
     "WEEKDAY": "",
     "asd": "",
-    "TEST": "",
-    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": ""
+    "TEST": ""
   }
 }

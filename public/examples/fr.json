@@ -77,61 +77,6 @@
   },
   "COMMON": {
     "CONFIRM": "",
-    "ENUM": {
-      "AKTIV": "Actif",
-      "ALL": "Tous les",
-      "APRIL": "Avril",
-      "AUGUST": "Août",
-      "BLUE": "Blue",
-      "CANCEL": "Annuler",
-      "CANCELLED": "Pas possible",
-      "COMPLETE": "Marquer comme terminé",
-      "COMPLETED": "Déjà fait",
-      "COPY": "Copier",
-      "CREATE": "Créer",
-      "CSV_EXPORT": "Exportation Excel",
-      "CURRENT_MANDANT": "Client actuel",
-      "DARK": "Dark",
-      "DE": "Allemand",
-      "DEACTIVATE": "Désactiver",
-      "DECEMBER": "Décembre",
-      "DELETE": "SUPPRIMER",
-      "DETAILAUFNAHME": "Vue détaillée",
-      "EDIT": "Modifier",
-      "ERLEDIGT": "Fait",
-      "FEBRUARY": "Février",
-      "FR": "Français",
-      "GELIEFERT": "",
-      "INAKTIV": "Inactif",
-      "INSTALLATION": "Installation",
-      "IT": "Italien",
-      "JANUARY": "Janvier",
-      "JULY": "Juillet",
-      "JUNE": "Juin",
-      "LIGHT": "Light",
-      "MARCH": "Mars",
-      "MAY": "May",
-      "NACHBESUCH": "Visite de suivi",
-      "NO": "Non",
-      "NOVEMBER": "Novembre",
-      "OCTOBER": "Octobre",
-      "OFFEN": "Ouvert",
-      "PENDENZ": "Affaire en suspens",
-      "PROJEKT": "Projet",
-      "REACTIVE": "Réactiver",
-      "SAVE": "Enregistrer",
-      "SAVE_AND_EDIT": "Enregistrer et modifier",
-      "SELECT": "Sélectionner",
-      "SELECT_MANDANT": "Sélectionner un mandant",
-      "SEPTEMBER": "Septembre",
-      "STORNIERT": "Annulé",
-      "TEILLIEFERUNG": "",
-      "TERMIN_TYPE": "Type de rendez-vous",
-      "UPDATE": "Mise à jour",
-      "VORINSTALLATION": "Préinstallation",
-      "WARTEN": "",
-      "YES": "Oui"
-    },
     "ERROR": {
       "403": "Oups...Veuillez nous excuser, nous ne parvenons pas à vous identifier.",
       "404": "Oups... La lumière est allumée, mais nous ne parvenons pas à trouver la page web que vous cherchez.",
@@ -211,7 +156,6 @@
     "TERMINTYP": "Types de rendez-vous"
   },
   "SETTINGS": {
-    "FRONTEND": "Frontend",
     "LANGUAGE": "Langues",
     "THEME": "Theme",
     "TITLE": "Paramètres utilisateur",
@@ -220,24 +164,19 @@
   },
   "STAMMDATEN": {
     "AUFTRAG": "",
-    "AUFTRAGSART": {
-      "TITLE": "Type de mission"
-    },
     "KATEGORIE": {
       "AKTIV": "Actif",
       "BEZEICHNUNG": "Désignation",
       "TITLE": "Catégorie",
       "TITLE_PLURAL": "Catégories"
     },
-    "MANDANTTYPE": {
-      "TITLE": "Type de mandant"
-    },
-    "MITARBEITER": {
-      "TITLE": "Collaborateurs"
-    },
+    "MANDANTTYPE": {},
     "TERMINTYP": {
       "TITLE": "Type de rendez-vous"
-    }
+    },
+    "liltweezy": "",
+    "TESTTESTTEST": "",
+    "NIGGGA": ""
   },
   "TABLE": {
     "COLUMNS": {
@@ -318,7 +257,6 @@
     "REQUIRES_AUFTRAG": "Nécessite un ordre : Oui",
     "WEEKDAY": "",
     "asd": "",
-    "TEST": "",
-    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": ""
+    "TEST": ""
   }
 }

@@ -68,61 +68,6 @@
     "AAAAAAAAAAAAA": ""
   },
   "COMMON": {
-    "ENUM": {
-      "AKTIV": "Aktiv",
-      "ALL": "Alle",
-      "APRIL": "April",
-      "AUGUST": "August",
-      "BLUE": "Blue",
-      "CANCEL": "Abbrechen",
-      "CANCELLED": "Nicht möglich",
-      "COMPLETE": "Als erledigt markieren",
-      "COMPLETED": "Bereits erledigt",
-      "COPY": "Kopieren",
-      "CREATE": "Erstellen",
-      "CSV_EXPORT": "Excel Export",
-      "CURRENT_MANDANT": "Aktueller Mandant",
-      "DARK": "Dark",
-      "DE": "Deutsch",
-      "DEACTIVATE": "Deaktivieren",
-      "DECEMBER": "Dezember",
-      "DELETE": "Löschen",
-      "DETAILAUFNAHME": "Detailaufnahme",
-      "EDIT": "Bearbeiten",
-      "ERLEDIGT": "Erledigt",
-      "FEBRUARY": "Februar",
-      "FR": "Französisch",
-      "GELIEFERT": "Geliefert",
-      "INAKTIV": "Inaktiv",
-      "INSTALLATION": "Installation",
-      "IT": "Italienisch",
-      "JANUARY": "Januar",
-      "JULY": "Juli",
-      "JUNE": "Juni",
-      "LIGHT": "Light",
-      "MARCH": "März",
-      "MAY": "May",
-      "NACHBESUCH": "Nachbesuch",
-      "NO": "Nein",
-      "NOVEMBER": "November",
-      "OCTOBER": "Oktober",
-      "OFFEN": "Offen",
-      "PENDENZ": "Pendenz",
-      "PROJEKT": "Projekt",
-      "REACTIVE": "Reaktivieren",
-      "SAVE": "Speichern",
-      "SAVE_AND_EDIT": "Speichern und bearbeiten",
-      "SELECT": "Auswählen",
-      "SELECT_MANDANT": "Mandant auswählen",
-      "SEPTEMBER": "September",
-      "STORNIERT": "Storniert",
-      "TEILLIEFERUNG": "Teillieferung",
-      "TERMIN_TYPE": "Termintyp",
-      "UPDATE": "Update",
-      "VORINSTALLATION": "Vorinstallation",
-      "WARTEN": "Warten",
-      "YES": "Ja"
-    },
     "ERROR": {
       "403": "Ups...Entschuldigung, wir können Sie nicht erkennen.",
       "404": "Ups... Das Licht ist an, aber wir können ihre gesuchte Webseite nicht finden.",
@@ -201,7 +146,6 @@
     "TERMINTYP": "Termintypen"
   },
   "SETTINGS": {
-    "FRONTEND": "Frontend",
     "THEME": "Theme",
     "TITLE": "Benutzer Einstellungen",
     "VERSION": "Version",
@@ -209,18 +153,13 @@
   },
   "STAMMDATEN": {
     "AUFTRAG": "",
-    "AUFTRAGSART": {
-      "TITLE": "Auftragsart"
-    },
-    "MANDANTTYPE": {
-      "TITLE": "Mandanttyp"
-    },
-    "MITARBEITER": {
-      "TITLE": "Mitarbeiter"
-    },
+    "MANDANTTYPE": {},
     "TERMINTYP": {
       "TITLE": "Termintyp"
-    }
+    },
+    "liltweezy": "",
+    "TESTTESTTEST": "",
+    "NIGGGA": ""
   },
   "TABLE": {
     "COLUMNS": {
@@ -297,7 +236,6 @@
     "REQUIRES_AUFTRAG": "Erfordert Auftrag: Ja",
     "WEEKDAY": "",
     "asd": "",
-    "TEST": "",
-    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA": ""
+    "TEST": ""
   }
 }
