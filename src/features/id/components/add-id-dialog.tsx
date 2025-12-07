@@ -23,21 +23,20 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
 }) => {
   const { selectedNode } = useEditorStore();
   const { value, setValue } = useIdStore();
-
   const { addIdToJson } = useIdHook();
 
-  const newValue =
-    selectedNode?.data.id.split(".").slice(0, -1).join(".") || "";
-
-  console.log(selectedNode.data);
-
   useEffect(() => {
-    if (open && selectedNode) {
-      setValue(newValue);
+    if (selectedNode.isLeaf) {
+      const segments = selectedNode.data.id.split(".").slice(0, -1).join(".");
+      setValue(segments + ".");
+    } else {
+      setValue(selectedNode.data.id + ".");
     }
-  }, [open, newValue, setValue, selectedNode]);
+  }, [selectedNode, setValue]);
 
   if (!selectedNode) return null;
+
+  const addToJson = value.split(".").pop();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -65,7 +64,7 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
             </Button>
             <Button
               onClick={() => {
-                addIdToJson(value);
+                addIdToJson(addToJson as any);
                 onOpenChange(false);
               }}
             >

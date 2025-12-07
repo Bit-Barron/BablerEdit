@@ -12,6 +12,7 @@ export const useIdHook = () => {
   const addIdToJson = async (value: string) => {
     const TRANSLATION_FILES =
       parsedProject.translation_packages[0].translation_urls;
+    console.log(value)
 
     for (let path in TRANSLATION_FILES) {
       const filePath = TRANSLATION_FILES[path].path;
