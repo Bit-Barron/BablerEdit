@@ -133,18 +133,6 @@
     "WELCOME": "Willkommen im MyRB IT-Budget!",
     "mynameislilnigga": ""
   },
-  "MENU": {
-    "AUFTRAG": "Auftrag",
-    "AUFTRAGSART": "Auftragsart",
-    "KATEGORIE": "Kategorie",
-    "MANDANTTYP": "Mandanttype",
-    "MITARBEITER": "Mitarbeiter",
-    "NAVIGATION": "DispoTool",
-    "PRODUKTE": "Produkte",
-    "STAMMDATEN": "Stammdaten",
-    "STARTSEITE": "Kalender",
-    "TERMINTYP": "Termintypen"
-  },
   "SETTINGS": {
     "THEME": "Theme",
     "TITLE": "Benutzer Einstellungen",

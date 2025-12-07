@@ -143,18 +143,6 @@
     "WELCOME": "Bienvenue dans le budget IT MyBR!",
     "mynameislilnigga": ""
   },
-  "MENU": {
-    "AUFTRAG": "Mission",
-    "AUFTRAGSART": "Type de mission",
-    "KATEGORIE": "Catégorie",
-    "MANDANTTYP": "Type de mandant",
-    "MITARBEITER": "Collaborateurs",
-    "NAVIGATION": "DispoTool",
-    "PRODUKTE": "Produits",
-    "STAMMDATEN": "Données de base",
-    "STARTSEITE": "Calendrier",
-    "TERMINTYP": "Types de rendez-vous"
-  },
   "SETTINGS": {
     "LANGUAGE": "Langues",
     "THEME": "Theme",

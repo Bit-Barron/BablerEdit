@@ -29,9 +29,11 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
   const newValue =
     selectedNode?.data.id.split(".").slice(0, -1).join(".") || "";
 
+  console.log(selectedNode.data);
+
   useEffect(() => {
     if (open && selectedNode) {
-      setValue(newValue + ".");
+      setValue(newValue);
     }
   }, [open, newValue, setValue, selectedNode]);
 
