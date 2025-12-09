@@ -7,7 +7,7 @@ import { ThemeProvider } from "./core/components/providers/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="dark">
       <Toaster position="top-right" />
       <HashRouter>
         <App />
