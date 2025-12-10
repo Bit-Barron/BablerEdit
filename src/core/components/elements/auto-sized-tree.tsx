@@ -7,6 +7,7 @@ type AutoSizedTreeProps = Omit<
   "width" | "height"
 >;
 
+
 export function AutoSizedTree(props: AutoSizedTreeProps) {
   const { ref, width = 0, height = 0 } = useResizeObserver<HTMLDivElement>();
 

@@ -1,6 +1,6 @@
 import { AutoSizedTree } from "@/core/components/elements/auto-sized-tree";
 import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
-import { buildTranslationTree } from "@/features/editor/lib/translation-tree";
+import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
@@ -16,6 +16,7 @@ export const EditorPage: React.FC = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
   const { openIdDialog, setOpenIdDialog } = useIdStore();
   const { handleJsonMove } = useEditorHook();
+
   const initialTreeData = useMemo(() => {
     if (!parsedProject) return [];
     return buildTranslationTree(parsedProject);
@@ -38,7 +39,7 @@ export const EditorPage: React.FC = () => {
           openByDefault={false}
           indent={20}
           rowHeight={32}
-          onMove={handleJsonMove as any}
+          onMove={handleJsonMove}
           onSelect={(nodes) => {
             if (nodes.length > 0) {
               setSelectedNode(nodes[0] as NodeApi<TreeNode>);
