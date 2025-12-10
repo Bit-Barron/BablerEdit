@@ -8,10 +8,13 @@ import { useFileManagerStore } from "@/features/file-manager/store/file-manager.
 import { ProjectHelper } from "../lib/project-helper";
 import { toast } from "sonner";
 import dayjs from "dayjs";
+import { TreeNode } from "../types/editor.types";
+import { MoveHandler } from "react-arborist";
+import parseJson from "parse-json";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
-  const { setParsedProject } = useFileManagerStore();
+  const { setParsedProject, parsedProject } = useFileManagerStore();
   const { setCurrentProjectPath, currentProjectPath } = useFileManagerStore();
   const navigate = useNavigate();
 
@@ -114,9 +117,31 @@ export const useEditorHook = () => {
       return null;
     }
   };
+  const handleJsonMove: MoveHandler<TreeNode> = async ({
+    dragIds,
+    parentId,
+    index,
+  }) => {
+    const TRANSLATION_FILES =
+      parsedProject.translation_packages[0].translation_urls;
+
+    for (let path in TRANSLATION_FILES) {
+      const filePath = TRANSLATION_FILES[path].path;
+      const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
+      const content = await readTextFile(jsonFilePath);
+      const obj = parseJson(content);
+      console.log({
+        obj,
+        dragIds,
+        parentId,
+        index,
+      });
+    }
+  };
 
   return {
     saveProject,
     openProject,
+    handleJsonMove,
   };
 };

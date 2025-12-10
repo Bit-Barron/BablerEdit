@@ -1,4 +1,3 @@
-// src/features/translation/lib/file-reader.ts
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import parseJson from "parse-json";
 
