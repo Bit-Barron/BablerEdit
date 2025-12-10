@@ -15,7 +15,6 @@ export const EditorPage: React.FC = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
   const { openIdDialog, setOpenIdDialog } = useIdStore();
 
-  // Rebuild tree data when parsedProject changes
   const treeData = useMemo(() => {
     if (!parsedProject) return [];
     return buildTranslationTree(parsedProject);
@@ -25,6 +24,8 @@ export const EditorPage: React.FC = () => {
     parsedProject?.folder_structure.children[0]?.children.length || 0;
 
   if (!parsedProject) return null;
+
+  const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
 
   return (
     <div className="fixed inset-0 top-[89px] flex">
@@ -42,6 +43,8 @@ export const EditorPage: React.FC = () => {
           onSelect={(nodes) => {
             if (nodes.length > 0) {
               setSelectedNode(nodes[0] as NodeApi<TreeNode>);
+            } else {
+              setSelectedNode(null);
             }
           }}
         >
@@ -52,10 +55,16 @@ export const EditorPage: React.FC = () => {
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <TranslationDetail
-          selectedNode={selectedNode || null}
-          project={parsedProject}
-        />
+        {selectedLeafNode ? (
+          <TranslationDetail
+            selectedNode={selectedLeafNode}
+            project={parsedProject}
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            <p>Select a translation key to edit</p>
+          </div>
+        )}
 
         <AddIdDialog open={openIdDialog} onOpenChange={setOpenIdDialog} />
       </div>

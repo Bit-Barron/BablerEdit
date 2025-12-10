@@ -19,7 +19,7 @@ export const useIdHook = () => {
       const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
       const content = await readTextFile(jsonFilePath);
       const obj = parseJson(content);
-      const splitSelectedNode = selectedNode.data.id.split(".");
+      const splitSelectedNode = selectedNode!.data.id.split(".");
       let current: any = obj;
       let parrent: any = "";
 
@@ -51,7 +51,7 @@ export const useIdHook = () => {
       const content = await readTextFile(jsonFilePath);
       const obj = parseJson(content);
 
-      const splitSelectedNode = selectedNode.data.id.split(".");
+      const splitSelectedNode = selectedNode!.data.id.split(".");
 
       let current: any = obj;
       let parrent: any = "";

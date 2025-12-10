@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-
 import {
   Dialog,
   DialogContent,
@@ -27,6 +26,7 @@ export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
   const { addIdToJson } = useIdHook();
 
   useEffect(() => {
+    if (!open) return;
     if (!selectedNode) {
       toast.error("Please select a node to add an ID.");
       return;
@@ -38,10 +38,9 @@ export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
     } else {
       setValue(selectedNode.data.id + ".");
     }
-  }, [selectedNode, setValue]);
+  }, [open, selectedNode, setValue, onOpenChange]);
 
   if (!selectedNode) return null;
-  if (!selectedNode.isLeaf) return null;
 
   const addToJson = value.split(".").pop();
 
@@ -71,9 +70,12 @@ export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
             </Button>
             <Button
               onClick={() => {
-                addIdToJson(addToJson as any);
-                onOpenChange(false);
+                if (addToJson && selectedNode) {
+                  addIdToJson(addToJson);
+                  onOpenChange(false);
+                }
               }}
+              disabled={!addToJson}
             >
               Save
             </Button>
