@@ -2,13 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app/App";
 import { HashRouter } from "react-router-dom";
-import { Toaster } from "sonner";
 import { ThemeProvider } from "./core/components/providers/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider defaultTheme="dark">
-      <Toaster position="top-right" />
+      
       <HashRouter>
         <App />
       </HashRouter>

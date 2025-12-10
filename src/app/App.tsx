@@ -10,6 +10,7 @@ import { WizardPage } from "@/pages/wizard-page";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useIdHook } from "@/features/id/hooks/id.hook";
+import { Toaster } from "sonner";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
@@ -19,10 +20,6 @@ export default function App() {
   const { parsedProject } = useFileManagerStore();
   const { setOpenIdDialog } = useIdStore();
   const { removeIdFromJson } = useIdHook();
-
-  if (!parsedProject) {
-    return <WizardPage />;
-  }
 
   useEffect(() => {
     if (onProjectClick === "save") {
@@ -47,6 +44,7 @@ export default function App() {
 
   return (
     <section>
+      <Toaster position="top-right" />
       <MenuBar />
       <Toolbar />
       <Routes>

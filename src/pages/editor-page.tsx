@@ -6,7 +6,7 @@ import { useFileManagerStore } from "@/features/file-manager/store/file-manager.
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
 import { TreeNode } from "@/features/editor/types/editor.types";
 import { NodeApi, NodeRendererProps } from "react-arborist";
-import { OpenIdDialog } from "@/features/id/components/add-id-dialog";
+import { AddIdDialog } from "@/features/id/components/add-id-dialog";
 import { useIdStore } from "@/features/id/store/id.store";
 import { useMemo } from "react";
 
@@ -53,11 +53,11 @@ export const EditorPage: React.FC = () => {
 
       <div className="flex-1 overflow-hidden">
         <TranslationDetail
-          selectedNode={selectedNode}
+          selectedNode={selectedNode || null}
           project={parsedProject}
         />
 
-        <OpenIdDialog open={openIdDialog} onOpenChange={setOpenIdDialog} />
+        <AddIdDialog open={openIdDialog} onOpenChange={setOpenIdDialog} />
       </div>
     </div>
   );

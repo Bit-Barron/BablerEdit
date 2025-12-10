@@ -50,6 +50,9 @@ export const useEditorHook = () => {
           framework: project.framework,
           language: project.primary_language,
         });
+
+        toast.success("Project saved successfully");
+
         return bablerProject;
       } else {
         const bablerProject = ProjectHelper(project); // Ensure project is in Babler format
@@ -69,6 +72,8 @@ export const useEditorHook = () => {
           language: project.primary_language,
           lastModified: dayjs().toISOString(),
         });
+
+        toast.success("Project saved successfully");
 
         return bablerProject;
       }

@@ -3,15 +3,15 @@ import { NodeApi } from "react-arborist";
 import { TreeNode } from "../types/editor.types";
 
 interface EditorPageState {
-  selectedNode: NodeApi<TreeNode>;
-  setSelectedNode: (node: NodeApi<TreeNode>) => void;
+  selectedNode: NodeApi<TreeNode> | undefined;
+  setSelectedNode: (node: NodeApi<TreeNode> | undefined) => void;
 
   updateTranslation: string;
   setUpdateTranslation: (value: string) => void;
 }
 
 export const useEditorStore = create<EditorPageState>((set) => ({
-  selectedNode: null as unknown as NodeApi<TreeNode>,
+  selectedNode: undefined,
   setSelectedNode: (node) => set({ selectedNode: node }),
 
   updateTranslation: "",

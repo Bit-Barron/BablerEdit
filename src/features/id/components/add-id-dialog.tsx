@@ -11,13 +11,14 @@ import { Input } from "@/core/components/ui/input";
 import { useIdStore } from "../store/id.store";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { useIdHook } from "../hooks/id.hook";
+import { toast } from "sonner";
 
 interface OpenIdDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
+export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
   open,
   onOpenChange,
 }) => {
@@ -26,7 +27,10 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
   const { addIdToJson } = useIdHook();
 
   useEffect(() => {
-    if (!selectedNode) return;
+    if (!selectedNode) {
+      toast.error("Please select a node to add an ID.");
+      return;
+    }
 
     if (selectedNode.isLeaf) {
       const segments = selectedNode.data.id.split(".").slice(0, -1).join(".");
