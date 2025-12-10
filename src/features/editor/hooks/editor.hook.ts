@@ -31,7 +31,6 @@ export const useEditorHook = () => {
         });
 
         if (!saveFile) return null;
-
         setCurrentProjectPath(saveFile);
 
         const bablerProject = ProjectHelper(project);
@@ -49,13 +48,14 @@ export const useEditorHook = () => {
           name: project.filename,
           framework: project.framework,
           language: project.primary_language,
+          lastModified: dayjs().toISOString(),
         });
 
-        toast.success("Project saved successfully");
+        toast.success(`Project saved successfully ${saveFile}`);
 
         return bablerProject;
       } else {
-        const bablerProject = ProjectHelper(project); // Ensure project is in Babler format
+        const bablerProject = ProjectHelper(project);
 
         const yamlContent = yaml.dump(bablerProject, {
           indent: 2,
@@ -73,12 +73,13 @@ export const useEditorHook = () => {
           lastModified: dayjs().toISOString(),
         });
 
-        toast.success("Project saved successfully");
+        toast.success(`Project saved successfully ${currentProjectPath}`);
 
         return bablerProject;
       }
     } catch (err) {
-      toast.error("Error saving project");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Failed: ${message}`);
       return null;
     }
   };
@@ -103,9 +104,14 @@ export const useEditorHook = () => {
       const parsedProject = yaml.load(fileContent);
 
       setParsedProject(parsedProject as ParsedProject);
+
+      toast.success(`Project opened successfully ${openFile}`);
       navigate("/editor");
     } catch (err) {
-      toast.error("Error opening project");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Failed: ${message}`);
+
+      return null;
     }
   };
 

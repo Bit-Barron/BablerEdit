@@ -6,16 +6,12 @@ import parseJson from "parse-json";
 export const updateProjectFolderStructure = async (
   parsedProject: ParsedProject
 ): Promise<ParsedProject | null> => {
-  if (!parsedProject) return null;
   const loadedTranslations = await Promise.all(
-    // Load all translation files
     parsedProject.translation_packages[0].translation_urls.map(
-      // Map through each translation file
       async (trans) => {
-        const fullPath = `${parsedProject.source_root_dir}${trans.path}`; // Build the full path to the translation file
-        const jsonContent = await readTextFile(fullPath); // Read the content of the translation file
+        const fullPath = `${parsedProject.source_root_dir}${trans.path}`;
+        const jsonContent = await readTextFile(fullPath);
         return {
-          // Return an object with language and flattened data
           language: trans.language,
           data: flattenJson(parseJson(jsonContent) as Record<string, string>),
         };

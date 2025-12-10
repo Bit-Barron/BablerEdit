@@ -1,11 +1,10 @@
-import { appDataDir } from "@tauri-apps/api/path";
 import { useEffect } from "react";
 import { readTextFile, exists } from "@tauri-apps/plugin-fs";
-import { SETTINGS_FILE } from "@/core/config/constants";
 import { useSettingsStore } from "../store/settings.store";
 import { toast } from "sonner";
 import parseJson from "parse-json";
 import { RecentProjectProps } from "../types/settings.types";
+import { getSettingsPath } from "../lib/settings-path";
 
 export const useSettingsHook = () => {
   const { updateSettings } = useSettingsStore();
@@ -13,12 +12,7 @@ export const useSettingsHook = () => {
   useEffect(() => {
     const loadUserSettings = async () => {
       try {
-        const appDataPath = await appDataDir();
-        const normalizedPath = appDataPath.endsWith("/")
-          ? appDataPath
-          : `${appDataPath}/`;
-
-        const settingsPath = `${normalizedPath}${SETTINGS_FILE}`;
+        const settingsPath = await getSettingsPath();
 
         const fileExists = await exists(settingsPath);
 
@@ -33,8 +27,11 @@ export const useSettingsHook = () => {
             darkMode: savedSettings.darkMode as boolean,
           });
         }
-      } catch (error) {
-        toast.error("Failed to load settings");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        toast.error(`Failed: ${message}`);
+
+        return null;
       }
     };
 

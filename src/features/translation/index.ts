@@ -3,6 +3,7 @@ import { parseJSONFile, flattenJson } from "./lib/parser";
 import { ParsedProject } from "./types/translation.types";
 import { extractLanguageCode } from "./lib/lang-detector";
 import { FileWithPath } from "../file-manager/types/file-manager.types";
+import { getSourceRootDir } from "@/core/lib/file-utils";
 
 export async function createProject(
   files: FileWithPath[],
@@ -36,10 +37,7 @@ export async function createProject(
   }
 
   const firstFilePath = files[0].path;
-  const source_root_dir =
-    firstFilePath.substring(0, firstFilePath.lastIndexOf("/") + 1) ||
-    firstFilePath.substring(0, firstFilePath.lastIndexOf("\\") + 1) ||
-    "/";
+  const source_root_dir = getSourceRootDir(firstFilePath);
 
   if (!foundPrimaryLanguage) {
     toast.error(`Primary language file "${primaryLanguage}.json" is missing.`);

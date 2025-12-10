@@ -23,8 +23,6 @@ export const EditorPage: React.FC = () => {
   const treeKey =
     parsedProject?.folder_structure.children[0]?.children.length || 0;
 
-  if (!parsedProject) return null;
-
   const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
 
   return (

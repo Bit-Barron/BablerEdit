@@ -4,8 +4,6 @@ import { TreeNode } from "../types/editor.types";
 export const buildTranslationTree = (
   projectData: ParsedProject
 ): TreeNode[] => {
-  if (!projectData) return [];
-
   const allKeys: string[] = [];
 
   for (let i of projectData.folder_structure.children[0].children) {

@@ -19,7 +19,9 @@ export const saveToFile = async (state: SettingsState) => {
     };
 
     await writeTextFile(settingsPath, JSON.stringify(jsonContent, null, 2));
-  } catch (error) {
-    toast.error("Failed to save settings");
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    toast.error(`Failed: ${message}`);
+    return null;
   }
 };
