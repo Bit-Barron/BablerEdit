@@ -12,12 +12,13 @@ de.json
 fr.json
 it.json
 
+helper.txt
 node_modules
 dist
 dist-ssr
 *.local
 
-helper.ts
+helper.txt
 
 # Editor directories and files
 .vscode/*
