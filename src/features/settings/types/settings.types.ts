@@ -3,6 +3,8 @@ export interface RecentProjectProps {
   name: string;
   framework: string;
   language: string;
+  lastModified?: string;
+  lastOpened?: string;
 }
 
 export interface UpdateSettingsState {

@@ -4,6 +4,9 @@ import { FrameworkType } from "@/core/types/framework.types";
 import { FileWithPath } from "../types/file-manager.types";
 
 interface FileManagerStore {
+  currentProjectPath: string | null;
+  setCurrentProjectPath: (path: string | null) => void;
+
   selectedFramework: FrameworkType | "";
   setSelectedFramework: (typeId: FrameworkType | "") => void;
 
@@ -21,6 +24,8 @@ interface FileManagerStore {
 }
 
 export const useFileManagerStore = create<FileManagerStore>((set) => ({
+  currentProjectPath: null,
+  setCurrentProjectPath: (path) => set({ currentProjectPath: path }),
   selectedFramework: "",
   setSelectedFramework: (typeId) => set({ selectedFramework: typeId }),
 

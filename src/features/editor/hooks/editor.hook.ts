@@ -7,46 +7,71 @@ import { useNavigate } from "react-router-dom";
 import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
 import { ProjectHelper } from "../lib/project-helper";
 import { toast } from "sonner";
+import dayjs from "dayjs";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
   const { setParsedProject } = useFileManagerStore();
+  const { setCurrentProjectPath, currentProjectPath } = useFileManagerStore();
   const navigate = useNavigate();
 
   const saveProject = async (
     project: ParsedProject
   ): Promise<ParsedProject | null> => {
     try {
-      const saveFile = await save({
-        defaultPath: project.filename || "Project.babler",
-        filters: [
-          {
-            name: "BablerEdit Project",
-            extensions: ["babler"],
-          },
-        ],
-      });
+      if (!currentProjectPath) {
+        const saveFile = await save({
+          defaultPath: project.filename || "Project.babler",
+          filters: [
+            {
+              name: "BablerEdit Project",
+              extensions: ["babler"],
+            },
+          ],
+        });
 
-      if (!saveFile) return null;
+        if (!saveFile) return null;
 
-      const bablerProject = ProjectHelper(project);
+        setCurrentProjectPath(saveFile);
 
-      const yamlContent = yaml.dump(bablerProject, {
-        indent: 2,
-        lineWidth: -1,
-        noRefs: true,
-      });
+        const bablerProject = ProjectHelper(project);
 
-      await writeTextFile(saveFile, yamlContent);
+        const yamlContent = yaml.dump(bablerProject, {
+          indent: 2,
+          lineWidth: -1,
+          noRefs: true,
+        });
 
-      addRecentProject({
-        path: saveFile,
-        name: project.filename,
-        framework: project.framework,
-        language: project.primary_language,
-      });
+        await writeTextFile(saveFile, yamlContent);
 
-      return bablerProject;
+        addRecentProject({
+          path: saveFile,
+          name: project.filename,
+          framework: project.framework,
+          language: project.primary_language,
+        });
+        return bablerProject;
+      } else {
+        const bablerProject = ProjectHelper(project); // Ensure project is in Babler format
+
+        const yamlContent = yaml.dump(bablerProject, {
+          indent: 2,
+          lineWidth: -1,
+          noRefs: true,
+        });
+
+        await writeTextFile(currentProjectPath, yamlContent);
+
+        addRecentProject({
+          path: currentProjectPath,
+          name: project.filename,
+          framework: project.framework,
+          language: project.primary_language,
+          lastModified: dayjs().toISOString(),
+        });
+
+        return bablerProject;
+      }
     } catch (err) {
       toast.error("Error saving project");
       return null;
@@ -67,6 +92,7 @@ export const useEditorHook = () => {
       });
 
       if (!openFile) return;
+      setCurrentProjectPath(openFile); // set the current project path
 
       const fileContent = await readTextFile(openFile);
       const parsedProject = yaml.load(fileContent);

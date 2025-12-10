@@ -26,6 +26,8 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
   const { addIdToJson } = useIdHook();
 
   useEffect(() => {
+    if (!selectedNode) return;
+
     if (selectedNode.isLeaf) {
       const segments = selectedNode.data.id.split(".").slice(0, -1).join(".");
       setValue(segments + ".");
@@ -35,6 +37,7 @@ export const OpenIdDialog: React.FC<OpenIdDialogProps> = ({
   }, [selectedNode, setValue]);
 
   if (!selectedNode) return null;
+  if (!selectedNode.isLeaf) return null;
 
   const addToJson = value.split(".").pop();
 
