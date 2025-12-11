@@ -1,10 +1,10 @@
 import { useProjectStore } from "@/features/project/store/project.store";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEditorStore } from "@/features/editor/store/editor.store";
-import { updateProjectFolderStructure } from "../lib/update-structure";
+import { updateProjectFolderStructure } from "../lib/editor-utils";
 import { ParsedProject } from "@/features/project/types/project.types";
 import { toast } from "sonner";
-import { readTranslationFile } from "@/features/project/lib/read-file";
+import { readTranslationFile } from "@/features/project/lib/project-utils";
 
 export const useIdHook = () => {
   const { parsedProject, setParsedProject } = useProjectStore();

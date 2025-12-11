@@ -7,10 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/features/project/store/project.store";
 import { toast } from "sonner";
 import dayjs from "dayjs";
-import { updateProjectFolderStructure } from "@/features/editor/lib/update-structure";
-import { ProjectHelper } from "../lib/serialize-project";
-import { readTranslationFile } from "@/features/project/lib/read-file";
-import parseJson from "parse-json";
+import {
+  updateProjectFolderStructure,
+  serializeProject,
+} from "@/features/editor/lib/editor-utils";
+
+import { readTranslationFile } from "@/features/project/lib/project-utils";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
@@ -36,7 +38,7 @@ export const useEditorHook = () => {
         if (!saveFile) return null;
         setCurrentProjectPath(saveFile);
 
-        const bablerProject = ProjectHelper(project);
+        const bablerProject = serializeProject(project);
 
         const yamlContent = yaml.dump(bablerProject, {
           indent: 2,
@@ -58,7 +60,7 @@ export const useEditorHook = () => {
 
         return bablerProject;
       } else {
-        const bablerProject = ProjectHelper(project);
+        const bablerProject = serializeProject(project);
 
         const yamlContent = yaml.dump(bablerProject, {
           indent: 2,

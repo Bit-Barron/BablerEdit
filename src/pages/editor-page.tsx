@@ -1,6 +1,6 @@
 import { AutoSizedTree } from "@/features/editor/components/auto-sized-tree";
 import { TranslationDetail } from "@/features/editor/components/translation-detail";
-import { buildTranslationTree } from "@/features/editor/lib/build-tree";
+import { buildTranslationTree } from "@/features/editor/lib/editor-utils";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { useProjectStore } from "@/features/project/store/project.store";
 import { TreeNode as TreeNodeComponent } from "@/features/editor/components/translation-tree-node";

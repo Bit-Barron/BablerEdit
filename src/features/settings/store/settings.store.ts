@@ -1,10 +1,17 @@
 import { create } from "zustand";
 import {
   RecentProjectProps,
-  SettingsState,
   UpdateSettingsState,
 } from "../types/settings.types";
-import { saveToFile } from "../lib/persist-settings";
+import { saveSettingsToFile } from "../lib/settings-utils";
+
+export interface SettingsState {
+  darkMode: boolean;
+  recentProjects: RecentProjectProps[];
+  addRecentProject: (project: RecentProjectProps) => void;
+  updateRecentProjects: (projects: RecentProjectProps[]) => void;
+  updateSettings: (settings: UpdateSettingsState) => void;
+}
 
 export const useSettingsStore = create<SettingsState>((set) => ({
   darkMode: false,
@@ -19,7 +26,7 @@ export const useSettingsStore = create<SettingsState>((set) => ({
         ].slice(0, 5),
       };
 
-      saveToFile({ ...state, ...newState });
+      saveSettingsToFile({ ...state, ...newState });
 
       return newState;
     });
@@ -28,14 +35,14 @@ export const useSettingsStore = create<SettingsState>((set) => ({
   updateRecentProjects: (projects: RecentProjectProps[]) => {
     set((state) => {
       const newState = { recentProjects: projects };
-      saveToFile({ ...state, ...newState });
+      saveSettingsToFile({ ...state, ...newState });
       return newState;
     });
   },
 
   updateSettings: (settings: UpdateSettingsState) => {
     set((state) => {
-      saveToFile({ ...state, ...settings });
+      saveSettingsToFile({ ...state, ...settings });
       return settings;
     });
   },

@@ -1,17 +1,20 @@
 import { SETTINGS_FILE } from "@/core/config/constants";
 import { appDataDir } from "@tauri-apps/api/path";
-import { SettingsState } from "../types/settings.types";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";
+import { SettingsState } from "../store/settings.store";
 
-export const saveToFile = async (state: SettingsState) => {
+export const getSettingsPath = async (): Promise<string> => {
+  const appDataPath = await appDataDir(); // /home/user/.local/share/BablerEdit/
+  const normalizedPath = appDataPath.endsWith("/")
+    ? appDataPath
+    : `${appDataPath}/`;
+  return `${normalizedPath}${SETTINGS_FILE}`;
+};
+
+export const saveSettingsToFile = async (state: SettingsState) => {
   try {
-    const appDataPath = await appDataDir();
-    const normalizedPath = appDataPath.endsWith("/")
-      ? appDataPath
-      : `${appDataPath}/`;
-
-    const settingsPath = `${normalizedPath}${SETTINGS_FILE}`;
+    const settingsPath = await getSettingsPath();
 
     const jsonContent: Record<string, unknown> = {
       recentProjects: state.recentProjects,

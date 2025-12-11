@@ -11,12 +11,3 @@ export interface UpdateSettingsState {
   darkMode?: boolean;
   recentProjects?: RecentProjectProps[];
 }
-
-export interface SettingsState {
-  darkMode: boolean;
-  recentProjects: RecentProjectProps[];
-  addRecentProject: (project: RecentProjectProps) => void;
-  updateRecentProjects: (projects: RecentProjectProps[]) => void;
-
-  updateSettings: (settings: UpdateSettingsState) => void;
-}

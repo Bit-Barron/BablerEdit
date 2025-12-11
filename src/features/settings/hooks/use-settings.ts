@@ -4,7 +4,7 @@ import { useSettingsStore } from "../store/settings.store";
 import { toast } from "sonner";
 import parseJson from "parse-json";
 import { RecentProjectProps } from "../types/settings.types";
-import { getSettingsPath } from "../lib/settings-path";
+import { getSettingsPath } from "../lib/settings-utils";
 
 export const useSettingsHook = () => {
   const { updateSettings } = useSettingsStore();
@@ -21,9 +21,8 @@ export const useSettingsHook = () => {
           const savedSettings = parseJson(content);
 
           updateSettings({
-            recentProjects: savedSettings.recentProjects as unknown as
-              | RecentProjectProps[]
-              | undefined,
+            recentProjects:
+              savedSettings.recentProjects as unknown as RecentProjectProps[],
             darkMode: savedSettings.darkMode as boolean,
           });
         }
