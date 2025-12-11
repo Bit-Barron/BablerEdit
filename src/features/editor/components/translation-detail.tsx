@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/features/project/types/project.types";
 import { Checkbox } from "@/core/components/ui/checkbox";
@@ -14,20 +14,24 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const { setUpdateTranslation, updateTranslation } = useEditorStore();
+  const { setUpdateTranslation, setTranslationForKey, translationForKey } =
+    useEditorStore();
 
-  const findTranslationForKey = () => {
-    const mainPackage = project.folder_structure.children[0];
-    const conceptNode = mainPackage.children.find(
-      (child) => child.name === selectedNode!.data.id
-    );
-    if (!conceptNode) {
-      return [];
-    }
-    return conceptNode.translations;
-  };
+  useEffect(() => {
+    const findTranslationForKey = () => {
+      const mainPackage = project.folder_structure.children[0];
+      const conceptNode = mainPackage.children.find(
+        (child) => child.name === selectedNode!.data.id
+      );
+      if (!conceptNode) {
+        return [];
+      }
 
-  console.log(updateTranslation);
+      setTranslationForKey(conceptNode.translations);
+    };
+
+    findTranslationForKey();
+  }, [selectedNode]);
 
   return (
     <section className="flex flex-col bg-background">
@@ -37,7 +41,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
       <div className="flex-1 overflow-y-auto">
         <div className="divide-y">
-          {findTranslationForKey().map((t) => (
+          {translationForKey.map((t) => (
             <div key={t.language} className="px-6 py-5">
               <div className="flex items-center justify-between mb-3">
                 <span className="font-semibold text-sm tracking-wider text-muted-foreground">
