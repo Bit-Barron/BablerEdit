@@ -1,14 +1,14 @@
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { useProjectStore } from "@/features/project/store/project.store";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { updateProjectFolderStructure } from "../lib/update-structure";
 import parseJson from "parse-json";
-import { ParsedProject } from "@/features/translation/types/translation.types";
+import { ParsedProject } from "@/features/project/types/project.types";
 import { toast } from "sonner";
-import { readTranslationFile } from "@/features/translation/lib/file-reader";
+import { readTranslationFile } from "@/features/project/lib/read-file";
 
 export const useIdHook = () => {
-  const { parsedProject, setParsedProject } = useFileManagerStore();
+  const { parsedProject, setParsedProject } = useProjectStore();
   const { selectedNode } = useEditorStore();
 
   const addIdToJson = async (value: string) => {

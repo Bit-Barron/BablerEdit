@@ -1,18 +1,18 @@
-import { AutoSizedTree } from "@/core/components/elements/auto-sized-tree";
-import { TranslationDetail } from "@/features/editor/components/editor-detail-panel";
-import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
+import { AutoSizedTree } from "@/features/editor/components/auto-sized-tree";
+import { TranslationDetail } from "@/features/editor/components/translation-detail";
+import { buildTranslationTree } from "@/features/editor/lib/build-tree";
 import { useEditorStore } from "@/features/editor/store/editor.store";
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
-import { TreeNode as TreeNodeComponent } from "@/features/editor/components/editor-tree-node";
-import { TreeNode } from "@/features/editor/types/editor.types";
-import { MoveHandler, NodeApi, NodeRendererProps } from "react-arborist";
-import { AddIdDialog } from "@/features/id/components/add-id-dialog";
-import { useIdStore } from "@/features/id/store/id.store";
+import { useProjectStore } from "@/features/project/store/project.store";
+import { TreeNode as TreeNodeComponent } from "@/features/editor/components/translation-tree-node";
+import { NodeApi, NodeRendererProps } from "react-arborist";
+import { AddIdDialog } from "@/features/editor/components/add-id-dialog";
 import { useMemo } from "react";
-import { useEditorHook } from "@/features/editor/hooks/editor.hook";
+import { useEditorHook } from "@/features/editor/hooks/use-editor";
+import { useIdStore } from "@/features/editor/store/id.store";
+import { TreeNodeType } from "@/features/editor/types/tree.types";
 
 export const EditorPage: React.FC = () => {
-  const { parsedProject } = useFileManagerStore();
+  const { parsedProject } = useProjectStore();
   const { selectedNode, setSelectedNode } = useEditorStore();
   const { openIdDialog, setOpenIdDialog } = useIdStore();
   const { handleJsonMove } = useEditorHook();
@@ -39,17 +39,20 @@ export const EditorPage: React.FC = () => {
           openByDefault={false}
           indent={20}
           rowHeight={32}
+          //@ts-ignore
           onMove={handleJsonMove}
           onSelect={(nodes) => {
             if (nodes.length > 0) {
-              setSelectedNode(nodes[0] as NodeApi<TreeNode>);
+              setSelectedNode(nodes[0] as NodeApi<TreeNodeType>);
             } else {
               setSelectedNode(null);
             }
           }}
         >
           {(props) => (
-            <TreeNodeComponent {...(props as NodeRendererProps<TreeNode>)} />
+            <TreeNodeComponent
+              {...(props as NodeRendererProps<TreeNodeType>)}
+            />
           )}
         </AutoSizedTree>
       </div>

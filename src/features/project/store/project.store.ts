@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { ParsedProject } from "@/features/translation/types/translation.types";
+import { ParsedProject } from "@/features/project/types/project.types";
 import { FrameworkType } from "@/core/types/framework.types";
-import { FileWithPath } from "../types/file-manager.types";
+import { FileWithPath } from "../types/file.types";
 
-interface FileManagerStore {
+interface ProjectStore {
   currentProjectPath: string | null;
   setCurrentProjectPath: (path: string | null) => void;
 
@@ -23,7 +23,7 @@ interface FileManagerStore {
   setParsedProject: (project: ParsedProject) => void;
 }
 
-export const useFileManagerStore = create<FileManagerStore>((set) => ({
+export const useProjectStore = create<ProjectStore>((set) => ({
   currentProjectPath: null,
   setCurrentProjectPath: (path) => set({ currentProjectPath: path }),
   selectedFramework: "",

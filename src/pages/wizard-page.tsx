@@ -1,12 +1,12 @@
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { useProjectStore } from "@/features/project/store/project.store";
 import "../app/App.css";
-import { FileUploadDialog } from "@/features/file-manager/components/file-upload-dialog";
-import { WizardFrameworkSelector } from "@/features/project-wizard/components/wizard-framework-selector";
-import { WizardRecentProjects } from "@/features/project-wizard/components/wizard-recent-projects";
+import { WizardFrameworkSelector } from "@/features/wizard/components/framework-selector";
+import { WizardRecentProjects } from "@/features/wizard/components/recent-projects";
+import { FileUploadDialog } from "@/features/wizard/components/file-upload-dialog";
 
 export const WizardPage: React.FC = () => {
   const { isFileUploadDialogOpen, setFileUploadDialogOpen } =
-    useFileManagerStore();
+    useProjectStore();
 
   return (
     <div className="flex flex-col overflow-hidden bg-background">

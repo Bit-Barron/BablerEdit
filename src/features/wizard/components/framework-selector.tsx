@@ -2,11 +2,11 @@ import { Card } from "@/core/components/ui/card";
 import { FILETYPES, getFrameworkIcon } from "@/core/config/constants";
 import React from "react";
 import { FrameworkType } from "@/core/types/framework.types";
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
+import { useProjectStore } from "@/features/project/store/project.store";
 
 export const WizardFrameworkSelector: React.FC = () => {
   const { setSelectedFramework, setFileUploadDialogOpen } =
-    useFileManagerStore();
+    useProjectStore();
 
   return (
     <div className="grid grid-cols-4 gap-3 mb-6">

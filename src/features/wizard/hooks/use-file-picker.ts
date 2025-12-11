@@ -1,11 +1,11 @@
-import { useFileManagerStore } from "../store/file-manager.store";
+import { useProjectStore } from "@/features/project/store/project.store";
 import { open } from "@tauri-apps/plugin-dialog";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";
 
 export const useFileManagerHook = () => {
   const { translationFiles, parsedProject, setTranslationFiles } =
-    useFileManagerStore();
+    useProjectStore();
 
   const handleJsonFiles = async () => {
     try {

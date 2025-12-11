@@ -1,14 +1,14 @@
 "use client";
 
 import { Button } from "@/core/components/ui/button";
+import { useProjectStore } from "@/features/project/store/project.store";
+import { FileWithPath } from "@/features/project/types/file.types";
 import { X } from "lucide-react";
 import { Upload } from "lucide-react";
-import { useFileManagerStore } from "../store/file-manager.store";
-import { FileWithPath } from "../types/file-manager.types";
-import { useFileManagerHook } from "../hooks/file-manager.hook";
+import { useFileManagerHook } from "../hooks/use-file-picker";
 
 export function FileUploadDropzone() {
-  const { translationFiles, setTranslationFiles } = useFileManagerStore();
+  const { translationFiles, setTranslationFiles } = useProjectStore();
   const { handleJsonFiles } = useFileManagerHook();
 
   return (

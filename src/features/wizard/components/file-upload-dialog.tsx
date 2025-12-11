@@ -9,9 +9,9 @@ import {
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
 import { FileUploadDropzone } from "./file-upload-dropzone";
-import { createProject } from "@/features/translation";
 import { useNavigate } from "react-router-dom";
-import { useFileManagerStore } from "../store/file-manager.store";
+import { createProject } from "@/features/project/lib/create-project";
+import { useProjectStore } from "@/features/project/store/project.store";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -27,7 +27,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
     translationFiles,
     selectedFramework,
     setParsedProject,
-  } = useFileManagerStore();
+  } = useProjectStore();
   const navigate = useNavigate();
 
   const parseProject = async () => {

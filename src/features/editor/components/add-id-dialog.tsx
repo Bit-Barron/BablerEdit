@@ -7,10 +7,10 @@ import {
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
-import { useIdStore } from "../store/id.store";
 import { useEditorStore } from "@/features/editor/store/editor.store";
-import { useIdHook } from "../hooks/id.hook";
 import { toast } from "sonner";
+import { useIdHook } from "../hooks/use-id";
+import { useIdStore } from "../store/id.store";
 
 interface OpenIdDialogProps {
   open: boolean;

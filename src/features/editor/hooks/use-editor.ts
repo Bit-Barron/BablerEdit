@@ -1,20 +1,20 @@
-import { ParsedProject } from "@/features/translation/types/translation.types";
+import { ParsedProject } from "@/features/project/types/project.types";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { save, open } from "@tauri-apps/plugin-dialog";
 import yaml from "js-yaml";
 import { useSettingsStore } from "@/features/settings/store/settings.store";
 import { useNavigate } from "react-router-dom";
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
-import { ProjectHelper } from "../lib/project-helper";
+import { useProjectStore } from "@/features/project/store/project.store";
 import { toast } from "sonner";
 import dayjs from "dayjs";
 import parseJson from "parse-json";
-import { updateProjectFolderStructure } from "@/features/id/lib/update-structure";
+import { updateProjectFolderStructure } from "@/features/editor/lib/update-structure";
+import { ProjectHelper } from "../lib/serialize-project";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
-  const { setParsedProject, parsedProject } = useFileManagerStore();
-  const { setCurrentProjectPath, currentProjectPath } = useFileManagerStore();
+  const { setParsedProject, parsedProject } = useProjectStore();
+  const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
   const navigate = useNavigate();
 
   const saveProject = async (

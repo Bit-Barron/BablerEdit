@@ -1,4 +1,4 @@
-import { ParsedProject } from "@/features/translation/types/translation.types";
+import { ParsedProject } from "@/features/project/types/project.types";
 
 export const ProjectHelper = (project: ParsedProject) => {
   const bablerProject: ParsedProject = {

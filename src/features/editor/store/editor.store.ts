@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { NodeApi } from "react-arborist";
-import { TreeNode } from "../types/editor.types";
+import { TreeNodeType } from "../types/tree.types";
 
 interface EditorPageState {
-  selectedNode: NodeApi<TreeNode> | null;
-  setSelectedNode: (node: NodeApi<TreeNode> | null) => void;
+  selectedNode: NodeApi<TreeNodeType> | null;
+  setSelectedNode: (node: NodeApi<TreeNodeType> | null) => void;
 
   updateTranslation: string;
   setUpdateTranslation: (value: string) => void;

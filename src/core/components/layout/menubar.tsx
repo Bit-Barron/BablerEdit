@@ -6,8 +6,8 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
-import MenuItem from "../elements/menu-item";
 import { MenuItem as MenuItemType } from "@/core/types/common.types";
+import MenuItem from "./menu-item";
 
 export default function MenuBar() {
   return (

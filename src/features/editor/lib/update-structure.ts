@@ -1,5 +1,5 @@
-import { flattenJson } from "@/features/translation/lib/parser";
-import { ParsedProject } from "@/features/translation/types/translation.types";
+import { flattenJson } from "@/features/project/lib/parse-json";
+import { ParsedProject } from "@/features/project/types/project.types";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import parseJson from "parse-json";
 

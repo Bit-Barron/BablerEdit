@@ -1,22 +1,22 @@
 import MenuBar from "@/core/components/layout/menubar";
 import Toolbar from "@/core/components/layout/toolbar";
 import { useToolbarStore } from "@/core/store/toolbar.store";
-import { useEditorHook } from "@/features/editor/hooks/editor.hook";
-import { useFileManagerStore } from "@/features/file-manager/store/file-manager.store";
-import { useIdHook } from "@/features/id/hooks/id.hook";
-import { useIdStore } from "@/features/id/store/id.store";
-import { useSettingsHook } from "@/features/settings/hooks/settings.hook";
+import { useEditorHook } from "@/features/editor/hooks/use-editor";
+import { useProjectStore } from "@/features/project/store/project.store";
+import { useIdHook } from "@/features/editor/hooks/use-id";
+import { useSettingsHook } from "@/features/settings/hooks/use-settings";
 import { EditorPage } from "@/pages/editor-page";
 import { WizardPage } from "@/pages/wizard-page";
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
+import { useIdStore } from "@/features/editor/store/id.store";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
     useToolbarStore();
   const { saveProject, openProject } = useEditorHook();
-  const { parsedProject } = useFileManagerStore();
+  const { parsedProject } = useProjectStore();
   const { setOpenIdDialog } = useIdStore();
   const { removeIdFromJson } = useIdHook();
   const location = useLocation();

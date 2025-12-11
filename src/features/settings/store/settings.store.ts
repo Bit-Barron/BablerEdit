@@ -4,7 +4,7 @@ import {
   SettingsState,
   UpdateSettingsState,
 } from "../types/settings.types";
-import { saveToFile } from "../lib/file-helper";
+import { saveToFile } from "../lib/persist-settings";
 
 export const useSettingsStore = create<SettingsState>((set) => ({
   darkMode: false,

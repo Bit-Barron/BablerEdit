@@ -1,9 +1,9 @@
-import { ParsedProject } from "@/features/translation/types/translation.types";
-import { TreeNode } from "../types/editor.types";
+import { ParsedProject } from "@/features/project/types/project.types";
+import { TreeNodeType } from "../types/tree.types";
 
 export const buildTranslationTree = (
   projectData: ParsedProject
-): TreeNode[] => {
+): TreeNodeType[] => {
   const allKeys: string[] = [];
 
   for (let i of projectData.folder_structure.children[0].children) {
@@ -27,7 +27,7 @@ export const buildTranslationTree = (
   const convert = (
     obj: Record<string, any>,
     parentPath: string = ""
-  ): TreeNode[] => {
+  ): TreeNodeType[] => {
     return Object.entries(obj).map(([name, child]) => {
       const fullPath = parentPath ? `${parentPath}.${name}` : name;
 

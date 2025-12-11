@@ -1,4 +1,4 @@
-import { FileWithPath } from "@/features/file-manager/types/file-manager.types";
+import { FileWithPath } from "@/features/project/types/file.types";
 import parseJson from "parse-json";
 
 export async function parseJSONFile(

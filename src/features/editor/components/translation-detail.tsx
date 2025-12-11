@@ -1,13 +1,13 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
-import { ParsedProject } from "@/features/translation/types/translation.types";
-import { TreeNode } from "@/features/editor/types/editor.types";
+import { ParsedProject } from "@/features/project/types/project.types";
 import { Checkbox } from "@/core/components/ui/checkbox";
 import { Input } from "@/core/components/ui/input";
 import { useEditorStore } from "../store/editor.store";
+import { TreeNodeType } from "../types/tree.types";
 
 interface TranslationDetailProps {
-  selectedNode: NodeApi<TreeNode>;
+  selectedNode: NodeApi<TreeNodeType>;
   project: ParsedProject;
 }
 export const TranslationDetail: React.FC<TranslationDetailProps> = ({
