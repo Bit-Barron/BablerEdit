@@ -1,8 +1,7 @@
 import { useProjectStore } from "@/features/project/store/project.store";
-import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { updateProjectFolderStructure } from "../lib/update-structure";
-import parseJson from "parse-json";
 import { ParsedProject } from "@/features/project/types/project.types";
 import { toast } from "sonner";
 import { readTranslationFile } from "@/features/project/lib/read-file";
@@ -19,8 +18,12 @@ export const useIdHook = () => {
       for (let path in TRANSLATION_FILES) {
         const filePath = TRANSLATION_FILES[path].path;
         const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
-        const content = await readTextFile(jsonFilePath);
-        const obj = parseJson(content);
+        console.log("Processing fileasdas:", jsonFilePath);
+        const obj = await readTranslationFile(
+          parsedProject.source_root_dir,
+          filePath
+        );
+
         const splitSelectedNode = selectedNode!.data.id.split(".");
         let current: any = obj;
         let parrent: any = "";

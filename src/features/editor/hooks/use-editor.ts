@@ -7,9 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/features/project/store/project.store";
 import { toast } from "sonner";
 import dayjs from "dayjs";
-import parseJson from "parse-json";
 import { updateProjectFolderStructure } from "@/features/editor/lib/update-structure";
 import { ProjectHelper } from "../lib/serialize-project";
+import { readTranslationFile } from "@/features/project/lib/read-file";
+import parseJson from "parse-json";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
@@ -133,8 +134,12 @@ export const useEditorHook = () => {
       for (let path in TRANSLATION_FILES) {
         const filePath = TRANSLATION_FILES[path].path;
         const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
-        const content = await readTextFile(jsonFilePath);
-        const obj = parseJson(content);
+
+        const obj = await readTranslationFile(
+          parsedProject.source_root_dir,
+          filePath
+        );
+
         const dragId = dragIds[0].split(".");
         const splitParentId = parentId.split(".");
 
