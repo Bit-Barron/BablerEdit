@@ -123,11 +123,12 @@ export const useEditorHook = () => {
   }: {
     dragIds: string[];
     parentId: string | null;
-    index: number;
   }) => {
     try {
       const TRANSLATION_FILES =
         parsedProject.translation_packages[0].translation_urls;
+
+      if (!dragIds || !parentId) return;
 
       for (let path in TRANSLATION_FILES) {
         const filePath = TRANSLATION_FILES[path].path;
@@ -135,7 +136,7 @@ export const useEditorHook = () => {
         const content = await readTextFile(jsonFilePath);
         const obj = parseJson(content);
         const dragId = dragIds[0].split(".");
-        const splitParentId = parentId!.split(".");
+        const splitParentId = parentId.split(".");
 
         let current: any = obj;
         let parent: any = "";
@@ -152,7 +153,6 @@ export const useEditorHook = () => {
           current = current[dragId[i]];
         }
 
-        const valueToMove = current;
         delete parent[dragId[dragId.length - 1]];
 
         let parentCurrent: any = obj;
@@ -160,7 +160,8 @@ export const useEditorHook = () => {
           parentCurrent = parentCurrent[splitParentId[i]];
         }
 
-        parentCurrent[dragId[dragId.length - 1]] = valueToMove;
+        // ** Current is the new value to be set
+        parentCurrent[dragId[dragId.length - 1]] = current;
 
         const finalContent = JSON.stringify(obj, null, 2);
         await writeTextFile(jsonFilePath, finalContent);
