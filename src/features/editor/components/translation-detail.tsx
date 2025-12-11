@@ -14,7 +14,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const { setUpdateTranslation } = useEditorStore();
+  const { setUpdateTranslation, updateTranslation } = useEditorStore();
 
   const findTranslationForKey = () => {
     const mainPackage = project.folder_structure.children[0];
@@ -27,10 +27,12 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     return conceptNode.translations;
   };
 
+  console.log(updateTranslation);
+
   return (
     <section className="flex flex-col bg-background">
       <div className="px-6 py-2.5 bg-muted/30 border-b">
-        <h2 className="font-semibold tracking-wide">{selectedNode!.data.id}</h2>
+        <h2 className="font-semibold tracking-wide">{selectedNode.data.id}</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">

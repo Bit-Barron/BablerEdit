@@ -13,6 +13,7 @@ import {
 } from "@/features/editor/lib/editor-utils";
 
 import { readTranslationFile } from "@/features/project/lib/project-utils";
+import { ReactArboristType } from "../types/tree.types";
 
 export const useEditorHook = () => {
   const { addRecentProject } = useSettingsStore();
@@ -120,13 +121,7 @@ export const useEditorHook = () => {
     }
   };
 
-  const handleJsonMove = async ({
-    dragIds,
-    parentId,
-  }: {
-    dragIds: string[];
-    parentId: string | null;
-  }) => {
+  const handleJsonMove = async ({ dragIds, parentId }: ReactArboristType) => {
     try {
       const TRANSLATION_FILES =
         parsedProject.translation_packages[0].translation_urls;

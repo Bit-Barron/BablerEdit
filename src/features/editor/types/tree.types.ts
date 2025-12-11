@@ -3,3 +3,8 @@ export interface TreeNodeType {
   name: string;
   children?: TreeNodeType[];
 }
+
+export interface ReactArboristType {
+  dragIds: string[];
+  parentId: string | null;
+}

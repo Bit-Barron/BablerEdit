@@ -18,13 +18,14 @@ export const useIdHook = () => {
       for (let path in TRANSLATION_FILES) {
         const filePath = TRANSLATION_FILES[path].path;
         const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
-        console.log("Processing fileasdas:", jsonFilePath);
         const obj = await readTranslationFile(
           parsedProject.source_root_dir,
           filePath
         );
 
-        const splitSelectedNode = selectedNode!.data.id.split(".");
+        if (!selectedNode) return;
+
+        const splitSelectedNode = selectedNode.data.id.split(".");
         let current: any = obj;
         let parrent: any = "";
 
