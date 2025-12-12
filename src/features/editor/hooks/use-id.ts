@@ -47,7 +47,7 @@ export const useIdHook = () => {
 
       toast.success(`ID "${value}" added successfully to JSON files`);
       setParsedProject(updatedProject as ParsedProject);
-    } catch (err) {
+    } catch (err) { 
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
 
