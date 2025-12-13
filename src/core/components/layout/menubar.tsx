@@ -8,28 +8,32 @@ import {
 } from "../ui/navigation-menu";
 import { MenuItem as MenuItemType } from "@/core/types/common.types";
 import MenuItem from "./menu-item";
+import WindowControls from "./window-controls";
 
 export default function MenuBar() {
   return (
-    <div className="border-b">
-      <NavigationMenu className="h-6">
-        <NavigationMenuList className="space-x-0">
-          {MENUS.map((menu) => (
-            <NavigationMenuItem key={menu.label}>
-              <NavigationMenuTrigger className="h-6 px-2 py-0.5 text-xs font-normal hover:bg-accent data-[state=open]:bg-accent rounded-sm">
-                {menu.label}
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="min-w-[220px] bg-popover rounded-md shadow-lg py-1">
-                  {menu.items.map((item: MenuItemType, index: number) => (
-                    <MenuItem key={`${menu.label}-${index}`} item={item} />
-                  ))}
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          ))}
-        </NavigationMenuList>
-      </NavigationMenu>
+    <div className="border-b" data-tauri-drag-region>
+      <div className="flex items-center">
+        <NavigationMenu className="h-6">
+          <NavigationMenuList className="space-x-0">
+            {MENUS.map((menu) => (
+              <NavigationMenuItem key={menu.label}>
+                <NavigationMenuTrigger className="h-6 px-2 py-0.5 text-xs font-normal hover:bg-accent data-[state=open]:bg-accent rounded-sm">
+                  {menu.label}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="min-w-[220px] bg-popover rounded-md shadow-lg py-1">
+                    {menu.items.map((item: MenuItemType, index: number) => (
+                      <MenuItem key={`${menu.label}-${index}`} item={item} />
+                    ))}
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+        <WindowControls />
+      </div>
     </div>
   );
 }

@@ -8,12 +8,12 @@
     "opener:default",
     "dialog:allow-save",
     "dialog:allow-open",
+    "core:window:allow-close",
+    "core:window:allow-maximize",
+    "core:window:allow-minimize",
     {
       "identifier": "fs:allow-exists",
-      "allow": [
-        { "path": "$APPDATA/**" },
-        { "path": "**" }
-      ]
+      "allow": [{ "path": "$APPDATA/**" }, { "path": "**" }]
     },
     {
       "identifier": "fs:allow-mkdir",
@@ -21,17 +21,11 @@
     },
     {
       "identifier": "fs:allow-read-text-file",
-      "allow": [
-        { "path": "$APPDATA/**" },
-        { "path": "**" }
-      ]
+      "allow": [{ "path": "$APPDATA/**" }, { "path": "**" }]
     },
     {
       "identifier": "fs:allow-write-text-file",
-      "allow": [
-        { "path": "$APPDATA/**" },
-        { "path": "**" }
-      ]
+      "allow": [{ "path": "$APPDATA/**" }, { "path": "**" }]
     }
   ]
 }
