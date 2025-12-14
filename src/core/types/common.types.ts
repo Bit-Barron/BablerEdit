@@ -1,38 +1,17 @@
 import { LucideIcon } from "lucide-react";
 
-type MenuItemBase = {
-  label: string;
-};
-
-type MenuItemWithShortcut = MenuItemBase & {
-  shortcut: string;
-};
-
-type MenuItemWithSubmenu = MenuItemBase & {
-  hasSubmenu: true;
-};
-
-type MenuItemWithCheck = MenuItemBase & {
-  checked: boolean;
+export interface MenuItem {
+  label?: string;
   shortcut?: string;
-};
+  hasSubmenu?: boolean;
+  checked?: boolean;
+  divider?: boolean;
+}
 
-type MenuDivider = {
-  divider: true;
-  label?: never;
-};
-
-export type MenuItem =
-  | MenuItemBase
-  | MenuItemWithShortcut
-  | MenuItemWithSubmenu
-  | MenuItemWithCheck
-  | MenuDivider;
-
-export type Menu = {
+export interface Menu {
   label: string;
   items: MenuItem[];
-};
+}
 
 export interface ToolbarType {
   id: string;

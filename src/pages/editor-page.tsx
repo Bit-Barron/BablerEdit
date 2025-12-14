@@ -28,9 +28,9 @@ export const EditorPage: React.FC = () => {
   const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
 
   return (
-    <div className="fixed inset-0 top-[89px] flex">
-      <div className="w-[400px] border-r flex flex-col bg-background">
-        <div className="border-b px-4 py-3 bg-muted/30 shrink-0">
+    <div className="fixed inset-0 top-22 flex">
+      <div className="w-100 border-r border-border-subtle flex flex-col bg-background">
+        <div className="border-b border-l border-t border-border-subtle bg-secondary px-4 py-3 shrink-0">
           <h2 className="font-semibold text-sm">Translation IDs</h2>
         </div>
         <AutoSizedTree
@@ -63,7 +63,7 @@ export const EditorPage: React.FC = () => {
             project={parsedProject}
           />
         ) : (
-          <div className="flex items-center justify-center h-full text-muted-foreground">
+          <div className="flex items-center justify-center h-full bg-secondary">
             <p>Select a translation key to edit</p>
           </div>
         )}
