@@ -18,6 +18,7 @@ export interface ToolbarType {
   icon: LucideIcon;
   label: string;
   onClick?: string;
+  disabled: boolean;
   enabledIn: string[];
 }
 

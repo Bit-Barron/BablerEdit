@@ -135,6 +135,7 @@ export const TOOLBAR: ToolbarType[] = [
     label: "Open project",
     onClick: "onOpenProject",
     enabledIn: ["/", "/wizard"],
+    disabled: false,
   },
   {
     id: "save",
@@ -142,42 +143,49 @@ export const TOOLBAR: ToolbarType[] = [
     label: "Save project",
     onClick: "onSaveProject",
     enabledIn: ["/editor"],
+    disabled: false,
   },
   {
     id: "add-id",
     icon: Plus,
     label: "Add ID",
     enabledIn: ["/editor"],
+    disabled: false,
   },
   {
     id: "remove-ids",
     icon: Trash2,
     label: "Remove IDs",
     enabledIn: ["/editor"],
+    disabled: false,
   },
   {
     id: "filter",
     icon: Filter,
     label: "Set Filter",
     enabledIn: ["/editor"],
+    disabled: false,
   },
   {
     id: "pre-translate",
     icon: Languages,
     label: "Pre-Translate",
     enabledIn: ["/editor"],
+    disabled: false,
   },
   {
     id: "consistency",
     icon: Bot,
     label: "ConsistencyAI",
     enabledIn: ["/editor"],
+    disabled: false,
   },
   {
     id: "languages",
     icon: Globe,
     label: "Languages",
     enabledIn: ["/editor"],
+    disabled: false,
   },
 ];
 

@@ -34,11 +34,9 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     findTranslationForKey();
   }, [selectedNode]);
 
-  console.log(project);
-
   return (
     <section className="flex flex-col bg-secondary h-screen">
-      <div className="px-6 py-2.5 bg-secondary border-border-subtle border-b border-t border-r flex justify-between">
+      <div className="px-6 py-2.5 bg-secondary border-border-subtle border-b border-t flex justify-between">
         <h2 className="font-semibold tracking-wide">Translations</h2>
         <div className="flex items-center gap-2">
           {project.languages.map((lang) => (

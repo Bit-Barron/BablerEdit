@@ -30,7 +30,7 @@ export const EditorPage: React.FC = () => {
   return (
     <div className="fixed inset-0 top-22 flex">
       <div className="w-100 border-r border-border-subtle flex flex-col bg-background">
-        <div className="border-b border-l border-t border-border-subtle bg-secondary px-4 py-3 shrink-0">
+        <div className="border-b border-t border-border-subtle bg-secondary px-4 py-3 shrink-0">
           <h2 className="font-semibold text-sm">Translation IDs</h2>
         </div>
         <AutoSizedTree

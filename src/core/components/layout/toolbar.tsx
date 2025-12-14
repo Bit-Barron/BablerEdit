@@ -9,9 +9,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { useEditorStore } from "@/features/editor/store/editor.store";
 
 export default function Toolbar() {
   const { setOnProjectClick } = useToolbarStore();
+  const { selectedNode } = useEditorStore();
   const location = useLocation();
 
   return (
@@ -21,14 +23,22 @@ export default function Toolbar() {
           {TOOLBAR.map((button) => {
             const isEnabled = button.enabledIn.includes(location.pathname);
 
+            const isDisabled =
+              button.id === "remove-ids" ? !selectedNode : button.disabled;
+
+            const shouldBeDisabled = !isEnabled || isDisabled;
+
             return (
               <Tooltip key={button.id}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={() => setOnProjectClick(button.id)}
+                    onClick={() => {
+                      if (shouldBeDisabled) return;
+                      setOnProjectClick(button.id);
+                    }}
                     variant="ghost"
                     size="sm"
-                    disabled={!isEnabled}
+                    disabled={shouldBeDisabled}
                     className="flex items-center gap-2 h-9 px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <button.icon className="h-4 w-4" />
