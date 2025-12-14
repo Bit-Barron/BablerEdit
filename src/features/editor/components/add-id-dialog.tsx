@@ -10,7 +10,6 @@ import { Input } from "@/core/components/ui/input";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { toast } from "sonner";
 import { useIdHook } from "../hooks/use-id";
-import { useIdStore } from "../store/id.store";
 
 interface OpenIdDialogProps {
   open: boolean;
@@ -22,7 +21,7 @@ export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
   onOpenChange,
 }) => {
   const { selectedNode } = useEditorStore();
-  const { value, setValue } = useIdStore();
+  const { value, setValue } = useEditorStore();
   const { addIdToJson } = useIdHook();
 
   useEffect(() => {

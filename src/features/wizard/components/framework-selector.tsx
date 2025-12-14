@@ -5,15 +5,14 @@ import { FrameworkType } from "@/core/types/framework.types";
 import { useProjectStore } from "@/features/project/store/project.store";
 
 export const WizardFrameworkSelector: React.FC = () => {
-  const { setSelectedFramework, setFileUploadDialogOpen } =
-    useProjectStore();
+  const { setSelectedFramework, setFileUploadDialogOpen } = useProjectStore();
 
   return (
     <div className="grid grid-cols-4 gap-3 mb-6">
       {FILETYPES.map((type) => (
         <Card
           key={type.id}
-          className="flex flex-col items-center justify-center p-4 cursor-pointer hover:bg-accent hover:border-primary/50 transition-all group min-h-[85px]"
+          className="flex flex-col items-center justify-center p-4 cursor-pointer hover:bg-accent hover:border-primary/50 transition-all group min-h-24"
           onClick={() => {
             setSelectedFramework(type.id as FrameworkType);
             setFileUploadDialogOpen(true);

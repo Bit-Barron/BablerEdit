@@ -12,7 +12,14 @@ interface EditorPageState {
 
   translationForKey: Translation[];
   setTranslationForKey: (translations: Translation[]) => void;
+
+  value: string;
+  setValue: (value: string) => void;
+
+  openIdDialog: boolean;
+  setOpenIdDialog: (isOpen: boolean) => void;
 }
+
 export const useEditorStore = create<EditorPageState>((set) => ({
   selectedNode: null,
   setSelectedNode: (node) => set({ selectedNode: node }),
@@ -23,4 +30,9 @@ export const useEditorStore = create<EditorPageState>((set) => ({
 
   updateTranslation: "",
   setUpdateTranslation: (value) => set({ updateTranslation: value }),
+
+  value: "",
+  setValue: (value) => set({ value }),
+  openIdDialog: false,
+  setOpenIdDialog: (isOpen) => set({ openIdDialog: isOpen }),
 }));

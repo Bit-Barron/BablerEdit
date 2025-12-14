@@ -10,14 +10,14 @@ import { WizardPage } from "@/pages/wizard-page";
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
-import { useIdStore } from "@/features/editor/store/id.store";
+import { useEditorStore } from "@/features/editor/store/editor.store";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
     useToolbarStore();
   const { saveProject, openProject } = useEditorHook();
   const { parsedProject } = useProjectStore();
-  const { setOpenIdDialog } = useIdStore();
+  const { setOpenIdDialog } = useEditorStore();
   const { removeIdFromJson } = useIdHook();
   const location = useLocation();
 

@@ -8,13 +8,12 @@ import { NodeApi, NodeRendererProps } from "react-arborist";
 import { AddIdDialog } from "@/features/editor/components/add-id-dialog";
 import { useMemo } from "react";
 import { useEditorHook } from "@/features/editor/hooks/use-editor";
-import { useIdStore } from "@/features/editor/store/id.store";
 import { TreeNodeType } from "@/features/editor/types/tree.types";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
   const { selectedNode, setSelectedNode } = useEditorStore();
-  const { openIdDialog, setOpenIdDialog } = useIdStore();
+  const { openIdDialog, setOpenIdDialog } = useEditorStore();
   const { handleJsonMove } = useEditorHook();
 
   const initialTreeData = useMemo(() => {

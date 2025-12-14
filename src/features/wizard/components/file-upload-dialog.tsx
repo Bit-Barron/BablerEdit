@@ -51,7 +51,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
-      <DialogContent className="sm:max-w-[600px] max-h-[85vh] p-0 flex flex-col">
+      <DialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
         <DialogHeader className="px-6 pt-6 pb-3 shrink-0">
           <DialogTitle className="text-lg font-semibold">
             Configure languages
@@ -86,7 +86,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
             <Button
               variant="destructive"
               onClick={() => onOpenChange(false)}
-              className="min-w-[100px]"
+              className="min-w-25"
             >
               Close
             </Button>
