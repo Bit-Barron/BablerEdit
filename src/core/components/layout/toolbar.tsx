@@ -15,8 +15,8 @@ export default function Toolbar() {
   const location = useLocation();
 
   return (
-    <div className="border-b border-[#5a5a5a] bg-secondary">
-      <div className="flex items-center justify-center h-15 px-3 gap-1 overflow-x-auto">
+    <div className="border-b border-border-subtle bg-secondary">
+      <div className="flex items-center justify-between h-15 px-3 gap-1 overflow-x-auto">
         <TooltipProvider>
           {TOOLBAR.map((button) => {
             const isEnabled = button.enabledIn.includes(location.pathname);

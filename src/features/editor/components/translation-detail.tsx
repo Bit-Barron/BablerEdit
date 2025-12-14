@@ -41,12 +41,12 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       <div className="px-6 py-2.5 bg-secondary border-border-subtle border-b border-t border-r flex justify-between">
         <h2 className="font-semibold tracking-wide">Translations</h2>
         <div className="flex items-center gap-2">
-          {project.languages.map((lang, index) => (
+          {project.languages.map((lang) => (
             <React.Fragment key={lang.code}>
-              <div>{`${lang.code}-${lang.code.toUpperCase()}`}</div>
-              {index < project.languages.length - 1 && (
-                <Separator orientation="vertical" className="h-4" />
-              )}
+              <div className="text-sm">{`${
+                lang.code
+              }-${lang.code.toUpperCase()}`}</div>
+              <Separator orientation="vertical" className="h-4" />
             </React.Fragment>
           ))}
         </div>

@@ -12,7 +12,7 @@ import { cn } from "@/core/lib/utils";
 
 export default function MenuBar() {
   return (
-    <div className="w-full bg-secondary border-b border-[#5a5a5a]">
+    <div className="w-full bg-secondary border-b border-border-subtle">
       <NavigationMenu viewport={false} className="max-w-none justify-start">
         <NavigationMenuList className="gap-0">
           {MENUS.map((menu) => (
@@ -21,13 +21,13 @@ export default function MenuBar() {
                 {menu.label}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="min-w-50 bg-[#3c3c3c] border border-[#5a5a5a] rounded-md overflow-hidden p-1">
+                <ul className="min-w-50 bg-[#3c3c3c] border border-border-subtle rounded-md overflow-hidden p-1">
                   {menu.items.map((item, idx) => {
                     if (item.divider) {
                       return (
                         <li
                           key={`divider-${idx}`}
-                          className="h-px bg-[#5a5a5a] my-1 mx-2"
+                          className="h-px bg-secondary my-1 mx-2"
                         />
                       );
                     }
