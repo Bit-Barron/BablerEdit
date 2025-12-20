@@ -15,7 +15,6 @@ export async function createProject(
 ): Promise<ParsedProject | void> {
   try {
     let foundPrimaryLanguage = false;
-
     const langCodes = files.map(
       (file) => extractLanguageCode(file.name) ?? file.name.split(".")[0]
     );
