@@ -6,6 +6,7 @@ import { Input } from "@/core/components/ui/input";
 import { useEditorStore } from "../store/editor.store";
 import { TreeNodeType } from "../types/tree.types";
 import { Separator } from "@/core/components/ui/seperator";
+import { useTranslationHook } from "@/features/editor/hooks/use-translation";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -17,6 +18,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 }) => {
   const { setUpdateTranslation, setTranslationForKey, translationForKey } =
     useEditorStore();
+  const { handleApprovedChange } = useTranslationHook();
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -33,22 +35,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
     findTranslationForKey();
   }, [selectedNode]);
-
-  const handleApprovedChange = (language: string) => {
-    const updateTranslations = translationForKey.map((t) => {
-      if (t.language === language) {
-        return { ...t, approved: !t.approved };
-      }
-
-      return t;
-    });
-
-    console.log(updateTranslations);
-
-    setTranslationForKey(updateTranslations);
-
-    return updateTranslations;
-  };
 
   return (
     <section className="flex flex-col bg-secondary h-screen">
