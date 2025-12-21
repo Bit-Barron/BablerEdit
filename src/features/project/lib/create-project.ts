@@ -31,10 +31,7 @@ export async function createProject(
           content: file.content,
           size: file.size,
         });
-
         primaryFlat = flattenJson(json);
-
-        toast.success(`Primary language file "${primaryLanguage}.json" found.`);
         break;
       }
     }
