@@ -1,5 +1,5 @@
-import { create } from "zustand";
 import { NodeApi } from "react-arborist";
+import { create } from "zustand";
 import { TreeNodeType } from "../types/tree.types";
 import { Translation } from "@/features/project/types/project.types";
 

@@ -34,6 +34,22 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     findTranslationForKey();
   }, [selectedNode]);
 
+  const handleApprovedChange = (language: string) => {
+    const updateTranslations = translationForKey.map((t) => {
+      if (t.language === language) {
+        return { ...t, approved: !t.approved };
+      }
+
+      return t;
+    });
+
+    console.log(updateTranslations);
+
+    setTranslationForKey(updateTranslations);
+
+    return updateTranslations;
+  };
+
   return (
     <section className="flex flex-col bg-secondary h-screen">
       <div className="px-6 py-2.5 bg-secondary border-border-subtle border-b border-t flex justify-between">
@@ -55,27 +71,33 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
       <div className="flex-1 overflow-y-auto">
         <div className="divide-y">
-          {translationForKey.map((t) => (
-            <div key={t.language} className="px-6 py-5">
-              <div className="flex items-center justify-between mb-3">
-                <span className="font-semibold text-sm tracking-wider text-muted-foreground">
-                  {t.language.toUpperCase()}
-                </span>
-                <label className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-                  <Checkbox className="w-3.5 h-3.5" />
-                  <span>Approved</span>
-                </label>
-              </div>
+          {translationForKey.map((t) => {
+            return (
+              <div key={t.language} className="px-6 py-5">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-semibold text-sm tracking-wider text-muted-foreground">
+                    {t.language.toUpperCase()}
+                  </span>
+                  <label className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+                    <Checkbox
+                      checked={t.approved}
+                      onCheckedChange={() => handleApprovedChange(t.language)}
+                      className="w-3.5 h-3.5"
+                    />
+                    <span>Approved</span>
+                  </label>
+                </div>
 
-              <Input
-                type="text"
-                value={t.value}
-                onChange={(e) => setUpdateTranslation(e.target.value)}
-                className="w-full border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                placeholder={`Enter ${t.language} translation...`}
-              />
-            </div>
-          ))}
+                <Input
+                  type="text"
+                  value={t.value}
+                  onChange={(e) => setUpdateTranslation(e.target.value)}
+                  className="w-full border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={`Enter ${t.language} translation...`}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
