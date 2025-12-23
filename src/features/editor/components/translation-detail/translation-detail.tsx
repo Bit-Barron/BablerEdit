@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/features/project/types/project.types";
-import { Checkbox } from "@/core/components/icons/checkbox";
 import { Input } from "@/core/components/ui/input";
 import { Separator } from "@/core/components/ui/seperator";
 import { TreeNodeType } from "@/features/editor/types/tree.types";
 import { useTranslation } from "@/features/editor/hooks/use-translation";
+import { useTranslationStore } from "@/features/editor/stores/translation.store";
+import { Checkbox } from "@/core/components/icons/checkbox";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
   project: ParsedProject;
 }
-
 export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const { currentTranslations, toggleApproved, updateValue } = useTranslation();
+  const { translationForKey, setTranslationForKey } = useTranslationStore();
+  const { toggleApproved } = useTranslation();
+  
+  useEffect(() => {
+    const findTranslationForKey = () => {
+      const mainPackage = project.folder_structure.children[0];
+      const conceptNode = mainPackage.children.find(
+        (child) => child.name === selectedNode!.data.id
+      );
+      if (!conceptNode) {
+        return [];
+      }
+
+      setTranslationForKey(conceptNode.translations);
+    };
+
+    findTranslationForKey();
+  }, [selectedNode]);
 
   return (
     <section className="flex flex-col bg-secondary h-screen">
@@ -39,7 +56,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
       <div className="flex-1 overflow-y-auto">
         <div className="divide-y">
-          {currentTranslations.map((t) => {
+          {translationForKey.map((t) => {
             return (
               <div key={t.language} className="px-6 py-5">
                 <div className="flex items-center justify-between mb-3">
@@ -59,7 +76,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 <Input
                   type="text"
                   value={t.value}
-                  onChange={(e) => updateValue(t.language, e.target.value)}
                   className="w-full border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                   placeholder={`Enter ${t.language} translation...`}
                 />

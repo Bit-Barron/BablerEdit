@@ -1,61 +1,98 @@
+import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { ParsedProject } from "@/features/project/types/project.types";
+import { toast } from "sonner";
+import { updateProjectFolderStructure } from "@/features/editor/lib/project-updater";
+import { readTranslationFile } from "@/features/project/utils/file-reader";
 import { useProjectStore } from "@/features/project/stores/project.store";
 import { useSelectionStore } from "@/features/editor/stores/selection.store";
-import { TranslationManagerService } from "@/features/editor/services/translation-manager.service";
-import { toast } from "sonner";
-import { useMemo } from "react";
-import { updateProjectFolderStructure } from "@/features/editor/lib/project-updater";
-import { ParsedProject } from "@/features/project/types/project.types";
 
 export const useId = () => {
   const { parsedProject, setParsedProject } = useProjectStore();
   const { selectedNode } = useSelectionStore();
 
-  const manager = useMemo(
-    () => parsedProject && new TranslationManagerService(parsedProject),
-    [parsedProject]
-  );
-
-  const addId = async (newId: string) => {
-    if (!selectedNode || !parsedProject || !manager) {
-      toast.error("No node selected or project not loaded");
-      return;
-    }
-
+  const addIdToJson = async (value: string) => {
     try {
-      const parentPath = selectedNode.isLeaf
-        ? selectedNode.data.id.split(".").slice(0, -1).join(".")
-        : selectedNode.data.id;
+      const TRANSLATION_FILES =
+        parsedProject.translation_packages[0].translation_urls;
 
-      await manager.addId(parentPath, newId);
+      for (let path in TRANSLATION_FILES) {
+        const filePath = TRANSLATION_FILES[path].path;
+        const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
+        const obj = await readTranslationFile(
+          parsedProject.source_root_dir,
+          filePath
+        );
 
-      const updated = await updateProjectFolderStructure(parsedProject);
-      setParsedProject(updated as ParsedProject);
+        if (!selectedNode) return;
 
-      toast.success(`ID "${newId}" added successfully`);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to add ID: ${message}`);
+        const splitSelectedNode = selectedNode.data.id.split(".");
+        let current: any = obj;
+        let parent: any = "";
+
+        for (let i = 0; i < splitSelectedNode.length; i++) {
+          parent = current;
+          current = current[splitSelectedNode[i]];
+        }
+
+        if (typeof current === "object") {
+          current[value] = "";
+        } else {
+          parent[value] = "";
+        }
+        const updateContent = JSON.stringify(obj, null, 2);
+        writeTextFile(jsonFilePath, updateContent);
+      }
+
+      const updatedProject = await updateProjectFolderStructure(parsedProject);
+      toast.success(`ID "${value}" added successfully to JSON files`);
+      setParsedProject(updatedProject as ParsedProject);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Failed: ${message}`);
+      return null;
     }
   };
 
-  const removeId = async () => {
-    if (!selectedNode || !parsedProject || !manager) {
-      toast.error("No node selected");
-      return;
-    }
-
+  const removeIdFromJson = async () => {
     try {
-      await manager.removeId(selectedNode.data.id);
+      const TRANSLATION_FILES =
+        parsedProject.translation_packages[0].translation_urls;
 
-      const updated = await updateProjectFolderStructure(parsedProject);
-      setParsedProject(updated as ParsedProject);
+      for (let path in TRANSLATION_FILES) {
+        const filePath = TRANSLATION_FILES[path].path;
+        const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
+        const obj = await readTranslationFile(
+          parsedProject.source_root_dir,
+          filePath
+        );
 
-      toast.success(`ID "${selectedNode.data.name}" removed successfully`);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to remove ID: ${message}`);
+        const splitSelectedNode = selectedNode!.data.id.split(".");
+
+        let current: any = obj;
+        let parent: any = "";
+
+        for (let i = 0; i < splitSelectedNode.length; i++) {
+          parent = current;
+          current = current[splitSelectedNode[i]];
+        }
+
+        delete parent[splitSelectedNode[splitSelectedNode.length - 1]];
+        const updatedContent = JSON.stringify(obj, null, 2);
+
+        writeTextFile(jsonFilePath, updatedContent);
+      }
+      const updatedProject = await updateProjectFolderStructure(parsedProject);
+
+      toast.success(
+        `ID "${selectedNode!.data.name}" removed successfully from JSON files`
+      );
+      setParsedProject(updatedProject as ParsedProject);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Failed: ${message}`);
+      return null;
     }
   };
 
-  return { addId, removeId };
+  return { addIdToJson, removeIdFromJson };
 };

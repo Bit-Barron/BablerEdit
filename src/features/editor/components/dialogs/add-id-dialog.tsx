@@ -21,7 +21,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   onOpenChange,
 }) => {
   const { selectedNode } = useSelectionStore();
-  const { addId } = useId();
+  const { addIdToJson } = useId();
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
             <Button
               onClick={() => {
                 if (newId && selectedNode) {
-                  addId(newId);
+                  addIdToJson(newId);
                   onOpenChange(false);
                 }
               }}

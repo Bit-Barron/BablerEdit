@@ -16,7 +16,7 @@ export default function App() {
     useToolbarStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
-  const { removeId } = useId();
+  const { removeIdFromJson } = useId();
   const location = useLocation();
   const [openIdDialog, setOpenIdDialog] = useState(false);
 
@@ -27,7 +27,7 @@ export default function App() {
       switch (onProjectClick) {
         case "save":
           if (parsedProject) {
-            await saveProject();
+            await saveProject(parsedProject);
           }
           break;
         case "open":
@@ -37,7 +37,7 @@ export default function App() {
           setOpenIdDialog(true);
           break;
         case "remove-ids":
-          await removeId();
+          await removeIdFromJson();
           break;
         default:
           break;

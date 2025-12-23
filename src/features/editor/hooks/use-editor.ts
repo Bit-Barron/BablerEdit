@@ -1,106 +1,161 @@
+import { ParsedProject } from "@/features/project/types/project.types";
+import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { save, open } from "@tauri-apps/plugin-dialog";
+import yaml from "js-yaml";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import dayjs from "dayjs";
+import { ReactArboristType } from "../types/tree.types";
+import { serializeProject } from "@/features/editor/lib/project-serializer";
+import { updateProjectFolderStructure } from "@/features/editor/lib/project-updater";
+import { readTranslationFile } from "@/features/project/utils/file-reader";
 import { useProjectStore } from "@/features/project/stores/project.store";
 import { useSettingsStore } from "@/features/settings/stores/settings.store";
-import { TranslationManagerService } from "@/features/editor/services/translation-manager.service";
-import { ReactArboristType } from "../types/tree.types";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import { useMemo } from "react";
-import dayjs from "dayjs";
-import { updateProjectFolderStructure } from "@/features/editor/lib/project-updater";
-import { ParsedProject } from "@/features/project/types/project.types";
-import { ProjectPersistenceService } from "@/features/project/services/project-persistence.service";
 
 export const useEditor = () => {
-  const {
-    parsedProject,
-    setParsedProject,
-    currentProjectPath,
-    setCurrentProjectPath,
-  } = useProjectStore();
   const { addRecentProject } = useSettingsStore();
+  const { setParsedProject, parsedProject } = useProjectStore();
+  const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
   const navigate = useNavigate();
 
-  const persistence = useMemo(() => new ProjectPersistenceService(), []);
-
-  const manager = useMemo(
-    () => parsedProject && new TranslationManagerService(parsedProject),
-    [parsedProject]
-  );
-
-  const saveProject = async () => {
-    if (!parsedProject) {
-      toast.error("No project loaded");
-      return;
-    }
-
+  const saveProject = async (
+    project: ParsedProject
+  ): Promise<ParsedProject | null> => {
     try {
-      const { path, project } = await persistence.saveProject(
-        parsedProject,
-        currentProjectPath
-      );
+      if (!currentProjectPath) {
+        const saveFile = await save({
+          defaultPath: project.filename || "Project.babler",
+          filters: [{ name: "BablerEdit Project", extensions: ["babler"] }],
+        });
 
-      setCurrentProjectPath(path);
+        if (!saveFile) return null;
+        setCurrentProjectPath(saveFile);
 
-      addRecentProject({
-        path,
-        name: project.filename,
-        framework: project.framework,
-        language: project.primary_language,
-        lastModified: dayjs().toISOString(),
-      });
+        const bablerProject = serializeProject(project);
+        const yamlContent = yaml.dump(bablerProject, {
+          indent: 2,
+          lineWidth: -1,
+          noRefs: true,
+        });
 
-      toast.success(`Project saved: ${path}`);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to save: ${message}`);
+        await writeTextFile(saveFile, yamlContent);
+
+        addRecentProject({
+          path: saveFile,
+          name: project.filename,
+          framework: project.framework,
+          language: project.primary_language,
+          lastModified: dayjs().toISOString(),
+        });
+
+        toast.success(`Project saved successfully ${saveFile}`);
+        return bablerProject;
+      } else {
+        const bablerProject = serializeProject(project);
+        const yamlContent = yaml.dump(bablerProject, {
+          indent: 2,
+          lineWidth: -1,
+          noRefs: true,
+        });
+
+        await writeTextFile(currentProjectPath, yamlContent);
+
+        addRecentProject({
+          path: currentProjectPath,
+          name: project.filename,
+          framework: project.framework,
+          language: project.primary_language,
+          lastModified: dayjs().toISOString(),
+        });
+
+        toast.success(`Project saved successfully ${currentProjectPath}`);
+        return bablerProject;
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Failed: ${message}`);
+      return null;
     }
   };
 
   const openProject = async () => {
     try {
-      const { path, project } = await persistence.openProject();
-
-      setCurrentProjectPath(path);
-      setParsedProject(project);
-
-      addRecentProject({
-        path,
-        name: project.filename,
-        framework: project.framework,
-        language: project.primary_language,
-        lastModified: dayjs().toISOString(),
+      const openFile = await open({
+        multiple: false,
+        directory: false,
+        filters: [{ extensions: ["babler"], name: "BablerEdit Project" }],
       });
 
-      toast.success(`Project opened: ${path}`);
+      if (!openFile) return;
+      setCurrentProjectPath(openFile);
+
+      const fileContent = await readTextFile(openFile);
+      const parsedProject = yaml.load(fileContent);
+
+      setParsedProject(parsedProject as ParsedProject);
+      toast.success(`Project opened successfully ${openFile}`);
       navigate("/editor");
-    } catch (error) {
-      if (error instanceof Error && error.message === "Open cancelled") return;
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to open: ${message}`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Failed: ${message}`);
+      return null;
     }
   };
 
   const moveJsonNode = async ({ dragIds, parentId }: ReactArboristType) => {
-    if (!dragIds || !parentId || !parsedProject || !manager) return;
-
     try {
-      const dragId = dragIds[0];
-      const dragParent = dragId.split(".").slice(0, -1).join(".");
+      const TRANSLATION_FILES =
+        parsedProject.translation_packages[0].translation_urls;
 
-      if (dragParent === parentId) {
-        toast.error("Cannot move within same parent");
-        return;
+      if (!dragIds || !parentId) return;
+
+      for (let path in TRANSLATION_FILES) {
+        const filePath = TRANSLATION_FILES[path].path;
+        const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
+
+        const obj = await readTranslationFile(
+          parsedProject.source_root_dir,
+          filePath
+        );
+
+        const dragId = dragIds[0].split(".");
+        const splitParentId = parentId.split(".");
+
+        let current: any = obj;
+        let parent: any = "";
+
+        const splitDragId = dragIds[0].split(".").slice(0, -1).join(".");
+
+        if (splitDragId === parentId) {
+          toast.error("Moving within the same parent is not working.");
+          return;
+        }
+
+        for (let i = 0; i < dragId.length; i++) {
+          parent = current;
+          current = current[dragId[i]];
+        }
+
+        delete parent[dragId[dragId.length - 1]];
+
+        let parentCurrent: any = obj;
+        for (let i = 0; i < splitParentId.length; i++) {
+          parentCurrent = parentCurrent[splitParentId[i]];
+        }
+
+        parentCurrent[dragId[dragId.length - 1]] = current;
+
+        const finalContent = JSON.stringify(obj, null, 2);
+        await writeTextFile(jsonFilePath, finalContent);
       }
 
-      await manager.moveId(dragId, parentId);
-
-      const updated = await updateProjectFolderStructure(parsedProject);
-      setParsedProject(updated as ParsedProject);
-
-      toast.success(`ID "${dragId}" moved successfully`);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to move: ${message}`);
+      const updatedProject = await updateProjectFolderStructure(parsedProject);
+      toast.success(`ID "${dragIds[0]}" moved successfully in JSON files`);
+      setParsedProject(updatedProject as ParsedProject);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Failed: ${message}`);
+      return null;
     }
   };
 
