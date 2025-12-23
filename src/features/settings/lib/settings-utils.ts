@@ -2,7 +2,7 @@ import { SETTINGS_FILE } from "@/core/config/constants";
 import { appDataDir } from "@tauri-apps/api/path";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";
-import { SettingsState } from "../store/settings.store";
+import { SettingsState } from "../stores/settings.store";
 
 export const getSettingsPath = async (): Promise<string> => {
   const appDataPath = await appDataDir(); // /home/user/.local/share/BablerEdit/

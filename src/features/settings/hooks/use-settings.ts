@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { readTextFile, exists } from "@tauri-apps/plugin-fs";
-import { useSettingsStore } from "../store/settings.store";
+import { useSettingsStore } from "../stores/settings.store";
 import { toast } from "sonner";
 import parseJson from "parse-json";
 import { RecentProjectProps } from "../types/settings.types";

@@ -1,6 +1,6 @@
 import { useToolbarStore } from "@/core/store/toolbar.store";
 import { useEditor } from "@/features/editor/hooks/use-editor";
-import { useProjectStore } from "@/features/project/store/project.store";
+import { useProjectStore } from "@/features/project/stores/project.store";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import { EditorPage } from "@/pages/editor-page";
 import { WizardPage } from "@/pages/wizard-page";

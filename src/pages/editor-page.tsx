@@ -1,5 +1,5 @@
 import { useSelectionStore } from "@/features/editor/stores/selection.store";
-import { useProjectStore } from "@/features/project/store/project.store";
+import { useProjectStore } from "@/features/project/stores/project.store";
 import { TreeNode } from "@/features/editor/components/tree/tree-node";
 import { TranslationTree } from "@/features/editor/components/tree/translation-tree";
 import { TranslationDetail } from "@/features/editor/components/translation-detail/translation-detail";

@@ -1,5 +1,5 @@
 import { useSelectionStore } from "@/features/editor/stores/selection.store";
-import { useProjectStore } from "@/features/project/store/project.store";
+import { useProjectStore } from "@/features/project/stores/project.store";
 import { TranslationManagerService } from "@/features/editor/services/translation-manager.service";
 import { useMemo, useEffect } from "react";
 import { useTranslationStore } from "@/features/editor/stores/translation.store";

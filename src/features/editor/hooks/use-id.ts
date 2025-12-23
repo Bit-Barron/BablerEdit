@@ -1,4 +1,4 @@
-import { useProjectStore } from "@/features/project/store/project.store";
+import { useProjectStore } from "@/features/project/stores/project.store";
 import { useSelectionStore } from "@/features/editor/stores/selection.store";
 import { TranslationManagerService } from "@/features/editor/services/translation-manager.service";
 import { toast } from "sonner";

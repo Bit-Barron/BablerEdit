@@ -2,13 +2,15 @@ import { Card } from "@/core/components/ui/card";
 import { FILETYPES, getFrameworkIcon } from "@/core/config/frameworks.config";
 import React from "react";
 import { FrameworkType } from "@/core/types/framework.types";
-import { useProjectStore } from "@/features/project/store/project.store";
+import { useProjectStore } from "@/features/project/stores/project.store";
 
 interface WizardFrameworkSelectorProps {
   onSelect: () => void;
 }
 
-export const WizardFrameworkSelector: React.FC<WizardFrameworkSelectorProps> = ({ onSelect }) => {
+export const WizardFrameworkSelector: React.FC<
+  WizardFrameworkSelectorProps
+> = ({ onSelect }) => {
   const { setSelectedFramework } = useProjectStore();
 
   return (

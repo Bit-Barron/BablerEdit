@@ -1,5 +1,5 @@
-import { useProjectStore } from "@/features/project/store/project.store";
-import { useSettingsStore } from "@/features/settings/store/settings.store";
+import { useProjectStore } from "@/features/project/stores/project.store";
+import { useSettingsStore } from "@/features/settings/stores/settings.store";
 import { TranslationManagerService } from "@/features/editor/services/translation-manager.service";
 import { ReactArboristType } from "../types/tree.types";
 import { toast } from "sonner";
