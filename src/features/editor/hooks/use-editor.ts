@@ -7,15 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/features/project/store/project.store";
 import { toast } from "sonner";
 import dayjs from "dayjs";
-import {
-  updateProjectFolderStructure,
-  serializeProject,
-} from "@/features/editor/lib/editor-utils";
-
-import { readTranslationFile } from "@/features/project/lib/project-utils";
 import { ReactArboristType } from "../types/tree.types";
+import { serializeProject } from "@/features/editor/lib/project-serializer";
+import { updateProjectFolderStructure } from "@/features/editor/lib/project-updater";
+import { readTranslationFile } from "@/features/project/utils/file-reader";
 
-export const useEditorHook = () => {
+export const useEditor = () => {
   const { addRecentProject } = useSettingsStore();
   const { setParsedProject, parsedProject } = useProjectStore();
   const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
@@ -28,19 +25,13 @@ export const useEditorHook = () => {
       if (!currentProjectPath) {
         const saveFile = await save({
           defaultPath: project.filename || "Project.babler",
-          filters: [
-            {
-              name: "BablerEdit Project",
-              extensions: ["babler"],
-            },
-          ],
+          filters: [{ name: "BablerEdit Project", extensions: ["babler"] }],
         });
 
         if (!saveFile) return null;
         setCurrentProjectPath(saveFile);
 
         const bablerProject = serializeProject(project);
-
         const yamlContent = yaml.dump(bablerProject, {
           indent: 2,
           lineWidth: -1,
@@ -58,11 +49,9 @@ export const useEditorHook = () => {
         });
 
         toast.success(`Project saved successfully ${saveFile}`);
-
         return bablerProject;
       } else {
         const bablerProject = serializeProject(project);
-
         const yamlContent = yaml.dump(bablerProject, {
           indent: 2,
           lineWidth: -1,
@@ -80,7 +69,6 @@ export const useEditorHook = () => {
         });
 
         toast.success(`Project saved successfully ${currentProjectPath}`);
-
         return bablerProject;
       }
     } catch (err) {
@@ -95,33 +83,26 @@ export const useEditorHook = () => {
       const openFile = await open({
         multiple: false,
         directory: false,
-        filters: [
-          {
-            extensions: ["babler"],
-            name: "BablerEdit Project",
-          },
-        ],
+        filters: [{ extensions: ["babler"], name: "BablerEdit Project" }],
       });
 
       if (!openFile) return;
-      setCurrentProjectPath(openFile); // set the current project path
+      setCurrentProjectPath(openFile);
 
       const fileContent = await readTextFile(openFile);
       const parsedProject = yaml.load(fileContent);
 
       setParsedProject(parsedProject as ParsedProject);
-
       toast.success(`Project opened successfully ${openFile}`);
       navigate("/editor");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
-
       return null;
     }
   };
 
-  const handleJsonMove = async ({ dragIds, parentId }: ReactArboristType) => {
+  const moveJsonNode = async ({ dragIds, parentId }: ReactArboristType) => {
     try {
       const TRANSLATION_FILES =
         parsedProject.translation_packages[0].translation_urls;
@@ -162,7 +143,6 @@ export const useEditorHook = () => {
           parentCurrent = parentCurrent[splitParentId[i]];
         }
 
-        // ** Current is the new value to be set
         parentCurrent[dragId[dragId.length - 1]] = current;
 
         const finalContent = JSON.stringify(obj, null, 2);
@@ -170,7 +150,6 @@ export const useEditorHook = () => {
       }
 
       const updatedProject = await updateProjectFolderStructure(parsedProject);
-
       toast.success(`ID "${dragIds[0]}" moved successfully in JSON files`);
       setParsedProject(updatedProject as ParsedProject);
     } catch (err) {
@@ -183,6 +162,6 @@ export const useEditorHook = () => {
   return {
     saveProject,
     openProject,
-    handleJsonMove,
+    moveJsonNode,
   };
 };

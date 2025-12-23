@@ -4,9 +4,9 @@ import { ParsedProject } from "@/features/project/types/project.types";
 import { Checkbox } from "@/core/components/ui/checkbox";
 import { Input } from "@/core/components/ui/input";
 import { Separator } from "@/core/components/ui/seperator";
-import { useTranslationHook } from "@/features/editor/hooks/use-translation-hook";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { TreeNodeType } from "@/features/editor/types/tree.types";
+import { useTranslation } from "@/features/editor/hooks/use-translation";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -18,7 +18,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 }) => {
   const { setUpdateTranslation, setTranslationForKey, translationForKey } =
     useEditorStore();
-  const { handleApprovedChange } = useTranslationHook();
+  const { toggleApproved } = useTranslation();
   useEffect(() => {
     const findTranslationForKey = () => {
       const mainPackage = project.folder_structure.children[0];
@@ -66,7 +66,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   <label className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
                     <Checkbox
                       checked={t.approved}
-                      onCheckedChange={() => handleApprovedChange(t.language)}
+                      onCheckedChange={() => toggleApproved(t.language)}
                       className="w-3.5 h-3.5"
                     />
                     <span>Approved</span>

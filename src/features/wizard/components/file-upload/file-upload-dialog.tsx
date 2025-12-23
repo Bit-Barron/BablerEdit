@@ -1,6 +1,5 @@
 import { Plus, Minus } from "lucide-react";
-import React from "react";
-
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +11,7 @@ import { FileUploadDropzone } from "./file-upload-dropzone";
 import { useNavigate } from "react-router-dom";
 import { createProject } from "@/features/project/lib/create-project";
 import { useProjectStore } from "@/features/project/store/project.store";
+import { FileWithPath } from "@/features/project/types/file.types";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -22,22 +22,14 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const {
-    primaryLanguageCode,
-    translationFiles,
-    selectedFramework,
-    setParsedProject,
-  } = useProjectStore();
+  const { selectedFramework, setParsedProject } = useProjectStore();
+  const [primaryLanguageCode, setPrimaryLanguageCode] = useState("de");
+  const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
   const navigate = useNavigate();
 
   const parseProject = async () => {
     const project = await createProject(
-      translationFiles.map((file) => ({
-        name: file.name,
-        path: file.path,
-        content: file.content,
-        size: file.size,
-      })),
+      translationFiles,
       selectedFramework,
       primaryLanguageCode
     );
@@ -63,7 +55,10 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
 
         <div className="px-6 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
-            <FileUploadDropzone />
+            <FileUploadDropzone
+              files={translationFiles}
+              onFilesChange={setTranslationFiles}
+            />
           </section>
 
           <div className="mt-2">

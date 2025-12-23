@@ -6,14 +6,13 @@ import parseJson from "parse-json";
 import { RecentProjectProps } from "../types/settings.types";
 import { getSettingsPath } from "../lib/settings-utils";
 
-export const useSettingsHook = () => {
+export const useSettings = () => {
   const { updateSettings } = useSettingsStore();
 
   useEffect(() => {
     const loadUserSettings = async () => {
       try {
         const settingsPath = await getSettingsPath();
-
         const fileExists = await exists(settingsPath);
 
         if (fileExists) {
@@ -29,7 +28,6 @@ export const useSettingsHook = () => {
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown error";
         toast.error(`Failed: ${message}`);
-
         return null;
       }
     };

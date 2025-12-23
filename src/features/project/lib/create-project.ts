@@ -2,12 +2,9 @@ import { toast } from "sonner";
 import { FileWithPath } from "../types/file.types";
 import { ParsedProject } from "../types/project.types";
 import { getSourceRootDir } from "@/core/lib/utils";
-import {
-  extractLanguageCode,
-  parseJSONFile,
-  flattenJson,
-} from "./project-utils";
-
+import { parseJSONFile } from "@/features/project/lib/parsers/json-parser";
+import { flattenJson } from "@/features/project/utils/flatten-json";
+import { extractLanguageCode } from "@/features/project/utils/language-extractor";
 export async function createProject(
   files: FileWithPath[],
   framework: string,

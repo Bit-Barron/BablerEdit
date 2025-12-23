@@ -1,4 +1,3 @@
-import { buildTranslationTree } from "@/features/editor/lib/editor-utils";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { useProjectStore } from "@/features/project/store/project.store";
 import { TreeNode } from "@/features/editor/components/tree/tree-node";
@@ -7,14 +6,22 @@ import { TranslationDetail } from "@/features/editor/components/translation-deta
 import { NodeApi, NodeRendererProps } from "react-arborist";
 import { AddIdDialog } from "@/features/editor/components/dialogs/add-id-dialog";
 import { useMemo } from "react";
-import { useEditorHook } from "@/features/editor/hooks/use-editor";
+import { useEditor } from "@/features/editor/hooks/use-editor";
 import { TreeNodeType } from "@/features/editor/types/tree.types";
+import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
 
-export const EditorPage: React.FC = () => {
+interface EditorPageProps {
+  openIdDialog: boolean;
+  setOpenIdDialog: (open: boolean) => void;
+}
+
+export const EditorPage: React.FC<EditorPageProps> = ({
+  openIdDialog,
+  setOpenIdDialog,
+}) => {
   const { parsedProject } = useProjectStore();
   const { selectedNode, setSelectedNode } = useEditorStore();
-  const { openIdDialog, setOpenIdDialog } = useEditorStore();
-  const { handleJsonMove } = useEditorHook();
+  const { moveJsonNode } = useEditor();
 
   const initialTreeData = useMemo(() => {
     if (!parsedProject) return [];
@@ -39,7 +46,7 @@ export const EditorPage: React.FC = () => {
           indent={20}
           rowHeight={32}
           //@ts-ignore
-          onMove={handleJsonMove}
+          onMove={moveJsonNode}
           onSelect={(nodes) => {
             if (nodes.length > 0) {
               setSelectedNode(nodes[0] as NodeApi<TreeNodeType>);

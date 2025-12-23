@@ -1,12 +1,11 @@
-import { useProjectStore } from "@/features/project/store/project.store";
+import { useState } from "react";
 import "../app/App.css";
 import { WizardFrameworkSelector } from "@/features/wizard/components/framework-selector";
 import { WizardRecentProjects } from "@/features/wizard/components/recent-projects";
 import { FileUploadDialog } from "@/features/wizard/components/file-upload/file-upload-dialog";
 
 export const WizardPage: React.FC = () => {
-  const { isFileUploadDialogOpen, setFileUploadDialogOpen } =
-    useProjectStore();
+  const [isFileUploadDialogOpen, setFileUploadDialogOpen] = useState(false);
 
   return (
     <div className="flex flex-col overflow-hidden bg-background">
@@ -25,13 +24,13 @@ export const WizardPage: React.FC = () => {
             </p>
           </header>
 
-          <WizardFrameworkSelector />
+          <WizardFrameworkSelector onSelect={() => setFileUploadDialogOpen(true)} />
           <WizardRecentProjects />
         </div>
       </div>
 
       <FileUploadDialog
-        onOpenChange={(isOpen) => setFileUploadDialogOpen(isOpen)}
+        onOpenChange={setFileUploadDialogOpen}
         open={isFileUploadDialogOpen}
       />
     </div>

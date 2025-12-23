@@ -3,24 +3,18 @@ import { create } from "zustand";
 import { TreeNodeType } from "../types/tree.types";
 import { Translation } from "@/features/project/types/project.types";
 
-interface EditorPageState {
+interface EditorStore {
   selectedNode: NodeApi<TreeNodeType> | null;
   setSelectedNode: (node: NodeApi<TreeNodeType> | null) => void;
-
-  updateTranslation: string;
-  setUpdateTranslation: (value: string) => void;
 
   translationForKey: Translation[];
   setTranslationForKey: (translations: Translation[]) => void;
 
-  value: string;
-  setValue: (value: string) => void;
-
-  openIdDialog: boolean;
-  setOpenIdDialog: (isOpen: boolean) => void;
+  updateTranslation: string;
+  setUpdateTranslation: (value: string) => void;
 }
 
-export const useEditorStore = create<EditorPageState>((set) => ({
+export const useEditorStore = create<EditorStore>((set) => ({
   selectedNode: null,
   setSelectedNode: (node) => set({ selectedNode: node }),
 
@@ -30,9 +24,4 @@ export const useEditorStore = create<EditorPageState>((set) => ({
 
   updateTranslation: "",
   setUpdateTranslation: (value) => set({ updateTranslation: value }),
-
-  value: "",
-  setValue: (value) => set({ value }),
-  openIdDialog: false,
-  setOpenIdDialog: (isOpen) => set({ openIdDialog: isOpen }),
 }));

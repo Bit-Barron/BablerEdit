@@ -1,12 +1,12 @@
 import { useProjectStore } from "@/features/project/store/project.store";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEditorStore } from "@/features/editor/store/editor.store";
-import { updateProjectFolderStructure } from "../lib/editor-utils";
 import { ParsedProject } from "@/features/project/types/project.types";
 import { toast } from "sonner";
-import { readTranslationFile } from "@/features/project/lib/project-utils";
+import { updateProjectFolderStructure } from "@/features/editor/lib/project-updater";
+import { readTranslationFile } from "@/features/project/utils/file-reader";
 
-export const useIdHook = () => {
+export const useId = () => {
   const { parsedProject, setParsedProject } = useProjectStore();
   const { selectedNode } = useEditorStore();
 
@@ -27,30 +27,28 @@ export const useIdHook = () => {
 
         const splitSelectedNode = selectedNode.data.id.split(".");
         let current: any = obj;
-        let parrent: any = "";
+        let parent: any = "";
 
         for (let i = 0; i < splitSelectedNode.length; i++) {
-          parrent = current;
+          parent = current;
           current = current[splitSelectedNode[i]];
         }
 
         if (typeof current === "object") {
           current[value] = "";
         } else {
-          parrent[value] = "";
+          parent[value] = "";
         }
         const updateContent = JSON.stringify(obj, null, 2);
         writeTextFile(jsonFilePath, updateContent);
       }
 
       const updatedProject = await updateProjectFolderStructure(parsedProject);
-
       toast.success(`ID "${value}" added successfully to JSON files`);
       setParsedProject(updatedProject as ParsedProject);
-    } catch (err) { 
+    } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
-
       return null;
     }
   };
@@ -71,14 +69,14 @@ export const useIdHook = () => {
         const splitSelectedNode = selectedNode!.data.id.split(".");
 
         let current: any = obj;
-        let parrent: any = "";
+        let parent: any = "";
 
         for (let i = 0; i < splitSelectedNode.length; i++) {
-          parrent = current;
+          parent = current;
           current = current[splitSelectedNode[i]];
         }
 
-        delete parrent[splitSelectedNode[splitSelectedNode.length - 1]];
+        delete parent[splitSelectedNode[splitSelectedNode.length - 1]];
         const updatedContent = JSON.stringify(obj, null, 2);
 
         writeTextFile(jsonFilePath, updatedContent);
@@ -92,7 +90,6 @@ export const useIdHook = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
-
       return null;
     }
   };

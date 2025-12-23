@@ -1,15 +1,24 @@
 "use client";
 
 import { Button } from "@/core/components/ui/button";
-import { useProjectStore } from "@/features/project/store/project.store";
 import { FileWithPath } from "@/features/project/types/file.types";
-import { X } from "lucide-react";
-import { Upload } from "lucide-react";
-import { useFileManagerHook } from "@/features/wizard/hooks/use-file-picker";
+import { X, Upload } from "lucide-react";
+import { useFileManager } from "@/features/wizard/hooks/use-file-manager";
 
-export function FileUploadDropzone() {
-  const { translationFiles, setTranslationFiles } = useProjectStore();
-  const { handleJsonFiles } = useFileManagerHook();
+interface FileUploadDropzoneProps {
+  files: FileWithPath[];
+  onFilesChange: (files: FileWithPath[]) => void;
+}
+
+export function FileUploadDropzone({ files, onFilesChange }: FileUploadDropzoneProps) {
+  const { selectJsonFiles } = useFileManager();
+
+  const handleSelect = async () => {
+    const selected = await selectJsonFiles();
+    if (selected) {
+      onFilesChange(selected);
+    }
+  };
 
   return (
     <div className="w-full space-y-4">
@@ -22,15 +31,15 @@ export function FileUploadDropzone() {
           variant="outline"
           size="sm"
           className="mt-2"
-          onClick={handleJsonFiles}
+          onClick={handleSelect}
         >
           Browse files
         </Button>
       </div>
 
-      {translationFiles.length > 0 && (
+      {files.length > 0 && (
         <div className="space-y-2">
-          {translationFiles.map((file: FileWithPath, index: number) => (
+          {files.map((file: FileWithPath, index: number) => (
             <div
               key={`${file.name}-${index}`}
               className="flex items-center gap-2.5 rounded-md border p-3"
@@ -46,11 +55,7 @@ export function FileUploadDropzone() {
                 size="icon"
                 className="size-7"
                 onClick={() => {
-                  setTranslationFiles(
-                    translationFiles.filter(
-                      (f: FileWithPath) => f.path !== file.path
-                    )
-                  );
+                  onFilesChange(files.filter((f) => f.path !== file.path));
                 }}
               >
                 <X className="size-4" />

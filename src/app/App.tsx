@@ -1,27 +1,27 @@
 import { useToolbarStore } from "@/core/store/toolbar.store";
-import { useEditorHook } from "@/features/editor/hooks/use-editor";
+import { useEditor } from "@/features/editor/hooks/use-editor";
 import { useProjectStore } from "@/features/project/store/project.store";
-import { useIdHook } from "@/features/editor/hooks/use-id";
-import { useSettingsHook } from "@/features/settings/hooks/use-settings";
+import { useSettings } from "@/features/settings/hooks/use-settings";
 import { EditorPage } from "@/pages/editor-page";
 import { WizardPage } from "@/pages/wizard-page";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import MenuBar from "@/core/components/layout/menubar/menubar";
 import Toolbar from "@/core/components/layout/toolbar/toolbar";
+import { useId } from "@/features/editor/hooks/use-id";
 
 export default function App() {
-  const { onProjectClick, setOnProjectClick, setCurrentRoute } =
-    useToolbarStore();
-  const { saveProject, openProject } = useEditorHook();
+  const { onProjectClick, setOnProjectClick, setCurrentRoute } = useToolbarStore();
   const { parsedProject } = useProjectStore();
-  const { setOpenIdDialog } = useEditorStore();
-  const { removeIdFromJson } = useIdHook();
+  const { selectedNode } = useEditorStore();
+  const { saveProject, openProject } = useEditor();
+  const { removeIdFromJson } = useId();
   const location = useLocation();
+  const [openIdDialog, setOpenIdDialog] = useState(false);
 
-  useSettingsHook();
+  useSettings();
 
   useEffect(() => {
     const handleToolbarAction = async () => {
@@ -64,7 +64,15 @@ export default function App() {
       <Toolbar />
       <Routes>
         <Route path="/" element={<WizardPage />} />
-        <Route path="/editor" element={<EditorPage />} />
+        <Route
+          path="/editor"
+          element={
+            <EditorPage
+              openIdDialog={openIdDialog}
+              setOpenIdDialog={setOpenIdDialog}
+            />
+          }
+        />
       </Routes>
     </section>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,20 +9,20 @@ import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { toast } from "sonner";
-import { useIdHook } from "@/features/editor/hooks/use-id";
+import { useId } from "@/features/editor/hooks/use-id";
 
-interface OpenIdDialogProps {
+interface AddIdDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
+export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   open,
   onOpenChange,
 }) => {
   const { selectedNode } = useEditorStore();
-  const { value, setValue } = useEditorStore();
-  const { addIdToJson } = useIdHook();
+  const { addIdToJson } = useId();
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     if (!open) return;
@@ -37,11 +37,11 @@ export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
     } else {
       setValue(selectedNode.data.id + ".");
     }
-  }, [open, selectedNode, setValue, onOpenChange]);
+  }, [open, selectedNode]);
 
   if (!selectedNode) return null;
 
-  const addToJson = value.split(".").pop();
+  const newId = value.split(".").pop();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -69,12 +69,12 @@ export const AddIdDialog: React.FC<OpenIdDialogProps> = ({
             </Button>
             <Button
               onClick={() => {
-                if (addToJson && selectedNode) {
-                  addIdToJson(addToJson);
+                if (newId && selectedNode) {
+                  addIdToJson(newId);
                   onOpenChange(false);
                 }
               }}
-              disabled={!addToJson}
+              disabled={!newId}
             >
               Save
             </Button>
