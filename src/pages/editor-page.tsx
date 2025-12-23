@@ -1,4 +1,4 @@
-import { useEditorStore } from "@/features/editor/store/editor.store";
+import { useSelectionStore } from "@/features/editor/stores/selection.store";
 import { useProjectStore } from "@/features/project/store/project.store";
 import { TreeNode } from "@/features/editor/components/tree/tree-node";
 import { TranslationTree } from "@/features/editor/components/tree/translation-tree";
@@ -20,7 +20,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   setOpenIdDialog,
 }) => {
   const { parsedProject } = useProjectStore();
-  const { selectedNode, setSelectedNode } = useEditorStore();
+  const { selectedNode, setSelectedNode } = useSelectionStore();
   const { moveJsonNode } = useEditor();
 
   const initialTreeData = useMemo(() => {
@@ -61,7 +61,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         </TranslationTree>
       </div>
       <div className="flex-1 overflow-hidden">
-        {selectedLeafNode ? (
+        {selectedLeafNode && parsedProject ? (
           <TranslationDetail
             selectedNode={selectedLeafNode}
             project={parsedProject}

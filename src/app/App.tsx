@@ -7,17 +7,16 @@ import { WizardPage } from "@/pages/wizard-page";
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
-import { useEditorStore } from "@/features/editor/store/editor.store";
 import MenuBar from "@/core/components/layout/menubar/menubar";
 import Toolbar from "@/core/components/layout/toolbar/toolbar";
 import { useId } from "@/features/editor/hooks/use-id";
 
 export default function App() {
-  const { onProjectClick, setOnProjectClick, setCurrentRoute } = useToolbarStore();
+  const { onProjectClick, setOnProjectClick, setCurrentRoute } =
+    useToolbarStore();
   const { parsedProject } = useProjectStore();
-  const { selectedNode } = useEditorStore();
   const { saveProject, openProject } = useEditor();
-  const { removeIdFromJson } = useId();
+  const { removeId } = useId();
   const location = useLocation();
   const [openIdDialog, setOpenIdDialog] = useState(false);
 
@@ -28,7 +27,7 @@ export default function App() {
       switch (onProjectClick) {
         case "save":
           if (parsedProject) {
-            await saveProject(parsedProject);
+            await saveProject();
           }
           break;
         case "open":
@@ -38,7 +37,7 @@ export default function App() {
           setOpenIdDialog(true);
           break;
         case "remove-ids":
-          await removeIdFromJson();
+          await removeId();
           break;
         default:
           break;

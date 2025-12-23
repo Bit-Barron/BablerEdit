@@ -7,7 +7,7 @@ import {
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
-import { useEditorStore } from "@/features/editor/store/editor.store";
+import { useSelectionStore } from "@/features/editor/stores/selection.store";
 import { toast } from "sonner";
 import { useId } from "@/features/editor/hooks/use-id";
 
@@ -20,8 +20,8 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { selectedNode } = useEditorStore();
-  const { addIdToJson } = useId();
+  const { selectedNode } = useSelectionStore();
+  const { addId } = useId();
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
             <Button
               onClick={() => {
                 if (newId && selectedNode) {
-                  addIdToJson(newId);
+                  addId(newId); // ⭐ FIXED
                   onOpenChange(false);
                 }
               }}

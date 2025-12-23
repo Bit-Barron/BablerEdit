@@ -1,47 +1,57 @@
-import { useEditorStore } from "@/features/editor/store/editor.store";
+import { useSelectionStore } from "@/features/editor/stores/selection.store";
 import { useProjectStore } from "@/features/project/store/project.store";
-import { ParsedProject } from "@/features/project/types/project.types";
+import { TranslationManagerService } from "@/features/editor/services/translation-manager.service";
+import { useMemo, useEffect } from "react";
+import { useTranslationStore } from "@/features/editor/stores/translation.store";
 
 export const useTranslation = () => {
-  const { selectedNode, setTranslationForKey } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
+  const { selectedNode } = useSelectionStore();
+  const { currentTranslations, setCurrentTranslations } = useTranslationStore();
+
+  const manager = useMemo(
+    () => parsedProject && new TranslationManagerService(parsedProject),
+    [parsedProject]
+  );
+
+  useEffect(() => {
+    if (selectedNode && manager) {
+      const translations = manager.getTranslationsForNode(selectedNode.data.id);
+      setCurrentTranslations(translations);
+    }
+  }, [selectedNode, manager]);
 
   const toggleApproved = (language: string) => {
-    const obj = parsedProject.folder_structure.children[0].children;
-    const findNode = obj.find((child) => child.name === selectedNode?.data.id);
+    if (!selectedNode || !manager) return;
 
-    const updatedTranslations = findNode?.translations.map((t) => {
-      if (t.language === language) {
-        return { ...t, approved: !t.approved };
-      }
-      return t;
-    });
+    const updated = manager.toggleApproval(selectedNode.data.id, language);
+    setParsedProject(updated);
 
-    setTranslationForKey(updatedTranslations!);
+    const newTranslations = manager.getTranslationsForNode(
+      selectedNode.data.id
+    );
+    setCurrentTranslations(newTranslations);
+  };
 
-    const updatedProject: ParsedProject = {
-      ...parsedProject,
-      folder_structure: {
-        ...parsedProject.folder_structure,
-        children: [
-          {
-            ...parsedProject.folder_structure.children[0],
-            children: parsedProject.folder_structure.children[0].children.map(
-              (node) =>
-                node.name === selectedNode?.data.id
-                  ? { ...node, translations: updatedTranslations! }
-                  : node
-            ),
-          },
-        ],
-      },
-    };
+  const updateValue = (language: string, newValue: string) => {
+    if (!selectedNode || !manager) return;
 
-    setParsedProject(updatedProject);
-    return updatedProject;
+    const updated = manager.updateValue(
+      selectedNode.data.id,
+      language,
+      newValue
+    );
+    setParsedProject(updated);
+
+    const newTranslations = manager.getTranslationsForNode(
+      selectedNode.data.id
+    );
+    setCurrentTranslations(newTranslations);
   };
 
   return {
+    currentTranslations,
     toggleApproved,
+    updateValue,
   };
 };

@@ -9,11 +9,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/core/components/ui/tooltip";
-import { useEditorStore } from "@/features/editor/store/editor.store";
+import { useSelectionStore } from "@/features/editor/stores/selection.store";
 
 export default function Toolbar() {
   const { setOnProjectClick } = useToolbarStore();
-  const { selectedNode } = useEditorStore();
+  const { selectedNode } = useSelectionStore();
   const location = useLocation();
 
   return (

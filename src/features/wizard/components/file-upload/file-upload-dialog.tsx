@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { createProject } from "@/features/project/lib/create-project";
 import { useProjectStore } from "@/features/project/store/project.store";
 import { FileWithPath } from "@/features/project/types/file.types";
+import { useWizardStore } from "@/features/wizard/store/wizard.store";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -23,7 +24,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   onOpenChange,
 }) => {
   const { selectedFramework, setParsedProject } = useProjectStore();
-  const [primaryLanguageCode, setPrimaryLanguageCode] = useState("de");
+  const { primaryLanguageCode } = useWizardStore();
   const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
   const navigate = useNavigate();
 
