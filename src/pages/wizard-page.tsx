@@ -2,7 +2,7 @@ import { useProjectStore } from "@/features/project/store/project.store";
 import "../app/App.css";
 import { WizardFrameworkSelector } from "@/features/wizard/components/framework-selector";
 import { WizardRecentProjects } from "@/features/wizard/components/recent-projects";
-import { FileUploadDialog } from "@/features/wizard/components/file-upload-dialog";
+import { FileUploadDialog } from "@/features/wizard/components/file-upload/file-upload-dialog";
 
 export const WizardPage: React.FC = () => {
   const { isFileUploadDialogOpen, setFileUploadDialogOpen } =

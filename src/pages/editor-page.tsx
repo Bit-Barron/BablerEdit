@@ -1,11 +1,11 @@
-import { AutoSizedTree } from "@/features/editor/components/auto-sized-tree";
-import { TranslationDetail } from "@/features/editor/components/translation-detail";
 import { buildTranslationTree } from "@/features/editor/lib/editor-utils";
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { useProjectStore } from "@/features/project/store/project.store";
-import { TreeNode as TreeNodeComponent } from "@/features/editor/components/translation-tree-node";
+import { TreeNode } from "@/features/editor/components/tree/tree-node";
+import { TranslationTree } from "@/features/editor/components/tree/translation-tree";
+import { TranslationDetail } from "@/features/editor/components/translation-detail/translation-detail";
 import { NodeApi, NodeRendererProps } from "react-arborist";
-import { AddIdDialog } from "@/features/editor/components/add-id-dialog";
+import { AddIdDialog } from "@/features/editor/components/dialogs/add-id-dialog";
 import { useMemo } from "react";
 import { useEditorHook } from "@/features/editor/hooks/use-editor";
 import { TreeNodeType } from "@/features/editor/types/tree.types";
@@ -32,7 +32,7 @@ export const EditorPage: React.FC = () => {
         <div className="border-b border-t border-border-subtle bg-secondary px-4 py-3 shrink-0">
           <h2 className="font-semibold text-sm">Translation IDs</h2>
         </div>
-        <AutoSizedTree
+        <TranslationTree
           key={treeKey}
           data={initialTreeData}
           openByDefault={false}
@@ -49,11 +49,9 @@ export const EditorPage: React.FC = () => {
           }}
         >
           {(props) => (
-            <TreeNodeComponent
-              {...(props as NodeRendererProps<TreeNodeType>)}
-            />
+            <TreeNode {...(props as NodeRendererProps<TreeNodeType>)} />
           )}
-        </AutoSizedTree>
+        </TranslationTree>
       </div>
       <div className="flex-1 overflow-hidden">
         {selectedLeafNode ? (

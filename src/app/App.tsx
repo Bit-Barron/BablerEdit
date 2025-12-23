@@ -1,5 +1,3 @@
-import MenuBar from "@/core/components/layout/menubar";
-import Toolbar from "@/core/components/layout/toolbar";
 import { useToolbarStore } from "@/core/store/toolbar.store";
 import { useEditorHook } from "@/features/editor/hooks/use-editor";
 import { useProjectStore } from "@/features/project/store/project.store";
@@ -11,6 +9,8 @@ import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { useEditorStore } from "@/features/editor/store/editor.store";
+import MenuBar from "@/core/components/layout/menubar/menubar";
+import Toolbar from "@/core/components/layout/toolbar/toolbar";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
