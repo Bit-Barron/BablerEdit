@@ -1,7 +1,11 @@
 import { TreeNodeType } from "@/features/editor/types/tree.types";
-import { Folder, FolderOpen, ChevronRight, FileText } from "lucide-react";
 import React, { CSSProperties } from "react";
 import { NodeApi, TreeApi } from "react-arborist";
+
+import { FolderOpenIcon } from "@/core/components/icons/folder-open";
+import { FoldersIcon } from "@/core/components/icons/folders";
+import { FileTextIcon } from "@/core/components/icons/file-text";
+import { ArrowRightIcon } from "@/core/components/icons/arrow-right";
 
 interface TreeNodeProps {
   style: CSSProperties;
@@ -29,25 +33,24 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
     >
       {isFolder && (
         <div className="w-4 h-4 flex items-center justify-center shrink-0">
-          <ChevronRight
-            className={`w-3 h-3 transition-transform ${
-              node.isOpen ? "rotate-90" : ""
-            }`}
+          <ArrowRightIcon
+            size={15}
+            className={`ransition-transform ${node.isOpen ? "rotate-90" : ""}`}
           />
         </div>
       )}
 
       {!isFolder && <div className="w-4" />}
 
-      <div className="w-4 h-4 flex items-center justify-center shrink-0">
+      <div className="flex items-center justify-center shrink-0">
         {isFolder ? (
           node.isOpen ? (
-            <FolderOpen className="w-4 h-4 text-yellow-500" />
+            <FolderOpenIcon size={25} className=" text-yellow-500" />
           ) : (
-            <Folder className="w-4 h-4 text-yellow-500" />
+            <FoldersIcon size={25} className=" text-yellow-500" />
           )
         ) : (
-          <FileText className="w-3 h-3 text-muted-foreground" />
+          <FileTextIcon size={20} className="text-muted-foreground" />
         )}
       </div>
 

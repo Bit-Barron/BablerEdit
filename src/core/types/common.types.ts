@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 
 export interface MenuItem {
   label?: string;
@@ -15,13 +16,12 @@ export interface Menu {
 
 export interface ToolbarType {
   id: string;
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string; size?: number }>;
   label: string;
   onClick?: string;
   disabled: boolean;
   enabledIn: string[];
 }
-
 export interface FileType {
   id: string;
   name: string;

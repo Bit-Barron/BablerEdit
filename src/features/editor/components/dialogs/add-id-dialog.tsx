@@ -70,7 +70,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
             <Button
               onClick={() => {
                 if (newId && selectedNode) {
-                  addId(newId); // ⭐ FIXED
+                  addId(newId);
                   onOpenChange(false);
                 }
               }}
