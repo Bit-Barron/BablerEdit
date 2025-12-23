@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/core/components/ui/dialog";
 import { Button } from "@/core/components/icons/button";
-import { FileUploadDropzone } from "./file-upload-dropzone";
+import { MultiFileUpload } from "./kokonut-file-upload";
 import { useNavigate } from "react-router-dom";
 import { createProject } from "@/features/project/lib/create-project";
 import { useProjectStore } from "@/features/project/stores/project.store";
@@ -56,7 +56,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
 
         <div className="px-6 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
-            <FileUploadDropzone
+            <MultiFileUpload
               files={translationFiles}
               onFilesChange={setTranslationFiles}
             />

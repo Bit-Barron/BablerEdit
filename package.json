@@ -27,7 +27,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "js-yaml": "^4.1.1",
-    "lucide-react": "^0.555.0",
+    "lucide-react": "^0.562.0",
     "motion": "^12.23.26",
     "parse-json": "^8.3.0",
     "react": "^19.2.3",

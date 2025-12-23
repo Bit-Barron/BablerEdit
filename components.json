@@ -19,6 +19,7 @@
     "hooks": "@/core/hooks"
   },
   "registries": {
-    "@lucide-animated": "https://lucide-animated.com/r/{name}.json"
+    "@lucide-animated": "https://lucide-animated.com/r/{name}.json",
+    "@kokonutui": "https://kokonutui.com/r/{name}.json"
   }
 }

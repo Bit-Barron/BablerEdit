@@ -18,18 +18,15 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 }) => {
   const { translationForKey, setTranslationForKey } = useTranslationStore();
   const { toggleApproved } = useTranslation();
-  
+
   useEffect(() => {
     const findTranslationForKey = () => {
       const mainPackage = project.folder_structure.children[0];
       const conceptNode = mainPackage.children.find(
         (child) => child.name === selectedNode!.data.id
       );
-      if (!conceptNode) {
-        return [];
-      }
 
-      setTranslationForKey(conceptNode.translations);
+      setTranslationForKey(conceptNode!.translations);
     };
 
     findTranslationForKey();

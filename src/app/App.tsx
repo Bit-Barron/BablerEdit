@@ -58,7 +58,7 @@ export default function App() {
 
   return (
     <section>
-      <Toaster position="top-right" richColors closeButton duration={4000} />
+      <Toaster position="top-right" theme="dark" closeButton duration={4000} />
       <MenuBar />
       <Toolbar />
       <Routes>
