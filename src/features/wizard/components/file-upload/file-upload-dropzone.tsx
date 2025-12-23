@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/core/components/ui/button";
+import { Button } from "@/core/components/icons/button";
 import { FileWithPath } from "@/features/project/types/file.types";
 import { X, Upload } from "lucide-react";
 import { useFileManager } from "@/features/wizard/hooks/use-file-manager";
@@ -10,7 +10,10 @@ interface FileUploadDropzoneProps {
   onFilesChange: (files: FileWithPath[]) => void;
 }
 
-export function FileUploadDropzone({ files, onFilesChange }: FileUploadDropzoneProps) {
+export function FileUploadDropzone({
+  files,
+  onFilesChange,
+}: FileUploadDropzoneProps) {
   const { selectJsonFiles } = useFileManager();
 
   const handleSelect = async () => {

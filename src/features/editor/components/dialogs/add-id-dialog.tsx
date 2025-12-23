@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/core/components/ui/dialog";
-import { Button } from "@/core/components/ui/button";
+import { Button } from "@/core/components/icons/button";
 import { Input } from "@/core/components/ui/input";
 import { useSelectionStore } from "@/features/editor/stores/selection.store";
 import { toast } from "sonner";

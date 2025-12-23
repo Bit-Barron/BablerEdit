@@ -2,7 +2,7 @@ import { TOOLBAR } from "@/core/config/toolbar.config";
 import { useToolbarStore } from "@/core/store/toolbar.store";
 import { useLocation } from "react-router-dom";
 
-import { Button } from "@/core/components/ui/button";
+import { Button } from "@/core/components/icons/button";
 import {
   Tooltip,
   TooltipContent,

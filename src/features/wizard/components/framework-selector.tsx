@@ -1,4 +1,4 @@
-import { Card } from "@/core/components/ui/card";
+import { Card } from "@/core/components/icons/card";
 import { FILETYPES, getFrameworkIcon } from "@/core/config/frameworks.config";
 import React from "react";
 import { FrameworkType } from "@/core/types/framework.types";

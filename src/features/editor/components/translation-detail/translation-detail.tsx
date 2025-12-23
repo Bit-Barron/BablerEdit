@@ -1,7 +1,7 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/features/project/types/project.types";
-import { Checkbox } from "@/core/components/ui/checkbox";
+import { Checkbox } from "@/core/components/icons/checkbox";
 import { Input } from "@/core/components/ui/input";
 import { Separator } from "@/core/components/ui/seperator";
 import { TreeNodeType } from "@/features/editor/types/tree.types";

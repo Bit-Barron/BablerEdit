@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/core/components/ui/dialog";
-import { Button } from "@/core/components/ui/button";
+import { Button } from "@/core/components/icons/button";
 import { FileUploadDropzone } from "./file-upload-dropzone";
 import { useNavigate } from "react-router-dom";
 import { createProject } from "@/features/project/lib/create-project";

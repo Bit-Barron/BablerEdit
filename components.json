@@ -13,10 +13,12 @@
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@/core/components",
-    "ui": "@/core/components/ui",
     "utils": "@/core/lib/utils",
+    "ui": "@/core/components/ui",
     "lib": "@/core/lib",
     "hooks": "@/core/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@lucide-animated": "https://lucide-animated.com/r/{name}.json"
+  }
 }

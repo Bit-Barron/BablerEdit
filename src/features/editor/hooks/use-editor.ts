@@ -51,7 +51,6 @@ export const useEditor = () => {
 
       toast.success(`Project saved: ${path}`);
     } catch (error) {
-      if (error instanceof Error && error.message === "Save cancelled") return;
       const message = error instanceof Error ? error.message : "Unknown error";
       toast.error(`Failed to save: ${message}`);
     }
