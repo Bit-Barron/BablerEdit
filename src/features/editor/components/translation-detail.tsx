@@ -6,7 +6,7 @@ import { Input } from "@/core/components/ui/input";
 import { useEditorStore } from "../store/editor.store";
 import { TreeNodeType } from "../types/tree.types";
 import { Separator } from "@/core/components/ui/seperator";
-import { useTranslationHook } from "@/features/editor/hooks/use-translation";
+import { useTranslationHook } from "@/features/editor/hooks/use-translation-hook";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -18,9 +18,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 }) => {
   const { setUpdateTranslation, setTranslationForKey, translationForKey } =
     useEditorStore();
-  const { handleApprovedChange } = useTranslationHook();
-
-  useEffect(() => {
+    const { handleApprovedChange } = useTranslationHook();
+    useEffect(() => {
     const findTranslationForKey = () => {
       const mainPackage = project.folder_structure.children[0];
       const conceptNode = mainPackage.children.find(

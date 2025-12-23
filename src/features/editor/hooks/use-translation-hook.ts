@@ -1,31 +1,51 @@
 import { useEditorStore } from "@/features/editor/store/editor.store";
 import { useProjectStore } from "@/features/project/store/project.store";
+import { ParsedProject } from "@/features/project/types/project.types";
 
 export const useTranslationHook = () => {
-  const { selectedNode } = useEditorStore();
-  const { parsedProject } = useProjectStore();
+  const { selectedNode, setTranslationForKey } = useEditorStore();
+  const { parsedProject, setParsedProject } = useProjectStore();
 
-  const handleAddCommantary = (language: string) => {};
+  const handleAddCommantary = () => {};
 
   const handleApprovedChange = (language: string) => {
     const obj = parsedProject.folder_structure.children[0].children;
-    console.log(obj);
 
     const findNode = obj.find((child) => child.name === selectedNode?.data.id);
 
     const changeNodeApprovedStatus = findNode?.translations.map((t) => {
       if (t.language === language) {
-        const newApprovedStatus = !t.approved;
         return {
           ...t,
-          approved: newApprovedStatus,
+          approved: !t.approved,
         };
       }
 
       return t;
     });
+    setTranslationForKey(changeNodeApprovedStatus!);
 
-    return changeNodeApprovedStatus;
+    const updatedParsedProject: ParsedProject = {
+      ...parsedProject,
+      folder_structure: {
+        ...parsedProject.folder_structure,
+        children: [
+          {
+            ...parsedProject.folder_structure.children[0],
+            children: parsedProject.folder_structure.children[0].children.map(
+              (node) =>
+                node.name === selectedNode?.data.id
+                  ? { ...node, translations: changeNodeApprovedStatus! }
+                  : node
+            ),
+          },
+        ],
+      },
+    };
+
+    setParsedProject(updatedParsedProject);
+
+    return updatedParsedProject;
   };
 
   return {

@@ -22,7 +22,7 @@ export default function MenuBar() {
                 {item.items.map((child) => {
                   if (child.divider) {
                     return (
-                      <li
+                      <div
                         key={`divider-${child.label}`}
                         className="h-px bg-secondary my-1 mx-2"
                       />
@@ -30,11 +30,11 @@ export default function MenuBar() {
                   }
 
                   return (
-                    <li key={child.label}>
+                    <div key={child.label}>
                       <NavigationMenuLink className="">
                         {child.label}
                       </NavigationMenuLink>
-                    </li>
+                    </div>
                   );
                 })}
               </NavigationMenuContent>
