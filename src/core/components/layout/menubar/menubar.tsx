@@ -19,11 +19,11 @@ export default function MenuBar() {
                 {item.label}
               </NavigationMenuTrigger>
               <NavigationMenuContent className="bg-popover border border-border rounded-md shadow-lg p-4 min-w-50">
-                {item.items.map((child) => {
+                {item.items.map((child, index) => {
                   if (child.divider) {
                     return (
                       <div
-                        key={`divider-${child.label}`}
+                        key={index}
                         className="h-px bg-secondary my-1 mx-2"
                       />
                     );

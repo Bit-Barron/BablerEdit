@@ -48,7 +48,11 @@ export class TranslationFileService {
       content: updater(file.content),
     }));
 
-    await this.writeAllFiles(updatedFiles);
+    await Promise.all(
+      files.map((file) =>
+        writeTextFile(file.fullPath, JSON.stringify(updatedFiles, null, 2))
+      )
+    );
   }
 
   private getFullPath(relativePath: string): string {

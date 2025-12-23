@@ -9,6 +9,7 @@ import { useMemo } from "react";
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import { TreeNodeType } from "@/features/editor/types/tree.types";
 import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
+import { ChevronsRightLeftIcon } from "@/core/components/icons/chevrons-right-left";
 
 interface EditorPageProps {
   openIdDialog: boolean;
@@ -36,8 +37,9 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   return (
     <div className="fixed inset-0 top-22 flex">
       <div className="w-100 border-r border-border-subtle flex flex-col bg-background">
-        <div className="border-b border-t border-border-subtle bg-secondary px-4 py-3 shrink-0">
-          <h2 className="font-semibold text-sm">Translation IDs</h2>
+        <div className="border-b border-t border-border-subtle bg-secondary p-1 shrink-0 flex justify-between">
+          <h2 className="font-semibold text-sm mt-1">Translation IDs</h2>
+          <ChevronsRightLeftIcon />
         </div>
         <TranslationTree
           key={treeKey}
