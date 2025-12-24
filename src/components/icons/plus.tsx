@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface PlusIconHandle {
   startAnimation: () => void;
@@ -24,15 +24,15 @@ const PlusIcon = forwardRef<PlusIconHandle, PlusIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -43,7 +43,7 @@ const PlusIcon = forwardRef<PlusIconHandle, PlusIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -69,7 +69,7 @@ const PlusIcon = forwardRef<PlusIconHandle, PlusIconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           animate={controls}
-          transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
           variants={{
             normal: {
               rotate: 0,
@@ -87,6 +87,6 @@ const PlusIcon = forwardRef<PlusIconHandle, PlusIconProps>(
   }
 );
 
-PlusIcon.displayName = 'PlusIcon';
+PlusIcon.displayName = "PlusIcon";
 
 export { PlusIcon };

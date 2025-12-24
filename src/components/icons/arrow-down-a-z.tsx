@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Transition, Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Transition, Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface ArrowDownAZIconHandle {
   startAnimation: () => void;
@@ -17,7 +17,7 @@ interface ArrowDownAZIconProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const SWAP_TRANSITION: Transition = {
-  type: 'spring',
+  type: "spring",
   stiffness: 240,
   damping: 24,
 };
@@ -40,15 +40,15 @@ const ArrowDownAZIcon = forwardRef<ArrowDownAZIconHandle, ArrowDownAZIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -59,7 +59,7 @@ const ArrowDownAZIcon = forwardRef<ArrowDownAZIconHandle, ArrowDownAZIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -111,6 +111,6 @@ const ArrowDownAZIcon = forwardRef<ArrowDownAZIconHandle, ArrowDownAZIconProps>(
   }
 );
 
-ArrowDownAZIcon.displayName = 'ArrowDownAZIcon';
+ArrowDownAZIcon.displayName = "ArrowDownAZIcon";
 
 export { ArrowDownAZIcon };

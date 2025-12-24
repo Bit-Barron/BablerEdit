@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface ArrowDownLeftIconHandle {
   startAnimation: () => void;
@@ -23,7 +23,7 @@ const HEAD_VARIANTS: Variants = {
     translateY: [0, -3, 0],
     transition: {
       duration: 0.5,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
   },
 };
@@ -38,7 +38,7 @@ const SHAFT_VARIANTS: Variants = {
     originY: 1,
     transition: {
       duration: 0.5,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
   },
 };
@@ -53,14 +53,14 @@ const ArrowDownLeftIcon = forwardRef<
   useImperativeHandle(ref, () => {
     isControlledRef.current = true;
     return {
-      startAnimation: () => controls.start('animate'),
-      stopAnimation: () => controls.start('normal'),
+      startAnimation: () => controls.start("animate"),
+      stopAnimation: () => controls.start("normal"),
     };
   });
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isControlledRef.current) controls.start('animate');
+      if (!isControlledRef.current) controls.start("animate");
       onMouseEnter?.(e);
     },
     [controls, onMouseEnter]
@@ -68,7 +68,7 @@ const ArrowDownLeftIcon = forwardRef<
 
   const handleMouseLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isControlledRef.current) controls.start('normal');
+      if (!isControlledRef.current) controls.start("normal");
       onMouseLeave?.(e);
     },
     [controls, onMouseLeave]
@@ -108,6 +108,6 @@ const ArrowDownLeftIcon = forwardRef<
   );
 });
 
-ArrowDownLeftIcon.displayName = 'ArrowDownLeftIcon';
+ArrowDownLeftIcon.displayName = "ArrowDownLeftIcon";
 
 export { ArrowDownLeftIcon };

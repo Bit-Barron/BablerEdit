@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface AccessibilityIconHandle {
   startAnimation: () => void;
@@ -26,7 +26,7 @@ const CIRCLE_VARIANTS: Variants = {
     x: [0, 1, -1, 0],
     transition: {
       duration: 0.8,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
   },
 };
@@ -39,7 +39,7 @@ const PRIMARY_GROUP_VARIANTS: Variants = {
     rotate: [0, 5, -5, 0],
     transition: {
       duration: 0.8,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
   },
 };
@@ -53,7 +53,7 @@ const SECONDARY_GROUP_VARIANTS: Variants = {
     transition: {
       duration: 1,
       delay: 0.4,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
   },
 };
@@ -61,17 +61,17 @@ const SECONDARY_GROUP_VARIANTS: Variants = {
 const PATH_VARIANTS: Variants = {
   initial: {
     rotate: 0,
-    d: 'M8 5 L5 8',
+    d: "M8 5 L5 8",
   },
   animate: {
     rotate: [0, -60, 0],
-    d: ['M8 5 L5 8', 'M8 5 L4 9', 'M8 5 L5 8'],
+    d: ["M8 5 L5 8", "M8 5 L4 9", "M8 5 L5 8"],
     transition: {
       duration: 0.4,
       delay: 0.2,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
-    transformOrigin: 'top right',
+    transformOrigin: "top right",
   },
 };
 
@@ -86,15 +86,15 @@ const AccessibilityIcon = forwardRef<
     isControlledRef.current = true;
 
     return {
-      startAnimation: () => controls.start('animate'),
-      stopAnimation: () => controls.start('initial'),
+      startAnimation: () => controls.start("animate"),
+      stopAnimation: () => controls.start("initial"),
     };
   });
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start('animate');
+        controls.start("animate");
       } else {
         onMouseEnter?.(e);
       }
@@ -105,7 +105,7 @@ const AccessibilityIcon = forwardRef<
   const handleMouseLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start('normal');
+        controls.start("normal");
       } else {
         onMouseLeave?.(e);
       }
@@ -167,6 +167,6 @@ const AccessibilityIcon = forwardRef<
   );
 });
 
-AccessibilityIcon.displayName = 'AccessibilityIcon';
+AccessibilityIcon.displayName = "AccessibilityIcon";
 
 export { AccessibilityIcon };

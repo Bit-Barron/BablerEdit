@@ -1,11 +1,6 @@
 import { Plus, Minus } from "lucide-react";
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { MultiFileUpload } from "./kokonut-file-upload";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
@@ -44,15 +39,10 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
-      <DialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
-        <DialogHeader className="px-6 pt-6 pb-3 shrink-0">
-          <DialogTitle className="text-lg font-semibold">
-            Configure languages
-          </DialogTitle>
-          <p className="text-sm text-muted-foreground mt-1">
-            Add or remove languages and their corresponding translation files:
-          </p>
-        </DialogHeader>
+      <Dialog.Content className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+        <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
+          <h1 className="text-lg font-semibold">Configure languages</h1>
+        </Dialog.Header>
 
         <div className="px-6 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
@@ -79,17 +69,13 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
           </div>
 
           <div className="flex justify-end mt-6 gap-2">
-            <Button
-              variant="destructive"
-              onClick={() => onOpenChange(false)}
-              className="min-w-25"
-            >
+            <Button onClick={() => onOpenChange(false)} className="min-w-25">
               Close
             </Button>
             <Button onClick={parseProject}>Save</Button>
           </div>
         </div>
-      </DialogContent>
+      </Dialog.Content>
     </Dialog>
   );
 };

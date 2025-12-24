@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from "react";
 import React, {
   forwardRef,
   useCallback,
   useImperativeHandle,
   useRef,
-} from 'react';
-import { motion, useAnimation } from 'motion/react';
+} from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface FileTextIconHandle {
   startAnimation: () => void;
@@ -29,15 +29,15 @@ const FILE_TEXT = forwardRef<FileTextIconHandle, FileTextIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -48,7 +48,7 @@ const FILE_TEXT = forwardRef<FileTextIconHandle, FileTextIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -81,7 +81,7 @@ const FILE_TEXT = forwardRef<FileTextIconHandle, FileTextIconProps>(
               scale: 1.05,
               transition: {
                 duration: 0.3,
-                ease: 'easeOut',
+                ease: "easeOut",
               },
             },
           }}
@@ -158,6 +158,6 @@ const FILE_TEXT = forwardRef<FileTextIconHandle, FileTextIconProps>(
   }
 );
 
-FILE_TEXT.displayName = 'FileTextIcon';
+FILE_TEXT.displayName = "FileTextIcon";
 
 export { FILE_TEXT as FileTextIcon };

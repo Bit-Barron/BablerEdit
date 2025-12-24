@@ -17,6 +17,11 @@ export const WizardRecentProjects: React.FC<
       <h2 className="text-[16px] font-semibold text-primary mb-3">
         Recent projects:
       </h2>
+      {projects.length === 0 && (
+        <p className="text-sm text-muted-foreground">
+          No recent projects found.
+        </p>
+      )}
       <div className="space-y-2">
         {projects.map((project: string, index: number) => {
           return (

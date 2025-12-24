@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface AtomIconHandle {
   startAnimation: () => void;
@@ -23,7 +23,7 @@ const PATH_VARIANTS: Variants = {
     pathOffset: 0,
     transition: {
       duration: 0.4,
-      ease: 'easeInOut',
+      ease: "easeInOut",
       delay: custom,
     },
   }),
@@ -33,7 +33,7 @@ const PATH_VARIANTS: Variants = {
     pathOffset: [1, 0],
     transition: {
       duration: 0.4,
-      ease: 'easeInOut',
+      ease: "easeInOut",
       delay: custom,
     },
   }),
@@ -48,15 +48,15 @@ const AtomIcon = forwardRef<AtomIconHandle, AtomIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -67,7 +67,7 @@ const AtomIcon = forwardRef<AtomIconHandle, AtomIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -119,6 +119,6 @@ const AtomIcon = forwardRef<AtomIconHandle, AtomIconProps>(
   }
 );
 
-AtomIcon.displayName = 'AtomIcon';
+AtomIcon.displayName = "AtomIcon";
 
 export { AtomIcon };

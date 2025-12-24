@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface ArrowBigRightIconHandle {
   startAnimation: () => void;
@@ -17,9 +17,9 @@ interface ArrowBigRightIconProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const PATH_VARIANTS: Variants = {
-  normal: { d: 'M6 9h6V5l7 7-7 7v-4H6V9z', translateX: 0 },
+  normal: { d: "M6 9h6V5l7 7-7 7v-4H6V9z", translateX: 0 },
   animate: {
-    d: 'M6 9h6V5l7 7-7 7v-4H6V9z',
+    d: "M6 9h6V5l7 7-7 7v-4H6V9z",
     translateX: [0, 3, 0],
     transition: {
       duration: 0.4,
@@ -37,15 +37,15 @@ const ArrowBigRightIcon = forwardRef<
   useImperativeHandle(ref, () => {
     isControlledRef.current = true;
     return {
-      startAnimation: () => controls.start('animate'),
-      stopAnimation: () => controls.start('normal'),
+      startAnimation: () => controls.start("animate"),
+      stopAnimation: () => controls.start("normal"),
     };
   });
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start('animate');
+        controls.start("animate");
       } else {
         onMouseEnter?.(e);
       }
@@ -56,7 +56,7 @@ const ArrowBigRightIcon = forwardRef<
   const handleMouseLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start('normal');
+        controls.start("normal");
       } else {
         onMouseLeave?.(e);
       }
@@ -92,6 +92,6 @@ const ArrowBigRightIcon = forwardRef<
   );
 });
 
-ArrowBigRightIcon.displayName = 'ArrowBigRightIcon';
+ArrowBigRightIcon.displayName = "ArrowBigRightIcon";
 
 export { ArrowBigRightIcon };

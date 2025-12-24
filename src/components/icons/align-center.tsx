@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface AlignCenterIconHandle {
   startAnimation: () => void;
@@ -24,15 +24,15 @@ const AlignCenterIcon = forwardRef<AlignCenterIconHandle, AlignCenterIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -43,7 +43,7 @@ const AlignCenterIcon = forwardRef<AlignCenterIconHandle, AlignCenterIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -76,7 +76,7 @@ const AlignCenterIcon = forwardRef<AlignCenterIconHandle, AlignCenterIconProps>(
               animate: {
                 translateX: [0, 3, -3, 2, -2, 0],
                 transition: {
-                  ease: 'linear',
+                  ease: "linear",
                   translateX: {
                     duration: 1,
                   },
@@ -93,6 +93,6 @@ const AlignCenterIcon = forwardRef<AlignCenterIconHandle, AlignCenterIconProps>(
   }
 );
 
-AlignCenterIcon.displayName = 'AlignCenterIcon';
+AlignCenterIcon.displayName = "AlignCenterIcon";
 
 export { AlignCenterIcon };

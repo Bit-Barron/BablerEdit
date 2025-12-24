@@ -2,12 +2,7 @@ import { TOOLBAR } from "@/lib/config/toolbar.config";
 import { useToolbarStore } from "@/lib/store/toolbar.store";
 import { useLocation } from "react-router-dom";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { useSelectionStore } from "@/lib/store/selection.store";
 
@@ -19,7 +14,7 @@ export default function Toolbar() {
   return (
     <div className="border-b border-border-subtle bg-secondary">
       <div className="flex items-center justify-between h-15 px-3 gap-1 overflow-x-auto">
-        <TooltipProvider>
+        <Tooltip.Provider>
           {TOOLBAR.map((button) => {
             const isEnabled = button.enabledIn.includes(location.pathname);
 
@@ -30,7 +25,7 @@ export default function Toolbar() {
 
             return (
               <Tooltip key={button.id}>
-                <TooltipTrigger asChild>
+                <Tooltip.Trigger asChild>
                   <Button
                     onClick={() => {
                       if (shouldBeDisabled) return;
@@ -39,21 +34,21 @@ export default function Toolbar() {
                     variant="ghost"
                     size="sm"
                     disabled={shouldBeDisabled}
-                    className="flex items-center gap-2 h-9 px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 h-9 px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <button.icon className="h-4 w-4" />
+                    <button.icon size={15} className="h-4 w-4" />
                     <span className="text-xs whitespace-nowrap">
                       {button.label}
                     </span>
                   </Button>
-                </TooltipTrigger>
-                <TooltipContent>
+                </Tooltip.Trigger>
+                <Tooltip.Content>
                   <p>{button.label}</p>
-                </TooltipContent>
+                </Tooltip.Content>
               </Tooltip>
             );
           })}
-        </TooltipProvider>
+        </Tooltip.Provider>
       </div>
     </div>
   );

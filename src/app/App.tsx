@@ -9,7 +9,6 @@ import { Toaster } from "sonner";
 import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
 import { useId } from "@/hook/use-id";
-import Aurora from "@/components/elements/Aurora";
 import { useSettings } from "@/hook/use-settings";
 
 export default function App() {
@@ -59,15 +58,6 @@ export default function App() {
 
   return (
     <>
-      <div className="fixed inset-0 -z-10 bg-black">
-        <Aurora
-          colorStops={["#1a1a3e", "#3b82f6", "#8b5cf6"]}
-          blend={0.5}
-          amplitude={1.0}
-          speed={0.3}
-        />
-      </div>
-
       <Toaster position="top-right" theme="dark" closeButton duration={4000} />
       <MenuBar />
       <Toolbar />

@@ -34,7 +34,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
   return (
     <section className="flex flex-col bg-secondary h-screen">
-      <div className="px-6 py-2.5 bg-secondary border-border-subtle border-b border-t flex justify-between">
+      <div className="px-6 py-2.5 border-t flex justify-between">
         <h2 className="font-semibold tracking-wide">Translations</h2>
         <div className="flex items-center gap-2">
           {project.languages.map((lang) => (
@@ -47,7 +47,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           ))}
         </div>
       </div>
-      <div className="px-6 py-2.5 bg-muted/30 text-sm">
+      <div className="px-6 py-2.5 text-sm">
         <h1 className="font-semibold">{selectedNode.data.id}</h1>
       </div>
 

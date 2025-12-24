@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Transition } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Transition } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface ChevronsRightLeftIconHandle {
   startAnimation: () => void;
@@ -17,7 +17,7 @@ interface ChevronsRightLeftIconProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const DEFAULT_TRANSITION: Transition = {
-  type: 'spring',
+  type: "spring",
   stiffness: 250,
   damping: 25,
 };
@@ -33,15 +33,15 @@ const ChevronsRightLeftIcon = forwardRef<
     isControlledRef.current = true;
 
     return {
-      startAnimation: () => controls.start('animate'),
-      stopAnimation: () => controls.start('normal'),
+      startAnimation: () => controls.start("animate"),
+      stopAnimation: () => controls.start("normal"),
     };
   });
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start('animate');
+        controls.start("animate");
       } else {
         onMouseEnter?.(e);
       }
@@ -52,7 +52,7 @@ const ChevronsRightLeftIcon = forwardRef<
   const handleMouseLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start('normal');
+        controls.start("normal");
       } else {
         onMouseLeave?.(e);
       }
@@ -80,8 +80,8 @@ const ChevronsRightLeftIcon = forwardRef<
       >
         <motion.path
           variants={{
-            normal: { translateX: '0%' },
-            animate: { translateX: '-2px' },
+            normal: { translateX: "0%" },
+            animate: { translateX: "-2px" },
           }}
           transition={DEFAULT_TRANSITION}
           animate={controls}
@@ -90,8 +90,8 @@ const ChevronsRightLeftIcon = forwardRef<
         />
         <motion.path
           variants={{
-            normal: { translateX: '0%' },
-            animate: { translateX: '2px' },
+            normal: { translateX: "0%" },
+            animate: { translateX: "2px" },
           }}
           transition={DEFAULT_TRANSITION}
           animate={controls}
@@ -103,6 +103,6 @@ const ChevronsRightLeftIcon = forwardRef<
   );
 });
 
-ChevronsRightLeftIcon.displayName = 'ChevronsRightLeftIcon';
+ChevronsRightLeftIcon.displayName = "ChevronsRightLeftIcon";
 
 export { ChevronsRightLeftIcon };

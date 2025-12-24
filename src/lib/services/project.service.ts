@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { parseJSONFile } from "@/lib/helpers/json-parser";
 import { flattenJson } from "@/lib/utils/flatten-json";
 import { extractLanguageCode } from "@/lib/utils/language-extractor";
-import { getSourceRootDir } from "@/lib/utils/utils";
+import { getSourceRootDir } from "@/lib/utils";
 import { ParsedProject } from "@/lib/types/project.types";
 import { FileWithPath } from "@/lib/types/file.types";
 

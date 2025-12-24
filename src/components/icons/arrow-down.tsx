@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface ArrowDownIconHandle {
   startAnimation: () => void;
@@ -17,9 +17,9 @@ interface ArrowDownIconProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const PATH_VARIANTS: Variants = {
-  normal: { d: 'm19 12-7 7-7-7', translateY: 0 },
+  normal: { d: "m19 12-7 7-7-7", translateY: 0 },
   animate: {
-    d: 'm19 12-7 7-7-7',
+    d: "m19 12-7 7-7-7",
     translateY: [0, -3, 0],
     transition: {
       duration: 0.4,
@@ -28,9 +28,9 @@ const PATH_VARIANTS: Variants = {
 };
 
 const SECOND_PATH_VARIANTS: Variants = {
-  normal: { d: 'M12 5v14' },
+  normal: { d: "M12 5v14" },
   animate: {
-    d: ['M12 5v14', 'M12 5v9', 'M12 5v14'],
+    d: ["M12 5v14", "M12 5v9", "M12 5v14"],
     transition: {
       duration: 0.4,
     },
@@ -46,15 +46,15 @@ const ArrowDownIcon = forwardRef<ArrowDownIconHandle, ArrowDownIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -65,7 +65,7 @@ const ArrowDownIcon = forwardRef<ArrowDownIconHandle, ArrowDownIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -107,6 +107,6 @@ const ArrowDownIcon = forwardRef<ArrowDownIconHandle, ArrowDownIconProps>(
   }
 );
 
-ArrowDownIcon.displayName = 'ArrowDownIcon';
+ArrowDownIcon.displayName = "ArrowDownIcon";
 
 export { ArrowDownIcon };

@@ -5,7 +5,7 @@ import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { motion, useAnimation } from 'motion/react';
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from '@/lib/utils';
 
 const STRETCH_VARIANTS: Variants = {
   normal: { scaleY: 1, y: 0, opacity: 1 },

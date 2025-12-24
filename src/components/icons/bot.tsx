@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface BotIconHandle {
   startAnimation: () => void;
@@ -24,15 +24,15 @@ const BotIcon = forwardRef<BotIconHandle, BotIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -43,7 +43,7 @@ const BotIcon = forwardRef<BotIconHandle, BotIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -86,7 +86,7 @@ const BotIcon = forwardRef<BotIconHandle, BotIconProps>(
                 y2: [15, 14, 15],
                 transition: {
                   duration: 0.5,
-                  ease: 'easeInOut',
+                  ease: "easeInOut",
                   delay: 0.2,
                 },
               },
@@ -105,7 +105,7 @@ const BotIcon = forwardRef<BotIconHandle, BotIconProps>(
                 y2: [15, 14, 15],
                 transition: {
                   duration: 0.5,
-                  ease: 'easeInOut',
+                  ease: "easeInOut",
                   delay: 0.2,
                 },
               },
@@ -117,6 +117,6 @@ const BotIcon = forwardRef<BotIconHandle, BotIconProps>(
   }
 );
 
-BotIcon.displayName = 'Bot';
+BotIcon.displayName = "Bot";
 
 export { BotIcon };

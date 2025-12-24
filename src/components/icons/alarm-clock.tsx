@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface AlarmClockIconHandle {
   startAnimation: () => void;
@@ -22,7 +22,7 @@ const PATH_VARIANTS: Variants = {
     x: 0,
     transition: {
       duration: 0.2,
-      type: 'spring',
+      type: "spring",
       stiffness: 200,
       damping: 25,
     },
@@ -33,14 +33,14 @@ const PATH_VARIANTS: Variants = {
     transition: {
       y: {
         duration: 0.2,
-        type: 'spring',
+        type: "spring",
         stiffness: 200,
         damping: 25,
       },
       x: {
         duration: 0.3,
         repeat: Infinity,
-        ease: 'linear',
+        ease: "linear",
       },
     },
   },
@@ -52,7 +52,7 @@ const SECONDARY_PATH_VARIANTS: Variants = {
     x: 0,
     transition: {
       duration: 0.2,
-      type: 'spring',
+      type: "spring",
       stiffness: 200,
       damping: 25,
     },
@@ -63,14 +63,14 @@ const SECONDARY_PATH_VARIANTS: Variants = {
     transition: {
       y: {
         duration: 0.2,
-        type: 'spring',
+        type: "spring",
         stiffness: 200,
         damping: 25,
       },
       x: {
         duration: 0.3,
         repeat: Infinity,
-        ease: 'linear',
+        ease: "linear",
       },
     },
   },
@@ -85,15 +85,15 @@ const AlarmClockIcon = forwardRef<AlarmClockIconHandle, AlarmClockIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -104,7 +104,7 @@ const AlarmClockIcon = forwardRef<AlarmClockIconHandle, AlarmClockIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -129,7 +129,7 @@ const AlarmClockIcon = forwardRef<AlarmClockIconHandle, AlarmClockIconProps>(
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ overflow: 'visible' }}
+          style={{ overflow: "visible" }}
         >
           <motion.path
             variants={PATH_VARIANTS}
@@ -173,6 +173,6 @@ const AlarmClockIcon = forwardRef<AlarmClockIconHandle, AlarmClockIconProps>(
   }
 );
 
-AlarmClockIcon.displayName = 'AlarmClockIcon';
+AlarmClockIcon.displayName = "AlarmClockIcon";
 
 export { AlarmClockIcon };

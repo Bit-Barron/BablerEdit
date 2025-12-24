@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { AnimatePresence, motion, useAnimation } from 'motion/react';
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from '@/lib/utils';
 
 export interface KeyboardIconHandle {
   startAnimation: () => void;

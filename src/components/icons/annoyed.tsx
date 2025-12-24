@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface AnnoyedIconHandle {
   startAnimation: () => void;
@@ -24,14 +24,14 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
     useImperativeHandle(ref, () => {
       isControlledRef.current = true;
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!isControlledRef.current) controls.start('animate');
+        if (!isControlledRef.current) controls.start("animate");
         onMouseEnter?.(e);
       },
       [controls, onMouseEnter]
@@ -39,7 +39,7 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
 
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!isControlledRef.current) controls.start('normal');
+        if (!isControlledRef.current) controls.start("normal");
         onMouseLeave?.(e);
       },
       [controls, onMouseLeave]
@@ -48,13 +48,13 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
     const faceVariants: Variants = {
       normal: {
         scale: 1,
-        transition: { duration: 0.2, ease: 'easeOut' },
+        transition: { duration: 0.2, ease: "easeOut" },
       },
       animate: {
         scale: 1.05,
         transition: {
           duration: 0.3,
-          ease: 'easeOut',
+          ease: "easeOut",
         },
       },
     };
@@ -63,14 +63,14 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
       normal: {
         scaleX: 1,
         y: 0,
-        transition: { duration: 0.2, ease: 'easeOut' },
+        transition: { duration: 0.2, ease: "easeOut" },
       },
       animate: {
         scaleX: 0.8,
         y: 1,
         transition: {
           duration: 0.3,
-          ease: 'easeOut',
+          ease: "easeOut",
         },
       },
     };
@@ -80,7 +80,7 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
         rotate: 0,
         y: 0,
         x: 0,
-        transition: { duration: 0.2, ease: 'easeOut' },
+        transition: { duration: 0.2, ease: "easeOut" },
       },
       animate: {
         rotate: 15,
@@ -88,7 +88,7 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
         x: -0.5,
         transition: {
           duration: 0.25,
-          ease: 'easeOut',
+          ease: "easeOut",
         },
       },
     };
@@ -98,7 +98,7 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
         rotate: 0,
         y: 0,
         x: 0,
-        transition: { duration: 0.2, ease: 'easeOut' },
+        transition: { duration: 0.2, ease: "easeOut" },
       },
       animate: {
         rotate: 15,
@@ -106,7 +106,7 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
         x: 0.5,
         transition: {
           duration: 0.25,
-          ease: 'easeOut',
+          ease: "easeOut",
           delay: 0.05,
         },
       },
@@ -158,6 +158,6 @@ const AnnoyedIcon = forwardRef<AnnoyedIconHandle, AnnoyedIconProps>(
   }
 );
 
-AnnoyedIcon.displayName = 'AnnoyedIcon';
+AnnoyedIcon.displayName = "AnnoyedIcon";
 
 export { AnnoyedIcon };

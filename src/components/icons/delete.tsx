@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { Transition, Variants } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { motion, useAnimation } from 'motion/react';
+import type { Transition, Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 
-import { cn } from '@/lib/utils/utils';
+import { cn } from "@/lib/utils";
 
 export interface DeleteIconHandle {
   startAnimation: () => void;
@@ -22,7 +22,7 @@ const LID_VARIANTS: Variants = {
 };
 
 const SPRING_TRANSITION: Transition = {
-  type: 'spring',
+  type: "spring",
   stiffness: 500,
   damping: 30,
 };
@@ -36,15 +36,15 @@ const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -55,7 +55,7 @@ const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -92,8 +92,8 @@ const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
           <motion.path
             d="M19 8v12c0 1-1 2-2 2H7c-1 0-2-1-2-2V8"
             variants={{
-              normal: { d: 'M19 8v12c0 1-1 2-2 2H7c-1 0-2-1-2-2V8' },
-              animate: { d: 'M19 9v12c0 1-1 2-2 2H7c-1 0-2-1-2-2V9' },
+              normal: { d: "M19 8v12c0 1-1 2-2 2H7c-1 0-2-1-2-2V8" },
+              animate: { d: "M19 9v12c0 1-1 2-2 2H7c-1 0-2-1-2-2V9" },
             }}
             animate={controls}
             transition={SPRING_TRANSITION}
@@ -128,6 +128,6 @@ const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
   }
 );
 
-DeleteIcon.displayName = 'DeleteIcon';
+DeleteIcon.displayName = "DeleteIcon";
 
 export { DeleteIcon };
