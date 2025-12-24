@@ -36,10 +36,12 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
 
   return (
-    <div className="fixed inset-0 top-22 flex bg-background">
+    <div className="fixed inset-0 top-22 flex bg-background mt-2">
       <div className="w-[350px] border-r-2 border-border flex flex-col bg-background">
         <div className="border-b-2 border-t-2 border-border bg-secondary/50 px-6 py-4 shrink-0 flex justify-between items-center">
-          <h2 className="font-bold text-base tracking-tight">Translation IDs</h2>
+          <h2 className="font-bold text-base tracking-tight">
+            Translation IDs
+          </h2>
           <ChevronsRightLeftIcon className="opacity-60 hover:opacity-100 transition-opacity" />
         </div>
         <TranslationTree
@@ -71,7 +73,9 @@ export const EditorPage: React.FC<EditorPageProps> = ({
           />
         ) : (
           <div className="flex items-center justify-center h-full bg-secondary/30">
-            <p className="text-muted-foreground text-lg">Select a translation key to edit</p>
+            <p className="text-muted-foreground text-lg">
+              Select a translation key to edit
+            </p>
           </div>
         )}
         <AddIdDialog open={openIdDialog} onOpenChange={setOpenIdDialog} />

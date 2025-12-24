@@ -34,8 +34,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
   return (
     <section className="flex flex-col bg-background h-full">
-      <div className="px-8 py-5 bg-secondary/50 border-b-2 border-t-2 border-border flex justify-between items-center">
-        <h2 className="font-bold text-lg tracking-tight">Translations</h2>
+      <div className="px-6 py-4 bg-secondary/50 border-b-2 border-t-2 border-border flex justify-between items-center">
+        <h2 className="font-bold text-base tracking-tight">Translations</h2>
         <div className="flex items-center gap-4">
           {project.languages.map((lang, idx) => (
             <React.Fragment key={lang.code}>
@@ -49,8 +49,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           ))}
         </div>
       </div>
-      <div className="px-8 py-4 bg-muted/20 border-b border-border">
-        <h1 className="font-bold text-base text-foreground/80">{selectedNode.data.id}</h1>
+      <div className="px-6 py-3 bg-muted/30 border-b border-border">
+        <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">{selectedNode.data.id}</h1>
       </div>
 
       <div className="flex-1 overflow-y-auto px-8 py-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">

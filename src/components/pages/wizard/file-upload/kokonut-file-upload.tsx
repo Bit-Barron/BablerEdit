@@ -219,9 +219,9 @@ export function MultiFileUpload({
   };
 
   return (
-    <div className={cn("w-full space-y-4", className)}>
+    <div className={cn("w-full space-y-4 mt-5", className)}>
       {/* Upload Area */}
-      <div className="group relative w-full rounded-xl bg-background p-0.5 ring-1 ring-border">
+      <div className="group relative w-full rounded-xl bg-background p-0.5 ">
         <div className="-top-px absolute inset-x-0 h-px w-full bg-linear-to-r from-transparent via-primary/20 to-transparent" />
 
         <div className="relative w-full rounded-[10px] bg-muted/50 p-1.5">
