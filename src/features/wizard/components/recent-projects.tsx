@@ -17,20 +17,15 @@ export const WizardRecentProjects: React.FC<
       <h2 className="text-[16px] font-semibold text-primary mb-3">
         Recent projects:
       </h2>
-      <div className="space-y-1">
+      <div className="space-y-2">
         {projects.map((project: string, index: number) => {
           return (
-            <section
+            <button
               key={index}
-              className="flex justify-between hover:bg-accent"
+              className="glass-bg w-full p-3 text-left text-primary rounded-lg transition-all hover:scale-[1.02]"
             >
-              <button
-                key={index}
-                className="w-full p-2 text-left text-primary rounded-sm transition-colors"
-              >
-                - {project}
-              </button>
-            </section>
+              - {project}
+            </button>
           );
         })}
       </div>

@@ -10,6 +10,7 @@ import { Toaster } from "sonner";
 import MenuBar from "@/core/components/layout/menubar/menubar";
 import Toolbar from "@/core/components/layout/toolbar/toolbar";
 import { useId } from "@/features/editor/hooks/use-id";
+import Aurora from "@/core/components/Aurora";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
@@ -57,7 +58,16 @@ export default function App() {
   }, [location.pathname, setCurrentRoute]);
 
   return (
-    <section>
+    <>
+      <div className="fixed inset-0 -z-10 bg-black">
+        <Aurora
+          colorStops={["#1a1a3e", "#3b82f6", "#8b5cf6"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.3}
+        />
+      </div>
+
       <Toaster position="top-right" theme="dark" closeButton duration={4000} />
       <MenuBar />
       <Toolbar />
@@ -73,6 +83,6 @@ export default function App() {
           }
         />
       </Routes>
-    </section>
+    </>
   );
 }

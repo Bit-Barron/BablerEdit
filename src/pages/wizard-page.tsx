@@ -8,8 +8,8 @@ export const WizardPage: React.FC = () => {
   const [isFileUploadDialogOpen, setFileUploadDialogOpen] = useState(false);
 
   return (
-    <div className="flex flex-col overflow-hidden bg-background">
-      <div className="flex-1 bg-background p-6">
+    <div className="flex flex-col overflow-hidden">
+      <div className="flex-1 p-6">
         <div className="mx-auto flex h-full max-w-6xl flex-col">
           <header className="mb-4">
             <h1 className="mb-1 text-[22px] font-semibold text-primary">
