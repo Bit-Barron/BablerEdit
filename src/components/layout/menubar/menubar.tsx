@@ -6,7 +6,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { MENUS } from "@/lib/config/menus";
+import { MENUS } from "@/lib/config/menus.config";
 
 export default function MenuBar() {
   return (

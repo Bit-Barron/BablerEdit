@@ -3,8 +3,8 @@ import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/lib/types/project.types";
 import { Input } from "@/components/ui/input";
 import { TreeNodeType } from "@/lib/types/tree.types";
-import { useTranslation } from "@/hooks/use-translation";
-import { useTranslationStore } from "@/stores/translation.store";
+import { useTranslation } from "@/hook/use-translation";
+import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 

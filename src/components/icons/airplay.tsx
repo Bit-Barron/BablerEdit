@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { easeInOut, easeOut, motion, useAnimation } from 'motion/react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/utils';
 
 export interface AirplayIconHandle {
   startAnimation: () => void;

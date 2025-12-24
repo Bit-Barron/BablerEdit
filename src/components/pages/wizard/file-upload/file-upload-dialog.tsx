@@ -8,11 +8,11 @@ import {
 } from "@/components/ui/dialog";
 import { MultiFileUpload } from "./kokonut-file-upload";
 import { useNavigate } from "react-router-dom";
-import { useProjectStore } from "@/stores/project.store";
+import { useProjectStore } from "@/lib/store/project.store";
 import { FileWithPath } from "@/lib/types/file.types";
-import { useWizardStore } from "@/stores/wizard.store";
+import { useWizardStore } from "@/lib/store/wizard.store";
 import { Button } from "@/components/ui/button";
-import { createProject } from "@/lib/helper/create-project";
+import { createProject } from "@/lib/services/project.service";
 
 interface FileUploadDialogProps {
   open: boolean;

@@ -1,5 +1,5 @@
-import { TOOLBAR } from "@/lib/config/toolbar";
-import { useToolbarStore } from "@/stores/toolbar.store";
+import { TOOLBAR } from "@/lib/config/toolbar.config";
+import { useToolbarStore } from "@/lib/store/toolbar.store";
 import { useLocation } from "react-router-dom";
 
 import {
@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { useSelectionStore } from "@/stores/selection.store";
+import { useSelectionStore } from "@/lib/store/selection.store";
 
 export default function Toolbar() {
   const { setOnProjectClick } = useToolbarStore();

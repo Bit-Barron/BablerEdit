@@ -1,7 +1,7 @@
-import { FILETYPES, getFrameworkIcon } from "@/lib/config/frameworks";
+import { FILETYPES, getFrameworkIcon } from "@/lib/config/frameworks.config";
 import React from "react";
 import { FrameworkType } from "@/lib/types/framework.types";
-import { useProjectStore } from "@/stores/project.store";
+import { useProjectStore } from "@/lib/store/project.store";
 import { Card } from "@/components/ui/card";
 
 interface WizardFrameworkSelectorProps {

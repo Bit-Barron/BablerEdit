@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useId } from "@/hooks/use-id";
-import { useSelectionStore } from "@/stores/selection.store";
+import { useId } from "@/hook/use-id";
+import { useSelectionStore } from "@/lib/store/selection.store";
 import { Button } from "@/components/ui/button";
 
 interface AddIdDialogProps {

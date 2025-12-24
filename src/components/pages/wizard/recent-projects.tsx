@@ -1,4 +1,4 @@
-import { useSettingsStore } from "@/stores/setting.store";
+import { useSettingsStore } from "@/lib/store/setting.store";
 import React from "react";
 
 interface WizardRecentProjectsProps {}

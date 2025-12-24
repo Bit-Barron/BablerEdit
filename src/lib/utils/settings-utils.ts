@@ -1,4 +1,4 @@
-import { SETTINGS_FILE } from "@/lib/config/constants";
+import { SETTINGS_FILE } from "@/lib/config/constants.config";
 import { appDataDir } from "@tauri-apps/api/path";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";

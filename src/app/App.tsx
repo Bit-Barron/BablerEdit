@@ -1,16 +1,16 @@
-import { useToolbarStore } from "@/stores/toolbar.store";
-import { useEditor } from "@/hooks/use-editor";
-import { useProjectStore } from "@/stores/project.store";
-import { EditorPage } from "@/pages/editor-page";
-import { WizardPage } from "@/pages/wizard-page";
+import { useToolbarStore } from "@/lib/store/toolbar.store";
+import { useEditor } from "@/hook/use-editor";
+import { useProjectStore } from "@/lib/store/project.store";
+import { EditorPage } from "@/app/editor-page";
+import { WizardPage } from "@/app/wizard-page";
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
-import { useId } from "@/hooks/use-id";
+import { useId } from "@/hook/use-id";
 import Aurora from "@/components/elements/Aurora";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/hook/use-settings";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
