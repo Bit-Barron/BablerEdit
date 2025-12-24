@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app/App";
-import { AppProviders } from "./app/providers";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <AppProviders>
+    <ThemeProvider defaultTheme="dark">
       <App />
-    </AppProviders>
+    </ThemeProvider>
   </React.StrictMode>
 );

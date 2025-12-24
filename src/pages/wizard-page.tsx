@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "../app/App.css";
-import { WizardFrameworkSelector } from "@/features/wizard/components/framework-selector";
-import { WizardRecentProjects } from "@/features/wizard/components/recent-projects";
-import { FileUploadDialog } from "@/features/wizard/components/file-upload/file-upload-dialog";
+import { WizardFrameworkSelector } from "@/components/pages/wizard/framework-selector";
+import { WizardRecentProjects } from "@/components/pages/wizard/recent-projects";
+import { FileUploadDialog } from "@/components/pages/wizard/file-upload/file-upload-dialog";
 
 export const WizardPage: React.FC = () => {
   const [isFileUploadDialogOpen, setFileUploadDialogOpen] = useState(false);

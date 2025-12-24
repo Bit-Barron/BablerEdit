@@ -1,15 +1,16 @@
-import { useSelectionStore } from "@/features/editor/stores/selection.store";
-import { useProjectStore } from "@/features/project/stores/project.store";
-import { TreeNode } from "@/features/editor/components/tree/tree-node";
-import { TranslationTree } from "@/features/editor/components/tree/translation-tree";
-import { TranslationDetail } from "@/features/editor/components/translation-detail/translation-detail";
+import { useProjectStore } from "@/stores/project.store";
+
 import { NodeApi, NodeRendererProps } from "react-arborist";
-import { AddIdDialog } from "@/features/editor/components/dialogs/add-id-dialog";
 import { useMemo } from "react";
-import { useEditor } from "@/features/editor/hooks/use-editor";
-import { TreeNodeType } from "@/features/editor/types/tree.types";
-import { buildTranslationTree } from "@/features/editor/lib/tree-builder";
-import { ChevronsRightLeftIcon } from "@/core/components/icons/chevrons-right-left";
+import { useEditor } from "@/hooks/use-editor";
+import { TreeNodeType } from "@/lib/types/tree.types";
+import { buildTranslationTree } from "@/lib/helper/tree-builder";
+import { ChevronsRightLeftIcon } from "@/components/icons/chevrons-right-left";
+import { TranslationDetail } from "@/components/pages/editor/translation-detail";
+import { TranslationTree } from "@/components/pages/editor/translation-tree";
+import { TreeNode } from "@/components/pages/editor/tree-node";
+import { AddIdDialog } from "@/components/pages/wizard/add-id-dialog";
+import { useSelectionStore } from "@/stores/selection.store";
 
 interface EditorPageProps {
   openIdDialog: boolean;

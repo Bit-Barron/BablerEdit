@@ -12,16 +12,13 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/core/components",
-    "utils": "@/core/lib/utils",
-    "ui": "@/core/components/ui",
-    "lib": "@/core/lib",
-    "hooks": "@/core/hooks"
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
   },
   "registries": {
-    "@lucide-animated": "https://lucide-animated.com/r/{name}.json",
-    "@kokonutui": "https://kokonutui.com/r/{name}.json",
-    "@glass-ui": "https://glass-ui.crenspire.com/r/{name}.json",
-    "@react-bits": "https://reactbits.dev/r/{name}.json"
+    "@lucide-animated": "https://lucide-animated.com/r/{name}.json"
   }
 }
