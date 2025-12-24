@@ -2,7 +2,7 @@ import { useProjectStore } from "@/lib/store/project.store";
 
 import { NodeApi, NodeRendererProps } from "react-arborist";
 import { useMemo } from "react";
-import { useEditor } from "@/hook/use-editor";
+import { useEditor } from "@/hooks/use-editor";
 import { TreeNodeType } from "@/lib/types/tree.types";
 import { ChevronsRightLeftIcon } from "@/components/icons/chevrons-right-left";
 import { AddIdDialog } from "@/components/pages/wizard/add-id-dialog";

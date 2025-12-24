@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useId } from "@/hook/use-id";
+import { useId } from "@/hooks/use-id";
 import { useSelectionStore } from "@/lib/store/selection.store";
 import { Button } from "@/components/ui/button";
 

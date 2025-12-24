@@ -1,5 +1,5 @@
 import { useToolbarStore } from "@/lib/store/toolbar.store";
-import { useEditor } from "@/hook/use-editor";
+import { useEditor } from "@/hooks/use-editor";
 import { useProjectStore } from "@/lib/store/project.store";
 import { EditorPage } from "@/app/editor-page";
 import { WizardPage } from "@/app/wizard-page";
@@ -8,8 +8,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
-import { useId } from "@/hook/use-id";
-import { useSettings } from "@/hook/use-settings";
+import { useId } from "@/hooks/use-id";
+import { useSettings } from "@/hooks/use-settings";
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =

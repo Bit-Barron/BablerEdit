@@ -3,7 +3,7 @@ import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/lib/types/project.types";
 import { Input } from "@/components/ui/input";
 import { TreeNodeType } from "@/lib/types/tree.types";
-import { useTranslation } from "@/hook/use-translation";
+import { useTranslation } from "@/hooks/use-translation";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -50,14 +50,19 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </div>
       </div>
       <div className="px-6 py-3 bg-muted/30 border-b border-border">
-        <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">{selectedNode.data.id}</h1>
+        <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">
+          {selectedNode.data.id}
+        </h1>
       </div>
 
       <div className="flex-1 overflow-y-auto px-8 py-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="space-y-8">
           {translationForKey.map((t) => {
             return (
-              <div key={t.language} className="bg-card border-2 border-border rounded-lg p-6 shadow-sm">
+              <div
+                key={t.language}
+                className="bg-card border-2 border-border rounded-lg p-6 shadow-sm"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-bold text-base tracking-wide uppercase text-foreground bg-primary/10 px-4 py-1.5 rounded-md border border-primary/20">
                     {t.language}
