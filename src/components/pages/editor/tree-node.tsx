@@ -27,15 +27,15 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
       style={style}
       ref={dragHandle}
       onClick={() => node.isInternal && node.toggle()}
-      className={`flex items-center gap-2 px-2 py-1.5 cursor-pointer hover:bg-accent ${
-        node.isSelected ? "bg-primary/10" : ""
+      className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-accent/50 transition-colors border-l-2 ${
+        node.isSelected ? "bg-primary/10 border-l-primary" : "border-l-transparent"
       }`}
     >
       {isFolder && (
         <div className="w-4 h-4 flex items-center justify-center shrink-0">
           <ArrowRightIcon
-            size={15}
-            className={`ransition-transform ${node.isOpen ? "rotate-90" : ""}`}
+            size={16}
+            className={`transition-transform ${node.isOpen ? "rotate-90" : ""}`}
           />
         </div>
       )}
@@ -45,16 +45,16 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
       <div className="flex items-center justify-center shrink-0">
         {isFolder ? (
           node.isOpen ? (
-            <FolderOpenIcon size={25} className=" text-yellow-500" />
+            <FolderOpenIcon size={22} className="text-yellow-500" />
           ) : (
-            <FoldersIcon size={25} className=" text-yellow-500" />
+            <FoldersIcon size={22} className="text-yellow-500" />
           )
         ) : (
-          <FileTextIcon size={20} className="text-muted-foreground" />
+          <FileTextIcon size={18} className="text-muted-foreground" />
         )}
       </div>
 
-      <span className="text-sm truncate">
+      <span className="text-sm font-medium truncate">
         {node.data.name.split(".").pop()}
       </span>
     </div>

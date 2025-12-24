@@ -33,38 +33,40 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   }, [selectedNode]);
 
   return (
-    <section className="flex flex-col bg-secondary h-screen">
-      <div className="px-6 py-2.5 border-t flex justify-between">
-        <h2 className="font-semibold tracking-wide">Translations</h2>
-        <div className="flex items-center gap-2">
-          {project.languages.map((lang) => (
+    <section className="flex flex-col bg-background h-full">
+      <div className="px-8 py-5 bg-secondary/50 border-b-2 border-t-2 border-border flex justify-between items-center">
+        <h2 className="font-bold text-lg tracking-tight">Translations</h2>
+        <div className="flex items-center gap-4">
+          {project.languages.map((lang, idx) => (
             <React.Fragment key={lang.code}>
-              <div className="text-sm">{`${
+              <div className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-md border border-primary/20">{`${
                 lang.code
               }-${lang.code.toUpperCase()}`}</div>
-              <Separator orientation="vertical" className="h-4" />
+              {idx < project.languages.length - 1 && (
+                <Separator orientation="vertical" className="h-5" />
+              )}
             </React.Fragment>
           ))}
         </div>
       </div>
-      <div className="px-6 py-2.5 text-sm">
-        <h1 className="font-semibold">{selectedNode.data.id}</h1>
+      <div className="px-8 py-4 bg-muted/20 border-b border-border">
+        <h1 className="font-bold text-base text-foreground/80">{selectedNode.data.id}</h1>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="divide-y">
+      <div className="flex-1 overflow-y-auto px-8 py-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="space-y-8">
           {translationForKey.map((t) => {
             return (
-              <div key={t.language} className="px-6 py-5">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-semibold text-sm tracking-wider text-muted-foreground">
-                    {t.language.toUpperCase()}
+              <div key={t.language} className="bg-card border-2 border-border rounded-lg p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-bold text-base tracking-wide uppercase text-foreground bg-primary/10 px-4 py-1.5 rounded-md border border-primary/20">
+                    {t.language}
                   </span>
-                  <label className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
                     <Checkbox
                       checked={t.approved}
                       onCheckedChange={() => toggleApproved(t.language)}
-                      className="w-3.5 h-3.5"
+                      className="w-4 h-4"
                     />
                     <span>Approved</span>
                   </label>
@@ -73,7 +75,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 <Input
                   type="text"
                   value={t.value}
-                  className="w-full border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="w-full text-base px-4 py-3 bg-background border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-md transition-all"
                   placeholder={`Enter ${t.language} translation...`}
                 />
               </div>
