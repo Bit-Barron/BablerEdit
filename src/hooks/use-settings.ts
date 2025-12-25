@@ -12,6 +12,7 @@ export const useSettings = () => {
   const { setParsedProject } = useProjectStore();
   const navigate = useNavigate();
   const { loading, setLoading } = useProjectStore();
+  const { setCurrentProjectPath } = useProjectStore();
 
   useEffect(() => {
     const loadUserSettings = async () => {
@@ -33,8 +34,9 @@ export const useSettings = () => {
           return;
         }
 
-        // Check if the last opened project file still exists
-        const projectExists = await exists(savedSettings.lastOpenedProject as string);
+        const projectExists = await exists(
+          savedSettings.lastOpenedProject as string
+        );
 
         if (!projectExists) {
           toast.warning("Last opened project not found");
@@ -48,6 +50,7 @@ export const useSettings = () => {
 
         const parsedProject = yaml.load(readLastOpenedProject);
         setParsedProject(parsedProject as ParsedProject);
+        setCurrentProjectPath(savedSettings.lastOpenedProject as string);
         navigate("/editor");
       } catch (err) {
         console.error("Failed to load settings:", err);

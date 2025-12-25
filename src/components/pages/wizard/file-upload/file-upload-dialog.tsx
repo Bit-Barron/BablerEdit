@@ -23,14 +23,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   const { primaryLanguageCode } = useWizardStore();
   const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
   const navigate = useNavigate();
-  const { addNotification } = useNotification();
 
   const parseProject = async () => {
     const project = await createProject(
       translationFiles,
       selectedFramework,
-      primaryLanguageCode,
-      addNotification
+      primaryLanguageCode
     );
 
     if (!project) return;

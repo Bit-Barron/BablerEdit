@@ -10,10 +10,7 @@ import Toolbar from "@/components/layout/toolbar/toolbar";
 import { useId } from "@/hooks/use-id";
 import { useSettings } from "@/hooks/use-settings";
 import { Loader } from "@/components/elements/loader";
-import {
-  GlassNotificationProvider,
-  useNotification,
-} from "@/components/elements/glass-notification";
+import { GlassNotificationProvider } from "@/components/elements/glass-notification";
 
 function AppContent() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
