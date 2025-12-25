@@ -15,8 +15,11 @@ import { useNotification } from "@/components/elements/glass-notification";
 
 export const useEditor = () => {
   const { addRecentProject, setLastOpenedProject } = useSettingsStore();
-  const { setParsedProject, parsedProject, setHasUnsavedChanges } =
-    useProjectStore();
+  const {
+    setParsedProject,
+    setProjectSnapshot,
+    parsedProject,
+  } = useProjectStore();
   const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
   const navigate = useNavigate();
   const { addNotification } = useNotification();
@@ -52,7 +55,7 @@ export const useEditor = () => {
         });
 
         setLastOpenedProject(saveFile);
-        setHasUnsavedChanges(false);
+        setProjectSnapshot(project);
 
         addNotification({
           type: "success",
@@ -78,7 +81,6 @@ export const useEditor = () => {
           lastModified: dayjs().toISOString(),
         });
         setLastOpenedProject(currentProjectPath);
-        setHasUnsavedChanges(false);
 
         addNotification({
           type: "success",
@@ -110,6 +112,8 @@ export const useEditor = () => {
       const parsedProject = yaml.load(fileContent);
 
       setParsedProject(parsedProject as ParsedProject);
+      setProjectSnapshot(parsedProject as ParsedProject);
+
       addNotification({
         type: "success",
         title: "Project opened!",
@@ -179,7 +183,6 @@ export const useEditor = () => {
         description: `"${dragIds[0]}" moved successfully`,
       });
       setParsedProject(updatedProject as ParsedProject);
-      setHasUnsavedChanges(true);
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";

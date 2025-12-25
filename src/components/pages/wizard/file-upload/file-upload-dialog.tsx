@@ -8,7 +8,6 @@ import { FileWithPath } from "@/lib/types/file.types";
 import { useWizardStore } from "@/lib/store/wizard.store";
 import { Button } from "@/components/ui/button";
 import { createProject } from "@/lib/services/project.service";
-import { useNotification } from "@/components/elements/glass-notification";
 
 interface FileUploadDialogProps {
   open: boolean;

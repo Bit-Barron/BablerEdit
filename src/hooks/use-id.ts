@@ -8,8 +8,7 @@ import { useSelectionStore } from "@/lib/store/selection.store";
 import { useNotification } from "@/components/elements/glass-notification";
 
 export const useId = () => {
-  const { parsedProject, setParsedProject, setHasUnsavedChanges } =
-    useProjectStore();
+  const { parsedProject, setParsedProject } = useProjectStore();
   const { selectedNode } = useSelectionStore();
   const { addNotification } = useNotification();
 
@@ -53,7 +52,6 @@ export const useId = () => {
         description: `"${value}" added successfully`,
       });
       setParsedProject(updatedProject as ParsedProject);
-      setHasUnsavedChanges(true);
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
@@ -98,7 +96,6 @@ export const useId = () => {
         description: `"${selectedNode!.data.name}" removed successfully`,
       });
       setParsedProject(updatedProject as ParsedProject);
-      setHasUnsavedChanges(true);
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";

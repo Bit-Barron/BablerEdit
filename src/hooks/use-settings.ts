@@ -9,7 +9,7 @@ import yaml from "js-yaml";
 import { useNavigate } from "react-router-dom";
 
 export const useSettings = () => {
-  const { setParsedProject } = useProjectStore();
+  const { setParsedProject, setProjectSnapshot } = useProjectStore();
   const navigate = useNavigate();
   const { loading, setLoading } = useProjectStore();
   const { setCurrentProjectPath } = useProjectStore();
@@ -50,6 +50,7 @@ export const useSettings = () => {
 
         const parsedProject = yaml.load(readLastOpenedProject);
         setParsedProject(parsedProject as ParsedProject);
+        setProjectSnapshot(parsedProject as ParsedProject);
         setCurrentProjectPath(savedSettings.lastOpenedProject as string);
         navigate("/editor");
       } catch (err) {

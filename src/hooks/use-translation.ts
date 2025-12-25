@@ -6,8 +6,7 @@ import { useNotification } from "@/components/elements/glass-notification";
 
 export const useTranslation = () => {
   const { selectedNode } = useSelectionStore();
-  const { parsedProject, setParsedProject, setHasUnsavedChanges } =
-    useProjectStore();
+  const { parsedProject, setParsedProject } = useProjectStore();
   const { setTranslationForKey } = useTranslationStore();
   const { addNotification } = useNotification();
 
@@ -43,7 +42,6 @@ export const useTranslation = () => {
     };
 
     setParsedProject(updatedProject);
-    setHasUnsavedChanges(true);
 
     addNotification({
       type: "success",

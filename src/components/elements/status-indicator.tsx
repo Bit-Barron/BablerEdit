@@ -38,11 +38,10 @@ const getSizeClasses = (size: StatusIndicatorProps["size"]) => {
 
 const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   state = "idle",
-  color,
   label,
   className,
   size = "md",
-  labelClassName
+  labelClassName,
 }) => {
   const shouldAnimate =
     state === "active" || state === "fixing" || state === "down";

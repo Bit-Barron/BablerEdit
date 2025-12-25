@@ -19,7 +19,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 }) => {
   const { translationForKey, setTranslationForKey } = useTranslationStore();
   const { toggleApproved } = useTranslation();
-  const { setHasUnsavedChanges } = useProjectStore();
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -82,7 +81,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 <Input
                   type="text"
                   value={t.value}
-                  onChange={() => setHasUnsavedChanges(true)}
                   className="w-full text-base px-4 py-3 bg-background border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-md transition-all"
                   placeholder={`Enter ${t.language} translation...`}
                 />

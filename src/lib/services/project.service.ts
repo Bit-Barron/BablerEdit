@@ -6,13 +6,15 @@ import { extractLanguageCode } from "@/lib/utils/language-extractor";
 import { getSourceRootDir } from "@/lib/utils";
 import { ParsedProject } from "@/lib/types/project.types";
 import { FileWithPath } from "@/lib/types/file.types";
+import { useNotification } from "@/components/elements/glass-notification";
 
 export async function createProject(
   files: FileWithPath[],
   framework: string,
-  primaryLanguage: string,
-  addNotification: (notification: { type: string; title: string; description?: string }) => void
+  primaryLanguage: string
 ): Promise<ParsedProject | void> {
+  const { addNotification } = useNotification();
+
   try {
     let foundPrimaryLanguage = false;
     const langCodes = files.map(
@@ -48,9 +50,10 @@ export async function createProject(
 
     addNotification({
       type: "success",
-      title: "Project created!",
-      description: "Your project has been created successfully"
+      title: "Project created",
+      description: "The project has been created successfully.",
     });
+
     return {
       version: "1.0.0",
       be_version: "1.0.0",
