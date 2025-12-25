@@ -19,6 +19,7 @@ export const useEditor = () => {
     setParsedProject,
     setProjectSnapshot,
     parsedProject,
+    setHasUnsavedChanges,
   } = useProjectStore();
   const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
   const navigate = useNavigate();
@@ -57,6 +58,8 @@ export const useEditor = () => {
         setLastOpenedProject(saveFile);
         setProjectSnapshot(project);
 
+        setHasUnsavedChanges(false);
+
         addNotification({
           type: "success",
           title: "Project saved!",
@@ -81,6 +84,9 @@ export const useEditor = () => {
           lastModified: dayjs().toISOString(),
         });
         setLastOpenedProject(currentProjectPath);
+        setProjectSnapshot(project);
+
+        setHasUnsavedChanges(false);
 
         addNotification({
           type: "success",
