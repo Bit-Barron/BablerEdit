@@ -7,7 +7,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import StatusIndicator from "@/components/ui/status-indicator";
+import StatusIndicator from "@/components/elements/status-indicator";
 import { MENUS } from "@/lib/config/menus.config";
 import { useProjectStore } from "@/lib/store/project.store";
 

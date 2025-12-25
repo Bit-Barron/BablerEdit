@@ -5,10 +5,13 @@ import { updateProjectFolderStructure } from "@/lib/services/project-updater.ser
 import { readTranslationFile } from "@/lib/utils/file-reader";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSelectionStore } from "@/lib/store/selection.store";
+import { useNotification } from "@/components/elements/glass-notification";
 
 export const useId = () => {
-  const { parsedProject, setParsedProject, setHasUnsavedChanges } = useProjectStore();
+  const { parsedProject, setParsedProject, setHasUnsavedChanges } =
+    useProjectStore();
   const { selectedNode } = useSelectionStore();
+  const { addNotification } = useNotification();
 
   const addIdToJson = async (value: string) => {
     try {
@@ -44,7 +47,11 @@ export const useId = () => {
       }
 
       const updatedProject = await updateProjectFolderStructure(parsedProject);
-      toast.success(`ID "${value}" added successfully to JSON files`);
+      addNotification({
+        type: "success",
+        title: "ID added!",
+        description: `"${value}" added successfully`,
+      });
       setParsedProject(updatedProject as ParsedProject);
       setHasUnsavedChanges(true);
     } catch (err) {
@@ -85,9 +92,11 @@ export const useId = () => {
       }
       const updatedProject = await updateProjectFolderStructure(parsedProject);
 
-      toast.success(
-        `ID "${selectedNode!.data.name}" removed successfully from JSON files`
-      );
+      addNotification({
+        type: "success",
+        title: "ID removed!",
+        description: `"${selectedNode!.data.name}" removed successfully`,
+      });
       setParsedProject(updatedProject as ParsedProject);
       setHasUnsavedChanges(true);
     } catch (err) {

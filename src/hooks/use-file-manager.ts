@@ -2,8 +2,10 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";
 import { FileWithPath } from "@/lib/types/file.types";
+import { useNotification } from "@/components/elements/glass-notification";
 
 export const useFileManager = () => {
+  const { addNotification } = useNotification();
   const selectJsonFiles = async (): Promise<FileWithPath[] | null> => {
     try {
       const selected = await open({
@@ -31,7 +33,11 @@ export const useFileManager = () => {
         })
       );
 
-      toast.success(`Loaded ${filesWithPaths.length} files successfully`);
+      addNotification({
+        type: "success",
+        title: "Files loaded!",
+        description: `Loaded ${filesWithPaths.length} files successfully`,
+      });
       return filesWithPaths;
     } catch (err) {
       console.error(err);

@@ -10,7 +10,8 @@ import { FileWithPath } from "@/lib/types/file.types";
 export async function createProject(
   files: FileWithPath[],
   framework: string,
-  primaryLanguage: string
+  primaryLanguage: string,
+  addNotification: (notification: { type: string; title: string; description?: string }) => void
 ): Promise<ParsedProject | void> {
   try {
     let foundPrimaryLanguage = false;
@@ -45,7 +46,11 @@ export async function createProject(
       return;
     }
 
-    toast.success("Project created successfully.");
+    addNotification({
+      type: "success",
+      title: "Project created!",
+      description: "Your project has been created successfully"
+    });
     return {
       version: "1.0.0",
       be_version: "1.0.0",

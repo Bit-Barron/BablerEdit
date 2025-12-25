@@ -5,14 +5,17 @@ import { EditorPage } from "@/app/editor-page";
 import { WizardPage } from "@/app/wizard-page";
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { Toaster } from "sonner";
 import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
 import { useId } from "@/hooks/use-id";
 import { useSettings } from "@/hooks/use-settings";
-import { Loader } from "@/components/elements/loader"; // <- NEU
+import { Loader } from "@/components/elements/loader";
+import {
+  GlassNotificationProvider,
+  useNotification,
+} from "@/components/elements/glass-notification";
 
-export default function App() {
+function AppContent() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
     useToolbarStore();
   const { parsedProject } = useProjectStore();
@@ -20,8 +23,6 @@ export default function App() {
   const { removeIdFromJson } = useId();
   const location = useLocation();
   const [openIdDialog, setOpenIdDialog] = useState(false);
-
-  const { loading } = useSettings();
 
   useEffect(() => {
     const handleToolbarAction = async () => {
@@ -57,17 +58,8 @@ export default function App() {
     setCurrentRoute(currentRoute);
   }, [location.pathname, setCurrentRoute]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-background">
-        <Loader size={100} />
-      </div>
-    );
-  }
-
   return (
-    <section>
-      <Toaster position="top-right" theme="dark" closeButton duration={4000} />
+    <>
       <MenuBar />
       <Toolbar />
       <Routes>
@@ -82,6 +74,24 @@ export default function App() {
           }
         />
       </Routes>
-    </section>
+    </>
+  );
+}
+
+export default function App() {
+  const { loading } = useSettings();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-background">
+        <Loader size={100} />
+      </div>
+    );
+  }
+
+  return (
+    <GlassNotificationProvider position="top-right">
+      <AppContent />
+    </GlassNotificationProvider>
   );
 }

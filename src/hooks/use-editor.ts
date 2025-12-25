@@ -11,12 +11,15 @@ import { updateProjectFolderStructure } from "@/lib/services/project-updater.ser
 import { readTranslationFile } from "@/lib/utils/file-reader";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
+import { useNotification } from "@/components/elements/glass-notification";
 
 export const useEditor = () => {
   const { addRecentProject, setLastOpenedProject } = useSettingsStore();
-  const { setParsedProject, parsedProject, setHasUnsavedChanges } = useProjectStore();
+  const { setParsedProject, parsedProject, setHasUnsavedChanges } =
+    useProjectStore();
   const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
 
   const saveProject = async (
     project: ParsedProject
@@ -51,7 +54,11 @@ export const useEditor = () => {
         setLastOpenedProject(saveFile);
         setHasUnsavedChanges(false);
 
-        toast.success(`Project saved successfully ${saveFile}`);
+        addNotification({
+          type: "success",
+          title: "Project saved!",
+          description: `Saved to ${saveFile}`,
+        });
         return bablerProject;
       } else {
         const bablerProject = serializeProject(project);
@@ -73,7 +80,11 @@ export const useEditor = () => {
         setLastOpenedProject(currentProjectPath);
         setHasUnsavedChanges(false);
 
-        toast.success(`Project saved successfully ${currentProjectPath}`);
+        addNotification({
+          type: "success",
+          title: "Project saved!",
+          description: `Saved to ${currentProjectPath}`,
+        });
         return bablerProject;
       }
     } catch (err) {
@@ -99,7 +110,11 @@ export const useEditor = () => {
       const parsedProject = yaml.load(fileContent);
 
       setParsedProject(parsedProject as ParsedProject);
-      toast.success(`Project opened successfully ${openFile}`);
+      addNotification({
+        type: "success",
+        title: "Project opened!",
+        description: `Opened ${openFile}`,
+      });
       setLastOpenedProject(openFile);
       navigate("/editor");
     } catch (err) {
@@ -158,7 +173,11 @@ export const useEditor = () => {
       }
 
       const updatedProject = await updateProjectFolderStructure(parsedProject);
-      toast.success(`ID "${dragIds[0]}" moved successfully in JSON files`);
+      addNotification({
+        type: "success",
+        title: "ID moved!",
+        description: `"${dragIds[0]}" moved successfully`,
+      });
       setParsedProject(updatedProject as ParsedProject);
       setHasUnsavedChanges(true);
     } catch (err) {

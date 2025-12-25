@@ -8,6 +8,7 @@ import { FileWithPath } from "@/lib/types/file.types";
 import { useWizardStore } from "@/lib/store/wizard.store";
 import { Button } from "@/components/ui/button";
 import { createProject } from "@/lib/services/project.service";
+import { useNotification } from "@/components/elements/glass-notification";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -22,12 +23,14 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   const { primaryLanguageCode } = useWizardStore();
   const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
 
   const parseProject = async () => {
     const project = await createProject(
       translationFiles,
       selectedFramework,
-      primaryLanguageCode
+      primaryLanguageCode,
+      addNotification
     );
 
     if (!project) return;
