@@ -116,6 +116,7 @@ export async function createProject(
       },
     };
   } catch (error) {
+    console.error(error);
     const message = error instanceof Error ? error.message : "Unknown error";
     toast.error(`Failed to create project: ${message}`);
     return;

@@ -7,6 +7,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useProjectStore } from "@/lib/store/project.store";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -18,6 +19,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 }) => {
   const { translationForKey, setTranslationForKey } = useTranslationStore();
   const { toggleApproved } = useTranslation();
+  const { setHasUnsavedChanges } = useProjectStore();
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -55,7 +57,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </h1>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-8 py-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="space-y-8">
           {translationForKey.map((t) => {
             return (
@@ -80,6 +82,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 <Input
                   type="text"
                   value={t.value}
+                  onChange={() => setHasUnsavedChanges(true)}
                   className="w-full text-base px-4 py-3 bg-background border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-md transition-all"
                   placeholder={`Enter ${t.language} translation...`}
                 />

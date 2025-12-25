@@ -34,6 +34,7 @@ export const useFileManager = () => {
       toast.success(`Loaded ${filesWithPaths.length} files successfully`);
       return filesWithPaths;
     } catch (err) {
+      console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
       return null;

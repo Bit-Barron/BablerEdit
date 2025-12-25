@@ -7,7 +7,7 @@ import { useProjectStore } from "@/lib/store/project.store";
 import { useSelectionStore } from "@/lib/store/selection.store";
 
 export const useId = () => {
-  const { parsedProject, setParsedProject } = useProjectStore();
+  const { parsedProject, setParsedProject, setHasUnsavedChanges } = useProjectStore();
   const { selectedNode } = useSelectionStore();
 
   const addIdToJson = async (value: string) => {
@@ -46,7 +46,9 @@ export const useId = () => {
       const updatedProject = await updateProjectFolderStructure(parsedProject);
       toast.success(`ID "${value}" added successfully to JSON files`);
       setParsedProject(updatedProject as ParsedProject);
+      setHasUnsavedChanges(true);
     } catch (err) {
+      console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
       return null;
@@ -87,7 +89,9 @@ export const useId = () => {
         `ID "${selectedNode!.data.name}" removed successfully from JSON files`
       );
       setParsedProject(updatedProject as ParsedProject);
+      setHasUnsavedChanges(true);
     } catch (err) {
+      console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
       return null;

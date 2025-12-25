@@ -12,20 +12,12 @@
     "core:window:allow-maximize",
     "core:window:allow-minimize",
     {
-      "identifier": "fs:allow-exists",
+      "identifier": "fs:scope",
       "allow": [{ "path": "$APPDATA/**" }, { "path": "**" }]
     },
-    {
-      "identifier": "fs:allow-mkdir",
-      "allow": [{ "path": "$APPDATA/**" }]
-    },
-    {
-      "identifier": "fs:allow-read-text-file",
-      "allow": [{ "path": "$APPDATA/**" }, { "path": "**" }]
-    },
-    {
-      "identifier": "fs:allow-write-text-file",
-      "allow": [{ "path": "$APPDATA/**" }, { "path": "**" }]
-    }
+    "fs:allow-exists",
+    "fs:allow-mkdir",
+    "fs:allow-read-text-file",
+    "fs:allow-write-text-file"
   ]
 }

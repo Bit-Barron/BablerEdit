@@ -10,4 +10,5 @@ export interface RecentProjectProps {
 export interface UpdateSettingsState {
   darkMode?: boolean;
   recentProjects?: RecentProjectProps[];
+  lastOpenedProject: string | null;
 }

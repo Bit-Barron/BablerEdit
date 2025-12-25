@@ -13,8 +13,8 @@ import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
 
 export const useEditor = () => {
-  const { addRecentProject } = useSettingsStore();
-  const { setParsedProject, parsedProject } = useProjectStore();
+  const { addRecentProject, setLastOpenedProject } = useSettingsStore();
+  const { setParsedProject, parsedProject, setHasUnsavedChanges } = useProjectStore();
   const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
   const navigate = useNavigate();
 
@@ -48,6 +48,9 @@ export const useEditor = () => {
           lastModified: dayjs().toISOString(),
         });
 
+        setLastOpenedProject(saveFile);
+        setHasUnsavedChanges(false);
+
         toast.success(`Project saved successfully ${saveFile}`);
         return bablerProject;
       } else {
@@ -67,11 +70,14 @@ export const useEditor = () => {
           language: project.primary_language,
           lastModified: dayjs().toISOString(),
         });
+        setLastOpenedProject(currentProjectPath);
+        setHasUnsavedChanges(false);
 
         toast.success(`Project saved successfully ${currentProjectPath}`);
         return bablerProject;
       }
     } catch (err) {
+      console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
       return null;
@@ -94,8 +100,10 @@ export const useEditor = () => {
 
       setParsedProject(parsedProject as ParsedProject);
       toast.success(`Project opened successfully ${openFile}`);
+      setLastOpenedProject(openFile);
       navigate("/editor");
     } catch (err) {
+      console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
       return null;
@@ -152,7 +160,9 @@ export const useEditor = () => {
       const updatedProject = await updateProjectFolderStructure(parsedProject);
       toast.success(`ID "${dragIds[0]}" moved successfully in JSON files`);
       setParsedProject(updatedProject as ParsedProject);
+      setHasUnsavedChanges(true);
     } catch (err) {
+      console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
       return null;

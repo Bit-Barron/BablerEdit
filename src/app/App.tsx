@@ -10,6 +10,7 @@ import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
 import { useId } from "@/hooks/use-id";
 import { useSettings } from "@/hooks/use-settings";
+import { Loader } from "@/components/elements/loader"; // <- NEU
 
 export default function App() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
@@ -20,7 +21,7 @@ export default function App() {
   const location = useLocation();
   const [openIdDialog, setOpenIdDialog] = useState(false);
 
-  useSettings();
+  const { loading } = useSettings();
 
   useEffect(() => {
     const handleToolbarAction = async () => {
@@ -56,8 +57,16 @@ export default function App() {
     setCurrentRoute(currentRoute);
   }, [location.pathname, setCurrentRoute]);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-background">
+        <Loader size={100} />
+      </div>
+    );
+  }
+
   return (
-    <>
+    <section>
       <Toaster position="top-right" theme="dark" closeButton duration={4000} />
       <MenuBar />
       <Toolbar />
@@ -73,6 +82,6 @@ export default function App() {
           }
         />
       </Routes>
-    </>
+    </section>
   );
 }

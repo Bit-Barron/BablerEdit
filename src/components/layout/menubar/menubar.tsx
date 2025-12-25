@@ -7,9 +7,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import StatusIndicator from "@/components/ui/status-indicator";
 import { MENUS } from "@/lib/config/menus.config";
+import { useProjectStore } from "@/lib/store/project.store";
 
 export default function MenuBar() {
+  const { hasUnsavedChanges } = useProjectStore();
+
   return (
     <div className="w-full bg-secondary border-b border-border-subtle flex items-center justify-between">
       <NavigationMenu viewport={false} className="relative z-50">
@@ -43,7 +47,10 @@ export default function MenuBar() {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
-      <div className="pr-4">
+      <div className="pr-4 flex space-x-2">
+        {hasUnsavedChanges && (
+          <StatusIndicator state="down" label="Has unsaved changes" />
+        )}
         <ModeToggle />
       </div>
     </div>

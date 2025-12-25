@@ -5,7 +5,7 @@ import { useTranslationStore } from "@/lib/store/translation.store";
 
 export const useTranslation = () => {
   const { selectedNode } = useSelectionStore();
-  const { parsedProject, setParsedProject } = useProjectStore();
+  const { parsedProject, setParsedProject, setHasUnsavedChanges } = useProjectStore();
   const { setTranslationForKey } = useTranslationStore();
 
   const toggleApproved = (language: string) => {
@@ -40,6 +40,7 @@ export const useTranslation = () => {
     };
 
     setParsedProject(updatedProject);
+    setHasUnsavedChanges(true);
     return updatedProject;
   };
 

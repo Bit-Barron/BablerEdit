@@ -51,6 +51,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
         parseJson(content);
         return { valid: true };
       } catch (error) {
+        console.error(error);
         return { valid: false, error: "Invalid JSON format" };
       }
     },
@@ -90,6 +91,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
         }
         return { valid: true };
       } catch (error) {
+        console.error(error);
         return { valid: false, error: "Invalid JSON format" };
       }
     },
@@ -108,6 +110,8 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
         parseJson(content);
         return { valid: true };
       } catch (error) {
+        console.error(error);
+
         return { valid: false, error: "Invalid ARB format" };
       }
     },
@@ -126,6 +130,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
         parseJson(content);
         return { valid: true };
       } catch (error) {
+        console.error(error);
         return { valid: false, error: "Invalid JSON format" };
       }
     },
@@ -146,6 +151,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
           parseJson(content);
           return { valid: true };
         } catch (error) {
+          console.error(error);
           return { valid: false, error: "Invalid JSON format" };
         }
       }

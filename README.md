@@ -9,6 +9,8 @@ https://www.eldoraui.site/docs/components/dock-text
 
 https://magicui.design/docs/components/particles
 
+C:\Users\barron\AppData\Roaming\com.barron.bableredit\settings.json
+
 /// DONNN
 <!-- https://ui.tripled.work/components/glass-wallet-card -->
 <!-- https://www.ui-layouts.com/components/range-slider -->
@@ -16,6 +18,7 @@ https://magicui.design/docs/components/particles
 <!-- https://ui.tripled.work/components/wizard-form -->
 <!-- https://ui.tripled.work/components/ai-unlock-animation -->
 <!-- https://www.scrollxui.dev/docs/components/hyperlink -->
+<!-- https://motion-primitives.com/docsmponents/hyperlink -->
 <!-- https://motion-primitives.com/docs/border-trail -->
 <!-- https://magicui.design/docs/components/border-beam -->
 <!-- https://magicui.design/docs/components/particles -->
