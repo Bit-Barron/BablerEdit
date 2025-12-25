@@ -15,7 +15,7 @@ export const buttonVariants = cva(
         outline:
           "shadow-md hover:shadow active:shadow-none bg-transparent border-2 border-border transition hover:translate-y-1 active:translate-y-2 active:translate-x-1",
         link: "bg-transparent hover:underline",
-        ghost: "bg-transparent hover:bg-accent"
+        ghost: "bg-transparent hover:bg-accent",
       },
       size: {
         sm: "px-3 py-1 text-sm shadow hover:shadow-none",
@@ -28,7 +28,7 @@ export const buttonVariants = cva(
       size: "md",
       variant: "default",
     },
-  },
+  }
 );
 
 export interface IButtonProps
@@ -47,7 +47,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
       asChild = false,
       ...props
     }: IButtonProps,
-    forwardedRef,
+    forwardedRef
   ) => {
     const Comp = asChild ? Slot : "button";
     return (
@@ -59,7 +59,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
         {children}
       </Comp>
     );
-  },
+  }
 );
 
 Button.displayName = "Button";

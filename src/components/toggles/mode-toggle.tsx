@@ -6,7 +6,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCallback } from "react";
-import { createAnimation, getRandomAnimation } from "../elements/theme-animation";
+import {
+  createAnimation,
+  getRandomAnimation,
+} from "../elements/theme-animation";
 import { SunIcon } from "@/components/icons/sun";
 import { MoonIcon } from "@/components/icons/moon";
 import { useTheme } from "@/components/providers/theme-provider";

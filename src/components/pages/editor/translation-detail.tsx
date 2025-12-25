@@ -7,7 +7,6 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useProjectStore } from "@/lib/store/project.store";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
