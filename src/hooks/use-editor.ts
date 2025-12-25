@@ -1,27 +1,19 @@
 import { ParsedProject } from "@/lib/types/project.types";
-import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { save, open } from "@tauri-apps/plugin-dialog";
-import yaml from "js-yaml";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import dayjs from "dayjs";
 import { ReactArboristType } from "../lib/types/tree.types";
-import { serializeProject } from "@/lib/helpers/project-serializer";
-import { updateProjectFolderStructure } from "@/lib/services/project-updater.service";
-import { readTranslationFile } from "@/lib/utils/file-reader";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
 import { useNotification } from "@/components/elements/glass-notification";
+import * as ProjectService from "@/lib/services/project.service";
+import dayjs from "dayjs";
 
 export const useEditor = () => {
-  const { addRecentProject, setLastOpenedProject } = useSettingsStore();
-  const {
-    setParsedProject,
-    setProjectSnapshot,
-    parsedProject,
-    setHasUnsavedChanges,
-  } = useProjectStore();
-  const { setCurrentProjectPath, currentProjectPath } = useProjectStore();
+  const { setLastOpenedProject, addRecentProject } = useSettingsStore();
+  const { setParsedProject, setProjectSnapshot, parsedProject } =
+    useProjectStore();
+  const { setCurrentProjectPath, setHasUnsavedChanges, currentProjectPath } =
+    useProjectStore();
   const navigate = useNavigate();
   const { addNotification } = useNotification();
 
@@ -29,72 +21,34 @@ export const useEditor = () => {
     project: ParsedProject
   ): Promise<ParsedProject | null> => {
     try {
-      if (!currentProjectPath) {
-        const saveFile = await save({
-          defaultPath: project.filename || "Project.babler",
-          filters: [{ name: "BablerEdit Project", extensions: ["babler"] }],
-        });
+      const result = await ProjectService.saveProject({
+        project,
+        currentProjectPath: currentProjectPath,
+      });
 
-        if (!saveFile) return null;
-        setCurrentProjectPath(saveFile);
+      if (!result) return null;
 
-        const bablerProject = serializeProject(project);
-        const yamlContent = yaml.dump(bablerProject, {
-          indent: 2,
-          lineWidth: -1,
-          noRefs: true,
-        });
+      setCurrentProjectPath(result.currentProjectPath);
 
-        await writeTextFile(saveFile, yamlContent);
+      addRecentProject({
+        path: result.currentProjectPath,
+        name: project.filename,
+        framework: project.framework,
+        language: project.primary_language,
+        lastModified: dayjs().toISOString(),
+      });
 
-        addRecentProject({
-          path: saveFile,
-          name: project.filename,
-          framework: project.framework,
-          language: project.primary_language,
-          lastModified: dayjs().toISOString(),
-        });
+      setLastOpenedProject(result.currentProjectPath);
+      setProjectSnapshot(project);
+      setHasUnsavedChanges(false);
 
-        setLastOpenedProject(saveFile);
-        setProjectSnapshot(project);
+      addNotification({
+        type: "success",
+        title: "Project saved!",
+        description: `Saved to ${result.currentProjectPath}`,
+      });
 
-        setHasUnsavedChanges(false);
-
-        addNotification({
-          type: "success",
-          title: "Project saved!",
-          description: `Saved to ${saveFile}`,
-        });
-        return bablerProject;
-      } else {
-        const bablerProject = serializeProject(project);
-        const yamlContent = yaml.dump(bablerProject, {
-          indent: 2,
-          lineWidth: -1,
-          noRefs: true,
-        });
-
-        await writeTextFile(currentProjectPath, yamlContent);
-
-        addRecentProject({
-          path: currentProjectPath,
-          name: project.filename,
-          framework: project.framework,
-          language: project.primary_language,
-          lastModified: dayjs().toISOString(),
-        });
-        setLastOpenedProject(currentProjectPath);
-        setProjectSnapshot(project);
-
-        setHasUnsavedChanges(false);
-
-        addNotification({
-          type: "success",
-          title: "Project saved!",
-          description: `Saved to ${currentProjectPath}`,
-        });
-        return bablerProject;
-      }
+      return project;
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
@@ -102,30 +56,19 @@ export const useEditor = () => {
       return null;
     }
   };
-
   const openProject = async () => {
     try {
-      const openFile = await open({
-        multiple: false,
-        directory: false,
-        filters: [{ extensions: ["babler"], name: "BablerEdit Project" }],
-      });
+      const loadResult = await ProjectService.LoadProject();
 
-      if (!openFile) return;
-      setCurrentProjectPath(openFile);
-
-      const fileContent = await readTextFile(openFile);
-      const parsedProject = yaml.load(fileContent);
-
-      setParsedProject(parsedProject as ParsedProject);
-      setProjectSnapshot(parsedProject as ParsedProject);
+      setParsedProject(loadResult?.project as ParsedProject);
+      setProjectSnapshot(loadResult?.project as ParsedProject);
 
       addNotification({
         type: "success",
         title: "Project opened!",
-        description: `Opened ${openFile}`,
+        description: `Opened ${loadResult?.project.filename || "project"}`,
       });
-      setLastOpenedProject(openFile);
+      setLastOpenedProject(loadResult?.projectPath as string);
       navigate("/editor");
     } catch (err) {
       console.error(err);
@@ -137,58 +80,17 @@ export const useEditor = () => {
 
   const moveJsonNode = async ({ dragIds, parentId }: ReactArboristType) => {
     try {
-      const TRANSLATION_FILES =
-        parsedProject.translation_packages[0].translation_urls;
-
-      if (!dragIds || !parentId) return;
-
-      for (let path in TRANSLATION_FILES) {
-        const filePath = TRANSLATION_FILES[path].path;
-        const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
-
-        const obj = await readTranslationFile(
-          parsedProject.source_root_dir,
-          filePath
-        );
-
-        const dragId = dragIds[0].split(".");
-        const splitParentId = parentId.split(".");
-
-        let current: any = obj;
-        let parent: any = "";
-
-        const splitDragId = dragIds[0].split(".").slice(0, -1).join(".");
-
-        if (splitDragId === parentId) {
-          toast.error("Moving within the same parent is not working.");
-          return;
-        }
-
-        for (let i = 0; i < dragId.length; i++) {
-          parent = current;
-          current = current[dragId[i]];
-        }
-
-        delete parent[dragId[dragId.length - 1]];
-
-        let parentCurrent: any = obj;
-        for (let i = 0; i < splitParentId.length; i++) {
-          parentCurrent = parentCurrent[splitParentId[i]];
-        }
-
-        parentCurrent[dragId[dragId.length - 1]] = current;
-
-        const finalContent = JSON.stringify(obj, null, 2);
-        await writeTextFile(jsonFilePath, finalContent);
-      }
-
-      const updatedProject = await updateProjectFolderStructure(parsedProject);
+      const result = await ProjectService.moveJsonNodeProject({
+        dragIds,
+        parentId,
+        project: parsedProject!,
+      });
       addNotification({
         type: "success",
         title: "ID moved!",
         description: `"${dragIds[0]}" moved successfully`,
       });
-      setParsedProject(updatedProject as ParsedProject);
+      setParsedProject(result?.updatedProject as ParsedProject);
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";

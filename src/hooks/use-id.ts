@@ -1,11 +1,9 @@
-import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { ParsedProject } from "@/lib/types/project.types";
 import { toast } from "sonner";
-import { updateProjectFolderStructure } from "@/lib/services/project-updater.service";
-import { readTranslationFile } from "@/lib/utils/file-reader";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSelectionStore } from "@/lib/store/selection.store";
 import { useNotification } from "@/components/elements/glass-notification";
+import * as TranslationService from "@/lib/services/translation.service";
 
 export const useId = () => {
   const { parsedProject, setParsedProject } = useProjectStore();
@@ -14,93 +12,43 @@ export const useId = () => {
 
   const addIdToJson = async (value: string) => {
     try {
-      const TRANSLATION_FILES =
-        parsedProject.translation_packages[0].translation_urls;
+      const result = TranslationService.addTranslationId({
+        selectedNodeId: selectedNode!.data.id,
+        newIdValue: value,
+        project: parsedProject!,
+      });
 
-      for (let path in TRANSLATION_FILES) {
-        const filePath = TRANSLATION_FILES[path].path;
-        const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
-        const obj = await readTranslationFile(
-          parsedProject.source_root_dir,
-          filePath
-        );
-
-        if (!selectedNode) return;
-
-        const splitSelectedNode = selectedNode.data.id.split(".");
-        let current: any = obj;
-        let parent: any = "";
-
-        for (let i = 0; i < splitSelectedNode.length; i++) {
-          parent = current;
-          current = current[splitSelectedNode[i]];
-        }
-
-        if (typeof current === "object") {
-          current[value] = "";
-        } else {
-          parent[value] = "";
-        }
-        const updateContent = JSON.stringify(obj, null, 2);
-        writeTextFile(jsonFilePath, updateContent);
-      }
-
-      const updatedProject = await updateProjectFolderStructure(parsedProject);
       addNotification({
         type: "success",
         title: "ID added!",
         description: `"${value}" added successfully`,
       });
-      setParsedProject(updatedProject as ParsedProject);
+      setParsedProject((await result).updatedProject as ParsedProject);
+      return (await result).updatedProject;
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
-      return null;
     }
   };
 
   const removeIdFromJson = async () => {
     try {
-      const TRANSLATION_FILES =
-        parsedProject.translation_packages[0].translation_urls;
-
-      for (let path in TRANSLATION_FILES) {
-        const filePath = TRANSLATION_FILES[path].path;
-        const jsonFilePath = `${parsedProject.source_root_dir}${filePath}`;
-        const obj = await readTranslationFile(
-          parsedProject.source_root_dir,
-          filePath
-        );
-
-        const splitSelectedNode = selectedNode!.data.id.split(".");
-
-        let current: any = obj;
-        let parent: any = "";
-
-        for (let i = 0; i < splitSelectedNode.length; i++) {
-          parent = current;
-          current = current[splitSelectedNode[i]];
-        }
-
-        delete parent[splitSelectedNode[splitSelectedNode.length - 1]];
-        const updatedContent = JSON.stringify(obj, null, 2);
-
-        writeTextFile(jsonFilePath, updatedContent);
-      }
-      const updatedProject = await updateProjectFolderStructure(parsedProject);
-
+      const result = TranslationService.removeTranslationId({
+        selectedNodeId: selectedNode!.data.id,
+        project: parsedProject!,
+      });
       addNotification({
         type: "success",
         title: "ID removed!",
-        description: `"${selectedNode!.data.name}" removed successfully`,
+        description: `ID removed successfully`,
       });
-      setParsedProject(updatedProject as ParsedProject);
+      setParsedProject((await result).updatedProject);
+      return (await result).updatedProject;
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed: ${message}`);
-      return null;
     }
   };
 

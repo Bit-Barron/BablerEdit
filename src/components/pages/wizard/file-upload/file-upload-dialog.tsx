@@ -7,7 +7,7 @@ import { useProjectStore } from "@/lib/store/project.store";
 import { FileWithPath } from "@/lib/types/file.types";
 import { useWizardStore } from "@/lib/store/wizard.store";
 import { Button } from "@/components/ui/button";
-import { createProject } from "@/lib/services/project.service";
+import * as ProjectService from "@/lib/services/project.service";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -24,15 +24,15 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   const navigate = useNavigate();
 
   const parseProject = async () => {
-    const project = await createProject(
-      translationFiles,
-      selectedFramework,
-      primaryLanguageCode
-    );
+    const project = await ProjectService.createProject({
+      files: translationFiles,
+      framework: selectedFramework!,
+      primaryLanguage: primaryLanguageCode!,
+    });
 
     if (!project) return;
 
-    setParsedProject(project);
+    setParsedProject(project.project);
     navigate("/editor");
     onOpenChange(false);
   };

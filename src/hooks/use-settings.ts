@@ -1,12 +1,9 @@
 import { useEffect } from "react";
-import { readTextFile, exists } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";
-import parseJson from "parse-json";
-import { getSettingsPath } from "../lib/utils/settings-utils";
 import { useProjectStore } from "@/lib/store/project.store";
 import { ParsedProject } from "@/lib/types/project.types";
-import yaml from "js-yaml";
 import { useNavigate } from "react-router-dom";
+import * as SettingsService from "@/lib/services/settings.service";
 
 export const useSettings = () => {
   const { setParsedProject, setProjectSnapshot } = useProjectStore();
@@ -18,40 +15,27 @@ export const useSettings = () => {
     const loadUserSettings = async () => {
       setLoading(true);
       try {
-        const settingsPath = await getSettingsPath();
-        const fileExists = await exists(settingsPath);
+        const result = await SettingsService.loadUserSettings();
 
-        if (!fileExists) {
+        if (!result.settingsExist) {
           setLoading(false);
           return;
         }
 
-        const content = await readTextFile(settingsPath);
-        const savedSettings = parseJson(content);
-
-        if (!savedSettings.lastOpenedProject) {
+        if (!result.lastOpenedProjectPath) {
           setLoading(false);
           return;
         }
 
-        const projectExists = await exists(
-          savedSettings.lastOpenedProject as string
-        );
-
-        if (!projectExists) {
+        if (!result.lastOpenedProjectExist) {
           toast.warning("Last opened project not found");
           setLoading(false);
           return;
         }
 
-        const readLastOpenedProject = await readTextFile(
-          savedSettings.lastOpenedProject as string
-        );
-
-        const parsedProject = yaml.load(readLastOpenedProject);
-        setParsedProject(parsedProject as ParsedProject);
-        setProjectSnapshot(parsedProject as ParsedProject);
-        setCurrentProjectPath(savedSettings.lastOpenedProject as string);
+        setParsedProject(result.parsedProject as ParsedProject);
+        setProjectSnapshot(result.parsedProject as ParsedProject);
+        setCurrentProjectPath(result.lastOpenedProjectPath);
         navigate("/editor");
       } catch (err) {
         console.error("Failed to load settings:", err);

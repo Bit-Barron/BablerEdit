@@ -1,0 +1,1339 @@
+version: 1.0.0
+be_version: 1.0.0
+framework: json
+filename: project.babler
+source_root_dir: C:\Users\barron\Documents\coding\BabelEdit\
+is_template_project: false
+languages:
+  - code: de
+  - code: fr
+  - code: it
+translation_packages:
+  - name: main
+    translation_urls:
+      - path: de.json
+        language: de
+      - path: fr.json
+        language: fr
+      - path: it.json
+        language: it
+editor_configuration:
+  save_empty_translations: true
+  translation_order: alphabetical
+  custom_languages: []
+  id_extractor_ignores: []
+primary_language: de
+configuration:
+  - indent: tab
+    format: json
+    support_arrays: true
+preset_collections:
+  - []
+folder_structure:
+  name: ''
+  children:
+    - type: package
+      name: main
+      children:
+        - type: folder
+          name: MENU.AUFTRAGSART
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Auftragsart
+              approved: true
+            - language: fr
+              value: Type de mission
+              approved: true
+            - language: it
+              value: Tipo di incarico
+              approved: true
+        - type: folder
+          name: MENU.KATEGORIE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Kategorie
+              approved: false
+            - language: fr
+              value: Catégorie
+              approved: false
+            - language: it
+              value: Categoria
+              approved: false
+        - type: folder
+          name: MENU.MANDANTTYP
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Mandanttype
+              approved: false
+            - language: fr
+              value: Type de mandant
+              approved: false
+            - language: it
+              value: Tipo di Cliente
+              approved: false
+        - type: folder
+          name: MENU.MITARBEITER
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Mitarbeiter
+              approved: false
+            - language: fr
+              value: Collaborateurs
+              approved: false
+            - language: it
+              value: I dipendenti
+              approved: false
+        - type: folder
+          name: MENU.NAVIGATION
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: DispoTool
+              approved: false
+            - language: fr
+              value: DispoTool
+              approved: false
+            - language: it
+              value: DispoTool
+              approved: false
+        - type: folder
+          name: MENU.PRODUKTE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Produkte
+              approved: false
+            - language: fr
+              value: Produits
+              approved: false
+            - language: it
+              value: Prodotti
+              approved: false
+        - type: folder
+          name: MENU.STAMMDATEN
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Stammdaten
+              approved: false
+            - language: fr
+              value: Données de base
+              approved: false
+            - language: it
+              value: Dati anagrafici
+              approved: false
+        - type: folder
+          name: MENU.STARTSEITE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Kalender
+              approved: false
+            - language: fr
+              value: Calendrier
+              approved: false
+            - language: it
+              value: Calendario
+              approved: false
+        - type: folder
+          name: MENU.TERMINTYP
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Termintypen
+              approved: false
+            - language: fr
+              value: Types de rendez-vous
+              approved: false
+            - language: it
+              value: Tipi di appuntamento
+              approved: false
+        - type: folder
+          name: MENU.test
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: ''
+              approved: false
+            - language: fr
+              value: ''
+              approved: false
+            - language: it
+              value: ''
+              approved: false
+        - type: folder
+          name: SETTINGS.TITLE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Benutzer Einstellungen
+              approved: false
+            - language: fr
+              value: Paramètres utilisateur
+              approved: false
+            - language: it
+              value: Impostazioni utente
+              approved: false
+        - type: folder
+          name: SETTINGS.VERSION
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Version
+              approved: false
+            - language: fr
+              value: Version
+              approved: false
+            - language: it
+              value: Versione
+              approved: false
+        - type: folder
+          name: SETTINGS.test
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: ''
+              approved: false
+            - language: fr
+              value: ''
+              approved: false
+            - language: it
+              value: ''
+              approved: false
+        - type: folder
+          name: STAMMDATEN.AUFTRAG.TITLE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Aufträge
+              approved: false
+            - language: fr
+              value: Commandes
+              approved: false
+            - language: it
+              value: Ordini
+              approved: false
+        - type: folder
+          name: STAMMDATEN.KATEGORIE.AKTIV
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Aktiv
+              approved: false
+            - language: fr
+              value: Actif
+              approved: false
+            - language: it
+              value: Attivo
+              approved: false
+        - type: folder
+          name: STAMMDATEN.KATEGORIE.BEZEICHNUNG
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Bezeichnung
+              approved: false
+            - language: fr
+              value: Désignation
+              approved: false
+            - language: it
+              value: Designazione
+              approved: false
+        - type: folder
+          name: STAMMDATEN.KATEGORIE.TITLE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Kategorie
+              approved: false
+            - language: fr
+              value: Catégorie
+              approved: false
+            - language: it
+              value: Categoria
+              approved: false
+        - type: folder
+          name: STAMMDATEN.KATEGORIE.TITLE_PLURAL
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Kategorien
+              approved: false
+            - language: fr
+              value: Catégories
+              approved: false
+            - language: it
+              value: Categorie
+              approved: false
+        - type: folder
+          name: STAMMDATEN.MANDANTTYPE.TITLE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Mandanttyp
+              approved: false
+            - language: fr
+              value: Type de mandant
+              approved: false
+            - language: it
+              value: Tipo di Cliente
+              approved: false
+        - type: folder
+          name: STAMMDATEN.MITARBEITER.TITLE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Mitarbeiter
+              approved: false
+            - language: fr
+              value: Collaborateurs
+              approved: false
+            - language: it
+              value: I dipendenti
+              approved: false
+        - type: folder
+          name: STAMMDATEN.TERMINTYP.TITLE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Termintyp
+              approved: false
+            - language: fr
+              value: Type de rendez-vous
+              approved: false
+            - language: it
+              value: Tipo di appuntamento
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.AKTIV
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Aktiv
+              approved: false
+            - language: fr
+              value: Actif
+              approved: false
+            - language: it
+              value: Attivo
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.AUFTRAGART
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Auftrag Art
+              approved: false
+            - language: fr
+              value: Type de mission
+              approved: false
+            - language: it
+              value: Tipo di ordine
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.AUFTRAGNUMMER
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Auftragsnummer
+              approved: false
+            - language: fr
+              value: Numéro de commande
+              approved: false
+            - language: it
+              value: Numero d'ordine
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.AUFTRAGSART.BEZEICHNUNGDE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Auftragsart
+              approved: false
+            - language: fr
+              value: Type de mission
+              approved: false
+            - language: it
+              value: Tipo di incarico
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.AUFTRAGSART.BEZEICHNUNGFR
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Auftragsart
+              approved: false
+            - language: fr
+              value: Type de mission
+              approved: false
+            - language: it
+              value: Tipo di incarico
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.AUFTRAGSART.BEZEICHNUNGIT
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Auftragsart
+              approved: false
+            - language: fr
+              value: Type de mission
+              approved: false
+            - language: it
+              value: Tipo di incarico
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.BANKNAME
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Bankname
+              approved: false
+            - language: fr
+              value: Nom de la banque
+              approved: false
+            - language: it
+              value: Nome della banca
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.BEZEICHNUNG
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Bezeichnung
+              approved: false
+            - language: fr
+              value: Désignation
+              approved: false
+            - language: it
+              value: Designazione
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.BEZEICHNUNGDE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Bezeichnung DE
+              approved: false
+            - language: fr
+              value: Désignation DE
+              approved: false
+            - language: it
+              value: Designazione DE
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.BEZEICHNUNGFR
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Bezeichnung FR
+              approved: false
+            - language: fr
+              value: Désignation FR
+              approved: false
+            - language: it
+              value: Designazione FR
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.BEZEICHNUNGIT
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Bezeichnung IT
+              approved: false
+            - language: fr
+              value: Désignation IT
+              approved: false
+            - language: it
+              value: Designazione IT
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.BUDGET_PREIS
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Budgetpreis
+              approved: false
+            - language: fr
+              value: Prix du budget
+              approved: false
+            - language: it
+              value: Prezzo di listino
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.BUDGETPREIS
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Budgetpreis
+              approved: false
+            - language: fr
+              value: Prix du budget
+              approved: false
+            - language: it
+              value: Prezzo di listino
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.COLOR
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Farbe
+              approved: false
+            - language: fr
+              value: Couleur
+              approved: false
+            - language: it
+              value: Colore
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.DETAILAUFNAHMEENDE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Detail Aufnahmeende
+              approved: false
+            - language: fr
+              value: Détail de la fin de la prise de vue
+              approved: false
+            - language: it
+              value: Dettaglio fine registrazione
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.DETAILAUFNAHMEMITARBEITER
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Detail Aufnahmemitarbeiter
+              approved: false
+            - language: fr
+              value: Détail du personnel d'accueil
+              approved: false
+            - language: it
+              value: Personale addetto alla registrazione dei dettagli
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.DETAILAUFNAHMESTART
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Detail Aufnahmestart
+              approved: false
+            - language: fr
+              value: Détail du début de l'enregistrement
+              approved: false
+            - language: it
+              value: Avvio della registrazione dei dettagli
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.EMPKEY
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Personalnummer
+              approved: false
+            - language: fr
+              value: Matricule
+              approved: false
+            - language: it
+              value: Numero del personale
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.ERSTELLTAM
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Erstellt am
+              approved: false
+            - language: fr
+              value: Créé le
+              approved: false
+            - language: it
+              value: Creato il
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.ERSTELLTVON
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Erstellt von
+              approved: false
+            - language: fr
+              value: Créé par
+              approved: false
+            - language: it
+              value: Creato da
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.FIRSTNAME
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Vorname
+              approved: false
+            - language: fr
+              value: Prénom
+              approved: false
+            - language: it
+              value: NOME
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.JAHR
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Jahr
+              approved: false
+            - language: fr
+              value: Année
+              approved: false
+            - language: it
+              value: Anno
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.KATEGORIE.BEZEICHNUNG
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Kategorie
+              approved: false
+            - language: fr
+              value: Catégorie
+              approved: false
+            - language: it
+              value: Categoria
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.KONTAKPERSON
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Kontaktperson
+              approved: false
+            - language: fr
+              value: Personne de contact
+              approved: false
+            - language: it
+              value: Persona di contatto
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.KONTAKTPERSON
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Kontaktperson
+              approved: false
+            - language: fr
+              value: Personne de contact
+              approved: false
+            - language: it
+              value: Persona di contatto
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.LASTNAME
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Nachname
+              approved: false
+            - language: fr
+              value: Nom de famille
+              approved: false
+            - language: it
+              value: Cognome
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.MAIL
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: E-Mail
+              approved: false
+            - language: fr
+              value: Courrier électronique
+              approved: false
+            - language: it
+              value: E-mail
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.MANDANTTYPE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Mandantentyp
+              approved: false
+            - language: fr
+              value: Type de mandant
+              approved: false
+            - language: it
+              value: Tipo di Cliente
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.MONAT
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Monat
+              approved: false
+            - language: fr
+              value: Mois
+              approved: false
+            - language: it
+              value: Mese
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.MONATSPREISE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Monatspreise
+              approved: false
+            - language: fr
+              value: Prix mensuels
+              approved: false
+            - language: it
+              value: Prezzi mensili
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.ORT
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Ort
+              approved: false
+            - language: fr
+              value: Lieu
+              approved: false
+            - language: it
+              value: Luogo
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.PHONE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Telefonnummer
+              approved: false
+            - language: fr
+              value: Téléphone
+              approved: false
+            - language: it
+              value: Telefono
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.PREIS
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Preis
+              approved: false
+            - language: fr
+              value: Prix
+              approved: false
+            - language: it
+              value: Prezzo
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.PROJEKTLEITER
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Projektleiter
+              approved: false
+            - language: fr
+              value: Fournisseur de projets
+              approved: false
+            - language: it
+              value: Fornitore del progetto
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.REQUIRES_AUFTRAG
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Erfordert Auftrag
+              approved: false
+            - language: fr
+              value: Nécessite une commande
+              approved: false
+            - language: it
+              value: Richiesta di incarico
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.REQUIRESAUFTRAG
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Erfordert Auftrag
+              approved: false
+            - language: fr
+              value: Nécessite une commande
+              approved: false
+            - language: it
+              value: Richiesta di incarico
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SAPERLEDIGTAM
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Erledigt Am
+              approved: false
+            - language: fr
+              value: Terminé le
+              approved: false
+            - language: it
+              value: Completato il
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SAPOFFERTEDATUM
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: SAP Offerte Datum
+              approved: false
+            - language: fr
+              value: SAP Offre Date
+              approved: false
+            - language: it
+              value: Data dell'offerta SAP
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SAPOFFERTENUMMER
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: SAP Offerte Nummer
+              approved: false
+            - language: fr
+              value: Numéro de l'offre SAP
+              approved: false
+            - language: it
+              value: Numero di offerta SAP
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SAPSTATUS
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: SAP Status
+              approved: false
+            - language: fr
+              value: Statut SAP
+              approved: false
+            - language: it
+              value: Stato SAP
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SHOW_AS.BUSY
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Beschäftigt
+              approved: false
+            - language: fr
+              value: Employé
+              approved: false
+            - language: it
+              value: Impiegato
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SHOW_AS.FREE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Frei
+              approved: false
+            - language: fr
+              value: Libre
+              approved: false
+            - language: it
+              value: Gratuito
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SHOWAS
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Anzeigen als
+              approved: false
+            - language: fr
+              value: Annonces en tant que
+              approved: false
+            - language: it
+              value: Visualizza come
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.SITZCODE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Sitzcode
+              approved: false
+            - language: fr
+              value: Code du siège
+              approved: false
+            - language: it
+              value: Codice del sedile
+              approved: false
+        - type: folder
+          name: TABLE.COLUMNS.TITEL
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Title
+              approved: false
+            - language: fr
+              value: Titre
+              approved: false
+            - language: it
+              value: Titolo
+              approved: false
+        - type: folder
+          name: TABLE.CURRENT_PAGE_REPORT_TEMPLATE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Zeigt {first} bis {last} von {totalRecords} Einträgen
+              approved: false
+            - language: fr
+              value: Affiche {first} à {last} de {totalRecords} entrées
+              approved: false
+            - language: it
+              value: Mostra da {first} a {last} di {totalRecords} voci
+              approved: false
+        - type: folder
+          name: TABLE.NO_RECORDS_FOUND
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Keine Einträge gefunden
+              approved: false
+            - language: fr
+              value: Aucune entrée trouvée
+              approved: false
+            - language: it
+              value: Nessuna voce trovata
+              approved: false
+        - type: folder
+          name: TERMIN.CALENDAR_EVENT_UPDATED
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: 'Termin wurde aktualisiert: {{art}}'
+              approved: false
+            - language: fr
+              value: 'La date a été mise à jour : {{art}}'
+              approved: false
+            - language: it
+              value: 'La data è stata aggiornata: {{art}}'
+              approved: false
+        - type: folder
+          name: TERMIN.CALENDAR_UPDATE_FAILED
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Terminaktualisierung fehlgeschlagen
+              approved: false
+            - language: fr
+              value: Échec de la mise à jour du rendez-vous
+              approved: false
+            - language: it
+              value: Aggiornamento dell'appuntamento non riuscito
+              approved: false
+        - type: folder
+          name: TERMIN.CANNOT_EDIT_OTHER_AUFTRAG
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Sie können diesen Auftrag hier nicht bearbeiten
+              approved: false
+            - language: fr
+              value: Vous ne pouvez pas traiter cette commande ici
+              approved: false
+            - language: it
+              value: Non è possibile elaborare questo ordine qui
+              approved: false
+        - type: folder
+          name: TERMIN.CREATE_TERMIN
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Termin erstellen
+              approved: false
+            - language: fr
+              value: Créer un rendez-vous
+              approved: false
+            - language: it
+              value: Creare un appuntamento
+              approved: false
+        - type: folder
+          name: TERMIN.EDIT_TERMIN
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Termin bearbeiten
+              approved: false
+            - language: fr
+              value: Modifier un rendez-vous
+              approved: false
+            - language: it
+              value: Modifica appuntamento
+              approved: false
+        - type: folder
+          name: TERMIN.NO_AUFTRAG_REQUIRED
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: 'Erfordert Auftrag: Nein'
+              approved: false
+            - language: fr
+              value: 'Nécessite un ordre : Non'
+              approved: false
+            - language: it
+              value: 'Richiede un ordine: No'
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_DATE_RANGE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Zeitraum
+              approved: false
+            - language: fr
+              value: Période
+              approved: false
+            - language: it
+              value: Periodo
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_DESCRIPTION
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Es werden für jeden ausgewählten Wochentage Termine im angegebenen Zeitraum erstellt.
+              approved: false
+            - language: fr
+              value: Des rendez-vous seront créés pour chaque jour sélectionné de la semaine, dans la période spécifiée.
+              approved: false
+            - language: it
+              value: Verranno creati appuntamenti per ogni giorno della settimana selezionato entro il periodo specificato.
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_ENABLE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Serientermin aktivieren
+              approved: false
+            - language: fr
+              value: Activer le rendez-vous récurrent
+              approved: false
+            - language: it
+              value: Attiva appuntamento ricorrente
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_ENDDATE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Enddatum
+              approved: false
+            - language: fr
+              value: Date de fin
+              approved: false
+            - language: it
+              value: Data di fine
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_ENDTIME
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Endzeit
+              approved: false
+            - language: fr
+              value: Fin des temps
+              approved: false
+            - language: it
+              value: Fine dei tempi
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_INTERVAL_HELP
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Alle X Wochen wiederholen
+              approved: false
+            - language: fr
+              value: Répéter toutes les X semaines
+              approved: false
+            - language: it
+              value: Ripetere ogni X settimane
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_INTERVAL_LABEL
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Rhythmus in Wochen
+              approved: false
+            - language: fr
+              value: Rythme en semaines
+              approved: false
+            - language: it
+              value: Ritmo in settimane
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_STARTDATE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Startdatum
+              approved: false
+            - language: fr
+              value: Date de début
+              approved: false
+            - language: it
+              value: Data di inizio
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_STARTTIME
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Startzeit
+              approved: false
+            - language: fr
+              value: Heure de début
+              approved: false
+            - language: it
+              value: Ora di inizio
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_TIME_RANGE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Uhrzeiten
+              approved: false
+            - language: fr
+              value: Fois
+              approved: false
+            - language: it
+              value: Volte
+              approved: false
+        - type: folder
+          name: TERMIN.RECURRING_WEEKDAYS
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Wochentage auswählen
+              approved: false
+            - language: fr
+              value: Certains jours de la semaine
+              approved: false
+            - language: it
+              value: Seleziona i giorni feriali
+              approved: false
+        - type: folder
+          name: TERMIN.REQUIRES_AUFTRAG
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: 'Erfordert Auftrag: Ja'
+              approved: false
+            - language: fr
+              value: 'Nécessite un ordre : Oui'
+              approved: false
+            - language: it
+              value: 'Richiede un ordine: Sì'
+              approved: false
+        - type: folder
+          name: TERMIN.WEEKDAY.FRI
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Freitag
+              approved: false
+            - language: fr
+              value: Vendredi
+              approved: false
+            - language: it
+              value: Venerdì
+              approved: false
+        - type: folder
+          name: TERMIN.WEEKDAY.MON
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Montag
+              approved: false
+            - language: fr
+              value: Lundi
+              approved: false
+            - language: it
+              value: Lunedì
+              approved: false
+        - type: folder
+          name: TERMIN.WEEKDAY.SAT
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Samstag
+              approved: false
+            - language: fr
+              value: Samedi
+              approved: false
+            - language: it
+              value: Sabato
+              approved: false
+        - type: folder
+          name: TERMIN.WEEKDAY.SUN
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Sonntag
+              approved: false
+            - language: fr
+              value: Dimanche
+              approved: false
+            - language: it
+              value: Domenica
+              approved: false
+        - type: folder
+          name: TERMIN.WEEKDAY.THU
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Donnerstag
+              approved: false
+            - language: fr
+              value: Jeudi
+              approved: false
+            - language: it
+              value: Giovedì
+              approved: false
+        - type: folder
+          name: TERMIN.WEEKDAY.TUE
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Dienstag
+              approved: false
+            - language: fr
+              value: Mardi
+              approved: false
+            - language: it
+              value: Martedì
+              approved: false
+        - type: folder
+          name: TERMIN.WEEKDAY.WED
+          description: ''
+          comment: ''
+          translations:
+            - language: de
+              value: Mittwoch
+              approved: false
+            - language: fr
+              value: Mercredi
+              approved: false
+            - language: it
+              value: Mercoledì
+              approved: false
