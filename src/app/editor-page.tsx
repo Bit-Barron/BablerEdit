@@ -30,9 +30,6 @@ export const EditorPage: React.FC<EditorPageProps> = ({
     return buildTranslationTree(parsedProject);
   }, [parsedProject]);
 
-  const treeKey =
-    parsedProject?.folder_structure.children[0]?.children.length || 0;
-
   const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
 
   return (
@@ -45,7 +42,6 @@ export const EditorPage: React.FC<EditorPageProps> = ({
           <ChevronsRightLeftIcon className="opacity-60 hover:opacity-100 transition-opacity" />
         </div>
         <TranslationTree
-          key={treeKey}
           data={initialTreeData}
           openByDefault={false}
           indent={24}

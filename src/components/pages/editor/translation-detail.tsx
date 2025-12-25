@@ -56,14 +56,14 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       </div>
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="space-y-8">
+        <div className="space-y-4">
           {translationForKey.map((t) => {
             return (
               <div
                 key={t.language}
                 className="bg-card border-2 border-border rounded-lg p-6 shadow-sm"
               >
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-2">
                   <span className="font-bold text-base tracking-wide uppercase text-foreground bg-primary/10 px-4 py-1.5 rounded-md border border-primary/20">
                     {t.language}
                   </span>
