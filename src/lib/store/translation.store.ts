@@ -8,8 +8,8 @@ interface TranslationStore {
   translationForKey: Translation[];
   setTranslationForKey: (translations: Translation[]) => void;
 
-  openComment: boolean;
-  setOpenComment: (open: boolean) => void;
+  comment: string;
+  setComment: (comment: string) => void;
 }
 
 export const useTranslationStore = create<TranslationStore>((set) => ({
@@ -20,6 +20,9 @@ export const useTranslationStore = create<TranslationStore>((set) => ({
   setTranslationForKey: (translations) =>
     set({ translationForKey: translations }),
   translationForKey: [],
-  openComment: false,
-  setOpenComment: (open) => set({ openComment: open }),
+  comment: "",
+  setComment: (comment) =>
+    set({
+      comment: comment,
+    }),
 }));
