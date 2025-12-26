@@ -60,7 +60,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           ))}
         </div>
       </div>
-      <div className="px-6 py-3 bg-muted/30 border-b border-border flex justify-between">
+      <div className="px-4 py-2 bg-muted/30 border-b border-border flex justify-between items-center">
         <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">
           {selectedNode.data.id}
         </h1>
