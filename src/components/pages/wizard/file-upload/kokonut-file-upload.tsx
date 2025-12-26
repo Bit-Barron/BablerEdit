@@ -4,10 +4,10 @@ import { UploadCloud, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { type DragEvent, useCallback, useEffect, useState } from "react";
 import { FileWithPath } from "@/lib/types/file.types";
-import { useFileManager } from "@/hooks/use-file-manager";
 import { listen } from "@tauri-apps/api/event";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { cn } from "@/lib/utils";
+import * as FileService from "@/lib/services/file.service";
 
 type FileStatus = "idle" | "dragging";
 
@@ -117,7 +117,6 @@ export function MultiFileUpload({
   className,
 }: MultiFileUploadProps) {
   const [status, setStatus] = useState<FileStatus>("idle");
-  const { selectJsonFiles } = useFileManager();
 
   // Tauri Drag & Drop Event Listener
   useEffect(() => {
@@ -193,9 +192,9 @@ export function MultiFileUpload({
   }, []);
 
   const handleSelect = async () => {
-    const selected = await selectJsonFiles();
+    const selected = await FileService.selectJsonFiles();
     if (selected) {
-      onFilesChange(selected);
+      onFilesChange(selected.files);
     }
   };
 

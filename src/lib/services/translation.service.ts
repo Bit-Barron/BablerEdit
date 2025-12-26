@@ -1,9 +1,9 @@
 import { ParsedProject } from "@/lib/types/project.types";
 import { TreeNodeType } from "@/lib/types/tree.types";
-import { readTranslationFile } from "@/lib/utils/file-reader";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { NodeApi } from "react-arborist";
 import * as projectService from "@/lib/services/project.service";
+import * as FileService from "@/lib/services/file.service";
 
 interface AddIdParams {
   selectedNodeId: string;
@@ -26,7 +26,10 @@ export async function addTranslationId(
   for (let path in TRANSLATION_FILES) {
     const filePath = TRANSLATION_FILES[path].path;
     const jsonFilePath = `${project.source_root_dir}${filePath}`;
-    const obj = await readTranslationFile(project.source_root_dir, filePath);
+    const obj = await FileService.writeTranslationFile({
+      path: filePath,
+      rootDir: project.source_root_dir,
+    });
 
     const splitSelectedNode = selectedNodeId.split(".");
     let current: any = obj;
@@ -76,7 +79,10 @@ export async function removeTranslationId(
   for (let path in TRANSLATION_FILES) {
     const filePath = TRANSLATION_FILES[path].path;
     const jsonFilePath = `${project.source_root_dir}${filePath}`;
-    const obj = await readTranslationFile(project.source_root_dir, filePath);
+    const obj = await FileService.writeTranslationFile({
+      path: filePath,
+      rootDir: project.source_root_dir,
+    });
 
     const splitSelectedNode = selectedNodeId.split(".");
     let current: any = obj;

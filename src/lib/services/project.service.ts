@@ -9,8 +9,8 @@ import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import yaml from "js-yaml";
 import { open } from "@tauri-apps/plugin-dialog";
 import { ReactArboristType } from "@/lib/types/tree.types";
-import { readTranslationFile } from "@/lib/utils/file-reader";
 import parseJson from "parse-json";
+import * as FileService from "@/lib/services/file.service";
 
 interface CreateProjectParams {
   files: FileWithPath[];
@@ -224,7 +224,10 @@ export async function moveJsonNodeProject(
     const filePath = TRANSLATION_FILES[path].path;
     const jsonFilePath = `${project.source_root_dir}${filePath}`;
 
-    const obj = await readTranslationFile(project.source_root_dir, filePath);
+    const obj = await FileService.writeTranslationFile({
+      path: filePath,
+      rootDir: project.source_root_dir,
+    });
 
     const dragId = dragIds[0].split(".");
     const splitParentId = parentId.split(".");

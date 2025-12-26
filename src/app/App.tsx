@@ -7,17 +7,17 @@ import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
-import { useId } from "@/hooks/use-id";
 import { useSettings } from "@/hooks/use-settings";
 import { Loader } from "@/components/elements/loader";
 import { GlassNotificationProvider } from "@/components/elements/glass-notification";
+import { useTranslation } from "@/hooks/use-translation";
 
 function AppContent() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
     useToolbarStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
-  const { removeIdFromJson } = useId();
+  const { removeIdFromJson } = useTranslation();
   const location = useLocation();
   const [openIdDialog, setOpenIdDialog] = useState(false);
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { useId } from "@/hooks/use-id";
 import { useSelectionStore } from "@/lib/store/selection.store";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/use-translation";
+import { useNotification } from "@/components/elements/glass-notification";
 
 interface AddIdDialogProps {
   open: boolean;
@@ -16,14 +16,19 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   onOpenChange,
 }) => {
   const { selectedNode } = useSelectionStore();
-  const { addIdToJson } = useId();
+  const { addIdToJson } = useTranslation();
+  const { addNotification } = useNotification();
 
   const [value, setValue] = useState("");
 
   useEffect(() => {
     if (!open) return;
     if (!selectedNode) {
-      toast.error("Please select a node to add an ID.");
+      addNotification({
+        type: "error",
+        title: "No node selected",
+        description: "Please select a node to add an ID.",
+      });
       return;
     }
 

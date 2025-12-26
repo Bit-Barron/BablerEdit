@@ -1,6 +1,5 @@
 import { ParsedProject } from "@/lib/types/project.types";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { ReactArboristType } from "../lib/types/tree.types";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
@@ -52,7 +51,11 @@ export const useEditor = () => {
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
-      toast.error(`Failed: ${message}`);
+      addNotification({
+        type: "error",
+        title: "Failed to save project",
+        description: message,
+      });
       return null;
     }
   };
@@ -73,7 +76,11 @@ export const useEditor = () => {
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
-      toast.error(`Failed: ${message}`);
+      addNotification({
+        type: "error",
+        title: "Failed to open project",
+        description: message,
+      });
       return null;
     }
   };
@@ -94,7 +101,11 @@ export const useEditor = () => {
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
-      toast.error(`Failed: ${message}`);
+      addNotification({
+        type: "error",
+        title: "Failed to move ID",
+        description: message,
+      });
       return null;
     }
   };
