@@ -15,12 +15,23 @@ interface LoadUserSettingsResult {
   lastOpenedProjectPath?: string;
 }
 
-export async function loadUserSettings(): Promise<LoadUserSettingsResult> {
+export async function loadUserSettings(): Promise<LoadUserSettingsResult | null> {
   const settingsPath = await getSettingsPath();
   const fileExists = await exists(settingsPath);
 
+  if (!fileExists) {
+    return null;
+  }
+
   const content = await readTextFile(settingsPath);
   const savedSettings = JSON.parse(content);
+
+  if (!savedSettings.lastOpenedProject) {
+    return {
+      settingsExist: true,
+      lastOpenedProjectExist: false,
+    };
+  }
 
   const projectExists = await exists(savedSettings.lastOpenedProject as string);
   const readLastOpenedProject = await readTextFile(

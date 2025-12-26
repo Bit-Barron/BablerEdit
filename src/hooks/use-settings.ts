@@ -17,8 +17,8 @@ export const useSettings = () => {
       try {
         const result = await SettingsService.loadUserSettings();
 
-        if (!result) {
-          throw new Error("No settings found");
+        if (!result || !result.lastOpenedProjectExist) {
+          return;
         }
 
         setParsedProject(result.parsedProject);
