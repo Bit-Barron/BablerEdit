@@ -185,14 +185,14 @@ interface LoadProjectResult {
   projectPath: string;
 }
 
-export async function LoadProject(): Promise<LoadProjectResult | null> {
+export async function LoadProject(): Promise<LoadProjectResult | void> {
   const openFile = await open({
     multiple: false,
     directory: false,
     filters: [{ extensions: ["babler"], name: "BablerEdit Project" }],
   });
 
-  if (!openFile) return null;
+  if (!openFile) return;
 
   const fileContent = await readTextFile(openFile);
   const parsedProject = yaml.load(fileContent);

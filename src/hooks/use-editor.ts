@@ -63,6 +63,8 @@ export const useEditor = () => {
     try {
       const loadResult = await ProjectService.LoadProject();
 
+      if (!loadResult?.project) return;
+
       setParsedProject(loadResult?.project as ParsedProject);
       setProjectSnapshot(loadResult?.project as ParsedProject);
 
