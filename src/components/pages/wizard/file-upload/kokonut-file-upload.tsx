@@ -118,7 +118,6 @@ export function MultiFileUpload({
 }: MultiFileUploadProps) {
   const [status, setStatus] = useState<FileStatus>("idle");
 
-  // Tauri Drag & Drop Event Listener
   useEffect(() => {
     let unlisten: (() => void) | undefined;
 
@@ -128,7 +127,6 @@ export function MultiFileUpload({
         const jsonFiles = droppedPaths.filter((p) => p.endsWith(".json"));
 
         if (jsonFiles.length === 0) {
-          console.log("No JSON files dropped");
           return;
         }
 

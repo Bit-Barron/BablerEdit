@@ -1,4 +1,4 @@
-import { ParsedProject } from "@/lib/types/project.types";
+import { ParsedProject, Translation } from "@/lib/types/project.types";
 import { TreeNodeType } from "@/lib/types/tree.types";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { NodeApi } from "react-arborist";
@@ -21,7 +21,7 @@ export async function addTranslationId(
   for (let path in TRANSLATION_FILES) {
     const filePath = TRANSLATION_FILES[path].path;
     const jsonFilePath = `${project.source_root_dir}${filePath}`;
-    const obj = await FileService.writeTranslationFile({
+    const obj = await FileService.readTranslationFile({
       path: filePath,
       rootDir: project.source_root_dir,
     });
@@ -31,14 +31,11 @@ export async function addTranslationId(
     let parent: any = null;
 
     for (let i = 0; i < splitSelectedNode.length; i++) {
-      if (!current || typeof current !== 'object') {
-        break;
-      }
       parent = current;
       current = current[splitSelectedNode[i]];
     }
 
-    if (current && typeof current === "object" && current !== null) {
+    if (typeof current === "object") {
       current[newIdValue] = "";
     } else if (parent && typeof parent === "object") {
       parent[newIdValue] = "";
@@ -69,7 +66,7 @@ export async function removeTranslationId(
   for (let path in TRANSLATION_FILES) {
     const filePath = TRANSLATION_FILES[path].path;
     const jsonFilePath = `${project.source_root_dir}${filePath}`;
-    const obj = await FileService.writeTranslationFile({
+    const obj = await FileService.readTranslationFile({
       path: filePath,
       rootDir: project.source_root_dir,
     });
@@ -79,9 +76,6 @@ export async function removeTranslationId(
     let parent: any = null;
 
     for (let i = 0; i < splitSelectedNode.length; i++) {
-      if (!current || typeof current !== 'object') {
-        break;
-      }
       parent = current;
       current = current[splitSelectedNode[i]];
     }
@@ -145,5 +139,56 @@ export function toggleTranslationApproval(params: ToggleApprovalParams) {
     updatedProject,
     updatedTranslations,
     isApproved: updatedTranslations!.find((t) => t.language === language)!,
+  };
+}
+
+interface UpdateTranslationParams {
+  project: ParsedProject;
+  selectedNode: NodeApi<TreeNodeType>;
+  newValue: string;
+  language: string;
+}
+
+interface UpdateTranslationResult {
+  updatedProject: ParsedProject;
+  updatedTranslations: Translation[];
+}
+
+export async function updateTranslations(
+  params: UpdateTranslationParams
+): Promise<UpdateTranslationResult> {
+  const { project, selectedNode, newValue, language } = params;
+  const obj = project.folder_structure.children[0].children;
+  const findNode = obj.find((child) => child.name === selectedNode.data.id);
+  if (!findNode) {
+    throw new Error(`Translation key "${selectedNode.data.id}" not found.`);
+  }
+
+  const updatedTranslations = findNode?.translations.map((t) => {
+    if (t.language === language) {
+      return { ...t, value: newValue };
+    }
+    return t;
+  });
+  const updatedProject = {
+    ...project,
+    folder_structure: {
+      ...project.folder_structure,
+      children: [
+        {
+          ...project.folder_structure.children[0],
+          children: project.folder_structure.children[0].children.map((node) =>
+            node.name === selectedNode.data.id
+              ? { ...node, translations: updatedTranslations! }
+              : node
+          ),
+        },
+      ],
+    },
+  };
+
+  return {
+    updatedProject: updatedProject,
+    updatedTranslations: updatedTranslations,
   };
 }

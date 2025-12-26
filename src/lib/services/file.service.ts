@@ -8,7 +8,7 @@ interface WriteTranslationFileParams {
   path: string;
 }
 
-export async function writeTranslationFile(params: WriteTranslationFileParams) {
+export async function readTranslationFile(params: WriteTranslationFileParams) {
   const { path, rootDir } = params;
   const fullPath = `${rootDir}${path}`;
   const content = await readTextFile(fullPath);

@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/lib/types/project.types";
-import { Input } from "@/components/ui/input";
 import { TreeNodeType } from "@/lib/types/tree.types";
 import { useTranslation } from "@/hooks/use-translation";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
-import { Checkbox } from "@/components/ui/checkbox";
+import { TranslationInput } from "@/components/elements/translation-input";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -17,7 +16,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   project,
 }) => {
   const { translationForKey, setTranslationForKey } = useTranslationStore();
-  const { toggleApproved } = useTranslation();
+  const { toggleApproved, changeTranslationValue } = useTranslation();
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -59,31 +58,12 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         <div className="space-y-4">
           {translationForKey.map((t) => {
             return (
-              <div
+              <TranslationInput
                 key={t.language}
-                className="bg-card border-2 border-border rounded-lg p-6 shadow-sm"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-bold text-base tracking-wide uppercase text-foreground bg-primary/10 px-4 py-1.5 rounded-md border border-primary/20">
-                    {t.language}
-                  </span>
-                  <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-                    <Checkbox
-                      checked={t.approved}
-                      onCheckedChange={() => toggleApproved(t.language)}
-                      className="w-4 h-4"
-                    />
-                    <span>Approved</span>
-                  </label>
-                </div>
-
-                <Input
-                  type="text"
-                  value={t.value}
-                  className="w-full text-base px-4 py-3 bg-background border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-md transition-all"
-                  placeholder={`Enter ${t.language} translation...`}
-                />
-              </div>
+                translation={t}
+                toggleApproved={toggleApproved}
+                changeTranslationValue={changeTranslationValue}
+              />
             );
           })}
         </div>

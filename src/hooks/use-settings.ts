@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useProjectStore } from "@/lib/store/project.store";
-import { ParsedProject } from "@/lib/types/project.types";
 import { useNavigate } from "react-router-dom";
 import * as SettingsService from "@/lib/services/settings.service";
 import { useNotification } from "@/components/elements/glass-notification";
@@ -22,8 +21,8 @@ export const useSettings = () => {
           throw new Error("No settings found");
         }
 
-        setParsedProject(result.parsedProject as ParsedProject);
-        setProjectSnapshot(result.parsedProject as ParsedProject);
+        setParsedProject(result.parsedProject);
+        setProjectSnapshot(result.parsedProject);
         setCurrentProjectPath(result.lastOpenedProjectPath as string);
         navigate("/editor");
       } catch (err) {

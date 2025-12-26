@@ -90,9 +90,26 @@ export const useTranslation = () => {
     }
   };
 
+  const changeTranslationValue = async (newValue: string, language: string) => {
+    try {
+      const result = await TranslationService.updateTranslations({
+        project: parsedProject!,
+        selectedNode: selectedNode!,
+        language,
+        newValue,
+      });
+
+      setParsedProject(result.updatedProject);
+      setTranslationForKey(result.updatedTranslations);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return {
     toggleApproved,
     addIdToJson,
     removeIdFromJson,
+    changeTranslationValue,
   };
 };
