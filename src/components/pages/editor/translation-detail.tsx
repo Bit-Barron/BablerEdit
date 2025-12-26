@@ -6,6 +6,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
 import { TranslationInput } from "@/components/elements/translation-input";
+import { MessageSquareIcon } from "@/components/icons/message-square";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -35,7 +36,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     <section className="flex flex-col bg-background h-full">
       <div className="px-6 py-4 bg-secondary/50 border-b-2 border-t-2 border-border flex justify-between items-center">
         <h2 className="font-bold text-base tracking-tight">Translations</h2>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 justify-between">
           {project.languages.map((lang, idx) => (
             <React.Fragment key={lang.code}>
               <div className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-md border border-primary/20">{`${
@@ -48,10 +49,13 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           ))}
         </div>
       </div>
-      <div className="px-6 py-3 bg-muted/30 border-b border-border">
+      <div className="px-6 py-3 bg-muted/30 border-b border-border flex justify-between">
         <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">
           {selectedNode.data.id}
         </h1>
+        <div>
+          <MessageSquareIcon size={20} className="text-muted-foreground" />
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
