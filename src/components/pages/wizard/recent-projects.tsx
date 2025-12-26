@@ -1,3 +1,4 @@
+import { useSettings } from "@/hooks/use-settings";
 import { useSettingsStore } from "@/lib/store/setting.store";
 import React from "react";
 
@@ -7,12 +8,12 @@ export const WizardRecentProjects: React.FC<
   WizardRecentProjectsProps
 > = ({}) => {
   const { recentProjects } = useSettingsStore();
+  const { handleRecentProjectClick } = useSettings();
 
   const projects = Object.values(recentProjects)
     .slice(0, 5)
     .map((proj) => proj!.name);
-
-  console.log(projects);
+  console.log(recentProjects);
 
   return (
     <div>
@@ -25,13 +26,15 @@ export const WizardRecentProjects: React.FC<
         </p>
       )}
       <div className="space-y-2">
-        {projects.map((project: string, index: number) => {
+        {Object.values(recentProjects).map((proj, index) => {
+          console.log("PROJECT", proj);
           return (
             <button
               key={index}
               className="glass-bg w-full p-3 text-left text-primary rounded-lg transition-all hover:scale-[1.02]"
+              onClick={() => handleRecentProjectClick(proj!.path)}
             >
-              - {project}
+              - {proj.name}
             </button>
           );
         })}

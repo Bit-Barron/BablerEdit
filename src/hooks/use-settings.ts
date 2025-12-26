@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useNavigate } from "react-router-dom";
 import * as SettingsService from "@/lib/services/settings.service";
 import { useNotification } from "@/components/elements/glass-notification";
 import { useSettingsStore } from "@/lib/store/setting.store";
+
+let hasLoadedSettings = false; //** Ensure settings are loaded only once
 
 export const useSettings = () => {
   const { setParsedProject, setProjectSnapshot } = useProjectStore();
@@ -14,28 +16,25 @@ export const useSettings = () => {
   const { setRecentProjects } = useSettingsStore();
 
   useEffect(() => {
+    if (hasLoadedSettings) return; //** Prevent multiple loads
+
     const loadUserSettings = async () => {
+      hasLoadedSettings = true;
       setLoading(true);
       try {
         const result = await SettingsService.loadUserSettings();
 
-        if (!result) {
-          return;
-        }
+        if (result) {
+          if (result.recentProjects) {
+            setRecentProjects(Object.values(result.recentProjects));
+          }
 
-        console.log("result", result);
-
-        // Load recent projects
-        if (result.recentProjects) {
-          setRecentProjects(Object.values(result.recentProjects));
-        }
-
-        // Load last opened project if it exists
-        if (result.lastOpenedProjectExist) {
-          setParsedProject(result.parsedProject);
-          setProjectSnapshot(result.parsedProject);
-          setCurrentProjectPath(result.lastOpenedProjectPath as string);
-          navigate("/editor");
+          if (result.lastOpenedProjectExist) {
+            setParsedProject(result.parsedProject);
+            setProjectSnapshot(result.parsedProject);
+            setCurrentProjectPath(result.lastOpenedProjectPath as string);
+            navigate("/editor");
+          }
         }
       } catch (err) {
         console.error("Failed to load settings:", err);
@@ -53,5 +52,16 @@ export const useSettings = () => {
     loadUserSettings();
   }, []);
 
-  return { loading };
+  const handleRecentProjectClick = async (projectPath: string) => {
+    const result = await SettingsService.recentProjectClick(projectPath);
+
+    if (result) {
+      setParsedProject(result.parsedProject);
+      setProjectSnapshot(result.parsedProject);
+      setCurrentProjectPath(projectPath);
+      navigate("/editor");
+    }
+  };
+
+  return { loading, handleRecentProjectClick };
 };

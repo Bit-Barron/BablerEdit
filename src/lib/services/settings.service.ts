@@ -1,4 +1,5 @@
 import { SETTINGS_FILE } from "@/lib/config/constants.config";
+import { ParsedProject } from "@/lib/types/project.types";
 import { appDataDir } from "@tauri-apps/api/path";
 import {
   exists,
@@ -18,7 +19,6 @@ interface LoadUserSettingsResult {
 
 export async function loadUserSettings(): Promise<LoadUserSettingsResult | null> {
   const settingsPath = await getSettingsPath();
-  console.log("settingsPath", settingsPath);
   const fileExists = await exists(settingsPath);
 
   if (!fileExists) {
@@ -27,7 +27,6 @@ export async function loadUserSettings(): Promise<LoadUserSettingsResult | null>
 
   const content = await readTextFile(settingsPath);
   const savedSettings = JSON.parse(content);
-  console.log("content", content);
 
   if (!savedSettings.lastOpenedProject) {
     return {
@@ -38,6 +37,15 @@ export async function loadUserSettings(): Promise<LoadUserSettingsResult | null>
   }
 
   const projectExists = await exists(savedSettings.lastOpenedProject as string);
+
+  if (!projectExists) {
+    return {
+      settingsExist: fileExists,
+      lastOpenedProjectExist: false,
+      recentProjects: savedSettings.recentProjects || {},
+    };
+  }
+
   const readLastOpenedProject = await readTextFile(
     savedSettings.lastOpenedProject as string
   );
@@ -74,4 +82,24 @@ export async function saveSettingsToFile(state: any) {
   };
 
   await writeTextFile(settingsPath, JSON.stringify(jsonContent, null, 2));
+}
+
+interface RecentProjectClickResult {
+  parsedProject: ParsedProject;
+  projectPath: string;
+}
+
+export async function recentProjectClick(
+  projectPath: string
+): Promise<RecentProjectClickResult> {
+  const fileExists = await exists(projectPath);
+
+  if (!fileExists) {
+    throw new Error("Project file does not exist");
+  }
+
+  const readProjectFile = await readTextFile(projectPath);
+  const parsedProject = yaml.load(readProjectFile);
+
+  return { projectPath, parsedProject: parsedProject as ParsedProject };
 }
