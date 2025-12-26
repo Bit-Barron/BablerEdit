@@ -13,16 +13,18 @@ import {
   ModalContent,
   ModalFooter,
   ModalTrigger,
+  useModal,
 } from "@/components/elements/animated-modal";
 import { PlaneIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { XIcon } from "@/components/icons/x";
+import { CloseButton } from "@/components/elements/close-button";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
   project: ParsedProject;
 }
+
 export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
@@ -83,10 +85,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 </section>
               </ModalContent>
               <ModalFooter className="gap-4">
-                <Button variant="outline" className="w-28">
-                  <XIcon className="mr-2" size={16} />
-                  close
-                </Button>
+                <CloseButton />
                 <Button className="w-28">
                   <PlaneIcon className="mr-2" size={16} />
                   Save
