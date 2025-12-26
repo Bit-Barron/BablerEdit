@@ -224,7 +224,7 @@ export async function moveJsonNodeProject(
     const filePath = TRANSLATION_FILES[path].path;
     const jsonFilePath = `${project.source_root_dir}${filePath}`;
 
-    const obj = await FileService.writeTranslationFile({
+    const obj = await FileService.readTranslationFile({
       path: filePath,
       rootDir: project.source_root_dir,
     });

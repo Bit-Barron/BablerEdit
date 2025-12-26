@@ -3,12 +3,12 @@ import { readTextFile } from "@tauri-apps/plugin-fs";
 import parseJson from "parse-json";
 import { open } from "@tauri-apps/plugin-dialog";
 
-interface WriteTranslationFileParams {
+interface ReadTranslationFileParams {
   rootDir: string;
   path: string;
 }
 
-export async function readTranslationFile(params: WriteTranslationFileParams) {
+export async function readTranslationFile(params: ReadTranslationFileParams) {
   const { path, rootDir } = params;
   const fullPath = `${rootDir}${path}`;
   const content = await readTextFile(fullPath);
