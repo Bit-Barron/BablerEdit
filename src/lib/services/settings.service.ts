@@ -13,10 +13,12 @@ interface LoadUserSettingsResult {
   lastOpenedProjectExist: boolean;
   parsedProject?: any;
   lastOpenedProjectPath?: string;
+  recentProjects?: Record<string, any>;
 }
 
 export async function loadUserSettings(): Promise<LoadUserSettingsResult | null> {
   const settingsPath = await getSettingsPath();
+  console.log("settingsPath", settingsPath);
   const fileExists = await exists(settingsPath);
 
   if (!fileExists) {
@@ -25,11 +27,13 @@ export async function loadUserSettings(): Promise<LoadUserSettingsResult | null>
 
   const content = await readTextFile(settingsPath);
   const savedSettings = JSON.parse(content);
+  console.log("content", content);
 
   if (!savedSettings.lastOpenedProject) {
     return {
-      settingsExist: true,
+      settingsExist: fileExists,
       lastOpenedProjectExist: false,
+      recentProjects: savedSettings.recentProjects || {},
     };
   }
 
@@ -44,6 +48,7 @@ export async function loadUserSettings(): Promise<LoadUserSettingsResult | null>
     lastOpenedProjectExist: projectExists,
     parsedProject: parsedProject,
     lastOpenedProjectPath: savedSettings.lastOpenedProject as string,
+    recentProjects: savedSettings.recentProjects || {},
   };
 }
 

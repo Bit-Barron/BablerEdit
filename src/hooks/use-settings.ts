@@ -3,6 +3,7 @@ import { useProjectStore } from "@/lib/store/project.store";
 import { useNavigate } from "react-router-dom";
 import * as SettingsService from "@/lib/services/settings.service";
 import { useNotification } from "@/components/elements/glass-notification";
+import { useSettingsStore } from "@/lib/store/setting.store";
 
 export const useSettings = () => {
   const { setParsedProject, setProjectSnapshot } = useProjectStore();
@@ -10,6 +11,7 @@ export const useSettings = () => {
   const { loading, setLoading } = useProjectStore();
   const { setCurrentProjectPath } = useProjectStore();
   const { addNotification } = useNotification();
+  const { setRecentProjects } = useSettingsStore();
 
   useEffect(() => {
     const loadUserSettings = async () => {
@@ -17,14 +19,24 @@ export const useSettings = () => {
       try {
         const result = await SettingsService.loadUserSettings();
 
-        if (!result || !result.lastOpenedProjectExist) {
+        if (!result) {
           return;
         }
 
-        setParsedProject(result.parsedProject);
-        setProjectSnapshot(result.parsedProject);
-        setCurrentProjectPath(result.lastOpenedProjectPath as string);
-        navigate("/editor");
+        console.log("result", result);
+
+        // Load recent projects
+        if (result.recentProjects) {
+          setRecentProjects(Object.values(result.recentProjects));
+        }
+
+        // Load last opened project if it exists
+        if (result.lastOpenedProjectExist) {
+          setParsedProject(result.parsedProject);
+          setProjectSnapshot(result.parsedProject);
+          setCurrentProjectPath(result.lastOpenedProjectPath as string);
+          navigate("/editor");
+        }
       } catch (err) {
         console.error("Failed to load settings:", err);
 

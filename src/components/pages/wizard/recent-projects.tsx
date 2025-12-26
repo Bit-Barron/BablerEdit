@@ -12,6 +12,8 @@ export const WizardRecentProjects: React.FC<
     .slice(0, 5)
     .map((proj) => proj!.name);
 
+  console.log(projects);
+
   return (
     <div>
       <h2 className="text-[16px] font-semibold text-primary mb-3">

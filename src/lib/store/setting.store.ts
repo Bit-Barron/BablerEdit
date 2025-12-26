@@ -11,6 +11,7 @@ export interface SettingsState {
   addRecentProject: (project: RecentProjectProps) => void;
   updateRecentProjects: (projects: RecentProjectProps[]) => void;
   updateSettings: (settings: UpdateSettingsState) => void;
+  setRecentProjects: (projects: RecentProjectProps[]) => void;
 
   lastOpenedProject: string | null;
   setLastOpenedProject: (path: string) => void;
@@ -56,5 +57,9 @@ export const useSettingsStore = create<SettingsState>((set) => ({
       SettingsService.saveSettingsToFile({ ...state, ...settings });
       return settings;
     });
+  },
+
+  setRecentProjects: (projects: RecentProjectProps[]) => {
+    set({ recentProjects: projects });
   },
 }));
