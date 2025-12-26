@@ -24,8 +24,9 @@ export const useTranslation = () => {
         title: "ID added!",
         description: `"${value}" added successfully`,
       });
-      setParsedProject((await result).updatedProject as ParsedProject);
-      return (await result).updatedProject;
+      const updatedProject = await result;
+      setParsedProject(updatedProject as ParsedProject);
+      return updatedProject;
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
@@ -48,8 +49,9 @@ export const useTranslation = () => {
         title: "ID removed!",
         description: `ID removed successfully`,
       });
-      setParsedProject((await result).updatedProject);
-      return (await result).updatedProject;
+      const updatedProject = await result;
+      setParsedProject(updatedProject);
+      return updatedProject;
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";

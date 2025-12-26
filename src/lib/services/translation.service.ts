@@ -11,14 +11,9 @@ interface AddIdParams {
   project: ParsedProject;
 }
 
-interface AddIdResult {
-  updatedProject: ParsedProject;
-  addedId: string;
-}
-
 export async function addTranslationId(
   params: AddIdParams
-): Promise<AddIdResult> {
+): Promise<ParsedProject> {
   const { selectedNodeId, newIdValue, project } = params;
 
   const TRANSLATION_FILES = project.translation_packages[0].translation_urls;
@@ -33,30 +28,30 @@ export async function addTranslationId(
 
     const splitSelectedNode = selectedNodeId.split(".");
     let current: any = obj;
-    let parent: any = "";
+    let parent: any = null;
 
     for (let i = 0; i < splitSelectedNode.length; i++) {
+      if (!current || typeof current !== 'object') {
+        break;
+      }
       parent = current;
       current = current[splitSelectedNode[i]];
     }
 
-    if (typeof current === "object") {
+    if (current && typeof current === "object" && current !== null) {
       current[newIdValue] = "";
-    } else {
+    } else if (parent && typeof parent === "object") {
       parent[newIdValue] = "";
     }
     const updateContent = JSON.stringify(obj, null, 2);
     writeTextFile(jsonFilePath, updateContent);
   }
 
-  const updatedProject = await projectService.updateProjectFolderStructure({
+  const result = await projectService.updateProjectFolderStructure({
     project: project,
   });
 
-  return {
-    updatedProject: updatedProject as unknown as ParsedProject,
-    addedId: newIdValue,
-  };
+  return result.updatedProject;
 }
 
 interface RemoveIdParams {
@@ -64,14 +59,9 @@ interface RemoveIdParams {
   project: ParsedProject;
 }
 
-interface RemoveIdResult {
-  updatedProject: ParsedProject;
-  removeId: string;
-}
-
 export async function removeTranslationId(
   params: RemoveIdParams
-): Promise<RemoveIdResult> {
+): Promise<ParsedProject> {
   const { selectedNodeId, project } = params;
 
   const TRANSLATION_FILES = project.translation_packages[0].translation_urls;
@@ -86,27 +76,29 @@ export async function removeTranslationId(
 
     const splitSelectedNode = selectedNodeId.split(".");
     let current: any = obj;
-    let parent: any = "";
+    let parent: any = null;
 
     for (let i = 0; i < splitSelectedNode.length; i++) {
+      if (!current || typeof current !== 'object') {
+        break;
+      }
       parent = current;
       current = current[splitSelectedNode[i]];
     }
 
-    delete parent[splitSelectedNode[splitSelectedNode.length - 1]];
+    if (parent && splitSelectedNode.length > 0) {
+      delete parent[splitSelectedNode[splitSelectedNode.length - 1]];
+    }
 
     const updateContent = JSON.stringify(obj, null, 2);
     writeTextFile(jsonFilePath, updateContent);
   }
 
-  const updatedProject = await projectService.updateProjectFolderStructure({
+  const result = await projectService.updateProjectFolderStructure({
     project: project,
   });
 
-  return {
-    updatedProject: updatedProject as unknown as ParsedProject,
-    removeId: selectedNodeId,
-  };
+  return result.updatedProject;
 }
 
 interface ToggleApprovalParams {

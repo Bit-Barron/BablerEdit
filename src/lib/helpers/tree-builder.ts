@@ -1,13 +1,15 @@
-import { ParsedProject } from "@/lib/types/project.types";
 import { TreeNodeType } from "@/lib/types/tree.types";
 
-
-export const buildTranslationTree = (
-  projectData: ParsedProject
-): TreeNodeType[] => {
+export const buildTranslationTree = (projectData: any): TreeNodeType[] => {
   const allKeys: string[] = [];
+  const project = projectData;
 
-  for (let i of projectData.folder_structure.children[0].children) {
+  const mainPackage = project?.folder_structure?.children?.[0];
+  if (!mainPackage || !mainPackage.children) {
+    return [];
+  }
+
+  for (let i of mainPackage.children) {
     allKeys.push(i.name);
   }
   const tree: Record<string, any> = {};
@@ -19,7 +21,9 @@ export const buildTranslationTree = (
       if (!current[part]) {
         current[part] = idx === parts.length - 1 ? null : {};
       }
-      current = current[part];
+      if (idx < parts.length - 1) {
+        current = current[part];
+      }
     });
   });
 

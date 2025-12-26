@@ -20,6 +20,7 @@ function AppContent() {
   const { removeIdFromJson } = useTranslation();
   const location = useLocation();
   const [openIdDialog, setOpenIdDialog] = useState(false);
+  const { loading } = useSettings();
 
   useEffect(() => {
     const handleToolbarAction = async () => {
@@ -55,6 +56,14 @@ function AppContent() {
     setCurrentRoute(currentRoute);
   }, [location.pathname, setCurrentRoute]);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-background">
+        <Loader size={100} />
+      </div>
+    );
+  }
+
   return (
     <>
       <MenuBar />
@@ -76,16 +85,6 @@ function AppContent() {
 }
 
 export default function App() {
-  const { loading } = useSettings();
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-background">
-        <Loader size={100} />
-      </div>
-    );
-  }
-
   return (
     <GlassNotificationProvider position="top-right">
       <AppContent />

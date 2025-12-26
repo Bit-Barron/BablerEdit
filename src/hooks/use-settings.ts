@@ -18,24 +18,13 @@ export const useSettings = () => {
       try {
         const result = await SettingsService.loadUserSettings();
 
-        if (!result.settingsExist) {
-          setLoading(false);
-          return;
-        }
-
-        if (!result.lastOpenedProjectPath) {
-          setLoading(false);
-          return;
-        }
-
-        if (!result.lastOpenedProjectExist) {
-          setLoading(false);
-          return;
+        if (!result) {
+          throw new Error("No settings found");
         }
 
         setParsedProject(result.parsedProject as ParsedProject);
         setProjectSnapshot(result.parsedProject as ParsedProject);
-        setCurrentProjectPath(result.lastOpenedProjectPath);
+        setCurrentProjectPath(result.lastOpenedProjectPath as string);
         navigate("/editor");
       } catch (err) {
         console.error("Failed to load settings:", err);
