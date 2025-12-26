@@ -9,7 +9,7 @@ export const useTranslation = () => {
   const { selectedNode } = useSelectionStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
-  const { setTranslationForKey } = useTranslationStore();
+  const { setTranslationForKey, comment } = useTranslationStore();
 
   const addIdToJson = async (value: string) => {
     try {
@@ -106,7 +106,11 @@ export const useTranslation = () => {
     }
   };
 
+  const addComment = () => {
+    console.log("comment", comment);
+  };
   return {
+    addComment,
     toggleApproved,
     addIdToJson,
     removeIdFromJson,

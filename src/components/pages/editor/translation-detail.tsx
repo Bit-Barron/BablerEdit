@@ -13,7 +13,6 @@ import {
   ModalContent,
   ModalFooter,
   ModalTrigger,
-  useModal,
 } from "@/components/elements/animated-modal";
 import { PlaneIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,8 +28,10 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const { translationForKey, setTranslationForKey } = useTranslationStore();
+  const { translationForKey, setTranslationForKey, setComment, comment } =
+    useTranslationStore();
   const { toggleApproved, changeTranslationValue } = useTranslation();
+  const { addComment } = useTranslation();
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -44,6 +45,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
     findTranslationForKey();
   }, [selectedNode]);
+
+  console.log(comment);
 
   return (
     <section className="flex flex-col bg-background h-full">
@@ -78,6 +81,10 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 </h4>
                 <section>
                   <Textarea
+                    onChange={(e: { target: { value: string } }) =>
+                      setComment(e.target.value)
+                    }
+                    value={comment}
                     rows={4}
                     placeholder="type something..."
                     className="px-4 py-2 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
@@ -86,7 +93,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
               </ModalContent>
               <ModalFooter className="gap-4">
                 <CloseButton />
-                <Button className="w-28">
+                <Button onClick={() => addComment()} className="w-28">
                   <PlaneIcon className="mr-2" size={16} />
                   Save
                 </Button>
