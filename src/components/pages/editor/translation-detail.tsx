@@ -7,6 +7,17 @@ import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
 import { TranslationInput } from "@/components/elements/translation-input";
 import { MessageSquareIcon } from "@/components/icons/message-square";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalTrigger,
+} from "@/components/elements/animated-modal";
+import { PlaneIcon } from "lucide-react";
+import { Textarea } from "@/components/ui/Textarea";
+import { Button } from "@/components/ui/button";
+import { XIcon } from "@/components/icons/x";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -54,7 +65,35 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           {selectedNode.data.id}
         </h1>
         <div>
-          <MessageSquareIcon size={20} className="text-muted-foreground" />
+          <Modal>
+            <ModalTrigger>
+              <MessageSquareIcon size={20} className="text-muted-foreground" />
+            </ModalTrigger>
+            <ModalBody>
+              <ModalContent>
+                <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
+                  Add a comment
+                </h4>
+                <section>
+                  <Textarea
+                    rows={4}
+                    placeholder="type something..."
+                    className="px-4 py-2 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
+                  />
+                </section>
+              </ModalContent>
+              <ModalFooter className="gap-4">
+                <Button variant="outline" className="w-28">
+                  <XIcon className="mr-2" size={16} />
+                  close
+                </Button>
+                <Button className="w-28">
+                  <PlaneIcon className="mr-2" size={16} />
+                  Save
+                </Button>
+              </ModalFooter>
+            </ModalBody>
+          </Modal>
         </div>
       </div>
 
