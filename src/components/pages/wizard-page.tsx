@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../app/App.css";
+import "@/app/App.css";
 import { WizardFrameworkSelector } from "@/components/pages/wizard/framework-selector";
 import { WizardRecentProjects } from "@/components/pages/wizard/recent-projects";
 import { FileUploadDialog } from "@/components/pages/wizard/file-upload/file-upload-dialog";
@@ -24,7 +24,9 @@ export const WizardPage: React.FC = () => {
             </p>
           </header>
 
-          <WizardFrameworkSelector onSelect={() => setFileUploadDialogOpen(true)} />
+          <WizardFrameworkSelector
+            onSelect={() => setFileUploadDialogOpen(true)}
+          />
           <WizardRecentProjects />
         </div>
       </div>

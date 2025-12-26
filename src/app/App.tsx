@@ -1,8 +1,8 @@
 import { useToolbarStore } from "@/lib/store/toolbar.store";
 import { useEditor } from "@/hooks/use-editor";
 import { useProjectStore } from "@/lib/store/project.store";
-import { EditorPage } from "@/app/editor-page";
-import { WizardPage } from "@/app/wizard-page";
+import { EditorPage } from "@/components/pages/editor-page";
+import { WizardPage } from "@/components/pages/wizard-page";
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import MenuBar from "@/components/layout/menubar/menubar";
