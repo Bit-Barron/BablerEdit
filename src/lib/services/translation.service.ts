@@ -26,20 +26,25 @@ export async function addTranslationId(
       rootDir: project.source_root_dir,
     });
 
-    const splitSelectedNode = selectedNodeId.split(".");
-    let current: any = obj;
-    let parent: any = null;
+    if (!selectedNodeId) {
+      obj[newIdValue] = "";
+    } else {
+      const splitSelectedNode = selectedNodeId!.split(".");
+      let current: any = obj;
+      let parent: any = null;
 
-    for (let i = 0; i < splitSelectedNode.length; i++) {
-      parent = current;
-      current = current[splitSelectedNode[i]];
+      for (let i = 0; i < splitSelectedNode.length; i++) {
+        parent = current;
+        current = current[splitSelectedNode[i]];
+      }
+
+      if (typeof current === "object") {
+        current[newIdValue] = "";
+      } else if (parent && typeof parent === "object") {
+        parent[newIdValue] = "";
+      }
     }
 
-    if (typeof current === "object") {
-      current[newIdValue] = "";
-    } else if (parent && typeof parent === "object") {
-      parent[newIdValue] = "";
-    }
     const updateContent = JSON.stringify(obj, null, 2);
     writeTextFile(jsonFilePath, updateContent);
   }

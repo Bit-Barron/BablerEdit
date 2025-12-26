@@ -14,7 +14,7 @@ export const useTranslation = () => {
   const addIdToJson = async (value: string) => {
     try {
       const result = TranslationService.addTranslationId({
-        selectedNodeId: selectedNode!.data.id,
+        selectedNodeId: selectedNode?.data.id || "",
         newIdValue: value,
         project: parsedProject!,
       });

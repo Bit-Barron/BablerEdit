@@ -17,30 +17,23 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
 }) => {
   const { selectedNode } = useSelectionStore();
   const { addIdToJson } = useTranslation();
-  const { addNotification } = useNotification();
 
   const [value, setValue] = useState("");
 
   useEffect(() => {
     if (!open) return;
     if (!selectedNode) {
-      addNotification({
-        type: "error",
-        title: "No node selected",
-        description: "Please select a node to add an ID.",
-      });
+      setValue("");
       return;
     }
 
-    if (selectedNode.isLeaf) {
-      const segments = selectedNode.data.id.split(".").slice(0, -1).join(".");
+    if (selectedNode!.isLeaf) {
+      const segments = selectedNode!.data.id.split(".").slice(0, -1).join(".");
       setValue(segments + ".");
     } else {
-      setValue(selectedNode.data.id + ".");
+      setValue(selectedNode!.data.id + ".");
     }
   }, [open, selectedNode]);
-
-  if (!selectedNode) return null;
 
   const newId = value.split(".").pop();
 
@@ -60,7 +53,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
             </Button>
             <Button
               onClick={() => {
-                if (newId && selectedNode) {
+                if (newId) {
                   addIdToJson(newId);
                   onOpenChange(false);
                 }
