@@ -14,9 +14,7 @@ import {
   ModalFooter,
   ModalTrigger,
 } from "@/components/elements/animated-modal";
-import { PlaneIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { CloseButton } from "@/components/elements/close-button";
 import { SaveButton } from "@/components/elements/save-button";
 

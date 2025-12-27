@@ -21,6 +21,7 @@
   "registries": {
     "@lucide-animated": "https://lucide-animated.com/r/{name}.json",
     "@einui": "https://ui.eindev.ir/r/{name}.json",
-    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
+    "@retroui": "https://retroui.dev/r/{name}.json"
   }
 }

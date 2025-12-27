@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { useSelectionStore } from "@/lib/store/selection.store";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/use-translation";
-import { useNotification } from "@/components/elements/glass-notification";
 
 interface AddIdDialogProps {
   open: boolean;
@@ -44,7 +43,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
           <h1 className="text-lg font-semibold">Add Translation ID</h1>
         </Dialog.Header>
 
-        <div className="px-6 pb-6 overflow-y-auto flex-1">
+        <div className="px-6 pb-6 overflow-y-auto flex-1 mt-5">
           <Input value={value} onChange={(e) => setValue(e.target.value)} />
 
           <div className="flex justify-end mt-6 gap-2">

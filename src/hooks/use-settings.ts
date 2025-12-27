@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useNavigate } from "react-router-dom";
 import * as SettingsService from "@/lib/services/settings.service";
