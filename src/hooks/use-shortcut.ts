@@ -1,67 +1,39 @@
-import { register, unregister, isRegistered } from "@tauri-apps/plugin-global-shortcut";
-import { useEditor } from "@/hooks/use-editor";
+import { register } from "@tauri-apps/plugin-global-shortcut";
 import { useProjectStore } from "@/lib/store/project.store";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import * as ProjectService from "@/lib/services/project.service";
 
-let globalShortcutRegistered = false;
+let isRegistered = false;
 
 export const useShortcut = () => {
-  const { saveProject } = useEditor();
-  const { parsedProject } = useProjectStore();
-  const saveProjectRef = useRef(saveProject);
-  const parsedProjectRef = useRef(parsedProject);
+  const {
+    setParsedProject,
+    setCurrentProjectPath,
+    setProjectSnapshot,
+    setHasUnsavedChanges,
+    parsedProject,
+    currentProjectPath,
+  } = useProjectStore();
 
   useEffect(() => {
-    saveProjectRef.current = saveProject;
-    parsedProjectRef.current = parsedProject;
-  });
+    if (isRegistered) return;
 
-  useEffect(() => {
-    const setupShortcut = async () => {
-      if (globalShortcutRegistered) {
-        console.log("Shortcut already registered globally, skipping");
-        return;
-      }
-
-      try {
-        const alreadyRegistered = await isRegistered("CommandOrControl+S");
-
-        if (alreadyRegistered) {
-          console.log("Shortcut already registered in Tauri, unregistering first");
-          await unregister("CommandOrControl+S");
-        }
-
-        await register("CommandOrControl+S", async () => {
-          console.log("Ctrl+S pressed!");
-          const currentProject = parsedProjectRef.current;
-          const currentSaveProject = saveProjectRef.current;
-
-          if (currentProject && Object.keys(currentProject).length > 0) {
-            console.log("Saving project...");
-            await currentSaveProject(currentProject);
-          } else {
-            console.log("No project to save");
+    register("CommandOrControl+S", async () => {
+      if (parsedProject && Object.keys(parsedProject).length > 0) {
+        await ProjectService.saveProject({
+          project: parsedProject,
+          currentProjectPath: currentProjectPath,
+        }).then((result) => {
+          if (result) {
+            setParsedProject(result.updatedProject);
+            setCurrentProjectPath(result.currentProjectPath);
+            setProjectSnapshot(result.updatedProject);
+            setHasUnsavedChanges(false);
           }
         });
-
-        globalShortcutRegistered = true;
-        console.log("Shortcut registered successfully");
-      } catch (error) {
-        console.error("Failed to register shortcut:", error);
       }
-    };
+    }).catch(console.error);
 
-    setupShortcut();
-
-    return () => {
-      if (globalShortcutRegistered) {
-        unregister("CommandOrControl+S")
-          .then(() => {
-            globalShortcutRegistered = false;
-            console.log("Shortcut unregistered");
-          })
-          .catch(console.error);
-      }
-    };
+    isRegistered = true;
   }, []);
 };
