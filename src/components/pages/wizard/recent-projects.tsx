@@ -13,7 +13,6 @@ export const WizardRecentProjects: React.FC<
   const projects = Object.values(recentProjects)
     .slice(0, 5)
     .map((proj) => proj!.name);
-  console.log(recentProjects);
 
   return (
     <div>
@@ -27,7 +26,6 @@ export const WizardRecentProjects: React.FC<
       )}
       <div className="space-y-2">
         {Object.values(recentProjects).map((proj, index) => {
-          console.log("PROJECT", proj);
           return (
             <button
               key={index}

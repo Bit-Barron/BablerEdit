@@ -18,6 +18,7 @@ import { PlaneIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { CloseButton } from "@/components/elements/close-button";
+import { SaveButton } from "@/components/elements/save-button";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -28,10 +29,15 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const { translationForKey, setTranslationForKey, setComment, comment } =
-    useTranslationStore();
+  const {
+    translationForKey,
+    setTranslationForKey,
+    setComment,
+    comment,
+    setDisplayComment,
+    displayComment,
+  } = useTranslationStore();
   const { toggleApproved, changeTranslationValue } = useTranslation();
-  const { addComment } = useTranslation();
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -46,7 +52,16 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     findTranslationForKey();
   }, [selectedNode]);
 
-  console.log(comment);
+  useEffect(() => {
+    const findTranslationComment = () => {
+      const mainPackage = project.folder_structure.children[0];
+      const conceptNode = mainPackage.children.find(
+        (child) => child.name === selectedNode!.data.id
+      );
+      setDisplayComment(conceptNode!.comment || "");
+    };
+    findTranslationComment();
+  }, [translationForKey]);
 
   return (
     <section className="flex flex-col bg-background h-full">
@@ -85,22 +100,25 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                       setComment(e.target.value)
                     }
                     value={comment}
-                    rows={4}
+                    rows={6}
                     placeholder="type something..."
-                    className="px-4 py-2 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
+                    className="px-6 py-4 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
                   />
                 </section>
               </ModalContent>
               <ModalFooter className="gap-4">
                 <CloseButton />
-                <Button onClick={() => addComment()} className="w-28">
-                  <PlaneIcon className="mr-2" size={16} />
-                  Save
-                </Button>
+                <SaveButton comment={comment} />
               </ModalFooter>
             </ModalBody>
           </Modal>
         </div>
+      </div>
+
+      <div className="px-4 py-2 bg-muted/60 border-b border-border flex justify-between items-center">
+        <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">
+          {displayComment}
+        </h1>
       </div>
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">

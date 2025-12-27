@@ -9,7 +9,7 @@ export const useTranslation = () => {
   const { selectedNode } = useSelectionStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
-  const { setTranslationForKey, comment } = useTranslationStore();
+  const { setTranslationForKey } = useTranslationStore();
 
   const addIdToJson = async (value: string) => {
     try {
@@ -106,8 +106,30 @@ export const useTranslation = () => {
     }
   };
 
-  const addComment = () => {
-    console.log("comment", comment);
+  const addComment = (comment: string) => {
+    if (!comment) {
+      addNotification({
+        type: "error",
+        title: "Error",
+        description: "Comment cannot be empty.",
+      });
+      return;
+    }
+
+    const result = TranslationService.addCommentToTranslationId({
+      project: parsedProject!,
+      selectedNodeId: selectedNode!,
+      comment,
+    });
+
+    setParsedProject(result.updatedProject);
+
+    addNotification({
+      type: "success",
+      title: "Translation updated",
+    });
+
+    return result.updatedProject;
   };
   return {
     addComment,

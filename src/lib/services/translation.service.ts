@@ -197,3 +197,48 @@ export async function updateTranslations(
     updatedTranslations: updatedTranslations,
   };
 }
+
+interface addCommentParams {
+  project: ParsedProject;
+  selectedNodeId: NodeApi<TreeNodeType>;
+  comment: string;
+}
+
+interface addCommentResult {
+  updatedProject: ParsedProject;
+}
+
+export function addCommentToTranslationId(
+  params: addCommentParams
+): addCommentResult {
+  const { project, selectedNodeId, comment } = params;
+
+  const obj = project.folder_structure.children[0].children;
+
+  const findNode = obj.find((child) => child.name === selectedNodeId?.data.id);
+
+  if (!findNode) {
+    throw new Error(`Translation key "${selectedNodeId}" not found.`);
+  }
+
+  const updatedProject: ParsedProject = {
+    ...project,
+    folder_structure: {
+      ...project.folder_structure,
+      children: [
+        {
+          ...project.folder_structure.children[0],
+          children: project.folder_structure.children[0].children.map((node) =>
+            node.name === selectedNodeId.data.id
+              ? { ...node, comment: comment }
+              : node
+          ),
+        },
+      ],
+    },
+  };
+
+  return {
+    updatedProject: updatedProject,
+  };
+}

@@ -10,12 +10,20 @@ interface TranslationStore {
 
   comment: string;
   setComment: (comment: string) => void;
+
+  displayComment: string;
+  setDisplayComment: (comment: string) => void;
 }
 
 export const useTranslationStore = create<TranslationStore>((set) => ({
   currentTranslations: [],
   setCurrentTranslations: (translations) =>
     set({ currentTranslations: translations }),
+  displayComment: "",
+  setDisplayComment: (comment) =>
+    set({
+      displayComment: comment,
+    }),
 
   setTranslationForKey: (translations) =>
     set({ translationForKey: translations }),
