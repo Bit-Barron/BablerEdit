@@ -126,7 +126,6 @@ export async function createProject(
     },
   };
 }
-
 interface SaveProjectParams {
   project: ParsedProject;
   currentProjectPath: string | null;
@@ -142,13 +141,22 @@ export async function saveProject(
 ): Promise<SaveProjectResult | null> {
   const { project, currentProjectPath } = params;
 
-  if (!currentProjectPath) {
+  console.log("saveProject called with path:", currentProjectPath);
+
+  if (!currentProjectPath || currentProjectPath.trim() === "") {
+    console.log("No existing path, prompting for save location");
+
     const saveFile = await save({
       defaultPath: project.filename || "Project.babler",
       filters: [{ name: "BablerEdit Project", extensions: ["babler"] }],
     });
 
-    if (!saveFile) return null;
+    if (!saveFile) {
+      console.log("User cancelled save dialog");
+      return null;
+    }
+
+    console.log("User selected new path:", saveFile);
 
     const bablerProject = serializeProject(project);
     const yamlContent = yaml.dump(bablerProject, {
@@ -165,6 +173,8 @@ export async function saveProject(
     };
   }
 
+  console.log("Using existing path:", currentProjectPath);
+
   const bablerProject = serializeProject(project);
   const yamlContent = yaml.dump(bablerProject, {
     indent: 2,
@@ -179,7 +189,6 @@ export async function saveProject(
     updatedProject: bablerProject,
   };
 }
-
 interface LoadProjectResult {
   project: ParsedProject;
   projectPath: string;

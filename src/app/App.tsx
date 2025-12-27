@@ -11,6 +11,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { Loader } from "@/components/elements/loader";
 import { GlassNotificationProvider } from "@/components/elements/glass-notification";
 import { useTranslation } from "@/hooks/use-translation";
+import { useShortcut } from "@/hooks/use-shortcut";
 
 function AppContent() {
   const { onProjectClick, setOnProjectClick, setCurrentRoute } =
@@ -21,6 +22,8 @@ function AppContent() {
   const location = useLocation();
   const [openIdDialog, setOpenIdDialog] = useState(false);
   const { loading } = useSettings();
+
+  useShortcut();
 
   useEffect(() => {
     const handleToolbarAction = async () => {

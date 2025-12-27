@@ -20,12 +20,19 @@ export const useEditor = () => {
     project: ParsedProject
   ): Promise<ParsedProject | null> => {
     try {
+      console.log("Saving project, current path:", currentProjectPath);
+
+      const shouldPromptForPath = !currentProjectPath || currentProjectPath.trim() === "";
+
       const result = await ProjectService.saveProject({
         project,
-        currentProjectPath: currentProjectPath,
+        currentProjectPath: shouldPromptForPath ? null : currentProjectPath,
       });
 
-      if (!result) return null;
+      if (!result) {
+        console.log("Save cancelled or failed");
+        return null;
+      }
 
       setCurrentProjectPath(result.currentProjectPath);
 
@@ -49,7 +56,7 @@ export const useEditor = () => {
 
       return project;
     } catch (err) {
-      console.error(err);
+      console.error("Save error:", err);
       const message = err instanceof Error ? err.message : "Unknown error";
       addNotification({
         type: "error",
@@ -59,6 +66,7 @@ export const useEditor = () => {
       return null;
     }
   };
+
   const openProject = async () => {
     try {
       const loadResult = await ProjectService.LoadProject();
@@ -68,11 +76,14 @@ export const useEditor = () => {
       setParsedProject(loadResult?.project as ParsedProject);
       setProjectSnapshot(loadResult?.project as ParsedProject);
 
+      setCurrentProjectPath(loadResult?.projectPath);
+
       addNotification({
         type: "success",
         title: "Project opened!",
         description: `Opened ${loadResult?.project.filename || "project"}`,
       });
+
       setLastOpenedProject(loadResult?.projectPath as string);
       navigate("/editor");
     } catch (err) {

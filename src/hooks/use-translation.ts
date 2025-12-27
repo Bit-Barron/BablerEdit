@@ -78,6 +78,7 @@ export const useTranslation = () => {
       addNotification({
         type: "success",
         title: "Translation updated",
+        description: "Approval status toggled successfully.",
       });
       return result.updatedProject;
     } catch (err) {
@@ -107,15 +108,6 @@ export const useTranslation = () => {
   };
 
   const addComment = (comment: string) => {
-    if (!comment) {
-      addNotification({
-        type: "error",
-        title: "Error",
-        description: "Comment cannot be empty.",
-      });
-      return;
-    }
-
     const result = TranslationService.addCommentToTranslationId({
       project: parsedProject!,
       selectedNodeId: selectedNode!,
@@ -127,6 +119,7 @@ export const useTranslation = () => {
     addNotification({
       type: "success",
       title: "Translation updated",
+      description: "Comment added successfully.",
     });
 
     return result.updatedProject;

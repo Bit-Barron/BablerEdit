@@ -11,6 +11,9 @@
     "core:window:allow-close",
     "core:window:allow-maximize",
     "core:window:allow-minimize",
+    "global-shortcut:allow-is-registered",
+    "global-shortcut:allow-register",
+    "global-shortcut:allow-unregister",
     {
       "identifier": "fs:scope",
       "allow": [{ "path": "$APPDATA/**" }, { "path": "**" }]

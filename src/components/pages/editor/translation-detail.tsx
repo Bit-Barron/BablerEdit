@@ -84,7 +84,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </h1>
         <div>
           <Modal>
-            <ModalTrigger>
+            <ModalTrigger variant="ghost">
               <MessageSquareIcon size={20} className="text-muted-foreground" />
             </ModalTrigger>
             <ModalBody>
@@ -114,11 +114,36 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       </div>
 
       {displayComment && (
-        <div className="px-4 py-2 bg-muted/60 border-b border-border flex justify-between items-center">
-          <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">
-            {displayComment}
-          </h1>
-        </div>
+        <Modal>
+          <ModalTrigger className="m-2" variant="outline">
+            <div>{displayComment}</div>
+          </ModalTrigger>
+
+          <ModalBody>
+            <ModalContent>
+              <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
+                Add a comment
+              </h4>
+
+              <section>
+                <Textarea
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setComment(e.target.value)
+                  }
+                  value={comment}
+                  rows={6}
+                  placeholder="type something..."
+                  className="px-6 py-4 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
+                />
+              </section>
+            </ModalContent>
+
+            <ModalFooter className="gap-4">
+              <CloseButton />
+              <SaveButton comment={comment} />
+            </ModalFooter>
+          </ModalBody>
+        </Modal>
       )}
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
