@@ -61,7 +61,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       setDisplayComment(conceptNode!.comment || "");
     };
     findTranslationComment();
-  }, [translationForKey]);
+  }, [translationForKey, project]);
 
   return (
     <section className="flex flex-col bg-background h-full">
@@ -115,11 +115,13 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </div>
       </div>
 
-      <div className="px-4 py-2 bg-muted/60 border-b border-border flex justify-between items-center">
-        <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">
-          {displayComment}
-        </h1>
-      </div>
+      {displayComment && (
+        <div className="px-4 py-2 bg-muted/60 border-b border-border flex justify-between items-center">
+          <h1 className="font-semibold text-sm text-muted-foreground tracking-wide">
+            {displayComment}
+          </h1>
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="space-y-4">
