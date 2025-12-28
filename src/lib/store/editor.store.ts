@@ -1,6 +1,11 @@
 import { create } from "zustand";
+import { NodeApi } from "react-arborist";
+import { TreeNodeType } from "@/lib/types/tree.types";
 
-interface ToolbarStore {
+interface EditorStore {
+  selectedNode: NodeApi<TreeNodeType> | null;
+  setSelectedNode: (node: NodeApi<TreeNodeType> | null) => void;
+
   onProjectClick: string;
   setOnProjectClick: (id: string) => void;
 
@@ -14,7 +19,10 @@ interface ToolbarStore {
   setAddIdDialogOpen: (open: boolean) => void;
 }
 
-export const useToolbarStore = create<ToolbarStore>((set) => ({
+export const useEditorStore = create<EditorStore>((set) => ({
+  selectedNode: null,
+  setSelectedNode: (node) => set({ selectedNode: node }),
+
   onProjectClick: "",
   setOnProjectClick: (id: string) => set({ onProjectClick: id }),
   currentRoute: "wizard",

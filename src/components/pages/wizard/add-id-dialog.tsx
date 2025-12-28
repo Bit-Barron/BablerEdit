@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
 } from "@/components/elements/alert-dialog";
 import { Input } from "@/components/ui/input";
-import { useSelectionStore } from "@/lib/store/selection.store";
+import { useEditorStore } from "@/lib/store/editor.store";
 import { useTranslation } from "@/hooks/use-translation";
 
 interface AddIdDialogProps {
@@ -21,7 +21,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { selectedNode } = useSelectionStore();
+  const { selectedNode } = useEditorStore();
   const { addIdToJson } = useTranslation();
 
   const [value, setValue] = useState("");

@@ -1,4 +1,4 @@
-import { useToolbarStore } from "@/lib/store/toolbar.store";
+import { useEditorStore } from "@/lib/store/editor.store";
 import { useEditor } from "@/hooks/use-editor";
 import { useProjectStore } from "@/lib/store/project.store";
 import { EditorPage } from "@/components/pages/editor-page";
@@ -19,7 +19,7 @@ function AppContent() {
     setOnProjectClick,
     setCurrentRoute,
     setAddIdDialogOpen,
-  } = useToolbarStore();
+  } = useEditorStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
   const { removeIdFromJson } = useTranslation();

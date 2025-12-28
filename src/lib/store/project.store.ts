@@ -20,6 +20,9 @@ interface ProjectStore {
 
   projectSnapshot: ParsedProject;
   setProjectSnapshot: (snapshot: ParsedProject) => void;
+
+  primaryLanguageCode: string;
+  setPrimaryLanguageCode: (code: string) => void;
 }
 
 export const useProjectStore = create<ProjectStore>((set) => ({
@@ -51,4 +54,7 @@ export const useProjectStore = create<ProjectStore>((set) => ({
         hasUnsavedChanges: hasChanges,
       };
     }),
+
+  primaryLanguageCode: "de",
+  setPrimaryLanguageCode: (code) => set({ primaryLanguageCode: code }),
 }));

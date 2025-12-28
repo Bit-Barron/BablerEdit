@@ -1,12 +1,12 @@
 import { useProjectStore } from "@/lib/store/project.store";
-import { useSelectionStore } from "@/lib/store/selection.store";
+import { useEditorStore } from "@/lib/store/editor.store";
 import { useNotification } from "@/components/elements/glass-notification";
 import * as TranslationService from "@/lib/services/translation.service";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
 
 export const useTranslation = () => {
-  const { selectedNode } = useSelectionStore();
+  const { selectedNode } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
   const { setTranslationForKey } = useTranslationStore();

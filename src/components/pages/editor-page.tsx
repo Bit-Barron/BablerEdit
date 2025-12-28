@@ -1,5 +1,5 @@
 import { useProjectStore } from "@/lib/store/project.store";
-import { useToolbarStore } from "@/lib/store/toolbar.store";
+import { useEditorStore } from "@/lib/store/editor.store";
 
 import { NodeApi, NodeRendererProps } from "react-arborist";
 import { useMemo } from "react";
@@ -7,7 +7,6 @@ import { useEditor } from "@/hooks/use-editor";
 import { TreeNodeType } from "@/lib/types/tree.types";
 import { ChevronsRightLeftIcon } from "@/components/icons/chevrons-right-left";
 import { AddIdDialog } from "@/components/pages/wizard/add-id-dialog";
-import { useSelectionStore } from "@/lib/store/selection.store";
 import { TranslationDetail } from "@/components/pages/editor/translation-detail";
 import { TranslationTree } from "@/components/pages/editor/translation-tree";
 import { TreeNode } from "@/components/pages/editor/tree-node";
@@ -17,8 +16,8 @@ import CommandPalette, { getItemIndex } from "react-cmdk";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
-  const { addIdDialogOpen, setAddIdDialogOpen } = useToolbarStore();
-  const { selectedNode, setSelectedNode } = useSelectionStore();
+  const { addIdDialogOpen, setAddIdDialogOpen, selectedNode, setSelectedNode } =
+    useEditorStore();
   const { moveJsonNode, commandPalette } = useEditor();
 
   const initialTreeData = useMemo(() => {

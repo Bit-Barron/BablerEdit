@@ -13,7 +13,6 @@ import { MultiFileUpload } from "./kokonut-file-upload";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
 import { FileWithPath } from "@/lib/types/file.types";
-import { useWizardStore } from "@/lib/store/wizard.store";
 import { Button } from "@/components/ui/button";
 import * as ProjectService from "@/lib/services/project.service";
 
@@ -26,8 +25,8 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { selectedFramework, setParsedProject } = useProjectStore();
-  const { primaryLanguageCode } = useWizardStore();
+  const { selectedFramework, setParsedProject, primaryLanguageCode } =
+    useProjectStore();
   const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
   const navigate = useNavigate();
 

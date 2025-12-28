@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactArboristType } from "../lib/types/tree.types";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
-import { useToolbarStore } from "@/lib/store/toolbar.store";
+import { useEditorStore } from "@/lib/store/editor.store";
 import { useNotification } from "@/components/elements/glass-notification";
 import * as ProjectService from "@/lib/services/project.service";
 import dayjs from "dayjs";
@@ -16,18 +16,21 @@ export const useEditor = () => {
     useProjectStore();
   const { setCurrentProjectPath, setHasUnsavedChanges, currentProjectPath } =
     useProjectStore();
-  const { setAddIdDialogOpen } = useToolbarStore();
-  const navigate = useNavigate();
+  const { setAddIdDialogOpen } = useEditorStore();
   const { addNotification } = useNotification();
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   useHandleOpenCommandPalette(setCommandPaletteOpen);
 
   const ids = useMemo(() => {
     const result: string[] = [];
+    if (!parsedProject?.folder_structure?.children) return result;
+
     for (let i = 0; i < parsedProject.folder_structure.children.length; i++) {
-      const child = parsedProject.folder_structure.children[i].children;
+      const child = parsedProject.folder_structure.children[i]?.children;
+      if (!child) continue;
       for (let j in child) {
         result.push(child[j].name);
       }

@@ -1,14 +1,12 @@
 import { TOOLBAR } from "@/lib/config/toolbar.config";
-import { useToolbarStore } from "@/lib/store/toolbar.store";
+import { useEditorStore } from "@/lib/store/editor.store";
 import { useLocation } from "react-router-dom";
 
 import { Tooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { useSelectionStore } from "@/lib/store/selection.store";
 
 export default function Toolbar() {
-  const { setOnProjectClick } = useToolbarStore();
-  const { selectedNode } = useSelectionStore();
+  const { setOnProjectClick, selectedNode } = useEditorStore();
   const location = useLocation();
 
   return (
