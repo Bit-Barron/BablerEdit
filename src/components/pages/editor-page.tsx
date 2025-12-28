@@ -1,7 +1,8 @@
 import { useProjectStore } from "@/lib/store/project.store";
+import { useToolbarStore } from "@/lib/store/toolbar.store";
 
 import { NodeApi, NodeRendererProps } from "react-arborist";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useEditor } from "@/hooks/use-editor";
 import { TreeNodeType } from "@/lib/types/tree.types";
 import { ChevronsRightLeftIcon } from "@/components/icons/chevrons-right-left";
@@ -12,70 +13,13 @@ import { TranslationTree } from "@/components/pages/editor/translation-tree";
 import { TreeNode } from "@/components/pages/editor/tree-node";
 import { buildTranslationTree } from "@/lib/helpers/tree-builder";
 import "react-cmdk/dist/cmdk.css";
-import CommandPalette, {
-  filterItems,
-  getItemIndex,
-  useHandleOpenCommandPalette,
-} from "react-cmdk";
+import CommandPalette, { getItemIndex } from "react-cmdk";
 
-interface EditorPageProps {
-  openIdDialog: boolean;
-  setOpenIdDialog: (open: boolean) => void;
-}
-
-export const EditorPage: React.FC<EditorPageProps> = ({
-  openIdDialog,
-  setOpenIdDialog,
-}) => {
+export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
+  const { addIdDialogOpen, setAddIdDialogOpen } = useToolbarStore();
   const { selectedNode, setSelectedNode } = useSelectionStore();
-  const { moveJsonNode } = useEditor();
-  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  useHandleOpenCommandPalette(setCommandPaletteOpen);
-
-  const ids = useMemo(() => {
-    const result: string[] = [];
-    for (let i = 0; i < parsedProject.folder_structure.children.length; i++) {
-      const child = parsedProject.folder_structure.children[i].children;
-      for (let j in child) {
-        result.push(child[j].name);
-      }
-    }
-    return result;
-  }, [parsedProject]);
-
-  const filteredItems = filterItems(
-    [
-      {
-        heading: "Actions",
-        id: "actions",
-        items: [
-          {
-            id: "add-translation",
-            children: "Add Translation ID",
-            icon: "PlusIcon",
-            onClick: () => {
-              setOpenIdDialog(true);
-            },
-          },
-        ],
-      },
-      {
-        heading: "Translation IDs",
-        id: "translation-ids",
-        items: ids.map((id) => ({
-          id: `id-${id}`,
-          children: id,
-          icon: "DocumentTextIcon",
-          onClick: () => {
-            console.log(`Selected ID: ${id}`);
-          },
-        })),
-      },
-    ],
-    search
-  );
+  const { moveJsonNode, commandPalette } = useEditor();
 
   const initialTreeData = useMemo(() => {
     if (!parsedProject) return [];
@@ -87,20 +31,20 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   return (
     <div className="fixed inset-0 top-22 flex bg-background mt-2">
       <CommandPalette
-        onChangeSearch={setSearch}
-        onChangeOpen={setCommandPaletteOpen}
-        search={search}
-        isOpen={commandPaletteOpen}
+        onChangeSearch={commandPalette.setSearch}
+        onChangeOpen={commandPalette.setIsOpen}
+        search={commandPalette.search}
+        isOpen={commandPalette.isOpen}
         page="root"
       >
         <CommandPalette.Page id="root">
-          {filteredItems.length ? (
-            filteredItems.map((list) => (
+          {commandPalette.filteredItems.length ? (
+            commandPalette.filteredItems.map((list) => (
               <CommandPalette.List key={list.id} heading={list.heading}>
                 {list.items.map(({ id, ...rest }) => (
                   <CommandPalette.ListItem
                     key={id}
-                    index={getItemIndex(filteredItems, id)}
+                    index={getItemIndex(commandPalette.filteredItems, id)}
                     {...rest}
                   />
                 ))}
@@ -152,7 +96,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
             </p>
           </div>
         )}
-        <AddIdDialog open={openIdDialog} onOpenChange={setOpenIdDialog} />
+        <AddIdDialog open={addIdDialogOpen} onOpenChange={setAddIdDialogOpen} />
       </div>
     </div>
   );

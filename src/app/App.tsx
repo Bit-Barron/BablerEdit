@@ -3,7 +3,7 @@ import { useEditor } from "@/hooks/use-editor";
 import { useProjectStore } from "@/lib/store/project.store";
 import { EditorPage } from "@/components/pages/editor-page";
 import { WizardPage } from "@/components/pages/wizard-page";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
@@ -14,13 +14,16 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useShortcut } from "@/hooks/use-shortcut";
 
 function AppContent() {
-  const { onProjectClick, setOnProjectClick, setCurrentRoute } =
-    useToolbarStore();
+  const {
+    onProjectClick,
+    setOnProjectClick,
+    setCurrentRoute,
+    setAddIdDialogOpen,
+  } = useToolbarStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
   const { removeIdFromJson } = useTranslation();
   const location = useLocation();
-  const [openIdDialog, setOpenIdDialog] = useState(false);
   const { loading } = useSettings();
 
   useShortcut();
@@ -37,7 +40,7 @@ function AppContent() {
           await openProject();
           break;
         case "add-id":
-          setOpenIdDialog(true);
+          setAddIdDialogOpen(true);
           break;
         case "remove-ids":
           await removeIdFromJson();
@@ -73,15 +76,7 @@ function AppContent() {
       <Toolbar />
       <Routes>
         <Route path="/" element={<WizardPage />} />
-        <Route
-          path="/editor"
-          element={
-            <EditorPage
-              openIdDialog={openIdDialog}
-              setOpenIdDialog={setOpenIdDialog}
-            />
-          }
-        />
+        <Route path="/editor" element={<EditorPage />} />
       </Routes>
     </>
   );

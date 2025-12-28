@@ -9,6 +9,9 @@ interface ToolbarStore {
 
   disabledButtons: boolean;
   setDisabledButtons: (disabled: boolean) => void;
+
+  addIdDialogOpen: boolean;
+  setAddIdDialogOpen: (open: boolean) => void;
 }
 
 export const useToolbarStore = create<ToolbarStore>((set) => ({
@@ -18,6 +21,6 @@ export const useToolbarStore = create<ToolbarStore>((set) => ({
   setCurrentRoute: (route: string) => set({ currentRoute: route }),
   disabledButtons: false,
   setDisabledButtons: (disabled: boolean) => set({ disabledButtons: disabled }),
+  addIdDialogOpen: false,
+  setAddIdDialogOpen: (open: boolean) => set({ addIdDialogOpen: open }),
 }));
-
-

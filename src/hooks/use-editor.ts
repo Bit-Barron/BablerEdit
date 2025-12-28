@@ -3,9 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { ReactArboristType } from "../lib/types/tree.types";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
+import { useToolbarStore } from "@/lib/store/toolbar.store";
 import { useNotification } from "@/components/elements/glass-notification";
 import * as ProjectService from "@/lib/services/project.service";
 import dayjs from "dayjs";
+import { useMemo, useState } from "react";
+import { filterItems, useHandleOpenCommandPalette } from "react-cmdk";
 
 export const useEditor = () => {
   const { setLastOpenedProject, addRecentProject } = useSettingsStore();
@@ -13,15 +16,72 @@ export const useEditor = () => {
     useProjectStore();
   const { setCurrentProjectPath, setHasUnsavedChanges, currentProjectPath } =
     useProjectStore();
+  const { setAddIdDialogOpen } = useToolbarStore();
   const navigate = useNavigate();
-    const { addNotification } = useNotification();
+  const { addNotification } = useNotification();
+
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  useHandleOpenCommandPalette(setCommandPaletteOpen);
+
+  const ids = useMemo(() => {
+    const result: string[] = [];
+    for (let i = 0; i < parsedProject.folder_structure.children.length; i++) {
+      const child = parsedProject.folder_structure.children[i].children;
+      for (let j in child) {
+        result.push(child[j].name);
+      }
+    }
+    return result;
+  }, [parsedProject]);
+
+  const filteredItems = filterItems(
+    [
+      {
+        heading: "Actions",
+        id: "actions",
+        items: [
+          {
+            id: "add-translation",
+            children: "Add Translation ID",
+            icon: "PlusIcon",
+            onClick: () => {
+              setAddIdDialogOpen(true);
+            },
+          },
+        ],
+      },
+      {
+        heading: "Translation IDs",
+        id: "translation-ids",
+        items: ids.map((id) => ({
+          id: `id-${id}`,
+          children: id,
+          icon: "DocumentTextIcon",
+          onClick: () => {
+            console.log(`Selected ID: ${id}`);
+          },
+        })),
+      },
+    ],
+    search
+  );
+
+  const commandPalette = {
+    isOpen: commandPaletteOpen,
+    setIsOpen: setCommandPaletteOpen,
+    search,
+    setSearch,
+    filteredItems,
+  };
 
   const saveProject = async (
     project: ParsedProject
   ): Promise<ParsedProject | null> => {
     try {
-
-      const shouldPromptForPath = !currentProjectPath || currentProjectPath.trim() === "";
+      const shouldPromptForPath =
+        !currentProjectPath || currentProjectPath.trim() === "";
 
       const result = await ProjectService.saveProject({
         project,
@@ -121,12 +181,10 @@ export const useEditor = () => {
     }
   };
 
-  const displayTranslationId = () => {}
-
-
   return {
     saveProject,
     openProject,
     moveJsonNode,
+    commandPalette,
   };
 };
