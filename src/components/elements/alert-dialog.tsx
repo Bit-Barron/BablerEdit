@@ -1,14 +1,18 @@
 "use client";
 
-import * as React from "react";
+import * as ReactDialog from "@radix-ui/react-dialog";
+import React, { HTMLAttributes, ReactNode } from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { cva, VariantProps } from "class-variance-authority";
+import { XIcon } from "@/components/icons/x";
 
 const AlertDialog = AlertDialogPrimitive.Root;
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 const AlertDialogPortal = AlertDialogPrimitive.Portal;
+const DialogTrigger = ReactDialog.Trigger;
 
 const AlertDialogOverlay = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
@@ -74,18 +78,63 @@ const AlertDialogContent = React.forwardRef<
 });
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 
-const AlertDialogHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col space-y-2 text-center sm:text-left",
-      className
-    )}
-    {...props}
-  />
+const dialogHeaderVariants = cva(
+  "flex items-center justify-between border-b-2 px-4 min-h-12",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground",
+      },
+      position: {
+        fixed: "sticky top-0",
+        static: "static",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      position: "static",
+    },
+  }
 );
+
+const DialogHeaderDefaultLayout = ({ children }: { children: ReactNode }) => {
+  return (
+    <>
+      {children}
+      <DialogTrigger title="Close pop-up" className="cursor-pointer" asChild>
+        <XIcon />
+      </DialogTrigger>
+    </>
+  );
+};
+
+interface IDialogHeaderProps
+  extends HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof dialogHeaderVariants>,
+    ReactDialog.DialogTitleProps {}
+
+const AlertDialogHeader = ({
+  children,
+  className,
+  position,
+  variant,
+  asChild,
+  ...props
+}: IDialogHeaderProps) => {
+  return (
+    <div
+      className={cn(dialogHeaderVariants({ position, variant }), className)}
+      {...props}
+    >
+      {asChild ? (
+        children
+      ) : (
+        <DialogHeaderDefaultLayout>{children}</DialogHeaderDefaultLayout>
+      )}
+    </div>
+  );
+};
+
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
 const AlertDialogFooter = ({

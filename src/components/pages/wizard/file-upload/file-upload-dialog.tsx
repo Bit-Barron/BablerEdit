@@ -1,6 +1,10 @@
 import { Plus, Minus } from "lucide-react";
 import React, { useState } from "react";
-import { Dialog } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+} from "@/components/elements/alert-dialog";
 import { MultiFileUpload } from "./kokonut-file-upload";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
@@ -38,11 +42,13 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
-      <Dialog.Content className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
-        <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
-          <h1 className="text-lg font-semibold">Configure languages</h1>
-        </Dialog.Header>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+        <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0" asChild>
+          <div>
+            <h1 className="text-lg font-semibold">Configure languages</h1>
+          </div>
+        </AlertDialogHeader>
 
         <div className="px-6 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
@@ -75,7 +81,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
             <Button onClick={parseProject}>Save</Button>
           </div>
         </div>
-      </Dialog.Content>
-    </Dialog>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
