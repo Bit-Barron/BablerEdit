@@ -14,10 +14,10 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/elements/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { PlaneIcon } from "lucide-react";
 
 interface TranslationDetailProps {
@@ -35,8 +35,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     setDisplayComment,
     displayComment,
   } = useTranslationStore();
-  const { toggleApproved, changeTranslationValue } = useTranslation();
-  const { addComment } = useTranslation();
+  const { toggleApproved, changeTranslationValue, addComment } =
+    useTranslation();
   const [comment, setComment] = useState("");
 
   useEffect(() => {
@@ -51,18 +51,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
     findTranslationForKey();
   }, [selectedNode]);
-
-  useEffect(() => {
-    const findTranslationComment = () => {
-      const mainPackage = project.folder_structure.children[0];
-      const conceptNode = mainPackage.children.find(
-        (child) => child.name === selectedNode!.data.id
-      );
-
-      setDisplayComment(conceptNode!.comment || "");
-    };
-    findTranslationComment();
-  }, [translationForKey, project]);
 
   return (
     <section className="flex flex-col bg-background h-full">
@@ -87,27 +75,30 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </h1>
         <div>
           <AlertDialog>
-            <AlertDialogTrigger>
-              <MessageSquareIcon size={20} className="text-muted-foreground" />
+            <AlertDialogTrigger asChild>
+              <button className="cursor-pointer hover:opacity-70 transition-opacity">
+                <MessageSquareIcon
+                  size={20}
+                  className="text-muted-foreground"
+                />
+              </button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
-                  Add a comment
-                </h4>
-                <section>
-                  <Textarea
-                    onChange={(e: { target: { value: string } }) =>
-                      setComment(e.target.value)
-                    }
-                    value={comment}
-                    rows={6}
-                    placeholder="type something..."
-                    className="px-6 py-4 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
-                  />
-                </section>
+            <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+              <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0">
+                <AlertDialogTitle>Add a comment</AlertDialogTitle>
               </AlertDialogHeader>
-              <AlertDialogFooter className="gap-4">
+              <section className="px-6 pt-3 pb-6">
+                <Textarea
+                  onChange={(e: { target: { value: string } }) =>
+                    setComment(e.target.value)
+                  }
+                  value={comment}
+                  rows={6}
+                  placeholder="type something..."
+                  className="w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
+                />
+              </section>
+              <AlertDialogFooter className="px-6 pb-6 gap-2">
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   className="w-28"
@@ -117,7 +108,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 >
                   <PlaneIcon className="mr-2" size={16} />
                   Save
-                </AlertDialogAction>{" "}
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -127,26 +118,24 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       {displayComment && (
         <AlertDialog>
           <AlertDialogTrigger asChild>{displayComment}</AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
-                Add a comment
-              </h4>
-              <section>
-                <Textarea
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setComment(e.target.value)
-                  }
-                  value={comment}
-                  rows={6}
-                  placeholder="type something..."
-                  className="px-6 py-4 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
-                />
-              </section>
+          <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+            <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0">
+              <AlertDialogTitle>Add a comment</AlertDialogTitle>
             </AlertDialogHeader>
-            <AlertDialogFooter className="gap-4">
+            <section className="px-6 pt-3 pb-6">
+              <Textarea
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setComment(e.target.value)
+                }
+                value={comment}
+                rows={6}
+                placeholder="type something..."
+                className="w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
+              />
+            </section>
+            <AlertDialogFooter className="px-6 pb-6 gap-2">
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <Button
+              <AlertDialogAction
                 className="w-28"
                 onClick={() => {
                   addComment(comment);
@@ -154,7 +143,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
               >
                 <PlaneIcon className="mr-2" size={16} />
                 Save
-              </Button>
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

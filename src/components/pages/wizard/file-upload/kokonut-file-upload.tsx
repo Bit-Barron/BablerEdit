@@ -243,32 +243,32 @@ export function MultiFileUpload({
                 opacity: status === "dragging" ? 0.8 : 1,
                 scale: status === "dragging" ? 0.98 : 1,
               }}
-              className="flex flex-col items-center justify-center p-6 min-h-[200px] cursor-pointer"
+              className="flex flex-col items-center justify-center p-6 min-h-[200px] cursor-pointer transition-all duration-300 hover:bg-muted/30 rounded-lg group/upload"
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
               onClick={handleSelect}
               transition={{ duration: 0.2 }}
             >
-              <div className="mb-4 pointer-events-none">
+              <div className="mb-4 pointer-events-none transition-transform duration-300 group-hover/upload:scale-105">
                 <UploadIllustration />
               </div>
 
               <div className="mb-4 space-y-1.5 text-center pointer-events-none">
-                <h3 className="font-semibold text-foreground text-lg tracking-tight">
+                <h3 className="font-semibold text-foreground text-lg tracking-tight transition-colors duration-300 group-hover/upload:text-primary">
                   Drag and drop or click
                 </h3>
-                <p className="text-muted-foreground text-xs">
+                <p className="text-muted-foreground text-xs transition-colors duration-300 group-hover/upload:text-foreground/70">
                   JSON files up to 5 MB
                 </p>
               </div>
 
-              <div className="group/btn flex w-4/5 items-center justify-center gap-2 rounded-lg bg-muted px-4 py-2.5 font-semibold text-foreground text-sm transition-all duration-200 hover:bg-muted/80 pointer-events-none">
+              <div className="group/btn flex w-4/5 items-center justify-center gap-2 rounded-lg bg-muted px-4 py-2.5 font-semibold text-foreground text-sm transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:scale-105 pointer-events-none group-hover/upload:bg-primary/10 group-hover/upload:border group-hover/upload:border-primary/20">
                 <span>Browse files</span>
-                <UploadCloud className="h-4 w-4 transition-transform duration-200 group-hover/btn:scale-110" />
+                <UploadCloud className="h-4 w-4 transition-all duration-300 group-hover/btn:scale-110 group-hover/upload:text-primary" />
               </div>
 
-              <p className="mt-3 text-muted-foreground text-xs pointer-events-none">
+              <p className="mt-3 text-muted-foreground text-xs pointer-events-none transition-colors duration-300 group-hover/upload:text-foreground/60">
                 Multiple files supported
               </p>
             </motion.div>

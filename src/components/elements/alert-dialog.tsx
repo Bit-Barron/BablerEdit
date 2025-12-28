@@ -1,6 +1,5 @@
 "use client";
 
-import * as ReactDialog from "@radix-ui/react-dialog";
 import React, { HTMLAttributes, ReactNode } from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { motion } from "framer-motion";
@@ -12,7 +11,6 @@ import { XIcon } from "@/components/icons/x";
 const AlertDialog = AlertDialogPrimitive.Root;
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 const AlertDialogPortal = AlertDialogPrimitive.Portal;
-const DialogTrigger = ReactDialog.Trigger;
 
 const AlertDialogOverlay = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
@@ -101,17 +99,21 @@ const DialogHeaderDefaultLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {children}
-      <DialogTrigger title="Close pop-up" className="cursor-pointer" asChild>
+      <AlertDialogPrimitive.Cancel
+        title="Close pop-up"
+        className="cursor-pointer hover:opacity-70 transition-opacity"
+      >
         <XIcon />
-      </DialogTrigger>
+      </AlertDialogPrimitive.Cancel>
     </>
   );
 };
 
 interface IDialogHeaderProps
   extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof dialogHeaderVariants>,
-    ReactDialog.DialogTitleProps {}
+    VariantProps<typeof dialogHeaderVariants> {
+  asChild?: boolean;
+}
 
 const AlertDialogHeader = ({
   children,

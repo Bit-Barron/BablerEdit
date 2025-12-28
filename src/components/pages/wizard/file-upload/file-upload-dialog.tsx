@@ -2,8 +2,12 @@ import { Plus, Minus } from "lucide-react";
 import React, { useState } from "react";
 import {
   AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/elements/alert-dialog";
 import { MultiFileUpload } from "./kokonut-file-upload";
 import { useNavigate } from "react-router-dom";
@@ -44,13 +48,11 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
-        <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0" asChild>
-          <div>
-            <h1 className="text-lg font-semibold">Configure languages</h1>
-          </div>
+        <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0">
+          <AlertDialogTitle>Configure languages</AlertDialogTitle>
         </AlertDialogHeader>
 
-        <div className="px-6 pb-6 overflow-y-auto flex-1">
+        <div className="px-6 pt-3 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
             <MultiFileUpload
               files={translationFiles}
@@ -73,14 +75,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
               Remove language
             </Button>
           </div>
-
-          <div className="flex justify-end mt-6 gap-2">
-            <Button onClick={() => onOpenChange(false)} className="min-w-25">
-              Close
-            </Button>
-            <Button onClick={parseProject}>Save</Button>
-          </div>
         </div>
+
+        <AlertDialogFooter className="px-6 pb-6 gap-2">
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={parseProject}>Save</AlertDialogAction>
+        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
