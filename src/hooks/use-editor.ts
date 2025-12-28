@@ -19,7 +19,6 @@ export const useEditor = () => {
   const { setAddIdDialogOpen } = useToolbarStore();
   const navigate = useNavigate();
   const { addNotification } = useNotification();
-
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [search, setSearch] = useState("");
 
