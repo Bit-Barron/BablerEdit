@@ -25,8 +25,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { selectedFramework, setParsedProject, primaryLanguageCode } =
-    useProjectStore();
+  const {
+    selectedFramework,
+    setParsedProject,
+    setProjectSnapshot,
+    primaryLanguageCode,
+  } = useProjectStore();
   const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
   const navigate = useNavigate();
 
@@ -39,6 +43,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
 
     if (!project) return;
 
+    setProjectSnapshot(project.project);
     setParsedProject(project.project);
     navigate("/editor");
     onOpenChange(false);
