@@ -14,13 +14,12 @@ export const useEditor = () => {
   const { setCurrentProjectPath, setHasUnsavedChanges, currentProjectPath } =
     useProjectStore();
   const navigate = useNavigate();
-  const { addNotification } = useNotification();
+    const { addNotification } = useNotification();
 
   const saveProject = async (
     project: ParsedProject
   ): Promise<ParsedProject | null> => {
     try {
-      console.log("Saving project, current path:", currentProjectPath);
 
       const shouldPromptForPath = !currentProjectPath || currentProjectPath.trim() === "";
 
@@ -30,7 +29,6 @@ export const useEditor = () => {
       });
 
       if (!result) {
-        console.log("Save cancelled or failed");
         return null;
       }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/lib/types/project.types";
 import { TreeNodeType } from "@/lib/types/tree.types";
@@ -8,15 +8,17 @@ import { Separator } from "@/components/ui/separator";
 import { TranslationInput } from "@/components/elements/translation-input";
 import { MessageSquareIcon } from "@/components/icons/message-square";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalTrigger,
-} from "@/components/elements/animated-modal";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+} from "@/components/elements/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { CloseButton } from "@/components/elements/close-button";
-import { SaveButton } from "@/components/elements/save-button";
+import { Button } from "@/components/ui/button";
+import { PlaneIcon } from "lucide-react";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -30,12 +32,12 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   const {
     translationForKey,
     setTranslationForKey,
-    setComment,
-    comment,
     setDisplayComment,
     displayComment,
   } = useTranslationStore();
   const { toggleApproved, changeTranslationValue } = useTranslation();
+  const { addComment } = useTranslation();
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -56,6 +58,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       const conceptNode = mainPackage.children.find(
         (child) => child.name === selectedNode!.data.id
       );
+
       setDisplayComment(conceptNode!.comment || "");
     };
     findTranslationComment();
@@ -83,12 +86,12 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           {selectedNode.data.id}
         </h1>
         <div>
-          <Modal>
-            <ModalTrigger variant="ghost">
+          <AlertDialog>
+            <AlertDialogTrigger>
               <MessageSquareIcon size={20} className="text-muted-foreground" />
-            </ModalTrigger>
-            <ModalBody>
-              <ModalContent>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
                 <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
                   Add a comment
                 </h4>
@@ -103,28 +106,32 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                     className="px-6 py-4 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
                   />
                 </section>
-              </ModalContent>
-              <ModalFooter className="gap-4">
-                <CloseButton />
-                <SaveButton comment={comment} />
-              </ModalFooter>
-            </ModalBody>
-          </Modal>
+              </AlertDialogHeader>
+              <AlertDialogFooter className="gap-4">
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className="w-28"
+                  onClick={() => {
+                    addComment(comment);
+                  }}
+                >
+                  <PlaneIcon className="mr-2" size={16} />
+                  Save
+                </AlertDialogAction>{" "}
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 
       {displayComment && (
-        <Modal>
-          <ModalTrigger className="m-2" variant="outline">
-            <div>{displayComment}</div>
-          </ModalTrigger>
-
-          <ModalBody>
-            <ModalContent>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>{displayComment}</AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
               <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
                 Add a comment
               </h4>
-
               <section>
                 <Textarea
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -136,14 +143,21 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   className="px-6 py-4 w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
                 />
               </section>
-            </ModalContent>
-
-            <ModalFooter className="gap-4">
-              <CloseButton />
-              <SaveButton comment={comment} />
-            </ModalFooter>
-          </ModalBody>
-        </Modal>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="gap-4">
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <Button
+                className="w-28"
+                onClick={() => {
+                  addComment(comment);
+                }}
+              >
+                <PlaneIcon className="mr-2" size={16} />
+                Save
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">

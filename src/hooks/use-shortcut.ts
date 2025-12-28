@@ -1,39 +1,37 @@
-import { register } from "@tauri-apps/plugin-global-shortcut";
+import { useEditor } from "@/hooks/use-editor";
 import { useProjectStore } from "@/lib/store/project.store";
-import { useEffect } from "react";
-import * as ProjectService from "@/lib/services/project.service";
-
-let isRegistered = false;
+import { useEffect, useRef } from "react";
 
 export const useShortcut = () => {
-  const {
-    setParsedProject,
-    setCurrentProjectPath,
-    setProjectSnapshot,
-    setHasUnsavedChanges,
-    parsedProject,
-    currentProjectPath,
-  } = useProjectStore();
+  const { saveProject } = useEditor();
+  const { parsedProject } = useProjectStore();
+  const saveProjectRef = useRef(saveProject);
+  const parsedProjectRef = useRef(parsedProject);
 
   useEffect(() => {
-    if (isRegistered) return;
+    saveProjectRef.current = saveProject;
+    parsedProjectRef.current = parsedProject;
+  });
 
-    register("CommandOrControl+S", async () => {
-      if (parsedProject && Object.keys(parsedProject).length > 0) {
-        await ProjectService.saveProject({
-          project: parsedProject,
-          currentProjectPath: currentProjectPath,
-        }).then((result) => {
-          if (result) {
-            setParsedProject(result.updatedProject);
-            setCurrentProjectPath(result.currentProjectPath);
-            setProjectSnapshot(result.updatedProject);
-            setHasUnsavedChanges(false);
-          }
-        });
+  useEffect(() => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
+      // Ctrl+S or Cmd+S
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+
+        const currentProject = parsedProjectRef.current;
+        const currentSaveProject = saveProjectRef.current;
+
+        if (currentProject && Object.keys(currentProject).length > 0) {
+          await currentSaveProject(currentProject);
+        }
       }
-    }).catch(console.error);
+    };
 
-    isRegistered = true;
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 };
