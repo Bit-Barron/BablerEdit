@@ -121,6 +121,9 @@ export const useEditor = () => {
     }
   };
 
+  const displayTranslationId = () => {}
+
+
   return {
     saveProject,
     openProject,

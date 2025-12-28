@@ -1,7 +1,7 @@
 import { useProjectStore } from "@/lib/store/project.store";
 
 import { NodeApi, NodeRendererProps } from "react-arborist";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { useEditor } from "@/hooks/use-editor";
 import { TreeNodeType } from "@/lib/types/tree.types";
 import { ChevronsRightLeftIcon } from "@/components/icons/chevrons-right-left";
@@ -32,8 +32,18 @@ export const EditorPage: React.FC<EditorPageProps> = ({
   const { moveJsonNode } = useEditor();
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [search, setSearch] = useState("");
-
   useHandleOpenCommandPalette(setCommandPaletteOpen);
+
+  const ids = useMemo(() => {
+    const result: string[] = [];
+    for (let i = 0; i < parsedProject.folder_structure.children.length; i++) {
+      const child = parsedProject.folder_structure.children[i].children;
+      for (let j in child) {
+        result.push(child[j].name);
+      }
+    }
+    return result;
+  }, [parsedProject]);
 
   const filteredItems = filterItems(
     [
@@ -49,33 +59,19 @@ export const EditorPage: React.FC<EditorPageProps> = ({
               setOpenIdDialog(true);
             },
           },
-          {
-            id: "search-translations",
-            children: "Search Translations",
-            icon: "MagnifyingGlassIcon",
-            onClick: () => {
-              // Focus search or open search
-            },
-          },
         ],
       },
       {
-        heading: "Navigation",
-        id: "navigation",
-        items: [
-          {
-            id: "home",
-            children: "Home",
-            icon: "HomeIcon",
-            href: "#",
+        heading: "Translation IDs",
+        id: "translation-ids",
+        items: ids.map((id) => ({
+          id: `id-${id}`,
+          children: id,
+          icon: "DocumentTextIcon",
+          onClick: () => {
+            console.log(`Selected ID: ${id}`);
           },
-          {
-            id: "settings",
-            children: "Settings",
-            icon: "CogIcon",
-            href: "#",
-          },
-        ],
+        })),
       },
     ],
     search
@@ -116,7 +112,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({
         </CommandPalette.Page>
       </CommandPalette>
 
-      <div className="w-[350px] border-r-2 border-border flex flex-col bg-background">
+      <div className="w-87.5 border-r-2 border-border flex flex-col bg-background">
         <div className="border-b-2 border-t-2 border-border bg-secondary/50 px-6 py-4 shrink-0 flex justify-between items-center">
           <h2 className="font-bold text-base tracking-tight">
             Translation IDs

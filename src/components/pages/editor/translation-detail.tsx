@@ -29,12 +29,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const {
-    translationForKey,
-    setTranslationForKey,
-    setDisplayComment,
-    displayComment,
-  } = useTranslationStore();
+  const { translationForKey, setTranslationForKey, displayComment } =
+    useTranslationStore();
   const { toggleApproved, changeTranslationValue, addComment } =
     useTranslation();
   const [comment, setComment] = useState("");
