@@ -13,7 +13,7 @@ const tooltipContentVariants = cva(
       variant: {
         default: "bg-background text-foreground",
         primary: "bg-primary text-primary-foreground",
-        solid: "bg-foreground text-background",
+        solid: "bg-black text-white",
       },
     },
     defaultVariants: {

@@ -4,7 +4,7 @@ import React, { HTMLAttributes, ReactNode } from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/retroui/button";
 import { cva, VariantProps } from "class-variance-authority";
 import { XIcon } from "@/components/icons/x";
 

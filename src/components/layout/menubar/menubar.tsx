@@ -16,7 +16,7 @@ export default function MenuBar() {
 
   return (
     <div className="w-full bg-secondary border-b border-border-subtle flex items-center justify-between">
-      <NavigationMenu viewport={false} className="relative z-50">
+      <NavigationMenu className="relative z-50">
         <NavigationMenuList>
           {MENUS.map((item) => (
             <NavigationMenuItem key={item.label}>

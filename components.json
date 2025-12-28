@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
+  "style": "base-vega",
   "rsc": false,
   "tsx": true,
   "tailwind": {
@@ -11,6 +11,8 @@
     "prefix": ""
   },
   "iconLibrary": "lucide",
+  "menuColor": "default",
+  "menuAccent": "subtle",
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
@@ -19,9 +21,6 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@lucide-animated": "https://lucide-animated.com/r/{name}.json",
-    "@einui": "https://ui.eindev.ir/r/{name}.json",
-    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
     "@retroui": "https://retroui.dev/r/{name}.json"
   }
 }

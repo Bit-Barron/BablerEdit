@@ -2,7 +2,7 @@ import { FILETYPES, getFrameworkIcon } from "@/lib/config/frameworks.config";
 import React from "react";
 import { FrameworkType } from "@/lib/types/framework.types";
 import { useProjectStore } from "@/lib/store/project.store";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/ui/retroui/card";
 
 interface WizardFrameworkSelectorProps {
   onSelect: () => void;

@@ -2,7 +2,6 @@ import { parseJSONFile } from "@/lib/helpers/json-parser";
 import { serializeProject } from "@/lib/helpers/project-serializer";
 import { FileWithPath } from "@/lib/types/file.types";
 import { ParsedProject } from "@/lib/types/project.types";
-import { getSourceRootDir } from "@/lib/utils";
 import { flattenJson } from "@/lib/utils/flatten-json";
 import { save } from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
@@ -11,6 +10,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { ReactArboristType } from "@/lib/types/tree.types";
 import parseJson from "parse-json";
 import * as FileService from "@/lib/services/file.service";
+import { getSourceRootDir } from "@/lib/utils";
 
 interface CreateProjectParams {
   files: FileWithPath[];
@@ -142,7 +142,6 @@ export async function saveProject(
   const { project, currentProjectPath } = params;
 
   if (!currentProjectPath || currentProjectPath.trim() === "") {
-
     const saveFile = await save({
       defaultPath: project.filename || "Project.babler",
       filters: [{ name: "BablerEdit Project", extensions: ["babler"] }],

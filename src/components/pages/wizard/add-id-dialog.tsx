@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/elements/alert-dialog";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/retroui/input";
 import { useEditorStore } from "@/lib/store/editor.store";
 import { useTranslation } from "@/hooks/use-translation";
 

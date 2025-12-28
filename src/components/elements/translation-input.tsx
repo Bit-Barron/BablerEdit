@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/retroui/input";
+import { Checkbox } from "@/components/ui/retroui/checkbox";
 import { Translation } from "@/lib/types/project.types";
 
 interface TranslationInputProps {

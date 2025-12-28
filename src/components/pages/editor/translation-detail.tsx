@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/elements/alert-dialog";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/ui/retroui/textarea";
 import { PlaneIcon } from "lucide-react";
 
 interface TranslationDetailProps {
