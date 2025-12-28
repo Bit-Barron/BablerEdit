@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/elements/alert-dialog";
-import { MultiFileUpload } from "./kokonut-file-upload";
+import { MultiFileUpload } from "./file-upload";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
 import { FileWithPath } from "@/lib/types/file.types";
