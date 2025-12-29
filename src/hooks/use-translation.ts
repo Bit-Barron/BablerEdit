@@ -9,7 +9,7 @@ export const useTranslation = () => {
   const { selectedNode } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
-  const { setTranslationForKey } = useTranslationStore();
+  const { setTranslationForKey, setDisplayComment } = useTranslationStore();
 
   const addIdToJson = async (value: string) => {
     try {
@@ -114,7 +114,10 @@ export const useTranslation = () => {
       comment,
     });
 
+    console.log("RESULT", result);
+
     setParsedProject(result.updatedProject);
+    setDisplayComment(comment);
 
     addNotification({
       type: "success",

@@ -29,8 +29,12 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   selectedNode,
   project,
 }) => {
-  const { translationForKey, setTranslationForKey, displayComment } =
-    useTranslationStore();
+  const {
+    translationForKey,
+    setTranslationForKey,
+    displayComment,
+    setDisplayComment,
+  } = useTranslationStore();
   const { toggleApproved, changeTranslationValue, addComment } =
     useTranslation();
   const [comment, setComment] = useState("");
@@ -47,6 +51,19 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
     findTranslationForKey();
   }, [selectedNode]);
+
+  useEffect(() => {
+    const findTranslationComment = () => {
+      const mainPackage = project.folder_structure.children[0];
+      const conceptNode = mainPackage.children.find(
+        (child) => child.name === selectedNode!.data.id
+      );
+
+      setDisplayComment(conceptNode?.comment as string);
+    };
+
+    findTranslationComment();
+  }, [selectedNode, displayComment, comment]);
 
   return (
     <section className="flex flex-col bg-background h-full">
@@ -112,37 +129,9 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       </div>
 
       {displayComment && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>{displayComment}</AlertDialogTrigger>
-          <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
-            <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0">
-              <AlertDialogTitle>Add a comment</AlertDialogTitle>
-            </AlertDialogHeader>
-            <section className="px-6 pt-3 pb-6">
-              <Textarea
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setComment(e.target.value)
-                }
-                value={comment}
-                rows={6}
-                placeholder="type something..."
-                className="w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
-              />
-            </section>
-            <AlertDialogFooter className="px-6 pb-6 gap-2">
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                className="w-28"
-                onClick={() => {
-                  addComment(comment);
-                }}
-              >
-                <PlaneIcon className="mr-2" size={16} />
-                Save
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <div className="px-4 py-2 bg-muted/20 border-b border-border">
+          <p className="text-sm text-muted-foreground">{displayComment}</p>
+        </div>
       )}
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
