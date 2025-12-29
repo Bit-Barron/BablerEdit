@@ -1,7 +1,4 @@
-import {
-  RecentProjectProps,
-  UpdateSettingsState,
-} from "@/lib/types/settings.types";
+import { RecentProjectProps } from "@/lib/types/settings.types";
 import { create } from "zustand";
 import * as SettingsService from "@/lib/services/settings.service";
 
@@ -9,8 +6,6 @@ export interface SettingsState {
   darkMode: boolean;
   recentProjects: RecentProjectProps[];
   addRecentProject: (project: RecentProjectProps) => void;
-  updateRecentProjects: (projects: RecentProjectProps[]) => void;
-  updateSettings: (settings: UpdateSettingsState) => void;
   setRecentProjects: (projects: RecentProjectProps[]) => void;
 
   lastOpenedProject: string | null;
@@ -41,21 +36,6 @@ export const useSettingsStore = create<SettingsState>((set) => ({
       SettingsService.saveSettingsToFile({ ...state, ...newState });
 
       return newState;
-    });
-  },
-
-  updateRecentProjects: (projects: RecentProjectProps[]) => {
-    set((state) => {
-      const newState = { recentProjects: projects };
-      SettingsService.saveSettingsToFile({ ...state, ...newState });
-      return newState;
-    });
-  },
-
-  updateSettings: (settings: UpdateSettingsState) => {
-    set((state) => {
-      SettingsService.saveSettingsToFile({ ...state, ...settings });
-      return settings;
     });
   },
 

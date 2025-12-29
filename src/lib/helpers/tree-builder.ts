@@ -1,4 +1,4 @@
-import { TreeNodeType } from "@/lib/types/tree.types";
+import { TreeNodeType } from "@/lib/types/editor.types";
 
 export const buildTranslationTree = (projectData: any): TreeNodeType[] => {
   const allKeys: string[] = [];

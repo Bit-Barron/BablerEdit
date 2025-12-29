@@ -1,13 +1,12 @@
 import { parseJSONFile } from "@/lib/helpers/json-parser";
 import { serializeProject } from "@/lib/helpers/project-serializer";
-import { FileWithPath } from "@/lib/types/file.types";
-import { ParsedProject } from "@/lib/types/project.types";
+import { FileWithPath, ParsedProject } from "@/lib/types/project.types";
 import { flattenJson } from "@/lib/utils/flatten-json";
 import { save } from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import yaml from "js-yaml";
 import { open } from "@tauri-apps/plugin-dialog";
-import { ReactArboristType } from "@/lib/types/tree.types";
+import { ReactArboristType } from "@/lib/types/editor.types";
 import parseJson from "parse-json";
 import * as FileService from "@/lib/services/file.service";
 import { getSourceRootDir } from "@/lib/utils";

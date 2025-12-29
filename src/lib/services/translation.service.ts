@@ -1,5 +1,5 @@
 import { ParsedProject, Translation } from "@/lib/types/project.types";
-import { TreeNodeType } from "@/lib/types/tree.types";
+import { TreeNodeType } from "@/lib/types/editor.types";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { NodeApi } from "react-arborist";
 import * as projectService from "@/lib/services/project.service";

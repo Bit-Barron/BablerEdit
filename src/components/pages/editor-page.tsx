@@ -4,7 +4,7 @@ import { useEditorStore } from "@/lib/store/editor.store";
 import { NodeApi, NodeRendererProps } from "react-arborist";
 import { useMemo } from "react";
 import { useEditor } from "@/hooks/use-editor";
-import { TreeNodeType } from "@/lib/types/tree.types";
+import { TreeNodeType } from "@/lib/types/editor.types";
 import { ChevronsRightLeftIcon } from "@/components/icons/chevrons-right-left";
 import { AddIdDialog } from "@/components/pages/wizard/add-id-dialog";
 import { TranslationDetail } from "@/components/pages/editor/translation-detail";

@@ -1,6 +1,6 @@
 import { ParsedProject } from "@/lib/types/project.types";
 import { useNavigate } from "react-router-dom";
-import { ReactArboristType } from "../lib/types/tree.types";
+import { ReactArboristType } from "@/lib/types/editor.types";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
 import { useEditorStore } from "@/lib/store/editor.store";

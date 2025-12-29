@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { ParsedProject } from "@/lib/types/project.types";
-import { FrameworkType } from "@/lib/types/framework.types";
+import { ParsedProject, FrameworkType } from "@/lib/types/project.types";
 
 interface ProjectStore {
   currentProjectPath: string | null;

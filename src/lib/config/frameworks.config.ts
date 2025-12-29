@@ -1,6 +1,6 @@
 import parseJson from "parse-json";
-import { FrameworkConfig, FrameworkType } from "../types/framework.types";
-import { FileType } from "../types/common.types";
+import { FrameworkConfig, FrameworkType } from "@/lib/types/project.types";
+import { FileType } from "@/lib/types/config.types";
 
 const FRAMEWORK_ICONS: Record<string, string> = {
   angular: "🅰️",

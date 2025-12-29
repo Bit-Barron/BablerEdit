@@ -1,4 +1,4 @@
-import { ToolbarType } from "../types/common.types";
+import { ToolbarType } from "@/lib/types/config.types";
 import { FoldersIcon } from "@/components/icons/folders";
 import { HardDriveDownloadIcon } from "@/components/icons/hard-drive-download";
 import { PlusIcon } from "@/components/icons/plus";

@@ -3,7 +3,7 @@
 import { UploadCloud, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { type DragEvent, useCallback, useEffect, useState } from "react";
-import { FileWithPath } from "@/lib/types/file.types";
+import { FileWithPath } from "@/lib/types/project.types";
 import { listen } from "@tauri-apps/api/event";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { cn } from "@/lib/utils";

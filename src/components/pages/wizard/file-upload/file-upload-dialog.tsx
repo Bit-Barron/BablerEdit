@@ -12,7 +12,7 @@ import {
 import { MultiFileUpload } from "./file-upload";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
-import { FileWithPath } from "@/lib/types/file.types";
+import { FileWithPath } from "@/lib/types/project.types";
 import { Button } from "@/components/ui/retroui/button";
 import * as ProjectService from "@/lib/services/project.service";
 

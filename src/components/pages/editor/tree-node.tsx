@@ -1,4 +1,4 @@
-import { TreeNodeType } from "@/lib/types/tree.types";
+import { TreeNodeType } from "@/lib/types/editor.types";
 import React, { CSSProperties } from "react";
 import { NodeApi, TreeApi } from "react-arborist";
 
@@ -28,7 +28,9 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
       ref={dragHandle}
       onClick={() => node.isInternal && node.toggle()}
       className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-accent/50 transition-colors border-l-2 ${
-        node.isSelected ? "bg-primary/10 border-l-primary" : "border-l-transparent"
+        node.isSelected
+          ? "bg-primary/10 border-l-primary"
+          : "border-l-transparent"
       }`}
     >
       {isFolder && (

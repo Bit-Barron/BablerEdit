@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { NodeApi } from "react-arborist";
-import { TreeNodeType } from "@/lib/types/tree.types";
+import { TreeNodeType } from "@/lib/types/editor.types";
 
 interface EditorStore {
   selectedNode: NodeApi<TreeNodeType> | null;

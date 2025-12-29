@@ -1,4 +1,4 @@
-import { Menu } from "../types/common.types";
+import { Menu } from "@/lib/types/config.types";
 
 export const MENUS: Menu[] = [
   {

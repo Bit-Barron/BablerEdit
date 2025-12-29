@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/lib/types/project.types";
-import { TreeNodeType } from "@/lib/types/tree.types";
+import { TreeNodeType } from "@/lib/types/editor.types";
 import { useTranslation } from "@/hooks/use-translation";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
