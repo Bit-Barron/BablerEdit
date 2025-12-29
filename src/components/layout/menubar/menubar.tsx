@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/toggles/mode-toggle";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -10,6 +9,7 @@ import {
 import StatusIndicator from "@/components/elements/status-indicator";
 import { MENUS } from "@/lib/config/menus.config";
 import { useProjectStore } from "@/lib/store/project.store";
+import { ModeToggle } from "@/components/elements/toggles/mode-toggle";
 
 export default function MenuBar() {
   const { hasUnsavedChanges } = useProjectStore();

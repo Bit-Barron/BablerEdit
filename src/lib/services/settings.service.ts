@@ -1,4 +1,4 @@
-import { SETTINGS_FILE } from "@/lib/config/constants.config";
+import { SETTINGS_FILE } from "@/lib/config/constants";
 import { ParsedProject } from "@/lib/types/project.types";
 import { appDataDir } from "@tauri-apps/api/path";
 import {
