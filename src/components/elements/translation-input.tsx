@@ -40,7 +40,11 @@ export const TranslationInput: React.FC<TranslationInputProps> = ({
         type="text"
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
-        onBlur={() => changeTranslationValue(localValue, translation.language)}
+        onBlur={() => {
+          if (localValue !== translation.value) {
+            changeTranslationValue(localValue, translation.language);
+          }
+        }}
         className="w-full text-base px-4 py-3 bg-background border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-md transition-all"
         placeholder={`Enter ${translation.language} translation...`}
       />
