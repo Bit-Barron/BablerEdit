@@ -25,7 +25,14 @@ const tooltipContentVariants = cva(
 const TooltipProvider = Tooltip.Provider;
 
 const TooltipRoot = Tooltip.Root;
-const TooltipTrigger = Tooltip.Trigger;
+
+const TooltipTrigger = React.forwardRef<
+  React.ElementRef<typeof Tooltip.Trigger>,
+  React.ComponentPropsWithoutRef<typeof Tooltip.Trigger<any>>
+>((props, ref) => {
+  return <Tooltip.Trigger ref={ref} {...props} />;
+});
+TooltipTrigger.displayName = Tooltip.Trigger.displayName;
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof Tooltip.Popup>,

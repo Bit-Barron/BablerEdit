@@ -1,6 +1,5 @@
 import { useProjectStore } from "@/lib/store/project.store";
 import { useEditorStore } from "@/lib/store/editor.store";
-
 import { NodeApi, NodeRendererProps } from "react-arborist";
 import { useMemo } from "react";
 import { useEditor } from "@/hooks/use-editor";
