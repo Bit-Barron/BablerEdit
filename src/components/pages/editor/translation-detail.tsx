@@ -86,10 +86,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 className="cursor-pointer hover:opacity-70 transition-opacity"
                 onClick={() => setDialogOpen(true)}
               >
-                <MessageSquareIcon
-                  size={20}
-                  className="text-muted-foreground hover:bg-primary hover:text-white p-1 hover:rounded mt-1"
-                />
+                <MessageSquareIcon size={20} />
               </button>
             </Dialog.Trigger>
             <Dialog.Content

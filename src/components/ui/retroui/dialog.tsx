@@ -81,6 +81,8 @@ interface IDialogContentProps
   overlay?: IDialogBackgroupProps;
 }
 
+import { motion } from "framer-motion";
+
 const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
   function DialogContent(inputProps: IDialogContentProps, forwardedRef) {
     const {
@@ -91,6 +93,25 @@ const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
       ...props
     } = inputProps;
 
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const [shakeKey, setShakeKey] = React.useState(0);
+
+    React.useEffect(() => {
+      function handleOutsideClick(event: MouseEvent | TouchEvent) {
+        const node = contentRef.current;
+        const target = event.target as Node | null;
+        if (node && target && !node.contains(target)) {
+          setShakeKey((k) => k + 1);
+        }
+      }
+      document.addEventListener("mousedown", handleOutsideClick);
+      document.addEventListener("touchstart", handleOutsideClick);
+      return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+        document.removeEventListener("touchstart", handleOutsideClick);
+      };
+    }, []);
+
     return (
       <Dialog.Portal>
         <DialogBackdrop {...overlay} />
@@ -99,8 +120,15 @@ const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
           ref={forwardedRef}
           {...props}
         >
-          {/* No VisuallyHidden in baseui, so skip title visually hidden */}
-          <div className="flex flex-col relative">{children}</div>
+          <motion.div
+            key={shakeKey}
+            ref={contentRef}
+            animate={{ x: [0, -10, 10, -8, 8, -4, 4, 0] }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="flex flex-col relative"
+          >
+            {children}
+          </motion.div>
         </Dialog.Popup>
       </Dialog.Portal>
     );
