@@ -29,7 +29,7 @@ export const WizardRecentProjects: React.FC<
           return (
             <button
               key={index}
-              className="glass-bg w-full p-3 text-left text-primary rounded-lg transition-all hover:scale-[1.02]"
+              className="glass-bg w-ful hover:bg-primary hover:text-white w-full p-3 text-left text-primary rounded-lg transition-all hover:scale-[1.02]"
               onClick={() => handleRecentProjectClick(proj!.path)}
             >
               - {proj.name}

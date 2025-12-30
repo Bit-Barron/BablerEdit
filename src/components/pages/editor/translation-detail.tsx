@@ -52,6 +52,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         (child) => child.name === selectedNode!.data.id
       );
 
+      console.log(conceptNode);
+
       setDisplayComment(conceptNode?.comment as string);
     };
 
@@ -81,13 +83,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </h1>
         <div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <Dialog.Trigger>
-              <button
-                className="cursor-pointer hover:opacity-70 transition-opacity"
-                onClick={() => setDialogOpen(true)}
-              >
-                <MessageSquareIcon size={20} />
-              </button>
+            <Dialog.Trigger onClick={() => setDialogOpen(true)}>
+              <MessageSquareIcon size={20} />
             </Dialog.Trigger>
             <Dialog.Content
               size="md"
