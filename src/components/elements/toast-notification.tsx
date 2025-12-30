@@ -1,6 +1,7 @@
 import * as React from "react"
 import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Alert } from "@/components/ui/retroui/alert"
 
 type NotificationType = "success" | "error" | "warning" | "info"
 type NotificationPosition = "top-right" | "top-left" | "bottom-right" | "bottom-left" | "top-center" | "bottom-center"
@@ -176,65 +177,43 @@ function GlassNotificationItem({
     <div
       className={cn("pointer-events-auto animate-in fade-in duration-300", animationClass)}
       style={style}
-      role="alert"
     >
-      <div className="relative">
-        <div className={cn("absolute -inset-1.5 rounded-xl bg-linear-to-r blur-xl opacity-60", config.gradient)} />
+      <Alert status={notification.type} className="relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="flex items-start gap-3">
+          <Icon className="w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
 
-        {/* Main container with enhanced glass */}
-        <div
-          className={cn(
-            "relative rounded-xl border",
-            "bg-white/10 backdrop-blur-2xl",
-            "shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.15)]",
-            "overflow-hidden",
-            config.border,
-          )}
-        >
-          {/* Glass highlight layers */}
-          <div className="absolute inset-0 rounded-xl bg-linear-to-b from-white/15 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 rounded-xl bg-linear-to-tr from-transparent to-white/10 pointer-events-none" />
-
-          <div className="relative p-4 flex items-start gap-3">
-            <div
-              className={cn(
-                "flex items-center justify-center w-8 h-8 rounded-lg shrink-0",
-                "border border-white/10",
-                `bg-linear-to-br ${config.gradient}`,
-              )}
-            >
-              <Icon className={cn("w-5 h-5", config.iconColor)} aria-hidden="true" />
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <h4 className="font-medium text-white">{notification.title}</h4>
-              {notification.description && <p className="mt-1 text-sm text-white/60">{notification.description}</p>}
-            </div>
-
-            <button
-              onClick={onClose}
-              aria-label="Dismiss notification"
-              className="shrink-0 p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
+          <div className="flex-1 min-w-0">
+            <Alert.Title>{notification.title}</Alert.Title>
+            {notification.description && (
+              <Alert.Description className="mt-1">
+                {notification.description}
+              </Alert.Description>
+            )}
           </div>
 
-          {/* Progress bar */}
-          {duration !== 0 && (
-            <div className="h-1 bg-white/5">
-              <div
-                className={cn("h-full transition-all duration-100 ease-linear", `bg-linear-to-r ${config.gradient}`)}
-                style={{ width: `${progress}%` }}
-                role="progressbar"
-                aria-valuenow={progress}
-                aria-valuemin={0}
-                aria-valuemax={100}
-              />
-            </div>
-          )}
+          <button
+            onClick={onClose}
+            aria-label="Dismiss notification"
+            className="shrink-0 p-1 rounded hover:bg-black/10 transition-colors -mt-1 -mr-1"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
-      </div>
+
+        {/* Progress bar */}
+        {duration !== 0 && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10">
+            <div
+              className="h-full transition-all duration-100 ease-linear bg-black/20"
+              style={{ width: `${progress}%` }}
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            />
+          </div>
+        )}
+      </Alert>
     </div>
   )
 }
@@ -255,33 +234,15 @@ export function GlassNotification({
   const Icon = config.icon
 
   return (
-    <div className={cn("relative", className)}>
-      <div className={cn("absolute -inset-1.5 rounded-xl bg-linear-to-r blur-xl opacity-60", config.gradient)} />
-      <div
-        className={cn(
-          "relative rounded-xl border",
-          "bg-white/10 backdrop-blur-2xl",
-          "shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.15)]",
-          config.border,
-        )}
-      >
-        <div className="absolute inset-0 rounded-xl bg-linear-to-b from-white/15 to-transparent pointer-events-none" />
-        <div className="relative p-4 flex items-start gap-3">
-          <div
-            className={cn(
-              "flex items-center justify-center w-8 h-8 rounded-lg shrink-0 border border-white/10",
-              `bg-linear-to-br ${config.gradient}`,
-            )}
-          >
-            <Icon className={cn("w-5 h-5", config.iconColor)} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="font-medium text-white">{title}</h4>
-            {description && <p className="mt-1 text-sm text-white/60">{description}</p>}
-          </div>
+    <Alert status={type} className={cn("shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]", className)}>
+      <div className="flex items-start gap-3">
+        <Icon className="w-5 h-5 shrink-0 mt-0.5" />
+        <div className="flex-1 min-w-0">
+          <Alert.Title>{title}</Alert.Title>
+          {description && <Alert.Description className="mt-1">{description}</Alert.Description>}
         </div>
       </div>
-    </div>
+    </Alert>
   )
 }
 
