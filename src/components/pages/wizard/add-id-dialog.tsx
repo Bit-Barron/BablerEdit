@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/elements/alert-dialog";
+import { Dialog } from "@/components/ui/retroui/dialog";
 import { Input } from "@/components/ui/retroui/input";
 import { useEditorStore } from "@/lib/store/editor.store";
 import { useTranslation } from "@/hooks/use-translation";
+import { Button } from "@/components/ui/retroui/button";
 
 interface AddIdDialogProps {
   open: boolean;
@@ -25,6 +18,12 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   const { addIdToJson } = useTranslation();
 
   const [value, setValue] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(open);
+
+  // Keep local dialogOpen in sync with parent open
+  React.useEffect(() => {
+    setDialogOpen(open);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -44,31 +43,48 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   const newId = value.split(".").pop();
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
-        <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0">
-          <AlertDialogTitle>Add Translation ID</AlertDialogTitle>
-        </AlertDialogHeader>
+    <Dialog
+      open={dialogOpen}
+      onOpenChange={(v) => {
+        setDialogOpen(v);
+        onOpenChange(v);
+      }}
+    >
+      <Dialog.Content className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+        <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
+          Add Translation ID
+        </Dialog.Header>
 
         <div className="px-6 pt-3 pb-6 overflow-y-auto flex-1">
           <Input value={value} onChange={(e) => setValue(e.target.value)} />
         </div>
 
-        <AlertDialogFooter className="px-6 pb-6 gap-2">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
+        <Dialog.Footer className="px-6 pb-6 gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              setDialogOpen(false);
+              onOpenChange(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="default"
             onClick={() => {
               if (newId) {
                 addIdToJson(newId);
+                setDialogOpen(false);
                 onOpenChange(false);
               }
             }}
             disabled={!newId}
           >
             Save
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+        </Dialog.Footer>
+      </Dialog.Content>
+    </Dialog>
   );
 };

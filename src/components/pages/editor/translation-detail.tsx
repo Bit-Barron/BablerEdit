@@ -7,18 +7,10 @@ import { useTranslationStore } from "@/lib/store/translation.store";
 import { Separator } from "@/components/ui/separator";
 import { TranslationInput } from "@/components/elements/translation-input";
 import { MessageSquareIcon } from "@/components/icons/message-square";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/elements/alert-dialog";
+import { Dialog } from "@/components/ui/retroui/dialog";
 import { Textarea } from "@/components/ui/retroui/textarea";
 import { PlaneIcon } from "lucide-react";
+import { Button } from "@/components/ui/retroui/button";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -38,6 +30,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
   const { toggleApproved, changeTranslationValue, addComment } =
     useTranslation();
   const [comment, setComment] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -87,19 +80,22 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           {selectedNode.data.id}
         </h1>
         <div>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <button className="cursor-pointer hover:opacity-70 transition-opacity">
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <Dialog.Trigger>
+              <button
+                className="cursor-pointer hover:opacity-70 transition-opacity"
+                onClick={() => setDialogOpen(true)}
+              >
                 <MessageSquareIcon
                   size={20}
-                  className="text-muted-foreground"
+                  className="text-muted-foreground hover:bg-primary hover:text-white p-1 hover:rounded mt-1"
                 />
               </button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
-              <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0">
-                <AlertDialogTitle>Add a comment</AlertDialogTitle>
-              </AlertDialogHeader>
+            </Dialog.Trigger>
+            <Dialog.Content className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+              <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
+                Add a comment
+              </Dialog.Header>
               <section className="px-6 pt-3 pb-6">
                 <Textarea
                   onChange={(e: { target: { value: string } }) =>
@@ -111,20 +107,29 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   className="w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
                 />
               </section>
-              <AlertDialogFooter className="px-6 pb-6 gap-2">
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  className="w-28"
+              <Dialog.Footer className="px-6 pb-6 gap-2">
+                <Button
+                  type="button"
+                  onClick={() => {
+                    setDialogOpen(false);
+                    setComment("");
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="w-28 btn btn-primary"
                   onClick={() => {
                     addComment(comment);
+                    setDialogOpen(false);
                   }}
                 >
                   <PlaneIcon className="mr-2" size={16} />
                   Save
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog>
         </div>
       </div>
 

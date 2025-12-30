@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { Tooltip } from "@base-ui/react/tooltip";
 
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
@@ -19,37 +19,40 @@ const tooltipContentVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  },
+  }
 );
 
-const TooltipProvider = TooltipPrimitive.Provider;
+const TooltipProvider = Tooltip.Provider;
 
-const Tooltip = TooltipPrimitive.Root;
-
-const TooltipTrigger = TooltipPrimitive.Trigger;
+const TooltipRoot = Tooltip.Root;
+const TooltipTrigger = Tooltip.Trigger;
 
 const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> &
-    VariantProps<typeof tooltipContentVariants>
->(({ className, sideOffset = 4, variant, ...props }, ref) => (
-  <TooltipPrimitive.Portal>
-    <TooltipPrimitive.Content
-      ref={ref}
-      sideOffset={sideOffset}
-      className={cn(
-        tooltipContentVariants({
-          variant,
-          className,
-        }),
-      )}
-      {...props}
-    />
-  </TooltipPrimitive.Portal>
-));
-TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+  React.ElementRef<typeof Tooltip.Popup>,
+  React.ComponentPropsWithoutRef<typeof Tooltip.Popup> &
+    VariantProps<typeof tooltipContentVariants> & { sideOffset?: number }
+>(({ className, variant, sideOffset, ...props }, ref) => {
+  const resolvedSideOffset = sideOffset ?? 4;
+  return (
+    <Tooltip.Portal>
+      <Tooltip.Positioner sideOffset={resolvedSideOffset}>
+        <Tooltip.Popup
+          ref={ref}
+          className={cn(
+            tooltipContentVariants({
+              variant,
+              className,
+            })
+          )}
+          {...props}
+        />
+      </Tooltip.Positioner>
+    </Tooltip.Portal>
+  );
+});
+TooltipContent.displayName = Tooltip.Popup.displayName;
 
-const TooltipObject = Object.assign(Tooltip, {
+const TooltipObject = Object.assign(TooltipRoot, {
   Trigger: TooltipTrigger,
   Content: TooltipContent,
   Provider: TooltipProvider,

@@ -23,7 +23,7 @@ export default function Toolbar() {
 
             return (
               <Tooltip key={button.id}>
-                <Tooltip.Trigger asChild>
+                <Tooltip.Trigger>
                   <Button
                     onClick={() => {
                       if (shouldBeDisabled) return;

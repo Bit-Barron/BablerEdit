@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/retroui/input";
-import { Checkbox } from "@/components/ui/retroui/checkbox";
 import { Translation } from "@/lib/types/project.types";
+import { CheckboxComponent } from "@/components/ui/retroui/checkbox";
 
 interface TranslationInputProps {
   translation: Translation;
@@ -27,7 +27,7 @@ export const TranslationInput: React.FC<TranslationInputProps> = ({
           {translation.language}
         </span>
         <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-          <Checkbox
+          <CheckboxComponent
             checked={translation.approved}
             onCheckedChange={() => toggleApproved(translation.language)}
             className="w-4 h-4"

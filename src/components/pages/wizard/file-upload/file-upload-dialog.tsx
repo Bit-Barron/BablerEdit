@@ -1,14 +1,6 @@
 import { Plus, Minus } from "lucide-react";
 import React, { useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/elements/alert-dialog";
+import { Dialog } from "@/components/ui/retroui/dialog";
 import { MultiFileUpload } from "./file-upload";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
@@ -32,6 +24,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
     primaryLanguageCode,
   } = useProjectStore();
   const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(open);
+
+  // Keep local dialogOpen in sync with parent open
+  React.useEffect(() => {
+    setDialogOpen(open);
+  }, [open]);
   const navigate = useNavigate();
 
   const parseProject = async () => {
@@ -46,15 +44,22 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
     setProjectSnapshot(project.project);
     setParsedProject(project.project);
     navigate("/editor");
+    setDialogOpen(false);
     onOpenChange(false);
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
-        <AlertDialogHeader className="px-6 pt-6 pb-3 shrink-0">
-          <AlertDialogTitle>Configure languages</AlertDialogTitle>
-        </AlertDialogHeader>
+    <Dialog
+      open={dialogOpen}
+      onOpenChange={(v) => {
+        setDialogOpen(v);
+        onOpenChange(v);
+      }}
+    >
+      <Dialog.Content className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+        <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
+          Configure languages
+        </Dialog.Header>
 
         <div className="px-6 pt-3 pb-6 overflow-y-auto flex-1">
           <section className="flex justify-center items-center">
@@ -81,11 +86,19 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
           </div>
         </div>
 
-        <AlertDialogFooter className="px-6 pb-6 gap-2">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={parseProject}>Save</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        <Dialog.Footer className="px-6 pb-6 gap-2">
+          <Button
+            type="button"
+            onClick={() => {
+              setDialogOpen(false);
+              onOpenChange(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button onClick={parseProject}>Save</Button>
+        </Dialog.Footer>
+      </Dialog.Content>
+    </Dialog>
   );
 };
