@@ -26,6 +26,8 @@ export const EditorPage: React.FC = () => {
 
   const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
 
+  console.log(selectedNode?.data.id);
+
   return (
     <div className="fixed inset-0 top-22 flex bg-background mt-2">
       <CommandPalette
@@ -66,6 +68,7 @@ export const EditorPage: React.FC = () => {
           openByDefault={false}
           indent={24}
           rowHeight={40}
+          selection="STAMMDATEN.AUFTRAG"
           //@ts-ignore
           onMove={moveJsonNode}
           onSelect={(nodes) => {

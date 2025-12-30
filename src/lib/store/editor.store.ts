@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { NodeApi } from "react-arborist";
 import { TreeNodeType } from "@/lib/types/editor.types";
+import { SetStateAction } from "react";
 
 interface EditorStore {
   selectedNode: NodeApi<TreeNodeType> | null;
@@ -17,11 +18,23 @@ interface EditorStore {
 
   addIdDialogOpen: boolean;
   setAddIdDialogOpen: (open: boolean) => void;
+
+  search: string;
+  setSearch: (search: string) => void;
+  commandPalettenOpen: boolean;
+  setCommandPaletteOpen: (open: SetStateAction<boolean>) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
   selectedNode: null,
   setSelectedNode: (node) => set({ selectedNode: node }),
+  search: "",
+  setSearch: (search: string) => set({ search }),
+  commandPalettenOpen: false,
+  setCommandPaletteOpen: (open: SetStateAction<boolean>) =>
+    set((state) => ({
+      commandPalettenOpen: typeof open === 'function' ? open(state.commandPalettenOpen) : open
+    })),
 
   onProjectClick: "",
   setOnProjectClick: (id: string) => set({ onProjectClick: id }),

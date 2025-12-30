@@ -7,7 +7,7 @@ import { useEditorStore } from "@/lib/store/editor.store";
 import { useNotification } from "@/components/elements/toast-notification";
 import * as ProjectService from "@/lib/services/project.service";
 import dayjs from "dayjs";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { filterItems, useHandleOpenCommandPalette } from "react-cmdk";
 
 export const useEditor = () => {
@@ -16,10 +16,14 @@ export const useEditor = () => {
     useProjectStore();
   const { setCurrentProjectPath, setHasUnsavedChanges, currentProjectPath } =
     useProjectStore();
-  const { setAddIdDialogOpen } = useEditorStore();
+  const {
+    setAddIdDialogOpen,
+    search,
+    setSearch,
+    setCommandPaletteOpen,
+    commandPalettenOpen,
+  } = useEditorStore();
   const { addNotification } = useNotification();
-  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useHandleOpenCommandPalette(setCommandPaletteOpen);
@@ -69,7 +73,7 @@ export const useEditor = () => {
   );
 
   const commandPalette = {
-    isOpen: commandPaletteOpen,
+    isOpen: commandPalettenOpen,
     setIsOpen: setCommandPaletteOpen,
     search,
     setSearch,
