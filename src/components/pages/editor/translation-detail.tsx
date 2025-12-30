@@ -92,7 +92,10 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                 />
               </button>
             </Dialog.Trigger>
-            <Dialog.Content className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+            <Dialog.Content
+              size="md"
+              className="max-h-[85vh] p-0 flex flex-col"
+            >
               <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
                 Add a comment
               </Dialog.Header>
@@ -102,7 +105,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                     setComment(e.target.value)
                   }
                   value={comment}
-                  rows={6}
+                  rows={2}
                   placeholder="type something..."
                   className="w-full border-2 shadow-md transition focus:outline-hidden focus:shadow-xs"
                 />

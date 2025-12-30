@@ -56,7 +56,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
         onOpenChange(v);
       }}
     >
-      <Dialog.Content className="sm:max-w-150 max-h-[85vh] p-0 flex flex-col">
+      <Dialog.Content size="md" className="max-h-[85vh] p-0 flex flex-col">
         <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
           Configure languages
         </Dialog.Header>
