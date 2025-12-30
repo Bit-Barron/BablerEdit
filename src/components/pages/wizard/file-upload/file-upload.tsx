@@ -122,30 +122,39 @@ export function MultiFileUpload({
     let unlisten: (() => void) | undefined;
 
     const setupDragDrop = async () => {
-      unlisten = await listen<string[]>("tauri://file-drop", async (event) => {
-        const droppedPaths = event.payload;
-        const jsonFiles = droppedPaths.filter((p) => p.endsWith(".json"));
+      try {
+        unlisten = await listen<string[]>("tauri://file-drop", async (event) => {
+          try {
+            const droppedPaths = event.payload;
+            const jsonFiles = droppedPaths.filter((p) => p.endsWith(".json"));
 
-        if (jsonFiles.length === 0) {
-          return;
-        }
+            if (jsonFiles.length === 0) {
+              return;
+            }
 
-        const filesWithPaths = await Promise.all(
-          jsonFiles.map(async (path) => {
-            const content = await readTextFile(path);
-            const fileName = path.split(/[/\\]/).pop() || "";
-            return {
-              name: fileName,
-              path: path,
-              content: content,
-              size: content.length,
-            };
-          })
-        );
+            const filesWithPaths = await Promise.all(
+              jsonFiles.map(async (path) => {
+                const content = await readTextFile(path);
+                const fileName = path.split(/[/\\]/).pop() || "";
+                return {
+                  name: fileName,
+                  path: path,
+                  content: content,
+                  size: content.length,
+                };
+              })
+            );
 
-        onFilesChange([...files, ...filesWithPaths]);
-        setStatus("idle");
-      });
+            onFilesChange([...files, ...filesWithPaths]);
+            setStatus("idle");
+          } catch (err) {
+            console.error("Error processing dropped files:", err);
+            setStatus("idle");
+          }
+        });
+      } catch (err) {
+        console.error("Error setting up file drop listener:", err);
+      }
     };
 
     setupDragDrop();
@@ -160,9 +169,13 @@ export function MultiFileUpload({
     let unlisten: (() => void) | undefined;
 
     const setupDragOver = async () => {
-      unlisten = await listen("tauri://file-drop-hover", () => {
-        setStatus("dragging");
-      });
+      try {
+        unlisten = await listen("tauri://file-drop-hover", () => {
+          setStatus("dragging");
+        });
+      } catch (err) {
+        console.error("Error setting up drag over listener:", err);
+      }
     };
 
     setupDragOver();
@@ -177,9 +190,13 @@ export function MultiFileUpload({
     let unlisten: (() => void) | undefined;
 
     const setupDragLeave = async () => {
-      unlisten = await listen("tauri://file-drop-cancelled", () => {
-        setStatus("idle");
-      });
+      try {
+        unlisten = await listen("tauri://file-drop-cancelled", () => {
+          setStatus("idle");
+        });
+      } catch (err) {
+        console.error("Error setting up drag leave listener:", err);
+      }
     };
 
     setupDragLeave();
@@ -190,9 +207,13 @@ export function MultiFileUpload({
   }, []);
 
   const handleSelect = async () => {
-    const selected = await FileService.selectJsonFiles();
-    if (selected) {
-      onFilesChange(selected.files);
+    try {
+      const selected = await FileService.selectJsonFiles();
+      if (selected) {
+        onFilesChange(selected.files);
+      }
+    } catch (err) {
+      console.error("Error selecting files:", err);
     }
   };
 

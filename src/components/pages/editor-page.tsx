@@ -26,8 +26,6 @@ export const EditorPage: React.FC = () => {
 
   const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
 
-  console.log(selectedNode?.data.id);
-
   return (
     <div className="fixed inset-0 top-22 flex bg-background mt-2">
       <CommandPalette

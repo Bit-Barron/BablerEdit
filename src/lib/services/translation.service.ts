@@ -113,7 +113,9 @@ export function toggleTranslationApproval(params: ToggleApprovalParams) {
   const findNode = obj.find((child) => child.name === selectedNodeId?.data.id);
 
   if (!findNode) {
-    throw new Error(`Translation key "${selectedNodeId}" not found.`);
+    throw new Error(
+      `Translation key "${selectedNodeId?.data.id || 'undefined'}" not found in project. Unable to toggle approval for language "${language}".`
+    );
   }
 
   const updatedTranslations = findNode?.translations.map((t) => {
@@ -166,7 +168,9 @@ export async function updateTranslations(
   const obj = project.folder_structure.children[0].children;
   const findNode = obj.find((child) => child.name === selectedNode.data.id);
   if (!findNode) {
-    throw new Error(`Translation key "${selectedNode.data.id}" not found.`);
+    throw new Error(
+      `Translation key "${selectedNode.data.id}" not found in project. Unable to update value for language "${language}".`
+    );
   }
 
   const updatedTranslations = findNode?.translations.map((t) => {
@@ -218,7 +222,9 @@ export function addCommentToTranslationId(
   const findNode = obj.find((child) => child.name === selectedNodeId?.data.id);
 
   if (!findNode) {
-    throw new Error(`Translation key "${selectedNodeId}" not found.`);
+    throw new Error(
+      `Translation key "${selectedNodeId?.data.id || 'undefined'}" not found in project. Unable to add comment.`
+    );
   }
 
   const updatedProject: ParsedProject = {

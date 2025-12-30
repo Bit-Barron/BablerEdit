@@ -140,14 +140,30 @@ export async function saveProject(
 ): Promise<SaveProjectResult | null> {
   const { project, currentProjectPath } = params;
 
-  if (!currentProjectPath || currentProjectPath.trim() === "") {
-    const saveFile = await save({
-      defaultPath: project.filename || "Project.babler",
-      filters: [{ name: "BablerEdit Project", extensions: ["babler"] }],
-    });
+  try {
+    if (!currentProjectPath || currentProjectPath.trim() === "") {
+      const saveFile = await save({
+        defaultPath: project.filename || "Project.babler",
+        filters: [{ name: "BablerEdit Project", extensions: ["babler"] }],
+      });
 
-    if (!saveFile) {
-      return null;
+      if (!saveFile) {
+        return null;
+      }
+
+      const bablerProject = serializeProject(project);
+      const yamlContent = yaml.dump(bablerProject, {
+        indent: 2,
+        lineWidth: -1,
+        noRefs: true,
+      });
+
+      await writeTextFile(saveFile, yamlContent);
+
+      return {
+        currentProjectPath: saveFile,
+        updatedProject: bablerProject,
+      };
     }
 
     const bablerProject = serializeProject(project);
@@ -157,27 +173,20 @@ export async function saveProject(
       noRefs: true,
     });
 
-    await writeTextFile(saveFile, yamlContent);
+    await writeTextFile(currentProjectPath, yamlContent);
 
     return {
-      currentProjectPath: saveFile,
+      currentProjectPath: currentProjectPath,
       updatedProject: bablerProject,
     };
+  } catch (error) {
+    console.error("Error saving project:", error);
+    throw new Error(
+      `Failed to save project: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
   }
-
-  const bablerProject = serializeProject(project);
-  const yamlContent = yaml.dump(bablerProject, {
-    indent: 2,
-    lineWidth: -1,
-    noRefs: true,
-  });
-
-  await writeTextFile(currentProjectPath, yamlContent);
-
-  return {
-    currentProjectPath: currentProjectPath,
-    updatedProject: bablerProject,
-  };
 }
 interface LoadProjectResult {
   project: ParsedProject;
@@ -219,55 +228,62 @@ export async function moveJsonNodeProject(
 
   if (!dragIds || !parentId) return null;
 
-  for (let path in TRANSLATION_FILES) {
-    const filePath = TRANSLATION_FILES[path].path;
-    const jsonFilePath = `${project.source_root_dir}${filePath}`;
+  try {
+    for (let path in TRANSLATION_FILES) {
+      const filePath = TRANSLATION_FILES[path].path;
+      const jsonFilePath = `${project.source_root_dir}${filePath}`;
 
-    const obj = await FileService.readTranslationFile({
-      path: filePath,
-      rootDir: project.source_root_dir,
+      const obj = await FileService.readTranslationFile({
+        path: filePath,
+        rootDir: project.source_root_dir,
+      });
+
+      const dragId = dragIds[0].split(".");
+      const splitParentId = parentId.split(".");
+
+      let current: any = obj;
+      let parent: any = "";
+
+      const splitDragId = dragIds[0].split(".").slice(0, -1).join(".");
+
+      if (splitDragId === parentId) {
+        throw new Error("Moving within the same parent is not working.");
+      }
+
+      for (let i = 0; i < dragId.length; i++) {
+        parent = current;
+        current = current[dragId[i]];
+      }
+
+      delete parent[dragId[dragId.length - 1]];
+
+      let parentCurrent: any = obj;
+      for (let i = 0; i < splitParentId.length; i++) {
+        parentCurrent = parentCurrent[splitParentId[i]];
+      }
+
+      parentCurrent[dragId[dragId.length - 1]] = current;
+
+      const finalContent = JSON.stringify(obj, null, 2);
+      await writeTextFile(jsonFilePath, finalContent);
+    }
+
+    const updatedProject = await updateProjectFolderStructure({
+      project: project,
     });
 
-    const dragId = dragIds[0].split(".");
-    const splitParentId = parentId.split(".");
-
-    let current: any = obj;
-    let parent: any = "";
-
-    const splitDragId = dragIds[0].split(".").slice(0, -1).join(".");
-
-    if (splitDragId === parentId) {
-      throw new Error("Moving within the same parent is not working.");
-    }
-
-    for (let i = 0; i < dragId.length; i++) {
-      parent = current;
-      current = current[dragId[i]];
-    }
-
-    delete parent[dragId[dragId.length - 1]];
-
-    let parentCurrent: any = obj;
-    for (let i = 0; i < splitParentId.length; i++) {
-      parentCurrent = parentCurrent[splitParentId[i]];
-    }
-
-    parentCurrent[dragId[dragId.length - 1]] = current;
-
-    const finalContent = JSON.stringify(obj, null, 2);
-    await writeTextFile(jsonFilePath, finalContent);
+    return {
+      updatedProject: updatedProject as unknown as ParsedProject,
+    };
+  } catch (error) {
+    console.error("Error moving JSON node:", error);
+    throw new Error(
+      `Failed to move translation node: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
   }
-
-  const updatedProject = await updateProjectFolderStructure({
-    project: project,
-  });
-
-  return {
-    updatedProject: updatedProject as unknown as ParsedProject,
-  };
 }
-
-//helper
 
 interface UpdateProjectFolderStructureParams {
   project: ParsedProject;

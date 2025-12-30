@@ -7,6 +7,7 @@ import { useProjectStore } from "@/lib/store/project.store";
 import { FileWithPath } from "@/lib/types/project.types";
 import { Button } from "@/components/ui/retroui/button";
 import * as ProjectService from "@/lib/services/project.service";
+import { useNotification } from "@/components/elements/toast-notification";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -25,6 +26,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   } = useProjectStore();
   const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
   const [dialogOpen, setDialogOpen] = useState(open);
+  const { addNotification } = useNotification();
 
   // Keep local dialogOpen in sync with parent open
   React.useEffect(() => {
@@ -33,19 +35,44 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   const navigate = useNavigate();
 
   const parseProject = async () => {
-    const project = await ProjectService.createProject({
-      files: translationFiles,
-      framework: selectedFramework!,
-      primaryLanguage: primaryLanguageCode!,
-    });
+    try {
+      if (translationFiles.length === 0) {
+        addNotification({
+          type: "warning",
+          title: "No files selected",
+          description: "Please upload at least one translation file.",
+        });
+        return;
+      }
 
-    if (!project) return;
+      const project = await ProjectService.createProject({
+        files: translationFiles,
+        framework: selectedFramework!,
+        primaryLanguage: primaryLanguageCode!,
+      });
 
-    setProjectSnapshot(project.project);
-    setParsedProject(project.project);
-    navigate("/editor");
-    setDialogOpen(false);
-    onOpenChange(false);
+      if (!project) return;
+
+      setProjectSnapshot(project.project);
+      setParsedProject(project.project);
+
+      addNotification({
+        type: "success",
+        title: "Project created",
+        description: "Project has been created successfully.",
+      });
+
+      navigate("/editor");
+      setDialogOpen(false);
+      onOpenChange(false);
+    } catch (err) {
+      console.error("Error creating project:", err);
+      addNotification({
+        type: "error",
+        title: "Failed to create project",
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   };
 
   return (

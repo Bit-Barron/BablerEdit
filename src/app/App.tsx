@@ -12,6 +12,7 @@ import { Loader } from "@/components/elements/loader";
 import { GlassNotificationProvider } from "@/components/elements/toast-notification";
 import { useTranslation } from "@/hooks/use-translation";
 import { useShortcut } from "@/hooks/use-shortcut";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 function AppContent() {
   const {
@@ -84,8 +85,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <GlassNotificationProvider position="top-right">
-      <AppContent />
-    </GlassNotificationProvider>
+    <ErrorBoundary>
+      <GlassNotificationProvider position="top-right">
+        <AppContent />
+      </GlassNotificationProvider>
+    </ErrorBoundary>
   );
 }

@@ -102,28 +102,50 @@ export const useTranslation = () => {
 
       setParsedProject(result.updatedProject);
       setTranslationForKey(result.updatedTranslations);
+
+      addNotification({
+        type: "success",
+        title: "Translation updated",
+        description: "Translation value updated successfully.",
+      });
     } catch (err) {
       console.error(err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      addNotification({
+        type: "error",
+        title: "Failed to update translation",
+        description: message,
+      });
     }
   };
 
   const addComment = (comment: string) => {
-    const result = TranslationService.addCommentToTranslationId({
-      project: parsedProject!,
-      selectedNodeId: selectedNode!,
-      comment,
-    });
+    try {
+      const result = TranslationService.addCommentToTranslationId({
+        project: parsedProject!,
+        selectedNodeId: selectedNode!,
+        comment,
+      });
 
-    setParsedProject(result.updatedProject);
-    setDisplayComment(comment);
+      setParsedProject(result.updatedProject);
+      setDisplayComment(comment);
 
-    addNotification({
-      type: "success",
-      title: "Translation updated",
-      description: "Comment added successfully.",
-    });
+      addNotification({
+        type: "success",
+        title: "Translation updated",
+        description: "Comment added successfully.",
+      });
 
-    return result.updatedProject;
+      return result.updatedProject;
+    } catch (err) {
+      console.error(err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      addNotification({
+        type: "error",
+        title: "Failed to add comment",
+        description: message,
+      });
+    }
   };
   return {
     addComment,

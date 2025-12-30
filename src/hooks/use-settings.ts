@@ -53,13 +53,28 @@ export const useSettings = () => {
   }, []);
 
   const handleRecentProjectClick = async (projectPath: string) => {
-    const result = await SettingsService.recentProjectClick(projectPath);
+    try {
+      const result = await SettingsService.recentProjectClick(projectPath);
 
-    if (result) {
-      setParsedProject(result.parsedProject);
-      setProjectSnapshot(result.parsedProject);
-      setCurrentProjectPath(projectPath);
-      navigate("/editor");
+      if (result) {
+        setParsedProject(result.parsedProject);
+        setProjectSnapshot(result.parsedProject);
+        setCurrentProjectPath(projectPath);
+        navigate("/editor");
+      } else {
+        addNotification({
+          type: "error",
+          title: "Failed to open project",
+          description: "Project file not found or invalid.",
+        });
+      }
+    } catch (err) {
+      console.error("Failed to open recent project:", err);
+      addNotification({
+        type: "error",
+        title: "Failed to open project",
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
     }
   };
 
