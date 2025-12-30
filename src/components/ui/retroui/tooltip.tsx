@@ -32,7 +32,6 @@ const TooltipTrigger = React.forwardRef<
 >((props, ref) => {
   return <Tooltip.Trigger ref={ref} {...props} />;
 });
-TooltipTrigger.displayName = Tooltip.Trigger.displayName;
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof Tooltip.Popup>,

@@ -9,7 +9,7 @@ import MenuBar from "@/components/layout/menubar/menubar";
 import Toolbar from "@/components/layout/toolbar/toolbar";
 import { useSettings } from "@/hooks/use-settings";
 import { Loader } from "@/components/elements/loader";
-import { GlassNotificationProvider } from "@/components/elements/glass-notification";
+import { GlassNotificationProvider } from "@/components/elements/toast-notification";
 import { useTranslation } from "@/hooks/use-translation";
 import { useShortcut } from "@/hooks/use-shortcut";
 

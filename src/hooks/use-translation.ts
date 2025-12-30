@@ -1,6 +1,6 @@
 import { useProjectStore } from "@/lib/store/project.store";
 import { useEditorStore } from "@/lib/store/editor.store";
-import { useNotification } from "@/components/elements/glass-notification";
+import { useNotification } from "@/components/elements/toast-notification";
 import * as TranslationService from "@/lib/services/translation.service";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";

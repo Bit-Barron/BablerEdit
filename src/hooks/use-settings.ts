@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useNavigate } from "react-router-dom";
 import * as SettingsService from "@/lib/services/settings.service";
-import { useNotification } from "@/components/elements/glass-notification";
+import { useNotification } from "@/components/elements/toast-notification";
 import { useSettingsStore } from "@/lib/store/setting.store";
 
 let hasLoadedSettings = false; //** Ensure settings are loaded only once

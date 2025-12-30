@@ -4,7 +4,7 @@ import { ReactArboristType } from "@/lib/types/editor.types";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useSettingsStore } from "@/lib/store/setting.store";
 import { useEditorStore } from "@/lib/store/editor.store";
-import { useNotification } from "@/components/elements/glass-notification";
+import { useNotification } from "@/components/elements/toast-notification";
 import * as ProjectService from "@/lib/services/project.service";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
