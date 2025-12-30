@@ -13,7 +13,7 @@ import { useTheme } from "@/components/providers/theme-provider";
 import {
   createAnimation,
   getRandomAnimation,
-} from "@/components/elements/theme-animation";
+} from "@/components/elements/toggles/theme-animation";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();

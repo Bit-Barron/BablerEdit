@@ -52,8 +52,6 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         (child) => child.name === selectedNode!.data.id
       );
 
-      console.log(conceptNode);
-
       setDisplayComment(conceptNode?.comment as string);
     };
 

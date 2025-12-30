@@ -61,9 +61,7 @@ export const useEditor = () => {
           id: `id-${id}`,
           children: id,
           icon: "DocumentTextIcon",
-          onClick: () => {
-            console.log(`Selected ID: ${id}`);
-          },
+          onClick: () => {},
         })),
       },
     ],

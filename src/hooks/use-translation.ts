@@ -114,8 +114,6 @@ export const useTranslation = () => {
       comment,
     });
 
-    console.log("RESULT", result);
-
     setParsedProject(result.updatedProject);
     setDisplayComment(comment);
 
