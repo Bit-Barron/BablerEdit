@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/retroui/button";
 import { CheckboxComponent } from "@/components/ui/retroui/checkbox";
 import { Dialog } from "@/components/ui/retroui/dialog";
 import { useEditorStore } from "@/lib/store/editor.store";
-import React from "react";
+import { useProjectStore } from "@/lib/store/project.store";
+import React, { useState } from "react";
+import * as TranslationServices from "@/lib/services/translation.service";
 
 interface RemoveLangDialogProps {
   translationUrls: string[];
@@ -12,8 +14,22 @@ export const RemoveLangDialog: React.FC<RemoveLangDialogProps> = ({
   translationUrls,
 }) => {
   const { removeLangDialogOpen, setRemoveLangDialogOpen } = useEditorStore();
+  const { parsedProject, setParsedProject } = useProjectStore();
+  const [selectedUrls, setSelectedUrls] = useState<string>("");
 
   const translationURLS = translationUrls.map((url) => url.split("/").pop());
+
+  const handleDelete = async (url: string) => {
+    if (!parsedProject) return;
+
+    const TRANSLATION = url.split("/").pop();
+    const result = await TranslationServices.removeTranslationUrl({
+      project: parsedProject,
+      translation: TRANSLATION!,
+    });
+
+    setParsedProject(result);
+  };
 
   return (
     <Dialog
@@ -34,7 +50,11 @@ export const RemoveLangDialog: React.FC<RemoveLangDialogProps> = ({
                 className="flex items-center gap-2 px-4 py-2 border-t text-sm"
                 key={t}
               >
-                <CheckboxComponent className="w-3.5 h-3.5" /> {t}
+                <CheckboxComponent
+                  onClick={() => setSelectedUrls(t!)}
+                  className="w-3.5 h-3.5"
+                />{" "}
+                {t}
               </section>
             );
           })}
@@ -55,6 +75,7 @@ export const RemoveLangDialog: React.FC<RemoveLangDialogProps> = ({
             type="button"
             size="sm"
             onClick={() => {
+              handleDelete(selectedUrls!);
               setRemoveLangDialogOpen(false);
             }}
           >

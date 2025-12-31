@@ -16,14 +16,8 @@ import { ConfigureLangDialog } from "@/components/pages/editor/configure-lang/co
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
-  const {
-    addIdDialogOpen,
-    setAddIdDialogOpen,
-    selectedNode,
-    setSelectedNode,
-    configureLangDialogOpen,
-    setConfigureLangDialogOpen,
-  } = useEditorStore();
+  const { addIdDialogOpen, setAddIdDialogOpen, selectedNode, setSelectedNode } =
+    useEditorStore();
   const { moveJsonNode, commandPalette } = useEditor();
 
   const initialTreeData = useMemo(() => {
@@ -102,10 +96,7 @@ export const EditorPage: React.FC = () => {
           </div>
         )}
         <AddIdDialog open={addIdDialogOpen} onOpenChange={setAddIdDialogOpen} />
-        <ConfigureLangDialog
-          open={configureLangDialogOpen}
-          onOpenChange={setConfigureLangDialogOpen}
-        />
+        <ConfigureLangDialog />
       </div>
     </div>
   );

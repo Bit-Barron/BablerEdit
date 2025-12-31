@@ -8,9 +8,7 @@ import { Trash2, Globe } from "lucide-react";
 import * as TranslationServices from "@/lib/services/translation.service";
 import { RemoveLangDialog } from "@/components/pages/editor/configure-lang/remove-lang-dialog";
 
-interface ConfigureLangProps {}
-
-export const ConfigureLangDialog: React.FC<ConfigureLangProps> = ({}) => {
+export const ConfigureLangDialog: React.FC = ({}) => {
   const {
     configureLangDialogOpen,
     setConfigureLangDialogOpen,
