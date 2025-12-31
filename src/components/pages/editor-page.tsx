@@ -12,11 +12,18 @@ import { TreeNode } from "@/components/pages/editor/tree-node";
 import { buildTranslationTree } from "@/lib/helpers/tree-builder";
 import "react-cmdk/dist/cmdk.css";
 import CommandPalette, { getItemIndex } from "react-cmdk";
+import { ConfigureLangDialog } from "@/components/pages/editor/configure-lang";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
-  const { addIdDialogOpen, setAddIdDialogOpen, selectedNode, setSelectedNode } =
-    useEditorStore();
+  const {
+    addIdDialogOpen,
+    setAddIdDialogOpen,
+    selectedNode,
+    setSelectedNode,
+    configureLangDialogOpen,
+    setConfigureLangDialogOpen,
+  } = useEditorStore();
   const { moveJsonNode, commandPalette } = useEditor();
 
   const initialTreeData = useMemo(() => {
@@ -95,6 +102,10 @@ export const EditorPage: React.FC = () => {
           </div>
         )}
         <AddIdDialog open={addIdDialogOpen} onOpenChange={setAddIdDialogOpen} />
+        <ConfigureLangDialog
+          open={configureLangDialogOpen}
+          onOpenChange={setConfigureLangDialogOpen}
+        />
       </div>
     </div>
   );

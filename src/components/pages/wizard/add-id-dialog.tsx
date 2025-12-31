@@ -20,8 +20,7 @@ export const AddIdDialog: React.FC<AddIdDialogProps> = ({
   const [value, setValue] = useState("");
   const [dialogOpen, setDialogOpen] = useState(open);
 
-  // Keep local dialogOpen in sync with parent open
-  React.useEffect(() => {
+  useEffect(() => {
     setDialogOpen(open);
   }, [open]);
 

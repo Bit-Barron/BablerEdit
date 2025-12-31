@@ -93,9 +93,13 @@ export const useEditor = () => {
       });
 
       if (!result) {
+        addNotification({
+          type: "error",
+          title: "Save cancelled",
+          description: "Project save was cancelled.",
+        });
         return null;
       }
-
       setCurrentProjectPath(result.currentProjectPath);
 
       addRecentProject({
@@ -197,10 +201,16 @@ export const useEditor = () => {
     }
   };
 
+  const removeLanguage = () => {};
+
+  const addLanguage = () => {};
+
   return {
     saveProject,
     openProject,
     moveJsonNode,
     commandPalette,
+    removeLanguage,
+    addLanguage,
   };
 };

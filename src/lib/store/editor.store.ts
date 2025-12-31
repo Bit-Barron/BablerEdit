@@ -23,6 +23,9 @@ interface EditorStore {
   setSearch: (search: string) => void;
   commandPalettenOpen: boolean;
   setCommandPaletteOpen: (open: SetStateAction<boolean>) => void;
+
+  configureLangDialogOpen: boolean;
+  setConfigureLangDialogOpen: (open: boolean) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
@@ -33,8 +36,12 @@ export const useEditorStore = create<EditorStore>((set) => ({
   commandPalettenOpen: false,
   setCommandPaletteOpen: (open: SetStateAction<boolean>) =>
     set((state) => ({
-      commandPalettenOpen: typeof open === 'function' ? open(state.commandPalettenOpen) : open
+      commandPalettenOpen:
+        typeof open === "function" ? open(state.commandPalettenOpen) : open,
     })),
+  configureLangDialogOpen: false,
+  setConfigureLangDialogOpen: (open: boolean) =>
+    set({ configureLangDialogOpen: open }),
 
   onProjectClick: "",
   setOnProjectClick: (id: string) => set({ onProjectClick: id }),

@@ -28,7 +28,6 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   const [dialogOpen, setDialogOpen] = useState(open);
   const { addNotification } = useNotification();
 
-  // Keep local dialogOpen in sync with parent open
   React.useEffect(() => {
     setDialogOpen(open);
   }, [open]);
@@ -83,12 +82,15 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
         onOpenChange(v);
       }}
     >
-      <Dialog.Content size="md" className="max-h-[85vh] p-0 flex flex-col">
+      <Dialog.Content
+        size="md"
+        className="max-h-[85vh] p-0 flex flex-col bg-background"
+      >
         <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
           Configure languages
         </Dialog.Header>
 
-        <div className="px-6 pt-3 pb-6 overflow-y-auto flex-1">
+        <div className="px-6 pt-3 pb-6 overflow-y-auto flex-1 min-h-0 bg-background">
           <section className="flex justify-center items-center">
             <MultiFileUpload
               files={translationFiles}
@@ -113,9 +115,10 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
           </div>
         </div>
 
-        <Dialog.Footer className="px-6 pb-6 gap-2">
+        <Dialog.Footer className="px-6 pb-6 gap-2 shrink-0 border-t bg-background">
           <Button
             type="button"
+            variant="outline"
             onClick={() => {
               setDialogOpen(false);
               onOpenChange(false);

@@ -20,6 +20,7 @@ function AppContent() {
     setOnProjectClick,
     setCurrentRoute,
     setAddIdDialogOpen,
+    setConfigureLangDialogOpen,
   } = useEditorStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
@@ -45,6 +46,9 @@ function AppContent() {
           break;
         case "remove-ids":
           await removeIdFromJson();
+          break;
+        case "languages":
+          setConfigureLangDialogOpen(true);
           break;
         default:
           break;

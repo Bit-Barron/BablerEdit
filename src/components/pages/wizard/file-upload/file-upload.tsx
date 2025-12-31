@@ -264,7 +264,7 @@ export function MultiFileUpload({
                 opacity: status === "dragging" ? 0.8 : 1,
                 scale: status === "dragging" ? 0.98 : 1,
               }}
-              className="flex flex-col items-center justify-center p-6 min-h-[200px] cursor-pointer transition-all duration-300 hover:bg-muted/30 rounded-lg group/upload"
+              className="flex flex-col items-center justify-center p-6 min-h-50 cursor-pointer transition-all duration-300 hover:bg-muted/30 rounded-lg group/upload"
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
@@ -299,7 +299,8 @@ export function MultiFileUpload({
 
       {/* File List */}
       {files.length > 0 && (
-        <div className="space-y-2">
+        <div className="max-h-48 overflow-y-auto pr-1 bg-background">
+          <div className="space-y-2">
           <AnimatePresence mode="popLayout">
             {files.map((file: FileWithPath, index: number) => (
               <motion.div
@@ -308,7 +309,7 @@ export function MultiFileUpload({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20, height: 0 }}
                 transition={{ delay: index * 0.05, duration: 0.3 }}
-                className="flex items-center gap-2.5 rounded-md border border-border p-3 bg-card"
+                className="flex items-center gap-2.5 rounded-md border border-border p-3 bg-card opacity-100"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate text-foreground">
@@ -328,6 +329,7 @@ export function MultiFileUpload({
               </motion.div>
             ))}
           </AnimatePresence>
+          </div>
         </div>
       )}
     </div>
