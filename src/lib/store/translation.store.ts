@@ -10,6 +10,9 @@ interface TranslationStore {
 
   displayComment: string;
   setDisplayComment: (comment: string) => void;
+
+  setTranslationUrls: (urls: string[]) => void;
+  translationUrls: string[];
 }
 
 export const useTranslationStore = create<TranslationStore>((set) => ({
@@ -21,6 +24,8 @@ export const useTranslationStore = create<TranslationStore>((set) => ({
     set({
       displayComment: comment,
     }),
+  translationUrls: [],
+  setTranslationUrls: (urls) => set({ translationUrls: urls }),
 
   setTranslationForKey: (translations) =>
     set({ translationForKey: translations }),

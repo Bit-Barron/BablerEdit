@@ -26,6 +26,9 @@ interface EditorStore {
 
   configureLangDialogOpen: boolean;
   setConfigureLangDialogOpen: (open: boolean) => void;
+
+  removeLangDialogOpen: boolean;
+  setRemoveLangDialogOpen: (open: boolean) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
@@ -42,6 +45,9 @@ export const useEditorStore = create<EditorStore>((set) => ({
   configureLangDialogOpen: false,
   setConfigureLangDialogOpen: (open: boolean) =>
     set({ configureLangDialogOpen: open }),
+  removeLangDialogOpen: false,
+  setRemoveLangDialogOpen: (open: boolean) =>
+    set({ removeLangDialogOpen: open }),
 
   onProjectClick: "",
   setOnProjectClick: (id: string) => set({ onProjectClick: id }),

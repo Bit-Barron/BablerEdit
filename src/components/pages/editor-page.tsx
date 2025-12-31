@@ -12,7 +12,7 @@ import { TreeNode } from "@/components/pages/editor/tree-node";
 import { buildTranslationTree } from "@/lib/helpers/tree-builder";
 import "react-cmdk/dist/cmdk.css";
 import CommandPalette, { getItemIndex } from "react-cmdk";
-import { ConfigureLangDialog } from "@/components/pages/editor/configure-lang";
+import { ConfigureLangDialog } from "@/components/pages/editor/configure-lang/configure-lang-dialog";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();

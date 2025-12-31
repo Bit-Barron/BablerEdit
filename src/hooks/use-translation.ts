@@ -9,7 +9,12 @@ export const useTranslation = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
-  const { setTranslationForKey, setDisplayComment } = useTranslationStore();
+  const {
+    setTranslationForKey,
+    setDisplayComment,
+    setTranslationUrls,
+    translationUrls,
+  } = useTranslationStore();
 
   const addIdToJson = async (value: string) => {
     try {
@@ -157,11 +162,27 @@ export const useTranslation = () => {
       });
     }
   };
+
+  const handleDeleteLanguage = async (url: string) => {
+    if (!parsedProject) return;
+
+    const TRANSLATION = url.split("/").pop();
+    const result = await TranslationService.removeTranslationUrl({
+      project: parsedProject,
+      translation: TRANSLATION!,
+    });
+
+    setParsedProject(result);
+
+    setTranslationUrls(translationUrls.filter((u) => u !== url));
+  };
+
   return {
     addComment,
     toggleApproved,
     addIdToJson,
     removeIdFromJson,
     changeTranslationValue,
+    handleDeleteLanguage,
   };
 };

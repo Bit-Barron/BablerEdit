@@ -295,7 +295,5 @@ export async function removeTranslationUrl(params: RemoveTranslationUrlParams) {
     folder_structure: updatedFolderStructure,
   };
 
-  console.log(updateTranslations);
-
   return updateTranslations;
 }
