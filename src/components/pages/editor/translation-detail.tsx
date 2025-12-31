@@ -43,7 +43,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     };
 
     findTranslationForKey();
-  }, [selectedNode]);
+  }, [selectedNode, project]);
 
   useEffect(() => {
     const findTranslationComment = () => {
@@ -105,6 +105,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
               <Dialog.Footer className="px-6 pb-6 gap-2">
                 <Button
                   type="button"
+                  variant="outline"
                   onClick={() => {
                     setDialogOpen(false);
                     setComment("");

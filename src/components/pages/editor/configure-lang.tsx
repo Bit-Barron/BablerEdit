@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/retroui/button";
 import { useProjectStore } from "@/lib/store/project.store";
 import { Text } from "@/components/ui/retroui/text";
 import { Trash2, Globe } from "lucide-react";
+import * as TranslationServices from "@/lib/services/translation.service";
 
 interface ConfigureLangProps {
   open: boolean;
@@ -16,7 +17,7 @@ export const ConfigureLangDialog: React.FC<ConfigureLangProps> = ({
 }) => {
   const { configureLangDialogOpen, setConfigureLangDialogOpen } =
     useEditorStore();
-  const { parsedProject } = useProjectStore();
+  const { parsedProject, setParsedProject } = useProjectStore();
   const [translationUrls, setTranslationUrls] = useState<string[]>([]);
 
   useEffect(() => {
@@ -35,8 +36,18 @@ export const ConfigureLangDialog: React.FC<ConfigureLangProps> = ({
     }
   }, [parsedProject, configureLangDialogOpen]);
 
-  const handleDelete = (index: number) => {
-    setTranslationUrls((prev) => prev.filter((_, i) => i !== index));
+  const handleDelete = async (url: string) => {
+    if (!parsedProject) return;
+
+    const TRANSLATION = url.split("/").pop();
+    const result = await TranslationServices.removeTranslationUrl({
+      project: parsedProject,
+      translation: TRANSLATION!,
+    });
+
+    setParsedProject(result);
+
+    setTranslationUrls((prev) => prev.filter((u) => u !== url));
   };
 
   return (
@@ -72,8 +83,8 @@ export const ConfigureLangDialog: React.FC<ConfigureLangProps> = ({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleDelete(index)}
-                  className="shrink-0 hover:bg-destructive/10 hover:text-destructive h-8 w-8 p-0"
+                  onClick={() => handleDelete(url)}
+                  className="shrink-0 hover:bg-destructive/10 hover:text-destructive h-8 w-8 p-2"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
@@ -97,7 +108,6 @@ export const ConfigureLangDialog: React.FC<ConfigureLangProps> = ({
           >
             Cancel
           </Button>
-          <Button variant="default">Save</Button>
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog>

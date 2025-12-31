@@ -114,7 +114,9 @@ export function toggleTranslationApproval(params: ToggleApprovalParams) {
 
   if (!findNode) {
     throw new Error(
-      `Translation key "${selectedNodeId?.data.id || 'undefined'}" not found in project. Unable to toggle approval for language "${language}".`
+      `Translation key "${
+        selectedNodeId?.data.id || "undefined"
+      }" not found in project. Unable to toggle approval for language "${language}".`
     );
   }
 
@@ -223,7 +225,9 @@ export function addCommentToTranslationId(
 
   if (!findNode) {
     throw new Error(
-      `Translation key "${selectedNodeId?.data.id || 'undefined'}" not found in project. Unable to add comment.`
+      `Translation key "${
+        selectedNodeId?.data.id || "undefined"
+      }" not found in project. Unable to add comment.`
     );
   }
 
@@ -247,4 +251,51 @@ export function addCommentToTranslationId(
   return {
     updatedProject: updatedProject,
   };
+}
+
+interface RemoveTranslationUrlParams {
+  project: ParsedProject;
+  translation: string;
+}
+
+export async function removeTranslationUrl(params: RemoveTranslationUrlParams) {
+  const { project, translation } = params;
+
+  const result = project.translation_packages.map((tp) => {
+    const findTranslationUrls = tp.translation_urls.find(
+      (url) => url.language === translation
+    );
+
+    if (findTranslationUrls) {
+      // remove the translation url from the translation package
+      tp.translation_urls = tp.translation_urls.filter(
+        (url) => url.language !== translation
+      );
+    }
+
+    return tp;
+  });
+
+  const updatedFolderStructure = {
+    ...project.folder_structure,
+    children: project.folder_structure.children.map((pkg) => ({
+      ...pkg,
+      children: pkg.children.map((node) => ({
+        ...node,
+        translations: node.translations.filter(
+          (t) => t.language !== translation
+        ),
+      })),
+    })),
+  };
+
+  const updateTranslations = {
+    ...project,
+    translation_packages: result,
+    folder_structure: updatedFolderStructure,
+  };
+
+  console.log(updateTranslations);
+
+  return updateTranslations;
 }

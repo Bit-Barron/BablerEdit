@@ -186,7 +186,6 @@ export const useEditor = () => {
         description: `"${dragIds[0]}" moved successfully`,
       });
 
-      console.log(result);
       if (result) {
         setParsedProject(result.updatedProject as ParsedProject);
       }
