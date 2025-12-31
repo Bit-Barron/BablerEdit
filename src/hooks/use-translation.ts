@@ -6,7 +6,7 @@ import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
 
 export const useTranslation = () => {
-  const { selectedNode } = useEditorStore();
+  const { selectedNode, setSelectedNode } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
   const { setTranslationForKey, setDisplayComment } = useTranslationStore();
@@ -40,10 +40,20 @@ export const useTranslation = () => {
 
   const removeIdFromJson = async () => {
     try {
+      if (!selectedNode) {
+        addNotification({
+          type: "error",
+          title: "No selection",
+          description: "Please select a node to remove its ID.",
+        });
+        return;
+      }
       const result = TranslationService.removeTranslationId({
         selectedNodeId: selectedNode!.data.id,
         project: parsedProject!,
       });
+
+      setSelectedNode(null);
       addNotification({
         type: "success",
         title: "ID removed!",

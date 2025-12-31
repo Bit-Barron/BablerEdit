@@ -9,6 +9,7 @@ https://www.eldoraui.site/docs/components/dock-text
 
 https://magicui.design/docs/components/particles
 
+/home/barron/.local/share/com.barron.bableredit
 C:\Users\barron\AppData\Roaming\com.barron.bableredit\settings.json
 
 /// DONNN

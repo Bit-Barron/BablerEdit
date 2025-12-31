@@ -239,12 +239,8 @@ export async function moveJsonNodeProject(
       });
 
       const dragId = dragIds[0].split(".");
-      const splitDragId = dragIds[0].split(".").slice(0, -1).join(".");
 
       // Check if moving to the same parent
-      if (splitDragId === parentId) {
-        throw new Error("Cannot move to the same parent");
-      }
 
       let current: any = obj;
       let parent: any = null;

@@ -168,7 +168,6 @@ export const useEditor = () => {
     index,
   }: ReactArboristType): Promise<void> => {
     try {
-      console.log("Moving nodes:", { dragIds, parentId, index });
       const result = await ProjectService.moveJsonNodeProject({
         dragIds,
         dragNodes,
