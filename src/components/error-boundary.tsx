@@ -12,7 +12,7 @@ interface State {
   errorInfo: ErrorInfo | null;
 }
 
-// new eve 
+// Happy New Year
 
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
