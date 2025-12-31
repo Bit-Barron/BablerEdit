@@ -160,11 +160,21 @@ export const useEditor = () => {
     }
   };
 
-  const moveJsonNode = async ({ dragIds, parentId }: ReactArboristType) => {
+  const moveJsonNode = async ({
+    dragIds,
+    dragNodes,
+    parentId,
+    parentNode,
+    index,
+  }: ReactArboristType): Promise<void> => {
     try {
+      console.log("Moving nodes:", { dragIds, parentId, index });
       const result = await ProjectService.moveJsonNodeProject({
         dragIds,
+        dragNodes,
         parentId,
+        parentNode,
+        index,
         project: parsedProject!,
       });
       addNotification({
@@ -172,7 +182,11 @@ export const useEditor = () => {
         title: "ID moved!",
         description: `"${dragIds[0]}" moved successfully`,
       });
-      setParsedProject(result?.updatedProject as ParsedProject);
+
+      console.log(result);
+      if (result) {
+        setParsedProject(result.updatedProject as ParsedProject);
+      }
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
@@ -181,7 +195,6 @@ export const useEditor = () => {
         title: "Failed to move ID",
         description: message,
       });
-      return null;
     }
   };
 

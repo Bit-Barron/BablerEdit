@@ -61,13 +61,12 @@ export const EditorPage: React.FC = () => {
           </h2>
           <ChevronsRightLeftIcon className="opacity-60 hover:opacity-100 transition-opacity" />
         </div>
-        <TranslationTree
+        <TranslationTree<TreeNodeType>
           data={initialTreeData}
           openByDefault={false}
           indent={24}
           rowHeight={40}
           selection="STAMMDATEN.AUFTRAG"
-          //@ts-ignore
           onMove={moveJsonNode}
           onSelect={(nodes) => {
             if (nodes.length > 0) {

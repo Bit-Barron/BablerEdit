@@ -215,18 +215,18 @@ interface MoveJsonNodeProjectParams {
   project: ParsedProject;
 }
 
-interface MoveJsonNodeProjectResult {
-  updatedProject: ParsedProject;
-}
-
 export async function moveJsonNodeProject(
   params: MoveJsonNodeProjectParams & ReactArboristType
-): Promise<MoveJsonNodeProjectResult | null> {
+): Promise<{
+  updatedProject: ParsedProject;
+} | null> {
   const { dragIds, parentId, project } = params;
 
   const TRANSLATION_FILES = project.translation_packages[0].translation_urls;
 
-  if (!dragIds || !parentId) return null;
+  if (!dragIds || dragIds.length === 0) {
+    throw new Error("No drag IDs provided");
+  }
 
   try {
     for (let path in TRANSLATION_FILES) {
@@ -239,30 +239,46 @@ export async function moveJsonNodeProject(
       });
 
       const dragId = dragIds[0].split(".");
-      const splitParentId = parentId.split(".");
-
-      let current: any = obj;
-      let parent: any = "";
-
       const splitDragId = dragIds[0].split(".").slice(0, -1).join(".");
 
+      // Check if moving to the same parent
       if (splitDragId === parentId) {
-        throw new Error("Moving within the same parent is not working.");
+        throw new Error("Cannot move to the same parent");
       }
+
+      let current: any = obj;
+      let parent: any = null;
 
       for (let i = 0; i < dragId.length; i++) {
         parent = current;
         current = current[dragId[i]];
       }
 
-      delete parent[dragId[dragId.length - 1]];
-
-      let parentCurrent: any = obj;
-      for (let i = 0; i < splitParentId.length; i++) {
-        parentCurrent = parentCurrent[splitParentId[i]];
+      if (parent === null) {
+        throw new Error("Cannot find parent of dragged item");
       }
 
-      parentCurrent[dragId[dragId.length - 1]] = current;
+      const movedValue = current;
+      const movedKey = dragId[dragId.length - 1];
+
+      delete parent[movedKey];
+
+      let parentCurrent: any = obj;
+
+      if (parentId === null || parentId === "") {
+        parentCurrent[movedKey] = movedValue;
+      } else {
+        const splitParentId = parentId.split(".");
+
+        for (let i = 0; i < splitParentId.length; i++) {
+          if (!parentCurrent[splitParentId[i]]) {
+            parentCurrent[splitParentId[i]] = {};
+          }
+          parentCurrent = parentCurrent[splitParentId[i]];
+        }
+
+        parentCurrent[movedKey] = movedValue;
+      }
 
       const finalContent = JSON.stringify(obj, null, 2);
       await writeTextFile(jsonFilePath, finalContent);
@@ -273,7 +289,7 @@ export async function moveJsonNodeProject(
     });
 
     return {
-      updatedProject: updatedProject as unknown as ParsedProject,
+      updatedProject: updatedProject.updatedProject,
     };
   } catch (error) {
     console.error("Error moving JSON node:", error);
