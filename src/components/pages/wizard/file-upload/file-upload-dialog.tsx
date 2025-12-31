@@ -82,15 +82,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
         onOpenChange(v);
       }}
     >
-      <Dialog.Content
-        size="md"
-        className="max-h-[85vh] p-0 flex flex-col bg-background"
-      >
-        <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
+      <Dialog.Content size="md">
+        <Dialog.Header className="px-4 pt-4 pb-2 shrink-0 ">
           Configure languages
         </Dialog.Header>
 
-        <div className="px-6 pt-3 pb-6 overflow-y-auto flex-1 min-h-0 bg-background">
+        <div className="px-4 pt-2 pb-4 overflow-y-auto flex-1 min-h-0 bg-background">
           <section className="flex justify-center items-center">
             <MultiFileUpload
               files={translationFiles}
@@ -98,12 +95,12 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
             />
           </section>
 
-          <div className="mt-2">
+          <div className="mt-1.5">
             <Button size="sm" variant="ghost">
               Primary Language: {primaryLanguageCode}
             </Button>
           </div>
-          <div className="flex items-center gap-2 mt-4">
+          <div className="flex items-center gap-2 mt-2">
             <Button variant="outline" size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
               Add language
@@ -115,7 +112,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
           </div>
         </div>
 
-        <Dialog.Footer className="px-6 pb-6 gap-2 shrink-0 border-t bg-background">
+        <Dialog.Footer>
           <Button
             type="button"
             variant="outline"
