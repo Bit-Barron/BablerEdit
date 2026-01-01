@@ -30,6 +30,8 @@ function AppContent() {
 
   useShortcut();
 
+  
+
   useEffect(() => {
     const handleToolbarAction = async () => {
       switch (onProjectClick) {
