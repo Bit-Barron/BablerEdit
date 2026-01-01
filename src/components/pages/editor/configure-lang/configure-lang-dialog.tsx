@@ -7,12 +7,14 @@ import { Text } from "@/components/ui/retroui/text";
 import { Trash2, Globe } from "lucide-react";
 import * as TranslationServices from "@/lib/services/translation.service";
 import { RemoveLangDialog } from "@/components/pages/editor/configure-lang/remove-lang-dialog";
+import { AddLanguageDialog } from "@/components/pages/editor/configure-lang/add-lang-dialog";
 
 export const ConfigureLangDialog: React.FC = ({}) => {
   const {
     configureLangDialogOpen,
     setConfigureLangDialogOpen,
     setRemoveLangDialogOpen,
+    setAddLangDialogOpen,
   } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const [translationUrls, setTranslationUrls] = useState<string[]>([]);
@@ -91,7 +93,9 @@ export const ConfigureLangDialog: React.FC = ({}) => {
             )}
 
             <section className="flex justify-between">
-              <Button>Add Language</Button>
+              <Button onClick={() => setAddLangDialogOpen(true)}>
+                Add Language
+              </Button>
               <Button
                 variant="outline"
                 onClick={() => setRemoveLangDialogOpen(true)}
@@ -115,6 +119,7 @@ export const ConfigureLangDialog: React.FC = ({}) => {
         </Dialog.Content>
       </Dialog>
       <RemoveLangDialog translationUrls={translationUrls} />
+      <AddLanguageDialog />
     </>
   );
 };

@@ -29,6 +29,9 @@ interface EditorStore {
 
   removeLangDialogOpen: boolean;
   setRemoveLangDialogOpen: (open: boolean) => void;
+
+  addLangDialogOpen: boolean;
+  setAddLangDialogOpen: (open: boolean) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
@@ -42,6 +45,9 @@ export const useEditorStore = create<EditorStore>((set) => ({
       commandPalettenOpen:
         typeof open === "function" ? open(state.commandPalettenOpen) : open,
     })),
+  addLangDialogOpen: false,
+  setAddLangDialogOpen: (open: boolean) => set({ addLangDialogOpen: open }),
+
   configureLangDialogOpen: false,
   setConfigureLangDialogOpen: (open: boolean) =>
     set({ configureLangDialogOpen: open }),
