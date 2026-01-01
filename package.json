@@ -19,6 +19,8 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "framer-motion": "^12.23.26",
+    "i18n-iso-countries": "^7.14.0",
+    "iso-639-1": "^3.1.5",
     "js-yaml": "^4.1.1",
     "lucide-react": "^0.562.0",
     "motion": "^12.23.26",

@@ -12,8 +12,6 @@ interface State {
   errorInfo: ErrorInfo | null;
 }
 
-// Happy New Year
-
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
