@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/retroui/button";
 import { useProjectStore } from "@/lib/store/project.store";
 import { Text } from "@/components/ui/retroui/text";
 import { Trash2, Globe, FolderOpen } from "lucide-react";
-import * as TranslationServices from "@/lib/services/translation.service";
 import { RemoveLangDialog } from "@/components/pages/editor/configure-lang/remove-lang-dialog";
 import { AddLanguageDialog } from "@/components/pages/editor/configure-lang/add-lang-dialog";
 import { Input } from "@/components/ui/retroui/input";
@@ -12,10 +11,7 @@ import ISO6391 from "iso-639-1";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { useEffect, useState } from "react";
-import { open } from "@tauri-apps/plugin-dialog";
-import { readTextFile } from "@tauri-apps/plugin-fs";
-import parseJson from "parse-json";
-import { useNotification } from "@/components/elements/toast-notification";
+import { useConfigureLang } from "@/hooks/use-configure-lang";
 
 countries.registerLocale(enLocale);
 
@@ -28,14 +24,12 @@ export const ConfigureLangDialog: React.FC = ({}) => {
     setLanguageToAdd,
     setAddLangDialogOpen,
   } = useEditorStore();
-  const { parsedProject, setParsedProject } = useProjectStore();
+  const { parsedProject } = useProjectStore();
   const [translationUrls, setTranslationUrls] = useState<string[]>([]);
   const [languagePaths, setLanguagePaths] = useState<Record<string, string>>(
     {}
   );
-  const [newTranslationFile, setNewTranslation] = useState<string>("");
-  const { addNotification } = useNotification();
-  console.log("test", newTranslationFile);
+  const { handleDelete, addPathToLanguage } = useConfigureLang();
 
   useEffect(() => {
     if (parsedProject && configureLangDialogOpen) {
@@ -53,62 +47,6 @@ export const ConfigureLangDialog: React.FC = ({}) => {
       setTranslationUrls(urls);
     }
   }, [parsedProject, configureLangDialogOpen]);
-
-  const checkIfLanguageAlreadyExists = (locale: string) => {
-    const newLocale = locale.split("/").pop();
-    const existingLocales = parsedProject.translation_packages.map((tp) => {
-      return tp.translation_urls.find((tp) => tp.path === newLocale);
-    });
-    return existingLocales;
-  };
-
-  const addPathToLanguage = async () => {
-    try {
-      const selected = await open({
-        multiple: false,
-        filters: [
-          {
-            name: "Translation File",
-            extensions: ["json"],
-          },
-        ],
-      });
-      setNewTranslation(selected as string);
-      const checkSelectedFile = checkIfLanguageAlreadyExists(
-        selected as string
-      );
-      if (checkSelectedFile) {
-        addNotification({
-          type: "error",
-          title: "Language already exists",
-          description: `The selected language translation file already exists in the project.`,
-        });
-        return;
-      }
-      if (!selected) return null;
-      const readSelectedFile = await readTextFile(selected);
-
-      const obj = parseJson(readSelectedFile);
-
-      console.log(obj);
-    } catch (err) {
-      console.error("Error adding translation URL:", err);
-    }
-  };
-  const handleDelete = async (url: string) => {
-    if (!parsedProject) return;
-
-    const TRANSLATION = url.split("/").pop();
-    const result = await TranslationServices.removeTranslationUrl({
-      project: parsedProject,
-      translation: TRANSLATION!,
-    });
-
-    setParsedProject(result);
-
-    setTranslationUrls((prev) => prev.filter((u) => u !== url));
-  };
-
   return (
     <>
       <Dialog
