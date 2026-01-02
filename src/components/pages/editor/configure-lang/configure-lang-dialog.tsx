@@ -44,9 +44,11 @@ export const ConfigureLangDialog: React.FC = ({}) => {
         }
       }
 
+      console.log("URLS", urls);
       setTranslationUrls(urls);
     }
   }, [parsedProject, configureLangDialogOpen]);
+
   return (
     <>
       <Dialog
@@ -114,7 +116,15 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                               className="flex-1 text-sm bg-background"
                             />
                             <Button
-                              onClick={() => addPathToLanguage()}
+                              onClick={async () => {
+                                const selectedPath = await addPathToLanguage();
+                                if (selectedPath) {
+                                  setLanguagePaths({
+                                    ...languagePaths,
+                                    [locale]: selectedPath,
+                                  });
+                                }
+                              }}
                               variant="outline"
                               size="icon"
                               className="shrink-0 h-10 w-10 bg-background"
@@ -184,10 +194,7 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                           className="shrink-0 h-10 w-10 bg-background"
                           title="Browse for file"
                         >
-                          <FolderOpen
-                            className="w-4 h-4"
-                            onClick={() => addPathToLanguage()}
-                          />
+                          <FolderOpen className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
