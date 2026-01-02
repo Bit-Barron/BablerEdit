@@ -13,6 +13,9 @@ import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { useEffect, useState } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
+import { readTextFile } from "@tauri-apps/plugin-fs";
+import parseJson from "parse-json";
+import { useNotification } from "@/components/elements/toast-notification";
 
 countries.registerLocale(enLocale);
 
@@ -31,6 +34,9 @@ export const ConfigureLangDialog: React.FC = ({}) => {
     {}
   );
   const [newTranslationFile, setNewTranslation] = useState<string>("");
+  const { addNotification } = useNotification();
+  console.log("test", newTranslationFile);
+
   useEffect(() => {
     if (parsedProject && configureLangDialogOpen) {
       const getSourceRootDir = parsedProject.source_root_dir;
@@ -48,6 +54,14 @@ export const ConfigureLangDialog: React.FC = ({}) => {
     }
   }, [parsedProject, configureLangDialogOpen]);
 
+  const checkIfLanguageAlreadyExists = (locale: string) => {
+    const newLocale = locale.split("/").pop();
+    const existingLocales = parsedProject.translation_packages.map((tp) => {
+      return tp.translation_urls.find((tp) => tp.path === newLocale);
+    });
+    return existingLocales;
+  };
+
   const addPathToLanguage = async () => {
     try {
       const selected = await open({
@@ -60,14 +74,27 @@ export const ConfigureLangDialog: React.FC = ({}) => {
         ],
       });
       setNewTranslation(selected as string);
-      console.log(selected);
+      const checkSelectedFile = checkIfLanguageAlreadyExists(
+        selected as string
+      );
+      if (checkSelectedFile) {
+        addNotification({
+          type: "error",
+          title: "Language already exists",
+          description: `The selected language translation file already exists in the project.`,
+        });
+        return;
+      }
       if (!selected) return null;
+      const readSelectedFile = await readTextFile(selected);
+
+      const obj = parseJson(readSelectedFile);
+
+      console.log(obj);
     } catch (err) {
       console.error("Error adding translation URL:", err);
     }
   };
-  console.log("NEW TRANSLATION FILE", newTranslationFile);
-
   const handleDelete = async (url: string) => {
     if (!parsedProject) return;
 
