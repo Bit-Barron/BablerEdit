@@ -11,7 +11,6 @@ interface ReadTranslationFileParams {
 export async function readTranslationFile(params: ReadTranslationFileParams) {
   const { path, rootDir } = params;
   const fullPath = `${rootDir}${path}`;
-
   try {
     const content = await readTextFile(fullPath);
     return parseJson(content) as Record<string, string>;
@@ -21,7 +20,9 @@ export async function readTranslationFile(params: ReadTranslationFileParams) {
         `Failed to read or parse translation file at "${fullPath}": ${error.message}`
       );
     }
-    throw new Error(`Failed to read or parse translation file at "${fullPath}"`);
+    throw new Error(
+      `Failed to read or parse translation file at "${fullPath}"`
+    );
   }
 }
 
@@ -56,7 +57,9 @@ export async function selectJsonFiles(): Promise<SelectJsonFilesResult | null> {
           };
         } catch (error) {
           throw new Error(
-            `Failed to read file "${path}": ${error instanceof Error ? error.message : "Unknown error"}`
+            `Failed to read file "${path}": ${
+              error instanceof Error ? error.message : "Unknown error"
+            }`
           );
         }
       })

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/retroui/dialog";
 import { useEditorStore } from "@/lib/store/editor.store";
 import { Button } from "@/components/ui/retroui/button";
@@ -12,6 +11,8 @@ import { Input } from "@/components/ui/retroui/input";
 import ISO6391 from "iso-639-1";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
+import { useEffect, useState } from "react";
+import { open } from "@tauri-apps/plugin-dialog";
 
 countries.registerLocale(enLocale);
 
@@ -29,7 +30,7 @@ export const ConfigureLangDialog: React.FC = ({}) => {
   const [languagePaths, setLanguagePaths] = useState<Record<string, string>>(
     {}
   );
-  console.log(languageToAdd);
+  const [newTranslationFile, setNewTranslation] = useState<string>("");
   useEffect(() => {
     if (parsedProject && configureLangDialogOpen) {
       const getSourceRootDir = parsedProject.source_root_dir;
@@ -46,6 +47,26 @@ export const ConfigureLangDialog: React.FC = ({}) => {
       setTranslationUrls(urls);
     }
   }, [parsedProject, configureLangDialogOpen]);
+
+  const addPathToLanguage = async () => {
+    try {
+      const selected = await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Translation File",
+            extensions: ["json"],
+          },
+        ],
+      });
+      setNewTranslation(selected as string);
+      console.log(selected);
+      if (!selected) return null;
+    } catch (err) {
+      console.error("Error adding translation URL:", err);
+    }
+  };
+  console.log("NEW TRANSLATION FILE", newTranslationFile);
 
   const handleDelete = async (url: string) => {
     if (!parsedProject) return;
@@ -85,7 +106,6 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                     const [lang, country] = locale.split("-");
                     const langName = ISO6391.getName(lang);
                     const countryName = countries.getName(country, "en");
-
                     return (
                       <div
                         key={locale}
@@ -94,7 +114,7 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                         <div className="flex items-center gap-3">
                           <Globe className="w-5 h-5 text-primary shrink-0" />
                           <Text className="font-semibold text-sm flex-1">
-                            {langName} ({countryName})
+                            {langName} ({countryName}){" "}
                           </Text>
                           <Text className="text-xs text-muted-foreground">
                             {locale}
@@ -129,6 +149,7 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                               className="flex-1 text-sm bg-background"
                             />
                             <Button
+                              onClick={() => addPathToLanguage()}
                               variant="outline"
                               size="icon"
                               className="shrink-0 h-10 w-10 bg-background"
@@ -198,7 +219,10 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                           className="shrink-0 h-10 w-10 bg-background"
                           title="Browse for file"
                         >
-                          <FolderOpen className="w-4 h-4" />
+                          <FolderOpen
+                            className="w-4 h-4"
+                            onClick={() => addPathToLanguage()}
+                          />
                         </Button>
                       </div>
                     </div>
