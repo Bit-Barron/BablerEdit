@@ -1,5 +1,5 @@
 import { Plus, Minus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/retroui/dialog";
 import { MultiFileUpload } from "./file-upload";
 import { useNavigate } from "react-router-dom";
@@ -28,9 +28,10 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
   const [dialogOpen, setDialogOpen] = useState(open);
   const { addNotification } = useNotification();
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDialogOpen(open);
   }, [open]);
+
   const navigate = useNavigate();
 
   const parseProject = async () => {

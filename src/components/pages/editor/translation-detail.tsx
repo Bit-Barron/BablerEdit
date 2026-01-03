@@ -65,9 +65,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         <div className="flex items-center gap-4 justify-between">
           {project.languages.map((lang, idx) => (
             <React.Fragment key={lang.code}>
-              <div className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-md border border-primary/20">{`${
-                lang.code
-              }-${lang.code.toUpperCase()}`}</div>
+              <div className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-md border border-primary/20">{`${lang.code
+                }-${lang.code.toUpperCase()}`}</div>
               {idx < project.languages.length - 1 && (
                 <Separator orientation="vertical" className="h-5" />
               )}

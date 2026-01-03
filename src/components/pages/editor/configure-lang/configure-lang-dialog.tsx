@@ -4,18 +4,13 @@ import { Button } from "@/components/ui/retroui/button";
 import { useProjectStore } from "@/lib/store/project.store";
 import { Text } from "@/components/ui/retroui/text";
 import { Trash2, Globe, FolderOpen } from "lucide-react";
-import { RemoveLangDialog } from "@/components/pages/editor/configure-lang/remove-lang-dialog";
 import { AddLanguageDialog } from "@/components/pages/editor/configure-lang/add-lang-dialog";
 import { Input } from "@/components/ui/retroui/input";
 import ISO6391 from "iso-639-1";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
-import { useEffect, useState } from "react";
-import * as ProjectService from "@/lib/services/project.service"
-import { open } from "@tauri-apps/plugin-dialog";
-import { useNotification } from "@/components/elements/toast-notification";
-import { ParsedProject } from "@/lib/types/project.types";
-
+import { useEffect, useState } from "react"
+import { useConfigureLang } from "@/hooks/use-configure-lang";
 
 countries.registerLocale(enLocale);
 
@@ -24,79 +19,12 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
     configureLangDialogOpen,
     setConfigureLangDialogOpen,
     languageToAdd,
-    setRemoveLangDialogOpen,
     setLanguageToAdd,
     setAddLangDialogOpen,
   } = useEditorStore();
-  const { parsedProject, setParsedProject
-  } = useProjectStore();
+  const { parsedProject } = useProjectStore();
   const [translationUrls, setTranslationUrls] = useState<string[]>([]);
-  const [languagePaths, setLanguagePaths] = useState<Record<string, string>>(
-    {}
-  );
-
-  const { addNotification } = useNotification()
-
-
-  const handleDelete = () => {
-    return;
-  }
-
-  const addPathTolanguage = async () => {
-    const openFile = await open({
-      multiple: false,
-      directory: false,
-      filters: [{ extensions: ["json"], name: "Translaiton Json" }],
-    });
-
-    if (!openFile) return;
-
-    const splitLocale = openFile.split("/").pop()
-
-    if (!splitLocale) return;
-
-    const checkIfFileAlreadyExist = parsedProject.translation_packages.some((t) => {
-      return t.translation_urls.find((t) => t.path === splitLocale)
-    })
-
-    if (checkIfFileAlreadyExist) {
-      addNotification({
-        title: "Translation Json already Exist",
-        type: "error",
-      })
-      return;
-    }
-
-    const translationPackages = parsedProject.translation_packages.map((t) => ({
-      ...t,
-      translation_urls: [
-        ...t.translation_urls,
-        { path: splitLocale, language: splitLocale.split(".")[0] }
-      ]
-    }));
-
-
-    const updatedLanguages = [
-      ...parsedProject.languages,
-      { code: splitLocale.split(".")[0] }
-    ]
-
-    const updatedFolderStructure: ParsedProject
-      = {
-      ...parsedProject,
-      languages: updatedLanguages,
-      translation_packages: translationPackages
-    }
-
-    const result = await ProjectService.updateProjectFolderStructure({
-      project: updatedFolderStructure,
-    });
-
-    console.log("RESULT", result.updatedProject)
-
-    setParsedProject(result.updatedProject)
-
-  }
+  const { addPathTolanguage, handleDelete } = useConfigureLang()
 
   useEffect(() => {
     if (parsedProject && configureLangDialogOpen) {
@@ -116,7 +44,7 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
   }, [parsedProject, configureLangDialogOpen]);
 
   return (
-    <>
+    <section>
       <Dialog
         open={configureLangDialogOpen}
         onOpenChange={(v) => {
@@ -172,32 +100,20 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
                           <div className="flex gap-2 items-center">
                             <Input
                               placeholder={`/public/${locale}.json`}
-                              value={languagePaths[locale] || ""}
-                              onChange={(e) =>
-                                setLanguagePaths({
-                                  ...languagePaths,
-                                  [locale]: e.target.value,
-                                })
-                              }
                               className="flex-1 text-sm bg-background"
                             />
                             <Button
                               onClick={async () => {
-                                const selectedPath = await addPathTolanguage();
-                                // if (selectedPath) {
-                                //   setLanguagePaths({
-                                //     ...languagePaths,
-                                //     [locale]: selectedPath,
-                                //   });
-                                // }
-                                //
+                                await addPathTolanguage(locale);
                               }}
                               variant="outline"
                               size="icon"
                               className="shrink-0 h-10 w-10 bg-background"
                               title="Browse for file"
                             >
-                              <FolderOpen className="w-4 h-4" />
+                              <FolderOpen onClick={() => addPathTolanguage(
+                                locale
+                              )} className="w-4 h-4" />
                             </Button>
                           </div>
                         </div>
@@ -245,7 +161,7 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
                           size="icon"
                           className="shrink-0 hover:bg-destructive/10 hover:text-destructive h-8 w-8 p-2"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 onClick={() => handleDelete(url)} className="w-4 h-4" />
                         </Button>
                       </div>
                       <div className="flex gap-2 items-center">
@@ -260,7 +176,7 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
                           className="shrink-0 h-10 w-10 bg-background"
                           title="Browse for file"
                         >
-                          <FolderOpen className="w-4 h-4" />
+                          <FolderOpen onClick={() => addPathTolanguage(url)} className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
@@ -285,12 +201,6 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
               >
                 Add Language
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => setRemoveLangDialogOpen(true)}
-              >
-                Remove Language
-              </Button>
             </section>
             <Button
               type="button"
@@ -301,8 +211,7 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
           </Dialog.Footer>
         </Dialog.Content>
       </Dialog>
-      <RemoveLangDialog translationUrls={translationUrls} />
       <AddLanguageDialog />
-    </>
+    </section>
   );
 };

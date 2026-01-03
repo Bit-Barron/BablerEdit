@@ -11,13 +11,15 @@ import { CheckCheckIcon } from "@/components/icons/check-check";
 
 countries.registerLocale(enLocale);
 
-export const AddLanguageDialog: React.FC = ({}) => {
-  const { addLangDialogOpen, setLanguageToAdd, setAddLangDialogOpen } =
+export const AddLanguageDialog: React.FC = ({ }) => {
+  const { addLangDialogOpen, selectedLanguage, setSelectedLanguage, setLanguageToAdd, setAddLangDialogOpen
+  } =
     useEditorStore();
   const [search, setSearch] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState<string[]>([]);
 
   const uniqueArray = [...new Set(selectedLanguage)];
+
+  console.log("selectedLangauge", selectedLanguage)
 
   useEffect(() => {
     setLanguageToAdd(selectedLanguage);
@@ -43,7 +45,7 @@ export const AddLanguageDialog: React.FC = ({}) => {
           Add Language
         </Dialog.Header>
 
-        <div className="mt-2 mb-2">
+        <div className="p-2">
           <Input
             placeholder="Search languages..."
             value={search}
@@ -97,13 +99,6 @@ export const AddLanguageDialog: React.FC = ({}) => {
             onClick={() => setAddLangDialogOpen(false)}
           >
             Cancel
-          </Button>
-          <Button
-            type="button"
-            size="sm"
-            onClick={() => setAddLangDialogOpen(false)}
-          >
-            Save
           </Button>
         </Dialog.Footer>
       </Dialog.Content>

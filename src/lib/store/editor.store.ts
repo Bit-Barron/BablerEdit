@@ -32,12 +32,23 @@ interface EditorStore {
 
   languageToAdd: string[];
   setLanguageToAdd: (langs: string[]) => void;
+
+
   addLangDialogOpen: boolean;
-  setAddLangDialogOpen: (open: boolean) => void; } export const useEditorStore = create<EditorStore>((set) => ({
+  setAddLangDialogOpen: (open: boolean) => void;
+
+  selectedLanguage: string[];
+  setSelectedLanguage: (selectedLanguage: string[]) => void;
+}
+
+export const useEditorStore = create<EditorStore>((set) => ({
   selectedNode: null,
   setSelectedNode: (node) => set({ selectedNode: node }),
   search: "",
   languageToAdd: [],
+  selectedLanguage: [],
+  setSelectedLanguage: (selectedLanguage: string[]) => set({ selectedLanguage }),
+
   setLanguageToAdd: (langs: string[]) => set({ languageToAdd: langs }),
   setSearch: (search: string) => set({ search }),
   commandPalettenOpen: false,

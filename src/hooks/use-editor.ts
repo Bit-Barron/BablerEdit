@@ -25,7 +25,6 @@ export const useEditor = () => {
   } = useEditorStore();
   const { addNotification } = useNotification();
   const navigate = useNavigate();
-
   useHandleOpenCommandPalette(setCommandPaletteOpen);
 
   const ids = useMemo(() => {
