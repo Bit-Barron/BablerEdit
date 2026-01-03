@@ -4,41 +4,14 @@ import { Button } from "@/components/ui/retroui/button";
 import { Input } from "@/components/ui/retroui/input";
 import { Label } from "@/components/ui/retroui/label";
 import { Select } from "@/components/ui/retroui/select";
-import { useProjectStore } from "@/lib/store/project.store";
-import { ParsedProject } from "@/lib/types/project.types";
+import { useConfigureLang } from "@/hooks/use-configure-lang";
 
 
 export const FilterDialog: React.FC = () => {
   const { setFilterDialogOpen, filterDialogOpen, setTranslationId, translationId, setTranslationText, translationText,
   } = useEditorStore();
-  const { parsedProject, setParsedProject
-  } = useProjectStore()
 
-  const handleFilter = async () => {
-    const obj = parsedProject.folder_structure.children[0].children;
-    const filtered = obj.filter((filt) =>
-      filt.name.toLowerCase().includes(translationText.toLowerCase())
-    );
-
-    const updatedFolder: ParsedProject = {
-      ...parsedProject,
-      folder_structure: {
-        name: "main",
-        children: parsedProject.folder_structure.children.map((pkg) => ({
-          ...pkg,
-          children: filtered
-        }))
-      }
-    }
-
-    setParsedProject(updatedFolder)
-  }
-
-
-  const handleReset = () => {
-    setTranslationId("")
-    setTranslationText("")
-  }
+  const { handleReset, handleFilter } = useConfigureLang()
 
   return (
     <Dialog

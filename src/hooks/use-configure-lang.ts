@@ -9,7 +9,7 @@ import { useEditorStore } from "@/lib/store/editor.store";
 export const useConfigureLang = () => {
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification()
-  const { setLanguageToAdd, languageToAdd
+  const { setLanguageToAdd, setTranslationId, setTranslationText, translationText, languageToAdd
   } = useEditorStore()
 
   const addPathTolanguage = async (locale: string) => {
@@ -89,8 +89,38 @@ export const useConfigureLang = () => {
     setParsedProject(result.updatedProject)
   }
 
+
+  const handleFilter = async () => {
+    const obj = parsedProject.folder_structure.children[0].children;
+    const filtered = obj.filter((filt) =>
+      filt.name.toLowerCase().includes(translationText.toLowerCase())
+    );
+
+    const updatedFolder: ParsedProject = {
+      ...parsedProject,
+      folder_structure: {
+        name: "main",
+        children: parsedProject.folder_structure.children.map((pkg) => ({
+          ...pkg,
+          children: filtered
+        }))
+      }
+    }
+
+    setParsedProject(updatedFolder)
+  }
+
+
+  const handleReset = () => {
+    setTranslationId("")
+    setTranslationText("")
+  }
+
+
   return {
     addPathTolanguage,
-    handleDelete
+    handleDelete,
+    handleFilter,
+    handleReset
   }
 }
