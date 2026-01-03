@@ -16,6 +16,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { useNotification } from "@/components/elements/toast-notification";
 import { ParsedProject } from "@/lib/types/project.types";
 
+console.log("TEST")
 
 countries.registerLocale(enLocale);
 
