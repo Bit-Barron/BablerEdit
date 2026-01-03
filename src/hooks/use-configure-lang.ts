@@ -7,22 +7,21 @@ import { useEditorStore } from "@/lib/store/editor.store";
 
 
 export const useConfigureLang = () => {
-  const { parsedProject, setParsedProject
-  } = useProjectStore();
-
+  const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification()
   const { setLanguageToAdd, languageToAdd
   } = useEditorStore()
+
   const addPathTolanguage = async (locale: string) => {
     const openFile = await open({
       multiple: false,
       directory: false,
       filters: [{ extensions: ["json"], name: "Translaiton Json" }],
     });
-
     if (!openFile) return;
 
     const splitLocale = openFile.split("/").pop()
+
     if (!splitLocale) return;
 
     const checkIfFileAlreadyExist = parsedProject.translation_packages.some((t) => {
@@ -44,7 +43,6 @@ export const useConfigureLang = () => {
         { path: splitLocale, language: splitLocale.split(".")[0] }
       ]
     }));
-
 
     const updatedLanguages = [
       ...parsedProject.languages,

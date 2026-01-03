@@ -13,6 +13,7 @@ import { buildTranslationTree } from "@/lib/helpers/tree-builder";
 import "react-cmdk/dist/cmdk.css";
 import CommandPalette, { getItemIndex } from "react-cmdk";
 import { ConfigureLangDialog } from "@/components/pages/editor/configure-lang/configure-lang-dialog";
+import { FilterDialog } from "./editor/set-filter/filter-dialog";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
@@ -20,9 +21,13 @@ export const EditorPage: React.FC = () => {
     useEditorStore();
   const { moveJsonNode, commandPalette } = useEditor();
 
+
   const initialTreeData = useMemo(() => {
     if (!parsedProject) return [];
-    return buildTranslationTree(parsedProject);
+
+    console.log(parsedProject)
+    const tree = buildTranslationTree(parsedProject);
+    return tree;
   }, [parsedProject]);
 
   const selectedLeafNode = selectedNode?.isLeaf ? selectedNode : null;
@@ -96,6 +101,7 @@ export const EditorPage: React.FC = () => {
         )}
         <AddIdDialog open={addIdDialogOpen} onOpenChange={setAddIdDialogOpen} />
         <ConfigureLangDialog />
+        <FilterDialog />
       </div>
     </div>
   );

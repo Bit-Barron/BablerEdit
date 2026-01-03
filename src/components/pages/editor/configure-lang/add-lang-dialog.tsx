@@ -19,8 +19,6 @@ export const AddLanguageDialog: React.FC = ({ }) => {
 
   const uniqueArray = [...new Set(selectedLanguage)];
 
-  console.log("selectedLangauge", selectedLanguage)
-
   useEffect(() => {
     setLanguageToAdd(selectedLanguage);
   }, [selectedLanguage, setLanguageToAdd]);

@@ -23,7 +23,6 @@ interface ProjectStore {
   primaryLanguageCode: string;
   setPrimaryLanguageCode: (code: string) => void;
 }
-
 export const useProjectStore = create<ProjectStore>((set) => ({
   setCurrentProjectPath: (path) => set({ currentProjectPath: path }),
   currentProjectPath: null,

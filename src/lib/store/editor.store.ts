@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { NodeApi } from "react-arborist";
 import { TreeNodeType } from "@/lib/types/editor.types";
 import { SetStateAction } from "react";
+import { ParsedProject } from "../types/project.types";
 
 interface EditorStore {
   selectedNode: NodeApi<TreeNodeType> | null;
@@ -39,6 +40,19 @@ interface EditorStore {
 
   selectedLanguage: string[];
   setSelectedLanguage: (selectedLanguage: string[]) => void;
+
+  filterDialogOpen: boolean;
+  setFilterDialogOpen: (filterDialogOpen: boolean) => void;
+
+
+  translationId: string;
+  setTranslationId: (translationId: string) => void;
+
+  translationText: string;
+  setTranslationText: (translationText: string) => void;
+
+  newParsedProject: ParsedProject;
+  setNewParsedProject: (newParsedProject: ParsedProject) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
@@ -48,7 +62,8 @@ export const useEditorStore = create<EditorStore>((set) => ({
   languageToAdd: [],
   selectedLanguage: [],
   setSelectedLanguage: (selectedLanguage: string[]) => set({ selectedLanguage }),
-
+  filterDialogOpen: false,
+  setFilterDialogOpen: (filterDialogOpen: boolean) => set({ filterDialogOpen: filterDialogOpen }),
   setLanguageToAdd: (langs: string[]) => set({ languageToAdd: langs }),
   setSearch: (search: string) => set({ search }),
   commandPalettenOpen: false,
@@ -57,9 +72,17 @@ export const useEditorStore = create<EditorStore>((set) => ({
       commandPalettenOpen:
         typeof open === "function" ? open(state.commandPalettenOpen) : open,
     })),
+
+  newParsedProject: {} as ParsedProject,
+  setNewParsedProject: (parsedProject: ParsedProject) => set({
+    newParsedProject: parsedProject
+  }),
   addLangDialogOpen: false,
   setAddLangDialogOpen: (open: boolean) => set({ addLangDialogOpen: open }),
-
+  translationId: "",
+  setTranslationId: (translationId: string) => set({ translationId }),
+  translationText: "",
+  setTranslationText: (translationText: string) => set({ translationText }),
   configureLangDialogOpen: false,
   setConfigureLangDialogOpen: (open: boolean) =>
     set({ configureLangDialogOpen: open }),

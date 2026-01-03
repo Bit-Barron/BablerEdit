@@ -14,7 +14,6 @@ import { useConfigureLang } from "@/hooks/use-configure-lang";
 
 countries.registerLocale(enLocale);
 
-
 export const ConfigureLangDialog: React.FC = ({ }) => {
   const {
     configureLangDialogOpen,
