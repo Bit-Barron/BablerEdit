@@ -67,7 +67,6 @@ export const EditorPage: React.FC = () => {
           openByDefault={false}
           indent={24}
           rowHeight={40}
-          selection="STAMMDATEN.AUFTRAG"
           onMove={moveJsonNode}
           onSelect={(nodes) => {
             if (nodes.length > 0) {

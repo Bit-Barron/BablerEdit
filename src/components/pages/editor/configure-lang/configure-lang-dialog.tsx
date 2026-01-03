@@ -11,11 +11,15 @@ import ISO6391 from "iso-639-1";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { useEffect, useState } from "react";
-import { useConfigureLang } from "@/hooks/use-configure-lang";
+import * as ProjectService from "@/lib/services/project.service"
+import { open } from "@tauri-apps/plugin-dialog";
+import { useNotification } from "@/components/elements/toast-notification";
+import { ParsedProject } from "@/lib/types/project.types";
+
 
 countries.registerLocale(enLocale);
 
-export const ConfigureLangDialog: React.FC = ({}) => {
+export const ConfigureLangDialog: React.FC = ({ }) => {
   const {
     configureLangDialogOpen,
     setConfigureLangDialogOpen,
@@ -24,12 +28,75 @@ export const ConfigureLangDialog: React.FC = ({}) => {
     setLanguageToAdd,
     setAddLangDialogOpen,
   } = useEditorStore();
-  const { parsedProject } = useProjectStore();
+  const { parsedProject, setParsedProject
+  } = useProjectStore();
   const [translationUrls, setTranslationUrls] = useState<string[]>([]);
   const [languagePaths, setLanguagePaths] = useState<Record<string, string>>(
     {}
   );
-  const { handleDelete, addPathToLanguage } = useConfigureLang();
+
+  const { addNotification } = useNotification()
+
+
+  const handleDelete = () => {
+    return;
+  }
+
+  const addPathTolanguage = async () => {
+    const openFile = await open({
+      multiple: false,
+      directory: false,
+      filters: [{ extensions: ["json"], name: "Translaiton Json" }],
+    });
+
+    if (!openFile) return;
+
+    const splitLocale = openFile.split("/").pop()
+
+    if (!splitLocale) return;
+
+    const checkIfFileAlreadyExist = parsedProject.translation_packages.some((t) => {
+      return t.translation_urls.find((t) => t.path === splitLocale)
+    })
+
+    if (checkIfFileAlreadyExist) {
+      addNotification({
+        title: "Translation Json already Exist",
+        type: "error",
+      })
+      return;
+    }
+
+    const translationPackages = parsedProject.translation_packages.map((t) => ({
+      ...t,
+      translation_urls: [
+        ...t.translation_urls,
+        { path: splitLocale, language: splitLocale.split(".")[0] }
+      ]
+    }));
+
+
+    const updatedLanguages = [
+      ...parsedProject.languages,
+      { code: splitLocale.split(".")[0] }
+    ]
+
+    const updatedFolderStructure: ParsedProject
+      = {
+      ...parsedProject,
+      languages: updatedLanguages,
+      translation_packages: translationPackages
+    }
+
+    const result = await ProjectService.updateProjectFolderStructure({
+      project: updatedFolderStructure,
+    });
+
+    console.log("RESULT", result.updatedProject)
+
+    setParsedProject(result.updatedProject)
+
+  }
 
   useEffect(() => {
     if (parsedProject && configureLangDialogOpen) {
@@ -44,7 +111,6 @@ export const ConfigureLangDialog: React.FC = ({}) => {
         }
       }
 
-      console.log("URLS", urls);
       setTranslationUrls(urls);
     }
   }, [parsedProject, configureLangDialogOpen]);
@@ -117,13 +183,14 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                             />
                             <Button
                               onClick={async () => {
-                                const selectedPath = await addPathToLanguage();
-                                if (selectedPath) {
-                                  setLanguagePaths({
-                                    ...languagePaths,
-                                    [locale]: selectedPath,
-                                  });
-                                }
+                                const selectedPath = await addPathTolanguage();
+                                // if (selectedPath) {
+                                //   setLanguagePaths({
+                                //     ...languagePaths,
+                                //     [locale]: selectedPath,
+                                //   });
+                                // }
+                                //
                               }}
                               variant="outline"
                               size="icon"
@@ -176,7 +243,6 @@ export const ConfigureLangDialog: React.FC = ({}) => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(url)}
                           className="shrink-0 hover:bg-destructive/10 hover:text-destructive h-8 w-8 p-2"
                         >
                           <Trash2 className="w-4 h-4" />

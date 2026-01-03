@@ -65,7 +65,7 @@ export const useEditor = () => {
           id: `id-${id}`,
           children: id,
           icon: "DocumentTextIcon",
-          onClick: () => {},
+          onClick: () => { },
         })),
       },
     ],
@@ -200,16 +200,10 @@ export const useEditor = () => {
     }
   };
 
-  const removeLanguage = () => {};
-
-  const addLanguage = () => {};
-
   return {
     saveProject,
     openProject,
     moveJsonNode,
     commandPalette,
-    removeLanguage,
-    addLanguage,
   };
 };
