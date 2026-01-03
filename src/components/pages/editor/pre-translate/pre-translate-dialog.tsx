@@ -7,34 +7,21 @@ import { RadioGroup } from "@/components/retroui/Radio"
 import { CheckboxComponent } from "@/components/ui/retroui/checkbox"
 import { useEditorStore } from "@/lib/store/editor.store"
 import { useProjectStore } from "@/lib/store/project.store"
+import { PlusIcon } from "@/components/icons/plus"
 
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateDialog } = useEditorStore()
   const { parsedProject } = useProjectStore()
   const langs = parsedProject.languages;
 
-  console.log(langs)
 
   return (
     <Dialog open={preTranslateDialog} onOpenChange={setPreTranslateDialog}>
-      <Dialog.Content className="max-w-2xl p-0 overflow-hidden rounded-2xl">
-        <Dialog.Header>
-          <div className="relative px-8 pt-8 pb-6">
-            <div className="relative">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center">
-                  <svg className="w-5 h-5 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                  </svg>
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold tracking-tight">Pre-Translate</h2>
-                </div>
-              </div>
-            </div>
-          </div>
-
+      <Dialog.Content className="max-w-2xl p-0 overflow-hidden">
+        <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
+          Pre Translation
         </Dialog.Header>
+
         <div className="px-8 pb-8 space-y-6 mt-5">
           <div className="relative p-4 g-muted/50 border border-border overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
@@ -49,11 +36,6 @@ export const PreTranslateDialog: React.FC = () => {
                 <a href="#" className="text-primary hover:text-primary/80 transition-colors underline underline-offset-2">
                   these services
                 </a>
-                . See our{" "}
-                <a href="#" className="text-primary hover:text-primary/80 transition-colors underline underline-offset-2">
-                  privacy policy
-                </a>{" "}
-                for details.
               </p>
             </div>
           </div>
@@ -105,15 +87,24 @@ export const PreTranslateDialog: React.FC = () => {
                     id={lang.code}
                     defaultChecked
                   />
-                  <Label
-                    htmlFor={lang.code}
-                    className="text-sm cursor-pointer group-hover:text-foreground transition-colors"
-                  >
-                    {lang.code}
-                  </Label>
+                  <div className="flex flex-col">
+                    <Label
+                      htmlFor={lang.code}
+                      className="text-sm cursor-pointer group-hover:text-foreground transition-colors"
+                    >
+                      {lang.code}
+                    </Label>
+                    <span className="text-xs text-muted-foreground">{lang.code}</span>
+                  </div>
                 </div>
               ))}
             </div>
+            <section className="flex">
+              <Button>
+                <PlusIcon size={17} />
+                Add new language
+              </Button>
+            </section>
           </div>
 
           <div className="space-y-4 pt-2">
