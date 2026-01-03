@@ -13,7 +13,8 @@ import { useEffect, useState } from "react"
 import { useConfigureLang } from "@/hooks/use-configure-lang";
 
 countries.registerLocale(enLocale);
-console.log("TEST")
+
+
 export const ConfigureLangDialog: React.FC = ({ }) => {
   const {
     configureLangDialogOpen,
