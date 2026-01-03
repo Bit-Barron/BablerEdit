@@ -5,11 +5,10 @@ import { useNotification } from "@/components/elements/toast-notification";
 import { ParsedProject } from "@/lib/types/project.types";
 import { useEditorStore } from "@/lib/store/editor.store";
 
-
 export const useConfigureLang = () => {
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification()
-  const { setLanguageToAdd, setTranslationId, setTranslationText, translationText, languageToAdd
+  const { setLanguageToAdd, setTranslationId, setTranslationText, translationText, languageToAdd, setApprovalStateStatus, setTranslationTextStatus, setUsageStatus
   } = useEditorStore()
 
   const addPathTolanguage = async (locale: string) => {
@@ -18,6 +17,7 @@ export const useConfigureLang = () => {
       directory: false,
       filters: [{ extensions: ["json"], name: "Translaiton Json" }],
     });
+
     if (!openFile) return;
 
     const splitLocale = openFile.split("/").pop()
@@ -96,6 +96,16 @@ export const useConfigureLang = () => {
       filt.name.toLowerCase().includes(translationText.toLowerCase())
     );
 
+    if (!filtered) {
+      addNotification(
+        {
+          title: "No filter found",
+          type: "error"
+        }
+      )
+      return;
+    }
+
     const updatedFolder: ParsedProject = {
       ...parsedProject,
       folder_structure: {
@@ -110,12 +120,13 @@ export const useConfigureLang = () => {
     setParsedProject(updatedFolder)
   }
 
-
   const handleReset = () => {
     setTranslationId("")
     setTranslationText("")
+    setTranslationTextStatus("any")
+    setApprovalStateStatus("any")
+    setUsageStatus("any")
   }
-
 
   return {
     addPathTolanguage,

@@ -21,7 +21,8 @@ function AppContent() {
     setCurrentRoute,
     setAddIdDialogOpen,
     setConfigureLangDialogOpen,
-    setFilterDialogOpen
+    setFilterDialogOpen,
+    setPreTranslateDialog
   } = useEditorStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
@@ -30,7 +31,6 @@ function AppContent() {
   const { loading } = useSettings();
 
   useShortcut();
-
   useEffect(() => {
     const handleToolbarAction = async () => {
       switch (onProjectClick) {
@@ -45,6 +45,9 @@ function AppContent() {
         case "add-id":
           setAddIdDialogOpen(true);
           break;
+        case "pre-translate":
+          setPreTranslateDialog(true)
+          break
         case "remove-ids":
           await removeIdFromJson();
           break;

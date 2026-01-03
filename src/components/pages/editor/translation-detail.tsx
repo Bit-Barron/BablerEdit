@@ -81,7 +81,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         <div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <Dialog.Trigger onClick={() => setDialogOpen(true)}>
-              <MessageSquareIcon size={20} />
+              <MessageSquareIcon size={17} className="mt-1" />
             </Dialog.Trigger>
             <Dialog.Content
               size="md"

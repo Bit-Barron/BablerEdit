@@ -1,101 +1,113 @@
-import { create } from "zustand";
-import { NodeApi } from "react-arborist";
-import { TreeNodeType } from "@/lib/types/editor.types";
-import { SetStateAction } from "react";
-import { ParsedProject } from "../types/project.types";
+
+import { create } from "zustand"
+import type { NodeApi } from "react-arborist"
+import type { TreeNodeType } from "@/lib/types/editor.types"
+import type { SetStateAction } from "react"
+import type { ParsedProject } from "../types/project.types"
 
 interface EditorStore {
-  selectedNode: NodeApi<TreeNodeType> | null;
-  setSelectedNode: (node: NodeApi<TreeNodeType> | null) => void;
+  selectedNode: NodeApi<TreeNodeType> | null
+  setSelectedNode: (node: NodeApi<TreeNodeType> | null) => void
 
-  onProjectClick: string;
-  setOnProjectClick: (id: string) => void;
+  onProjectClick: string
+  setOnProjectClick: (id: string) => void
 
-  currentRoute: string;
-  setCurrentRoute: (route: string) => void;
+  currentRoute: string
+  setCurrentRoute: (route: string) => void
 
-  disabledButtons: boolean;
-  setDisabledButtons: (disabled: boolean) => void;
+  disabledButtons: boolean
+  setDisabledButtons: (disabled: boolean) => void
 
-  addIdDialogOpen: boolean;
-  setAddIdDialogOpen: (open: boolean) => void;
+  addIdDialogOpen: boolean
+  setAddIdDialogOpen: (open: boolean) => void
 
-  search: string;
-  setSearch: (search: string) => void;
-  commandPalettenOpen: boolean;
-  setCommandPaletteOpen: (open: SetStateAction<boolean>) => void;
+  search: string
+  setSearch: (search: string) => void
 
-  configureLangDialogOpen: boolean;
-  setConfigureLangDialogOpen: (open: boolean) => void;
+  commandPalettenOpen: boolean
+  setCommandPaletteOpen: (open: SetStateAction<boolean>) => void
 
-  removeLangDialogOpen: boolean;
-  setRemoveLangDialogOpen: (open: boolean) => void;
+  configureLangDialogOpen: boolean
+  setConfigureLangDialogOpen: (open: boolean) => void
 
-  languageToAdd: string[];
-  setLanguageToAdd: (langs: string[]) => void;
+  removeLangDialogOpen: boolean
+  setRemoveLangDialogOpen: (open: boolean) => void
 
+  languageToAdd: string[]
+  setLanguageToAdd: (langs: string[]) => void
 
-  addLangDialogOpen: boolean;
-  setAddLangDialogOpen: (open: boolean) => void;
+  addLangDialogOpen: boolean
+  setAddLangDialogOpen: (open: boolean) => void
 
-  selectedLanguage: string[];
-  setSelectedLanguage: (selectedLanguage: string[]) => void;
+  selectedLanguage: string[]
+  setSelectedLanguage: (selectedLanguage: string[]) => void
 
-  filterDialogOpen: boolean;
-  setFilterDialogOpen: (filterDialogOpen: boolean) => void;
+  filterDialogOpen: boolean
+  setFilterDialogOpen: (filterDialogOpen: boolean) => void
 
+  translationId: string
+  setTranslationId: (translationId: string) => void
 
-  translationId: string;
-  setTranslationId: (translationId: string) => void;
+  translationText: string
+  setTranslationText: (translationText: string) => void
 
-  translationText: string;
-  setTranslationText: (translationText: string) => void;
+  translationTextStatus: string
+  setTranslationTextStatus: (translationTextStatus: string) => void
 
-  newParsedProject: ParsedProject;
-  setNewParsedProject: (newParsedProject: ParsedProject) => void;
+  approvalStateStatus: string
+  setApprovalStateStatus: (approvalStateStatus: string) => void
+
+  usageStatus: string
+  setUsageStatus: (usageStatus: string) => void
+
+  preTranslateDialog: boolean;
+  setPreTranslateDialog: (preTranslateDialog: boolean) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
+  preTranslateDialog: false,
+  translationTextStatus: "any",
+  approvalStateStatus: "any",
+  usageStatus: "any",
   selectedNode: null,
-  setSelectedNode: (node) => set({ selectedNode: node }),
   search: "",
   languageToAdd: [],
   selectedLanguage: [],
-  setSelectedLanguage: (selectedLanguage: string[]) => set({ selectedLanguage }),
   filterDialogOpen: false,
+  commandPalettenOpen: false,
+  newParsedProject: {} as ParsedProject,
+  addLangDialogOpen: false,
+  translationId: "",
+  translationText: "",
+  configureLangDialogOpen: false,
+  removeLangDialogOpen: false,
+  addIdDialogOpen: false,
+  onProjectClick: "",
+  currentRoute: "wizard",
+  disabledButtons: false,
+  setTranslationTextStatus: (translationTextStatus) => set({ translationTextStatus }),
+  setApprovalStateStatus: (approvalStateStatus: string) => set({ approvalStateStatus }),
+  setUsageStatus: (usageStatus: string) => set({ usageStatus }),
+  setSelectedNode: (node) => set({ selectedNode: node }),
+  setSelectedLanguage: (selectedLanguage: string[]) => set({ selectedLanguage }),
   setFilterDialogOpen: (filterDialogOpen: boolean) => set({ filterDialogOpen: filterDialogOpen }),
   setLanguageToAdd: (langs: string[]) => set({ languageToAdd: langs }),
   setSearch: (search: string) => set({ search }),
-  commandPalettenOpen: false,
   setCommandPaletteOpen: (open: SetStateAction<boolean>) =>
     set((state) => ({
-      commandPalettenOpen:
-        typeof open === "function" ? open(state.commandPalettenOpen) : open,
+      commandPalettenOpen: typeof open === "function" ? open(state.commandPalettenOpen) : open,
     })),
 
-  newParsedProject: {} as ParsedProject,
-  setNewParsedProject: (parsedProject: ParsedProject) => set({
-    newParsedProject: parsedProject
-  }),
-  addLangDialogOpen: false,
-  setAddLangDialogOpen: (open: boolean) => set({ addLangDialogOpen: open }),
-  translationId: "",
-  setTranslationId: (translationId: string) => set({ translationId }),
-  translationText: "",
-  setTranslationText: (translationText: string) => set({ translationText }),
-  configureLangDialogOpen: false,
-  setConfigureLangDialogOpen: (open: boolean) =>
-    set({ configureLangDialogOpen: open }),
-  removeLangDialogOpen: false,
-  setRemoveLangDialogOpen: (open: boolean) =>
-    set({ removeLangDialogOpen: open }),
+  setPreTranslateDialog: (open) => set({ preTranslateDialog: open }),
 
-  onProjectClick: "",
+  setAddLangDialogOpen: (open: boolean) => set({ addLangDialogOpen: open }),
+  setTranslationId: (translationId: string) => set({ translationId }),
+  setTranslationText: (translationText: string) => set({ translationText }),
+  setConfigureLangDialogOpen: (open: boolean) => set({ configureLangDialogOpen: open }),
+  setRemoveLangDialogOpen: (open: boolean) => set({ removeLangDialogOpen: open }),
+
   setOnProjectClick: (id: string) => set({ onProjectClick: id }),
-  currentRoute: "wizard",
   setCurrentRoute: (route: string) => set({ currentRoute: route }),
-  disabledButtons: false,
   setDisabledButtons: (disabled: boolean) => set({ disabledButtons: disabled }),
-  addIdDialogOpen: false,
   setAddIdDialogOpen: (open: boolean) => set({ addIdDialogOpen: open }),
-}));
+}))

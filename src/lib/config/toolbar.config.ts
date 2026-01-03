@@ -4,8 +4,8 @@ import { HardDriveDownloadIcon } from "@/components/icons/hard-drive-download";
 import { PlusIcon } from "@/components/icons/plus";
 import { DeleteIcon } from "@/components/icons/delete";
 import { SlidersHorizontalIcon } from "@/components/icons/sliders-horizontal";
-import { BotIcon } from "@/components/icons/bot";
 import { EarthIcon } from "@/components/icons/earth";
+import { LanguagesIcon } from "@/components/icons/languages";
 
 export const TOOLBAR: ToolbarType[] = [
   {
@@ -46,9 +46,9 @@ export const TOOLBAR: ToolbarType[] = [
     disabled: false,
   },
   {
-    id: "consistency",
-    icon: BotIcon,
-    label: "ConsistencyAI",
+    id: "pre-translate",
+    icon: LanguagesIcon,
+    label: "Pre-Translate",
     enabledIn: ["/editor"],
     disabled: false,
   },
