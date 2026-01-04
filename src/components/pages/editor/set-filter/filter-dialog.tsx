@@ -77,7 +77,6 @@ export const FilterDialog: React.FC = () => {
                 <Select
                   value={translationTextStatus}
                   onValueChange={(value) => {
-                    console.log("Translation text status:", value)
                     setTranslationTextStatus(value as string)
                   }}
                 >
@@ -99,7 +98,6 @@ export const FilterDialog: React.FC = () => {
                 <Select
                   value={approvalStateStatus}
                   onValueChange={(value) => {
-                    console.log("Approval state:", value)
                     setApprovalStateStatus(value as string)
                   }}
                 >
@@ -121,7 +119,6 @@ export const FilterDialog: React.FC = () => {
                 <Select
                   value={usageStatus}
                   onValueChange={(value) => {
-                    console.log("Usage status:", value)
                     setUsageStatus(value as string)
                   }}
                 >

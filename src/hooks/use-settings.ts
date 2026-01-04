@@ -5,7 +5,7 @@ import * as SettingsService from "@/lib/services/settings.service";
 import { useNotification } from "@/components/elements/toast-notification";
 import { useSettingsStore } from "@/lib/store/setting.store";
 
-let hasLoadedSettings = false; //** Ensure settings are loaded only once
+let hasLoadedSettings = false;
 
 export const useSettings = () => {
   const { setParsedProject, setProjectSnapshot } = useProjectStore();

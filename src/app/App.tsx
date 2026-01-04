@@ -29,7 +29,7 @@ function AppContent() {
   const { removeIdFromJson } = useTranslation();
   const location = useLocation();
   const { loading } = useSettings();
-  console.log("TEST")
+
   useShortcut();
   useEffect(() => {
     const handleToolbarAction = async () => {
@@ -47,6 +47,7 @@ function AppContent() {
           break;
         case "pre-translate":
           setPreTranslateDialog(true)
+
           break
         case "remove-ids":
           await removeIdFromJson();
