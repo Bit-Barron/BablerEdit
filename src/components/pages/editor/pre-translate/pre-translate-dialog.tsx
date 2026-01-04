@@ -1,5 +1,6 @@
 "use client"
-import type React from "react"
+
+import React from "react"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"
 import { Label } from "@/components/ui/retroui/label"
@@ -8,15 +9,22 @@ import { CheckboxComponent } from "@/components/ui/retroui/checkbox"
 import { useEditorStore } from "@/lib/store/editor.store"
 import { useProjectStore } from "@/lib/store/project.store"
 import { PlusIcon } from "@/components/icons/plus"
+import { InfoIcon } from "lucide-react"
 
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateDialog } = useEditorStore()
   const { parsedProject } = useProjectStore()
   const langs = parsedProject.languages;
 
+  const TRANSLATIONS = [
+    { value: "google", label: "Google", icon: "G" },
+    { value: "deepl", label: "DeepL", icon: "D" },
+    { value: "microsoft", label: "Microsoft", icon: "M" },
+    { value: "openai", label: "OpenAI", icon: "O" },
+  ]
 
   return (
-    <Dialog open={preTranslateDialog} onOpenChange={setPreTranslateDialog}>
+    <Dialog open={preTranslateDialog} onOpenChange={setPreTranslateDialog} >
       <Dialog.Content className="max-w-2xl p-0 overflow-hidden">
         <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
           Pre Translation
@@ -26,16 +34,9 @@ export const PreTranslateDialog: React.FC = () => {
           <div className="relative p-4 g-muted/50 border border-border overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
             <div className="flex gap-3">
-              <div className="shrink-0 mt-0.5">
-                <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                </svg>
-              </div>
+              <InfoIcon />
               <p className="text-[13px] leading-relaxed text-muted-foreground">
-                Empty translations will be filled with texts from online services. Your primary language texts will be sent to{" "}
-                <a href="#" className="text-primary hover:text-primary/80 transition-colors underline underline-offset-2">
-                  these services
-                </a>
+                Empty translations will be filled with texts from online services. Your primary language texts will be sent to
               </p>
             </div>
           </div>
@@ -46,12 +47,7 @@ export const PreTranslateDialog: React.FC = () => {
                 Translation Service
               </h3>
               <RadioGroup defaultValue="google" className="space-y-1">
-                {[
-                  { value: "google", label: "Google", icon: "G" },
-                  { value: "deepl", label: "DeepL", icon: "D" },
-                  { value: "microsoft", label: "Microsoft", icon: "M" },
-                  { value: "openai", label: "OpenAI", icon: "O" },
-                ].map((service) => (
+                {TRANSLATIONS.map((service) => (
                   <div
                     key={service.value}
                     className="group flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-transparent hover:border-border"
@@ -60,9 +56,6 @@ export const PreTranslateDialog: React.FC = () => {
                       value={service.value}
                       id={service.value}
                     />
-                    <div className="w-7 h-7 rounded-md bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                      {service.icon}
-                    </div>
                     <Label
                       htmlFor={service.value}
                       className="text-sm cursor-pointer group-hover:text-foreground transition-colors"
@@ -94,7 +87,6 @@ export const PreTranslateDialog: React.FC = () => {
                     >
                       {lang.code}
                     </Label>
-                    <span className="text-xs text-muted-foreground">{lang.code}</span>
                   </div>
                 </div>
               ))}

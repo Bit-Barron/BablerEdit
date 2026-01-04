@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import type React from "react"
 import { useEditorStore } from "@/lib/store/editor.store"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"
@@ -77,6 +77,7 @@ export const FilterDialog: React.FC = () => {
                 <Select
                   value={translationTextStatus}
                   onValueChange={(value) => {
+                    console.log("Translation text status:", value)
                     setTranslationTextStatus(value as string)
                   }}
                 >
@@ -98,6 +99,7 @@ export const FilterDialog: React.FC = () => {
                 <Select
                   value={approvalStateStatus}
                   onValueChange={(value) => {
+                    console.log("Approval state:", value)
                     setApprovalStateStatus(value as string)
                   }}
                 >
@@ -119,6 +121,7 @@ export const FilterDialog: React.FC = () => {
                 <Select
                   value={usageStatus}
                   onValueChange={(value) => {
+                    console.log("Usage status:", value)
                     setUsageStatus(value as string)
                   }}
                 >
