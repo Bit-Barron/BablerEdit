@@ -62,9 +62,13 @@ interface EditorStore {
 
   preTranslateDialog: boolean;
   setPreTranslateDialog: (preTranslateDialog: boolean) => void;
+
+  setTranslationUrls: (translationUrls: string[]) => void;
+  translationUrls: string[]
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
+  translationUrls: [],
   preTranslateDialog: false,
   translationTextStatus: "any",
   approvalStateStatus: "any",
@@ -97,6 +101,9 @@ export const useEditorStore = create<EditorStore>((set) => ({
     set((state) => ({
       commandPalettenOpen: typeof open === "function" ? open(state.commandPalettenOpen) : open,
     })),
+  setTranslationUrls: (translationUrls: string[]) => set({
+    translationUrls
+  }),
 
   setPreTranslateDialog: (open) => set({ preTranslateDialog: open }),
 

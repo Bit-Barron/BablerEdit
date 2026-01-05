@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Translation } from "@/lib/types/project.types";
+import { FileWithPath, Translation } from "@/lib/types/project.types";
 
 interface TranslationStore {
   currentTranslations: Translation[];
@@ -13,10 +13,23 @@ interface TranslationStore {
 
   setTranslationUrls: (urls: string[]) => void;
   translationUrls: string[];
+
+  comment: string;
+  setComment: (coimment: string) => void;
+
+  commentDialogOpen: boolean;
+  setCommentDialogOpen: (dialogOpen: boolean) => void;
+
+  translationFiles: FileWithPath[]
+  setTranslationFiles: (translationFiles: FileWithPath[]) => void;
 }
 
 export const useTranslationStore = create<TranslationStore>((set) => ({
   currentTranslations: [],
+  translationFiles: [],
+  setTranslationFiles: (files: FileWithPath[]) => set({
+    translationFiles: files
+  }),
   setCurrentTranslations: (translations) =>
     set({ currentTranslations: translations }),
   displayComment: "",
@@ -25,6 +38,14 @@ export const useTranslationStore = create<TranslationStore>((set) => ({
       displayComment: comment,
     }),
   translationUrls: [],
+  comment: "",
+  setComment: (comment: string) => set({
+    comment
+  }),
+  commentDialogOpen: false,
+  setCommentDialogOpen: (open: boolean) => set({
+    commentDialogOpen: open
+  }),
   setTranslationUrls: (urls) => set({ translationUrls: urls }),
 
   setTranslationForKey: (translations) =>

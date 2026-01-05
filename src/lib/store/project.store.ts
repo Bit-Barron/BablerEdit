@@ -22,6 +22,9 @@ interface ProjectStore {
 
   primaryLanguageCode: string;
   setPrimaryLanguageCode: (code: string) => void;
+
+  fileUploadDialog: boolean;
+  setFileUploadDialog: (fileUploadDialog: boolean) => void;
 }
 export const useProjectStore = create<ProjectStore>((set) => ({
   setCurrentProjectPath: (path) => set({ currentProjectPath: path }),
@@ -30,6 +33,10 @@ export const useProjectStore = create<ProjectStore>((set) => ({
   setHasUnsavedChanges: (hasChanges) => set({ hasUnsavedChanges: hasChanges }),
   projectSnapshot: {} as ParsedProject,
   setProjectSnapshot: (snapshot) => set({ projectSnapshot: snapshot }),
+  fileUploadDialog: false,
+  setFileUploadDialog: (fileUploadDialog: boolean) => set({
+    fileUploadDialog
+  }),
 
   loading: false,
   setLoading: (loading) => set({ loading }),

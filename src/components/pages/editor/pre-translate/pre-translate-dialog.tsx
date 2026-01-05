@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import type React from "react"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"
 import { Label } from "@/components/ui/retroui/label"
@@ -36,7 +36,7 @@ export const PreTranslateDialog: React.FC = () => {
             <div className="flex gap-3">
               <InfoIcon />
               <p className="text-[13px] leading-relaxed text-muted-foreground">
-                Empty translations will be filled with texts from online services. Your primary language texts will be sent to
+                Empty translations will be filled with texts from online services. Your primary language texts will be sent to{" "}
               </p>
             </div>
           </div>

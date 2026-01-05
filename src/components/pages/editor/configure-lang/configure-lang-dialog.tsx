@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/retroui/input";
 import ISO6391 from "iso-639-1";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useConfigureLang } from "@/hooks/use-configure-lang";
 
 countries.registerLocale(enLocale);
@@ -21,9 +21,10 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
     languageToAdd,
     setLanguageToAdd,
     setAddLangDialogOpen,
+    translationUrls,
+    setTranslationUrls
   } = useEditorStore();
   const { parsedProject } = useProjectStore();
-  const [translationUrls, setTranslationUrls] = useState<string[]>([]);
   const { addPathTolanguage, handleDelete } = useConfigureLang()
 
   useEffect(() => {

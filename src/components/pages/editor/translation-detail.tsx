@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/lib/types/project.types";
 import { TreeNodeType } from "@/lib/types/editor.types";
@@ -26,11 +26,13 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     setTranslationForKey,
     displayComment,
     setDisplayComment,
+    comment,
+    setComment,
+    commentDialogOpen,
+    setCommentDialogOpen
   } = useTranslationStore();
   const { toggleApproved, changeTranslationValue, addComment } =
     useTranslation();
-  const [comment, setComment] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -79,8 +81,8 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
           {selectedNode.data.id}
         </h1>
         <div>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <Dialog.Trigger onClick={() => setDialogOpen(true)}>
+          <Dialog open={commentDialogOpen} onOpenChange={setCommentDialogOpen}>
+            <Dialog.Trigger onClick={() => setCommentDialogOpen(true)}>
               <MessageSquareIcon size={17} className="mt-1" />
             </Dialog.Trigger>
             <Dialog.Content
@@ -106,7 +108,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   type="button"
                   variant="outline"
                   onClick={() => {
-                    setDialogOpen(false);
+                    setCommentDialogOpen(false);
                     setComment("");
                   }}
                 >
@@ -116,7 +118,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
                   className="w-28 btn btn-primary"
                   onClick={() => {
                     addComment(comment);
-                    setDialogOpen(false);
+                    setCommentDialogOpen(false);
                   }}
                 >
                   <PlaneIcon className="mr-2" size={16} />

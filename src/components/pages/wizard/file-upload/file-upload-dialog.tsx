@@ -4,10 +4,10 @@ import { Dialog } from "@/components/ui/retroui/dialog";
 import { MultiFileUpload } from "./file-upload";
 import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
-import { FileWithPath } from "@/lib/types/project.types";
 import { Button } from "@/components/ui/retroui/button";
 import * as ProjectService from "@/lib/services/project.service";
 import { useNotification } from "@/components/elements/toast-notification";
+import { useTranslationStore } from "@/lib/store/translation.store";
 
 interface FileUploadDialogProps {
   open: boolean;
@@ -24,7 +24,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
     setProjectSnapshot,
     primaryLanguageCode,
   } = useProjectStore();
-  const [translationFiles, setTranslationFiles] = useState<FileWithPath[]>([]);
+  const { translationFiles, setTranslationFiles } = useTranslationStore()
   const [dialogOpen, setDialogOpen] = useState(open);
   const { addNotification } = useNotification();
 

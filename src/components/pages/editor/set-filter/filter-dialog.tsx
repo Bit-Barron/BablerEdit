@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import { useEditorStore } from "@/lib/store/editor.store"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"

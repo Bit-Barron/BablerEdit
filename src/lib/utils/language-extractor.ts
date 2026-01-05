@@ -1,6 +1,5 @@
 export function extractLanguageCode(filename: string): string | null {
   const nameWithoutExt = filename.replace(/\.(FrameworkType)$/i, "");
-
   const patterns = [
     /^([a-z]{2}(-[A-Z]{2})?)$/, // en, en-US
     /\.([a-z]{2}(-[A-Z]{2})?)$/, // messages.en.json
