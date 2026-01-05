@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/retroui/input";
 import { Translation } from "@/lib/types/project.types";
 import { CheckboxComponent } from "@/components/ui/retroui/checkbox";
+import { useTranslationStore } from "@/lib/store/translation.store";
 
 interface TranslationInputProps {
   translation: Translation;
@@ -14,10 +15,9 @@ export const TranslationInput: React.FC<TranslationInputProps> = ({
   toggleApproved,
   changeTranslationValue,
 }) => {
-  const [localValue, setLocalValue] = useState(translation.value);
-
+  const { translationInputValue, setTranslationInputValue } = useTranslationStore()
   useEffect(() => {
-    setLocalValue(translation.value);
+    setTranslationInputValue(translation.value);
   }, [translation.value]);
 
   return (
@@ -38,11 +38,11 @@ export const TranslationInput: React.FC<TranslationInputProps> = ({
 
       <Input
         type="text"
-        value={localValue}
-        onChange={(e) => setLocalValue(e.target.value)}
+        value={translationInputValue}
+        onChange={(e) => setTranslationInputValue(e.target.value)}
         onBlur={() => {
-          if (localValue !== translation.value) {
-            changeTranslationValue(localValue, translation.language);
+          if (translationInputValue !== translation.value) {
+            changeTranslationValue(translationInputValue, translation.language);
           }
         }}
         className="w-full text-base px-4 py-3 bg-background border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-md transition-all"

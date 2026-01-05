@@ -22,6 +22,9 @@ interface TranslationStore {
 
   translationFiles: FileWithPath[]
   setTranslationFiles: (translationFiles: FileWithPath[]) => void;
+
+  translationInputValue: string;
+  setTranslationInputValue: (translationInput: string) => void;
 }
 
 export const useTranslationStore = create<TranslationStore>((set) => ({
@@ -37,6 +40,11 @@ export const useTranslationStore = create<TranslationStore>((set) => ({
     set({
       displayComment: comment,
     }),
+
+  translationInputValue: "",
+  setTranslationInputValue: (translationInput: string) => set({
+    translationInputValue: translationInput
+  }),
   translationUrls: [],
   comment: "",
   setComment: (comment: string) => set({
