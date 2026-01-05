@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, } from "react";
 import { Input } from "@/components/ui/retroui/input";
 import { Translation } from "@/lib/types/project.types";
 import { CheckboxComponent } from "@/components/ui/retroui/checkbox";
@@ -16,6 +16,7 @@ export const TranslationInput: React.FC<TranslationInputProps> = ({
   changeTranslationValue,
 }) => {
   const { translationInputValue, setTranslationInputValue } = useTranslationStore()
+
   useEffect(() => {
     setTranslationInputValue(translation.value);
   }, [translation.value]);

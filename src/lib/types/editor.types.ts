@@ -13,3 +13,11 @@ export interface ReactArboristType {
   parentNode: NodeApi<TreeNodeType> | null;
   index: number;
 }
+
+
+export interface TranslationOptionsProps {
+  id: string;
+  label: string;
+  desc: string;
+  selected: boolean
+}

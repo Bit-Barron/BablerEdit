@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { FileWithPath, Translation } from "@/lib/types/project.types";
+import { TranslationOptionsProps } from "../types/editor.types";
+
 
 interface TranslationStore {
   currentTranslations: Translation[];
@@ -25,14 +27,22 @@ interface TranslationStore {
 
   translationInputValue: string;
   setTranslationInputValue: (translationInput: string) => void;
+
+  translationOptions: TranslationOptionsProps[]
+  setTranslationOptions: (tranlsationOptions: TranslationOptionsProps[]) => void;
 }
 
 export const useTranslationStore = create<TranslationStore>((set) => ({
   currentTranslations: [],
+  translationOptions: [],
   translationFiles: [],
   setTranslationFiles: (files: FileWithPath[]) => set({
     translationFiles: files
   }),
+  setTranslationOptions: (translationOptions: TranslationOptionsProps[]) => set({
+    translationOptions: translationOptions
+  }),
+
   setCurrentTranslations: (translations) =>
     set({ currentTranslations: translations }),
   displayComment: "",

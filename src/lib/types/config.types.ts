@@ -28,3 +28,11 @@ export interface FileType {
   subtitle: string;
   color: string;
 }
+
+export interface TranslationModel {
+  value: string
+  label: string
+  description: string
+  speed: "fast" | "medium" | "slow"
+  quality: "good" | "great" | "best"
+}

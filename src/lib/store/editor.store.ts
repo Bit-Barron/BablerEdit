@@ -65,10 +65,14 @@ interface EditorStore {
 
   setTranslationUrls: (translationUrls: string[]) => void;
   translationUrls: string[]
+
+  selectedModel: string;
+  setSelectedModel: (selectedModel: string) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
   translationUrls: [],
+  selectedModel: "",
   preTranslateDialog: false,
   translationTextStatus: "any",
   approvalStateStatus: "any",
@@ -89,6 +93,9 @@ export const useEditorStore = create<EditorStore>((set) => ({
   onProjectClick: "",
   currentRoute: "wizard",
   disabledButtons: false,
+  setSelectedModel: (selectedModel: string) => set({
+    selectedModel
+  }),
   setTranslationTextStatus: (translationTextStatus) => set({ translationTextStatus }),
   setApprovalStateStatus: (approvalStateStatus: string) => set({ approvalStateStatus }),
   setUsageStatus: (usageStatus: string) => set({ usageStatus }),

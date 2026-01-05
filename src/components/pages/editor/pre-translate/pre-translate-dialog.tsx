@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"
 import { Label } from "@/components/ui/retroui/label"
@@ -9,122 +9,142 @@ import { CheckboxComponent } from "@/components/ui/retroui/checkbox"
 import { useEditorStore } from "@/lib/store/editor.store"
 import { useProjectStore } from "@/lib/store/project.store"
 import { PlusIcon } from "@/components/icons/plus"
-import { InfoIcon } from "lucide-react"
+import { Zap, Globe, Cpu, Sparkles, AlertCircle } from "lucide-react"
+import { NVIDIA_MODELS, OPTIONS } from "@/lib/config/translation.config"
+import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
+import { useTranslation } from "@/hooks/use-translation"
 
 export const PreTranslateDialog: React.FC = () => {
-  const { preTranslateDialog, setPreTranslateDialog } = useEditorStore()
+  const { preTranslateDialog, setPreTranslateDialog, setSelectedModel, selectedModel } = useEditorStore()
   const { parsedProject } = useProjectStore()
-  const langs = parsedProject.languages;
+  const { handleTranslation } = useTranslation()
 
-  const TRANSLATIONS = [
-    { value: "google", label: "Google", icon: "G" },
-    { value: "deepl", label: "DeepL", icon: "D" },
-    { value: "microsoft", label: "Microsoft", icon: "M" },
-    { value: "openai", label: "OpenAI", icon: "O" },
-  ]
+  const langs: { code: string }[] = parsedProject.languages
 
   return (
-    <Dialog open={preTranslateDialog} onOpenChange={setPreTranslateDialog} >
+    <Dialog open={preTranslateDialog} onOpenChange={setPreTranslateDialog}>
       <Dialog.Content className="max-w-2xl p-0 overflow-hidden">
-        <Dialog.Header className="px-6 pt-6 pb-3 shrink-0">
-          Pre Translation
+        <Dialog.Header className="px-6 pt-6 pb-4 bg-primary text-primary-foreground">
+          Translations
         </Dialog.Header>
 
-        <div className="px-8 pb-8 space-y-6 mt-5">
-          <div className="relative p-4 g-muted/50 border border-border overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
-            <div className="flex gap-3">
-              <InfoIcon />
-              <p className="text-[13px] leading-relaxed text-muted-foreground">
-                Empty translations will be filled with texts from online services. Your primary language texts will be sent to{" "}
-              </p>
-            </div>
+        <div className="px-6 py-5 space-y-6 max-h-[60vh] overflow-y-auto">
+          <div className="flex gap-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
+            <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Empty translations will be filled automatically via NVIDIA API.
+              Your texts will be sent to NVIDIA servers.
+              <span className="text-primary ml-1">Free Tier: ~5000 Credits</span>
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-sm font-medium text-foreground/80 uppercase tracking-wider">
-                Translation Service
-              </h3>
-              <RadioGroup defaultValue="google" className="space-y-1">
-                {TRANSLATIONS.map((service) => (
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-muted-foreground" />
+                <h3 className="text-sm font-medium">Model</h3>
+              </div>
+
+              <RadioGroup
+                value={selectedModel}
+                onValueChange={setSelectedModel}
+                className="space-y-1.5"
+              >
+                {NVIDIA_MODELS.map((model) => (
                   <div
-                    key={service.value}
-                    className="group flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-transparent hover:border-border"
+                    key={model.value}
+                    onClick={() => {
+                      setSelectedModel(model.value)
+                    }}
+                    className={`group relative flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all duration-150 border ${selectedModel === model.value
+                      ? "bg-primary/10 border-primary/40"
+                      : "border-transparent hover:bg-muted/50 hover:border-border"
+                      }`}
                   >
                     <RadioGroup.Item
-                      value={service.value}
-                      id={service.value}
+                      value={model.value}
+                      id={model.value}
+                      className="mt-0.5"
                     />
-                    <Label
-                      htmlFor={service.value}
-                      className="text-sm cursor-pointer group-hover:text-foreground transition-colors"
-                    >
-                      {service.label}
-                    </Label>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <Label
+                          htmlFor={model.value}
+                          className="text-sm font-medium cursor-pointer"
+                        >
+                          {model.label}
+                        </Label>
+                        {getSpeedBadge(model.speed)}
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[11px] text-muted-foreground">
+                          {model.description}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground/60">•</span>
+                        {getQualityDots(model.quality)}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-sm font-medium text-foreground/80 uppercase tracking-wider">
-                Languages
-              </h3>
-              {langs.map((lang) => (
-                <div
-                  key={lang.code}
-                  className="group flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-transparent hover:border-border"
-                >
-                  <CheckboxComponent
-                    id={lang.code}
-                    defaultChecked
-                  />
-                  <div className="flex flex-col">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-muted-foreground" />
+                  <h3 className="text-sm font-medium">Languages</h3>
+                </div>
+                <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                  {langs.length} available
+                </span>
+              </div>
+
+              <div className="space-y-1.5 max-h-[180px] overflow-y-auto pr-1">
+                {langs.map((lang) => (
+                  <div
+                    key={lang.code}
+                    className="group flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50 border border-transparent hover:border-border"
+                  >
+                    <CheckboxComponent id={lang.code} defaultChecked />
                     <Label
                       htmlFor={lang.code}
-                      className="text-sm cursor-pointer group-hover:text-foreground transition-colors"
+                      className="text-sm cursor-pointer flex-1"
                     >
                       {lang.code}
                     </Label>
                   </div>
-                </div>
-              ))}
-            </div>
-            <section className="flex">
-              <Button>
-                <PlusIcon size={17} />
-                Add new language
+                ))}
+              </div>
+
+              <Button variant="outline" size="sm" className="w-full mt-2">
+                <PlusIcon size={14} />
+                <span className="ml-1.5">Add language</span>
               </Button>
-            </section>
+            </div>
           </div>
 
-          <div className="space-y-4 pt-2">
-            <h3 className="text-sm font-medium text-foreground/80 uppercase tracking-wider">
-              Options
-            </h3>
+          <div className="space-y-3 pt-2 border-t border-border">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-muted-foreground" />
+              <h3 className="text-sm font-medium">Options</h3>
+            </div>
+
             <div className="grid grid-cols-1 gap-1">
-              {[
-                { id: "reset", label: "Reset Approved flag", desc: "Clear approval status after translation" },
-                { id: "selected", label: "Translate selected items only", desc: "Only process currently selected rows" },
-                { id: "overwrite", label: "Overwrite existing translations", desc: "Replace translations that already exist" },
-              ].map((option) => (
+              {OPTIONS.map((option) => (
                 <div
                   key={option.id}
-                  className="group flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-transparent hover:border-border"
+                  className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
                 >
-                  <CheckboxComponent
-                    id={option.id}
-                    className="mt-0.5"
-                  />
+                  <CheckboxComponent id={option.id} className="mt-0.5" />
                   <div className="flex flex-col">
                     <Label
                       htmlFor={option.id}
-                      className="text-sm cursor-pointer group-hover:text-foreground transition-colors"
+                      className="text-sm cursor-pointer"
                     >
                       {option.label}
                     </Label>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-[11px] text-muted-foreground">
                       {option.desc}
                     </span>
                   </div>
@@ -134,23 +154,26 @@ export const PreTranslateDialog: React.FC = () => {
           </div>
         </div>
 
-        <div className="px-8 py-5 bg-muted/30 border-t border-border flex items-center justify-end gap-3">
-          <Button
-            variant="outline"
-            onClick={() => setPreTranslateDialog(false)}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => setPreTranslateDialog(false)}
-          >
-            <span className="flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+        <div className="px-6 py-4 bg-muted/30 border-t border-border flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPreTranslateDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => {
+                handleTranslation(langs)
+                setPreTranslateDialog(false)
+              }}
+            >
+              <Zap className="w-3.5 h-3.5 mr-1.5" />
               Translate
-            </span>
-          </Button>
+            </Button>
+          </div>
         </div>
       </Dialog.Content>
     </Dialog >

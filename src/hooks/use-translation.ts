@@ -6,7 +6,8 @@ import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
 
 export const useTranslation = () => {
-  const { selectedNode, setSelectedNode } = useEditorStore();
+  const { selectedNode, setSelectedNode, selectedModel
+  } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
   const {
@@ -164,18 +165,46 @@ export const useTranslation = () => {
   };
 
   const handleDeleteLanguage = async (url: string) => {
-    if (!parsedProject) return;
+    try {
+      if (!parsedProject) return;
 
-    const TRANSLATION = url.split("/").pop();
-    const result = await TranslationService.removeTranslationUrl({
-      project: parsedProject,
-      translation: TRANSLATION!,
-    });
+      const TRANSLATION = url.split("/").pop();
+      const result = await TranslationService.removeTranslationUrl({
+        project: parsedProject,
+        translation: TRANSLATION!,
+      });
 
-    setParsedProject(result);
+      setParsedProject(result);
 
-    setTranslationUrls(translationUrls.filter((u) => u !== url));
+      setTranslationUrls(translationUrls.filter((u) => u !== url));
+
+    } catch (err) {
+      addNotification({
+        type: "error",
+        title: "Failed to add comment",
+      });
+
+      console.error(err)
+    }
   };
+
+  const handleTranslation = async (langs: { code: string }[]) => {
+    try {
+      console.log({
+        selectedModel,
+        langs
+      })
+
+    } catch (err) {
+      console.error(err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      addNotification({
+        type: "error",
+        title: "Failed to add comment",
+        description: message,
+      });
+    }
+  }
 
   return {
     addComment,
@@ -184,5 +213,6 @@ export const useTranslation = () => {
     removeIdFromJson,
     changeTranslationValue,
     handleDeleteLanguage,
+    handleTranslation
   };
 };
