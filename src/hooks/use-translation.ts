@@ -190,11 +190,18 @@ export const useTranslation = () => {
 
   const handleTranslation = async (langs: { code: string }[]) => {
     try {
-      console.log({
-        selectedModel,
-        langs
-      })
-
+      if (!langs || !selectedModel) {
+        addNotification({
+          title: "No Model or language Selected",
+          description: "Try again later",
+          type: "error"
+        })
+        return;
+      }
+      addNotification({
+        type: "success",
+        title: "Successfully started translation",
+      });
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";

@@ -28,18 +28,18 @@ interface TranslationStore {
   translationInputValue: string;
   setTranslationInputValue: (translationInput: string) => void;
 
-  translationOptions: TranslationOptionsProps[]
-  setTranslationOptions: (tranlsationOptions: TranslationOptionsProps[]) => void;
+  translationOptions: string
+  setTranslationOptions: (tranlsationOptions: string) => void;
 }
 
 export const useTranslationStore = create<TranslationStore>((set) => ({
   currentTranslations: [],
-  translationOptions: [],
+  translationOptions: "",
   translationFiles: [],
   setTranslationFiles: (files: FileWithPath[]) => set({
     translationFiles: files
   }),
-  setTranslationOptions: (translationOptions: TranslationOptionsProps[]) => set({
+  setTranslationOptions: (translationOptions: string) => set({
     translationOptions: translationOptions
   }),
 

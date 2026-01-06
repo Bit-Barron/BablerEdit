@@ -12,7 +12,8 @@ import { Loader } from "@/components/elements/loader";
 import { GlassNotificationProvider } from "@/components/elements/toast-notification";
 import { useTranslation } from "@/hooks/use-translation";
 import { useShortcut } from "@/hooks/use-shortcut";
-import { ErrorBoundary } from "@/components/error-boundary";
+import { ErrorBoundary } from "@/components/error-boundary"
+
 
 function AppContent() {
   const {

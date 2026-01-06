@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"
 import { Label } from "@/components/ui/retroui/label"
@@ -13,13 +13,15 @@ import { Zap, Globe, Cpu, Sparkles, AlertCircle } from "lucide-react"
 import { NVIDIA_MODELS, OPTIONS } from "@/lib/config/translation.config"
 import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
 import { useTranslation } from "@/hooks/use-translation"
+import { useTranslationStore } from "@/lib/store/translation.store"
 
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateDialog, setSelectedModel, selectedModel } = useEditorStore()
+  const { setTranslationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
   const { handleTranslation } = useTranslation()
-
-  const langs: { code: string }[] = parsedProject.languages
+  const langs: { code: string }[] = parsedProject.languages;
+  const [languages, setLanguages] = useState(langs)
 
   return (
     <Dialog open={preTranslateDialog} onOpenChange={setPreTranslateDialog}>
@@ -101,10 +103,13 @@ export const PreTranslateDialog: React.FC = () => {
               </div>
 
               <div className="space-y-1.5 max-h-[180px] overflow-y-auto pr-1">
-                {langs.map((lang) => (
+                {languages.map((lang) => (
                   <div
                     key={lang.code}
                     className="group flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50 border border-transparent hover:border-border"
+                    onClick={() => setLanguages(
+                      languages.filter((language) => language.code !== lang.code)
+                    )}
                   >
                     <CheckboxComponent id={lang.code} defaultChecked />
                     <Label
@@ -135,6 +140,7 @@ export const PreTranslateDialog: React.FC = () => {
                 <div
                   key={option.id}
                   className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
+                  onClick={() => setTranslationOptions(option.id)}
                 >
                   <CheckboxComponent id={option.id} className="mt-0.5" />
                   <div className="flex flex-col">
@@ -166,7 +172,7 @@ export const PreTranslateDialog: React.FC = () => {
             <Button
               size="sm"
               onClick={() => {
-                handleTranslation(langs)
+                handleTranslation(languages)
                 setPreTranslateDialog(false)
               }}
             >
@@ -176,6 +182,6 @@ export const PreTranslateDialog: React.FC = () => {
           </div>
         </div>
       </Dialog.Content>
-    </Dialog >
+    </Dialog>
   )
 }
