@@ -1,5 +1,10 @@
 export const SETTINGS_FILE = "settings.json";
+
 export const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
+export const NVIDIA_API_KEY = import.meta.env.VITE_NVIDIA_API_KEY
+export const MODEL = "mistralai/ministral-14b-instruct-2512"
+export const PRIMARYLANG = "de"
+
 export const COMMONLOCALES = [
   "de-DE",
   "en-GB",

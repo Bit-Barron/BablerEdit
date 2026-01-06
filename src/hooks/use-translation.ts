@@ -4,6 +4,8 @@ import { useNotification } from "@/components/elements/toast-notification";
 import * as TranslationService from "@/lib/services/translation.service";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
+import { fetch } from '@tauri-apps/plugin-http'
+import { MODEL, NVIDIA_API_KEY, NVIDIA_API_URL, PRIMARYLANG } from "@/lib/config/constants";
 
 export const useTranslation = () => {
   const { selectedNode, setSelectedNode, selectedModel
@@ -198,45 +200,64 @@ export const useTranslation = () => {
         })
         return;
       }
-      const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-      const model = "mistralai/ministral-14b-instruct-2512"
 
-      console.log(parsedProject)
+      const project = parsedProject.folder_structure.children[0].children
 
-      const response = await fetch(NVIDIA_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.NVIDIA_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: [
-            {
-              role: "user",
-              content: `Translate the following text to ${model[0]} Return ONLY the translation, nothing else: \n\n${text}`
-            }
-          ],
-          max_tokens: 512,
-          temperature: 0.2, // Lower = more consistent translations
-          top_p: 0.7
-        })
-      })
+      let translationCount = 0;
+      let currentProject = parsedProject;
 
-      const res = response.json()
-      console.log("RESPOSNE", res)
+      for (let i = 0; i < project.length; i++) {
+        const item = project[i];
+        const itemTranslations = item.translations.find((gerTransaltion) => gerTransaltion.language === PRIMARYLANG)
+        const itemValue = itemTranslations?.value;
+        if (itemValue === "" || itemValue === undefined) continue;
+
+        for (let lang in langs) {
+          const langCode = langs[lang].code
+          const findIfLangCodeExist = item.translations.find((t) => t.language === langCode)
+          if (!findIfLangCodeExist || findIfLangCodeExist.value == "") {
+            const response = await fetch(NVIDIA_API_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${NVIDIA_API_KEY}`
+              },
+              body: JSON.stringify({
+                model: MODEL,
+                messages: [
+                  {
+                    role: "user",
+                    content: `Translate the following text to ${langCode}. Return ONLY the translation, nothing else: \n\n${itemValue}`
+                  }
+                ],
+                max_tokens: 2048,
+                temperature: 0.15,
+                top_p: 1.0,
+                frequency_penalty: 0.0,
+                presence_penalty: 0.0
+              })
+            })
+
+            const res = await response.json()
+
+            console.log("RESPONSE", res)
+          }
+        }
+      }
+      setParsedProject(currentProject);
+
       addNotification({
         type: "success",
-        title: "Successfully started translation",
+        title: "Translations complete",
+        description: `Successfully translated ${translationCount} items`,
       });
 
-      return res;
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       addNotification({
         type: "error",
-        title: "Failed to add comment",
+        title: "Translation failed",
         description: message,
       });
     }
