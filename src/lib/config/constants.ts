@@ -1,5 +1,5 @@
 export const SETTINGS_FILE = "settings.json";
-
+export const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 export const COMMONLOCALES = [
   "de-DE",
   "en-GB",

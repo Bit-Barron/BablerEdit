@@ -198,10 +198,39 @@ export const useTranslation = () => {
         })
         return;
       }
+      const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
+      const model = "mistralai/ministral-14b-instruct-2512"
+
+      console.log(parsedProject)
+
+      const response = await fetch(NVIDIA_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.NVIDIA_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            {
+              role: "user",
+              content: `Translate the following text to ${model[0]} Return ONLY the translation, nothing else: \n\n${text}`
+            }
+          ],
+          max_tokens: 512,
+          temperature: 0.2, // Lower = more consistent translations
+          top_p: 0.7
+        })
+      })
+
+      const res = response.json()
+      console.log("RESPOSNE", res)
       addNotification({
         type: "success",
         title: "Successfully started translation",
       });
+
+      return res;
     } catch (err) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error";

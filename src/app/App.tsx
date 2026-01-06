@@ -14,7 +14,6 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useShortcut } from "@/hooks/use-shortcut";
 import { ErrorBoundary } from "@/components/error-boundary"
 
-
 function AppContent() {
   const {
     onProjectClick,
