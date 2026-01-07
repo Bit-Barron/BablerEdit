@@ -8,8 +8,7 @@ import { fetch } from '@tauri-apps/plugin-http'
 import { MODEL, NVIDIA_API_KEY, NVIDIA_API_URL, PRIMARYLANG } from "@/lib/config/constants";
 
 export const useTranslation = () => {
-  const { selectedNode, setSelectedNode, selectedModel
-  } = useEditorStore();
+  const { selectedNode, setSelectedNode } = useEditorStore();
   const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
   const {
@@ -192,59 +191,16 @@ export const useTranslation = () => {
 
   const handleTranslation = async (langs: { code: string }[]) => {
     try {
+      const selectedModel = ""
+      const newLanguage = " "
       if (!langs || !selectedModel) {
         addNotification({
           title: "No Model or language Selected",
-          description: "Try again later",
+          description: "Select a translation model to continue",
           type: "error"
         })
         return;
       }
-
-      const project = parsedProject.folder_structure.children[0].children
-
-      let currentProject = parsedProject;
-
-      for (let i = 0; i < project.length; i++) {
-        const item = project[i];
-        const itemTranslations = item.translations.find((gerTransaltion) => gerTransaltion.language === PRIMARYLANG)
-        const itemValue = itemTranslations?.value;
-        if (itemValue === "" || itemValue === undefined) continue;
-
-        for (let lang in langs) {
-          const langCode = langs[lang].code
-          const findIfLangCodeExist = item.translations.find((t) => t.language === langCode)
-          if (!findIfLangCodeExist || findIfLangCodeExist.value == "") {
-            const response = await fetch(NVIDIA_API_URL, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${NVIDIA_API_KEY}`
-              },
-              body: JSON.stringify({
-                model: MODEL,
-                messages: [
-                  {
-                    role: "user",
-                    content: `Translate the following text to ${langCode}. Return ONLY the translation, nothing else: \n\n${itemValue}`
-                  }
-                ],
-                max_tokens: 2048,
-                temperature: 0.15,
-                top_p: 1.0,
-                frequency_penalty: 0.0,
-                presence_penalty: 0.0
-              })
-            })
-            const res = await response.json()
-            console.log("RESPONSE", res)
-
-            return res;
-          }
-        }
-      }
-      setParsedProject(currentProject);
-
       addNotification({
         type: "success",
         title: "Translations complete",

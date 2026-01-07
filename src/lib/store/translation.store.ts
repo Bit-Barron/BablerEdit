@@ -1,7 +1,5 @@
 import { create } from "zustand";
 import { FileWithPath, Translation } from "@/lib/types/project.types";
-import { TranslationOptionsProps } from "../types/editor.types";
-
 
 interface TranslationStore {
   currentTranslations: Translation[];

@@ -68,10 +68,19 @@ interface EditorStore {
 
   selectedModel: string;
   setSelectedModel: (selectedModel: string) => void;
+
+  preTranslateAddLangDialog: boolean;
+  setPreTranslateAddLangDialog: (preTranslateAddLangDialog: boolean) => void;
+
+  preTranslateSelectedLanguage: string[],
+  setPreTranslateSelectedLanguage: (preTranslateSelectedLanguage: string[]) => void
+
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
   translationUrls: [],
+  preTranslateSelectedLanguage: [],
+  preTranslateAddLangDialog: false,
   selectedModel: "",
   preTranslateDialog: false,
   translationTextStatus: "any",
@@ -95,6 +104,12 @@ export const useEditorStore = create<EditorStore>((set) => ({
   disabledButtons: false,
   setSelectedModel: (selectedModel: string) => set({
     selectedModel
+  }),
+  setPreTranslateSelectedLanguage: (preTranslateSelectedLanguage: string[]) => set({
+    preTranslateSelectedLanguage: preTranslateSelectedLanguage
+  }),
+  setPreTranslateAddLangDialog: (open) => set({
+    preTranslateAddLangDialog: open
   }),
   setTranslationTextStatus: (translationTextStatus) => set({ translationTextStatus }),
   setApprovalStateStatus: (approvalStateStatus: string) => set({ approvalStateStatus }),
