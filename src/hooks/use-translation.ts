@@ -203,7 +203,6 @@ export const useTranslation = () => {
 
       const project = parsedProject.folder_structure.children[0].children
 
-      let translationCount = 0;
       let currentProject = parsedProject;
 
       for (let i = 0; i < project.length; i++) {
@@ -237,10 +236,10 @@ export const useTranslation = () => {
                 presence_penalty: 0.0
               })
             })
-
             const res = await response.json()
-
             console.log("RESPONSE", res)
+
+            return res;
           }
         }
       }
@@ -249,7 +248,7 @@ export const useTranslation = () => {
       addNotification({
         type: "success",
         title: "Translations complete",
-        description: `Successfully translated ${translationCount} items`,
+        description: `Successfully translated items`,
       });
 
     } catch (err) {
