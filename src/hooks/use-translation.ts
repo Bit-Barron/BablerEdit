@@ -191,8 +191,9 @@ export const useTranslation = () => {
 
   const handleTranslation = async (langs: { code: string }[]) => {
     try {
-      const selectedModel = "nigga"
-      console.log(langs, selectedModel)
+      const selectedModel = "handleTranslation"
+      const primaryLang = "de"
+
       if (!langs || !selectedModel) {
         addNotification({
           title: "No Model or language Selected",

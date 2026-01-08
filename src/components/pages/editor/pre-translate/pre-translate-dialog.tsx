@@ -19,7 +19,6 @@ import { PreAddLanguageDialog } from "./add-lang-dialog"
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage
   } = useEditorStore()
-
   const { setTranslationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
   const { handleTranslation } = useTranslation()
@@ -31,22 +30,24 @@ export const PreTranslateDialog: React.FC = () => {
 
   useEffect(() => {
     if (!preTranslateSelectedLanguage.length || !languages) return;
-
     for (let i in preTranslateSelectedLanguage) {
       const addCode = {
         code: preTranslateSelectedLanguage[i]
       }
 
-      console.log("ADD CODE", addCode)
       setAddedNewLanguage(addCode)
     }
   }, [preTranslateSelectedLanguage, languages])
-
   if (!languages) return;
 
-  const ultimateLang = addedNewLanguage
-    ? [...languages, { code: addedNewLanguage.code.split("-")[0] }]
+
+  const ultimateLang = preTranslateSelectedLanguage.length > 0
+    ? [...languages, ...preTranslateSelectedLanguage.map(langCode => ({
+      code: langCode.split("-")[0],
+      isNewlyAdded: true
+    }))]
     : languages
+
 
   return (
     <section>
