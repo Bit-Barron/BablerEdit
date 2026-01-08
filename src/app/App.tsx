@@ -22,14 +22,14 @@ function AppContent() {
     setAddIdDialogOpen,
     setConfigureLangDialogOpen,
     setFilterDialogOpen,
-    setPreTranslateDialog
+    setPreTranslateDialog,
   } = useEditorStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
   const { removeIdFromJson } = useTranslation();
   const location = useLocation();
   const { loading } = useSettings();
-  console.log("TESTTESTTESTTEST")
+
 
   useShortcut();
   useEffect(() => {

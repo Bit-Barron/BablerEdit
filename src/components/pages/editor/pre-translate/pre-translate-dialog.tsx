@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"
 import { Label } from "@/components/ui/retroui/label"
@@ -23,9 +23,30 @@ export const PreTranslateDialog: React.FC = () => {
   const { setTranslationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
   const { handleTranslation } = useTranslation()
-  const langs: { code: string }[] = parsedProject.languages;
-  if (!langs) return;
-  const [languages, setLanguages] = useState(langs)
+  const lang: { code: string }[] = parsedProject.languages
+  const [languages, setLanguages] = useState(lang)
+  const [addedNewLanguage, setAddedNewLanguage] = useState<{
+    code: string
+  }>()
+
+  useEffect(() => {
+    if (!preTranslateSelectedLanguage.length || !languages) return;
+
+    for (let i in preTranslateSelectedLanguage) {
+      const addCode = {
+        code: preTranslateSelectedLanguage[i]
+      }
+
+      console.log("ADD CODE", addCode)
+      setAddedNewLanguage(addCode)
+    }
+  }, [preTranslateSelectedLanguage, languages])
+
+  if (!languages) return;
+
+  const ultimateLang = addedNewLanguage
+    ? [...languages, { code: addedNewLanguage.code.split("-")[0] }]
+    : languages
 
   return (
     <section>
@@ -103,7 +124,7 @@ export const PreTranslateDialog: React.FC = () => {
                     <h3 className="text-sm font-medium">Languages</h3>
                   </div>
                   <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded">
-                    {langs!.length} available
+                    {languages!.length} available
                   </span>
                 </div>
 
@@ -195,7 +216,7 @@ export const PreTranslateDialog: React.FC = () => {
               <Button
                 size="sm"
                 onClick={() => {
-                  handleTranslation(languages)
+                  handleTranslation(ultimateLang)
                   setPreTranslateDialog(false)
                 }}
               >
