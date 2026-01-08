@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/retroui/button";
 import { Dialog } from "@/components/ui/retroui/dialog";
 import { Input } from "@/components/ui/retroui/input";
 import { COMMONLOCALES } from "@/lib/config/constants";
-import { useEditorStore } from "@/lib/store/editor.store";
-import React, { useState } from "react";
 import ISO6391 from "iso-639-1";
+import { useEditorStore } from "@/lib/store/editor.store";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { CheckCheckIcon } from "@/components/icons/check-check";
+import React, { useState } from "react";
 
 countries.registerLocale(enLocale);
 

@@ -17,17 +17,15 @@ import { useTranslationStore } from "@/lib/store/translation.store"
 import { PreAddLanguageDialog } from "./add-lang-dialog"
 
 export const PreTranslateDialog: React.FC = () => {
-  const { preTranslateDialog, setPreTranslateAddLangDialog, preTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage
+  const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage
   } = useEditorStore()
 
   const { setTranslationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
   const { handleTranslation } = useTranslation()
   const langs: { code: string }[] = parsedProject.languages;
+  if (!langs) return;
   const [languages, setLanguages] = useState(langs)
-
-  console.log(preTranslateSelectedLanguage)
-
 
   return (
     <section>
@@ -127,6 +125,24 @@ export const PreTranslateDialog: React.FC = () => {
                       </Label>
                     </div>
                   ))}
+                  {preTranslateSelectedLanguage.map((l) => (
+                    <div
+                      key={l}
+                      className="group flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50 border border-transparent hover:border-border"
+                      onClick={() => setLanguages(
+                        languages.filter((language) => language.code !== l)
+                      )}
+                    >
+                      <CheckboxComponent id={l} defaultChecked />
+                      <Label
+                        htmlFor={l}
+                        className="text-sm cursor-pointer flex-1"
+                      >
+                        {l.split("-")[0]}
+                      </Label>
+                    </div>
+                  ))
+                  }
                 </div>
 
                 <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => setPreTranslateAddLangDialog(true)}>

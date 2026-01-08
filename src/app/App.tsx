@@ -47,7 +47,6 @@ function AppContent() {
           break;
         case "pre-translate":
           setPreTranslateDialog(true)
-
           break
         case "remove-ids":
           await removeIdFromJson();
