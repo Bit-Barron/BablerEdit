@@ -12,22 +12,20 @@ import { PlusIcon } from "@/components/icons/plus"
 import { Zap, Globe, Cpu, Sparkles, AlertCircle } from "lucide-react"
 import { NVIDIA_MODELS, OPTIONS } from "@/lib/config/translation.config"
 import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
-import { useTranslation } from "@/hooks/use-translation"
 import { useTranslationStore } from "@/lib/store/translation.store"
 import { PreAddLanguageDialog } from "./add-lang-dialog"
+import { invoke } from "@tauri-apps/api/core"
 
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage
   } = useEditorStore()
   const { setTranslationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
-  const { handleTranslation } = useTranslation()
   const lang: { code: string }[] = parsedProject.languages
   const [languages, setLanguages] = useState(lang)
   const [addedNewLanguage, setAddedNewLanguage] = useState<{
     code: string
   }>()
-
   useEffect(() => {
     if (!preTranslateSelectedLanguage.length || !languages) return;
     for (let i in preTranslateSelectedLanguage) {
@@ -42,9 +40,45 @@ export const PreTranslateDialog: React.FC = () => {
 
   const ultimateLang = addedNewLanguage
     ? [...languages, {
+      newAddedlanguage: true,
       code: addedNewLanguage.code.split("-")[0]
     }]
     : languages
+
+  const handleTranslation = async (langs: { code: string, newAddedlanguage?: boolean }[]) => {
+    const targetLanguages = langs.filter((t) => t.newAddedlanguage === true).map((t) => t.code)
+    const project = parsedProject.folder_structure.children[0].children
+    const PRIMARY_LANG = "de"
+
+    for (const item of project) {
+      const sourceTranslations = item.translations.filter((t: { language: string }) => t.language === PRIMARY_LANG)
+      for (const source of sourceTranslations) {
+        for (const targetLang of targetLanguages) {
+          try {
+            const response = await invoke<string>("translate_text", {
+              model: "moonshotai/kimi-k2-instruct-0905",
+              messages: [
+                {
+                  role: "system",
+                  content: "You are a professional translator. Translate the given text accurately while preserving the original meaning, tone, and any placeholders like {name} or {{count}}. Only respond with the translation, nothing else."
+                },
+                {
+                  role: "user",
+                  content: `Translate the following text from ${PRIMARY_LANG} to ${targetLang}:\n\n${source.value}`
+                }
+              ]
+            })
+
+            const parsed = JSON.parse(response)
+            const translatedText = parsed.choices?.[0]?.message?.content
+            console.log(`[${targetLang}] ${source.value} -> ${translatedText}`)
+          } catch (error) {
+            console.error(`Translation failed for "${source.value}" to ${targetLang}:`, error)
+          }
+        }
+      }
+    }
+  }
 
   return (
     <section>

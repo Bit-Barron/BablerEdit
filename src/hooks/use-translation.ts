@@ -183,41 +183,11 @@ export const useTranslation = () => {
       addNotification({
         type: "error",
         title: "Failed to add comment",
-      });
+      })
 
       console.error(err)
     }
   };
-
-  const handleTranslation = async (langs: { code: string }[]) => {
-    try {
-      const selectedModel = "handleTranslation"
-      const primaryLang = "de"
-
-      if (!langs || !selectedModel) {
-        addNotification({
-          title: "No Model or language Selected",
-          description: "Select a translation model to continue",
-          type: "error"
-        })
-        return;
-      }
-      addNotification({
-        type: "success",
-        title: "Translations complete",
-        description: `Successfully translated items`,
-      });
-
-    } catch (err) {
-      console.error(err);
-      const message = err instanceof Error ? err.message : "Unknown error";
-      addNotification({
-        type: "error",
-        title: "Translation failed",
-        description: message,
-      });
-    }
-  }
 
   return {
     addComment,
@@ -226,6 +196,5 @@ export const useTranslation = () => {
     removeIdFromJson,
     changeTranslationValue,
     handleDeleteLanguage,
-    handleTranslation
   };
 };
