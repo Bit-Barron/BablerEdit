@@ -21,3 +21,10 @@ export interface TranslationOptionsProps {
   desc: string;
   selected: boolean
 }
+
+export type Lang = {
+  code: string,
+  isNewlyAdded?: boolean
+}
+
+
