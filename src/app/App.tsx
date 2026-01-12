@@ -29,6 +29,7 @@ function AppContent() {
   const { removeIdFromJson } = useTranslation();
   const location = useLocation();
   const { loading } = useSettings();
+  console.log("TESTl")
 
   useShortcut();
   useEffect(() => {
