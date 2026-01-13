@@ -30,7 +30,7 @@ function AppContent() {
   const location = useLocation();
   const { loading } = useSettings();
   console.log("TESTl")
-
+  console.log("TESTTTTT")
   useShortcut();
   useEffect(() => {
     const handleToolbarAction = async () => {
