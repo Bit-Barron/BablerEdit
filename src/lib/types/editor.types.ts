@@ -27,4 +27,9 @@ export type Lang = {
   isNewlyAdded?: boolean
 }
 
+export interface handleTranslationProps {
+  code: string,
+  newAddedlanguage?: boolean
+}
+
 

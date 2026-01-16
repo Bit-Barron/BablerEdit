@@ -40,12 +40,14 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
       const conceptNode = mainPackage.children.find(
         (child) => child.name === selectedNode!.data.id
       );
+      if (!conceptNode?.translations) return;
 
-      setTranslationForKey(conceptNode!.translations);
+      setTranslationForKey(conceptNode.translations)
     };
 
     findTranslationForKey();
   }, [selectedNode, project]);
+
 
   useEffect(() => {
     const findTranslationComment = () => {
@@ -138,7 +140,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
 
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="space-y-4">
-          {translationForKey.map((t) => {
+          {translationForKey.map((t: any) => {
             return (
               <TranslationInput
                 key={t.language}

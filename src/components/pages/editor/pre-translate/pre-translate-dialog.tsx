@@ -14,7 +14,7 @@ import { NVIDIA_MODELS, OPTIONS } from "@/lib/config/translation.config"
 import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
 import { useTranslationStore } from "@/lib/store/translation.store"
 import { PreAddLanguageDialog } from "./add-lang-dialog"
-import { invoke } from "@tauri-apps/api/core"
+import { handleTranslationProps } from "@/lib/types/editor.types"
 
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage
@@ -45,37 +45,18 @@ export const PreTranslateDialog: React.FC = () => {
     }]
     : languages
 
-  const handleTranslation = async (langs: { code: string, newAddedlanguage?: boolean }[]) => {
-    const targetLanguages = langs.filter((t) => t.newAddedlanguage === true).map((t) => t.code)
-    const project = parsedProject.folder_structure.children[0].children
+  const handleTranslation = async (langs: handleTranslationProps[]) => {
+    const TARGET_LANGUAGES = langs.filter((t) => t.newAddedlanguage === true).map((t) => t.code)
+    const PROJECT = parsedProject.folder_structure.children[0].children
     const PRIMARY_LANG = "de"
+    //const MODEL = "moonshotai/kimi-k2-instruct-0905"
+    const TRANSLATIONS = PROJECT.map((item) => item.translations)
 
-    for (const item of project) {
-      const sourceTranslations = item.translations.filter((t: { language: string }) => t.language === PRIMARY_LANG)
-      for (const source of sourceTranslations) {
-        for (const targetLang of targetLanguages) {
-          try {
-            const response = await invoke<string>("translate_text", {
-              model: "moonshotai/kimi-k2-instruct-0905",
-              messages: [
-                {
-                  role: "system",
-                  content: "You are a professional translator. Translate the given text accurately while preserving the original meaning, tone, and any placeholders like {name} or {{count}}. Only respond with the translation, nothing else."
-                },
-                {
-                  role: "user",
-                  content: `Translate the following text from ${PRIMARY_LANG} to ${targetLang}:\n\n${source.value}`
-                }
-              ]
-            })
-
-            const parsed = JSON.parse(response)
-            const translatedText = parsed.choices?.[0]?.message?.content
-            console.log(`[${targetLang}] ${source.value} -> ${translatedText}`)
-          } catch (error) {
-            console.error(`Translation failed for "${source.value}" to ${targetLang}:`, error)
-          }
-        }
+    for (let i in TRANSLATIONS) {
+      const item = TRANSLATIONS[i]
+      for (let i in item) {
+        const translatedValue = item[i];
+        console.log(translatedValue)
       }
     }
   }
@@ -160,7 +141,7 @@ export const PreTranslateDialog: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="space-y-1.5 max-h-[180px] overflow-y-auto pr-1">
+                <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                   {languages.map((lang) => (
                     <div
                       key={lang.code}
