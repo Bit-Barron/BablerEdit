@@ -29,7 +29,9 @@ function AppContent() {
   const { removeIdFromJson } = useTranslation();
   const location = useLocation();
   const { loading } = useSettings();
+
   useShortcut();
+
   useEffect(() => {
     const handleToolbarAction = async () => {
       switch (onProjectClick) {

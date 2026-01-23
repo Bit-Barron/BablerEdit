@@ -26,6 +26,7 @@ export const PreTranslateDialog: React.FC = () => {
   const [addedNewLanguage, setAddedNewLanguage] = useState<{
     code: string
   }>()
+
   useEffect(() => {
     if (!preTranslateSelectedLanguage.length || !languages) return;
     for (let i in preTranslateSelectedLanguage) {
@@ -36,6 +37,7 @@ export const PreTranslateDialog: React.FC = () => {
       setAddedNewLanguage(addCode)
     }
   }, [preTranslateSelectedLanguage, languages])
+
   if (!languages) return;
 
   const ultimateLang = addedNewLanguage
@@ -46,19 +48,12 @@ export const PreTranslateDialog: React.FC = () => {
     : languages
 
   const handleTranslation = async (langs: handleTranslationProps[]) => {
-    const TARGET_LANGUAGES = langs.filter((t) => t.newAddedlanguage === true).map((t) => t.code)
-    const PROJECT = parsedProject.folder_structure.children[0].children
-    const PRIMARY_LANG = "de"
-    //const MODEL = "moonshotai/kimi-k2-instruct-0905"
-    const TRANSLATIONS = PROJECT.map((item) => item.translations)
+    const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code)
 
-    for (let i in TRANSLATIONS) {
-      const item = TRANSLATIONS[i]
-      for (let i in item) {
-        const translatedValue = item[i];
-        console.log(translatedValue)
-      }
-    }
+
+    console.log({
+      getNewAddedLangs,
+    })
   }
 
   return (
@@ -229,7 +224,7 @@ export const PreTranslateDialog: React.FC = () => {
               <Button
                 size="sm"
                 onClick={() => {
-                  handleTranslation(ultimateLang)
+                  handleTranslation(ultimateLang as handleTranslationProps[])
                   setPreTranslateDialog(false)
                 }}
               >

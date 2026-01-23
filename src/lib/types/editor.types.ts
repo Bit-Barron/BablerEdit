@@ -29,7 +29,7 @@ export type Lang = {
 
 export interface handleTranslationProps {
   code: string,
-  newAddedlanguage?: boolean
+  newAddedlanguage: boolean
 }
 
 
