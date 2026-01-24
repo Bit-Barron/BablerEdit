@@ -4,8 +4,9 @@ import { useNotification } from "@/components/elements/toast-notification";
 import * as TranslationService from "@/lib/services/translation.service";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
-import { fetch } from '@tauri-apps/plugin-http'
-import { MODEL, NVIDIA_API_KEY, NVIDIA_API_URL, PRIMARYLANG } from "@/lib/config/constants";
+import { invoke } from "@tauri-apps/api/core"
+import { handleTranslationProps } from "@/lib/types/editor.types"
+
 
 export const useTranslation = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
@@ -189,6 +190,61 @@ export const useTranslation = () => {
     }
   };
 
+  const translateText = async (
+    text: string,
+    sourceLang: string,
+    targetLang: string
+  ): Promise<string> => {
+    const response = await invoke<string>("translate_text", {
+      model: "nvidia/riva-translate-4b-instruct-v1.1",
+      messages: [
+        {
+          role: "system",
+          content: `You are an expert at translating text from ${sourceLang} to ${targetLang}.`
+        },
+        {
+          role: "user",
+          content: `What is the ${targetLang} translation of: ${text}`
+        }
+      ]
+    });
+
+    const data = JSON.parse(response);
+    return data.choices[0].message.content;
+  };
+
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const handleTranslation = async (langs: handleTranslationProps[]) => {
+    const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
+
+    if (!getNewAddedLangs.length) return;
+    const project = parsedProject.folder_structure.children[0].children;
+
+    for (let i in project) {
+      const translations = project[i].translations
+
+      for (let t in translations) {
+        const translationValue = translations[t].value;
+
+        try {
+          const translated = await translateText(
+            translationValue,
+            "German",
+            getNewAddedLangs[0]
+          );
+          console.log(translated);
+
+          const addNewTranslation = await TranslationService.updateTranslations({})
+        } catch (error) {
+          console.error("Translation failed:", error);
+        }
+
+        await delay(1000);
+      }
+    }
+  }
+
   return {
     addComment,
     toggleApproved,
@@ -196,5 +252,6 @@ export const useTranslation = () => {
     removeIdFromJson,
     changeTranslationValue,
     handleDeleteLanguage,
+    handleTranslation,
   };
 };

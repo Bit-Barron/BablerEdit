@@ -15,6 +15,7 @@ import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
 import { useTranslationStore } from "@/lib/store/translation.store"
 import { PreAddLanguageDialog } from "./add-lang-dialog"
 import { handleTranslationProps } from "@/lib/types/editor.types"
+import { useTranslation } from "@/hooks/use-translation"
 
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage
@@ -26,6 +27,8 @@ export const PreTranslateDialog: React.FC = () => {
   const [addedNewLanguage, setAddedNewLanguage] = useState<{
     code: string
   }>()
+  const { handleTranslation
+  } = useTranslation()
 
   useEffect(() => {
     if (!preTranslateSelectedLanguage.length || !languages) return;
@@ -46,15 +49,6 @@ export const PreTranslateDialog: React.FC = () => {
       code: addedNewLanguage.code.split("-")[0]
     }]
     : languages
-
-  const handleTranslation = async (langs: handleTranslationProps[]) => {
-    const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code)
-
-
-    console.log({
-      getNewAddedLangs,
-    })
-  }
 
   return (
     <section>

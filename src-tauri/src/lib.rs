@@ -10,6 +10,8 @@ fn greet(name: &str) -> String {
 struct TranslateRequest {
     model: String,
     messages: Vec<Message>,
+    temperature: f32,
+    max_tokens: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -24,7 +26,12 @@ async fn translate_text(model: String, messages: Vec<Message>) -> Result<String,
         .unwrap_or_else(|_| "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".to_string());
 
     let client = reqwest::Client::new();
-    let request_body = TranslateRequest { model, messages };
+    let request_body = TranslateRequest {
+        model,
+        messages,
+        temperature: 0.2,
+        max_tokens: 1024,
+    };
 
     println!("Sending request to NVIDIA API...");
 
