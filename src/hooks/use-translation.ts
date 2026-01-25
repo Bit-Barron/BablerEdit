@@ -10,7 +10,7 @@ import { delay } from "@/lib/utils/translation";
 
 export const useTranslation = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
-  const { parsedProject, setParsedProject } = useProjectStore();
+  const { parsedProject, setParsedProject, primaryLanguageCode } = useProjectStore();
   const { addNotification } = useNotification();
   const {
     setTranslationForKey,
@@ -193,10 +193,11 @@ export const useTranslation = () => {
   const translateText = async (
     text: string,
     sourceLang: string,
-    targetLang: string
+    targetLang: string,
+    model: string,
   ): Promise<string> => {
     const response = await invoke<string>("translate_text", {
-      model: "nvidia/riva-translate-4b-instruct-v1.1",
+      model: !model ? "nvidia/riva-translate-4b-instruct-v1.1" : model,
       messages: [
         {
           role: "system",
@@ -208,12 +209,12 @@ export const useTranslation = () => {
         }
       ]
     });
-
     const data = JSON.parse(response);
+
     return data.choices[0].message.content;
   };
 
-  const handleTranslation = async (langs: handleTranslationProps[]) => {
+  const handleTranslation = async (langs: handleTranslationProps[], model: string) => {
     try {
       const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
       let counter = 0;
@@ -231,18 +232,42 @@ export const useTranslation = () => {
 
       for (let i in project) {
         const translations = project[i].translations
-
         for (let t in translations) {
           const translationValue = translations[t].value;
 
           const translated = await translateText(
             translationValue,
-            "German",
-            getNewAddedLangs[0]
+            primaryLanguageCode,
+            getNewAddedLangs[0],
+            model,
           );
 
           if (!translated) continue;
 
+          const updatedFolderStructure = {
+            ...parsedProject,
+            folder_structure: {
+              ...parsedProject.folder_structure,
+              children: parsedProject.folder_structure.children.map((pkg, index) =>
+                index === 0
+                  ? {
+                    ...pkg,
+                    children: pkg.children.map((t) => ({
+                      ...t,
+                      translations: [
+                        ...t.translations,
+                        {
+                          language: getNewAddedLangs[0],
+                          value: translated,
+                          approved: false,
+                        }
+                      ]
+                    }))
+                  }
+                  : pkg
+              )
+            }
+          };
           counter += 1;
 
           if (counter !== 0) {
@@ -254,6 +279,7 @@ export const useTranslation = () => {
             })
             await delay(1000);
           }
+          setParsedProject(updatedFolderStructure);
         }
       }
     } catch (err) {

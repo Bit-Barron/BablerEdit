@@ -20,7 +20,7 @@ import { useTranslation } from "@/hooks/use-translation"
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage } =
     useEditorStore()
-  const { setTranslationOptions } = useTranslationStore()
+  const { setTranslationOptions, translationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
   const lang: { code: string }[] = parsedProject.languages
   const [languages, setLanguages] = useState(lang)
@@ -181,26 +181,29 @@ export const PreTranslateDialog: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 gap-1">
-                {OPTIONS.map((option) => (
-                  <div
-                    key={option.id}
-                    className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
-                    onClick={() => setTranslationOptions(option.id)}
-                  >
-                    <CheckboxComponent id={option.id} className="mt-0.5" />
-                    <div className="flex flex-col">
-                      <Label
-                        htmlFor={option.id}
-                        className="text-sm cursor-pointer"
-                      >
-                        {option.label}
-                      </Label>
-                      <span className="text-[11px] text-muted-foreground">
-                        {option.desc}
-                      </span>
+                {OPTIONS.map((option) => {
+                  return (
+                    <div
+                      key={option.id}
+                      className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
+                    >
+                      <CheckboxComponent id={option.id} className="mt-0.5" onClick={() => (option.id)}
+                      />
+                      <div className="flex flex-col">
+                        <Label
+                          htmlFor={option.id}
+                          className="text-sm cursor-pointer"
+                        >
+                          {option.label}
+                        </Label>
+                        <span className="text-[11px] text-muted-foreground">
+                          {option.desc}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                }
+                )}
               </div>
             </div>
           </div>
@@ -217,7 +220,7 @@ export const PreTranslateDialog: React.FC = () => {
               <Button
                 size="sm"
                 onClick={() => {
-                  handleTranslation(ultimateLang as handleTranslationProps[])
+                  handleTranslation(ultimateLang as handleTranslationProps[], translationOptions)
                   setPreTranslateDialog(false)
                 }}
               >
