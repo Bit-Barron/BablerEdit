@@ -6,7 +6,7 @@ import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
 import { invoke } from "@tauri-apps/api/core"
 import { handleTranslationProps } from "@/lib/types/editor.types"
-
+import { delay } from "@/lib/utils/translation";
 
 export const useTranslation = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
@@ -213,37 +213,58 @@ export const useTranslation = () => {
     return data.choices[0].message.content;
   };
 
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
   const handleTranslation = async (langs: handleTranslationProps[]) => {
-    const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
+    try {
+      const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
+      let counter = 0;
 
-    if (!getNewAddedLangs.length) return;
-    const project = parsedProject.folder_structure.children[0].children;
+      if (!getNewAddedLangs.length) {
+        addNotification({
+          type: "error",
+          title: "No new language selected",
+          description: "Please select at least one new language to translate.",
+        });
+        return;
+      };
 
-    for (let i in project) {
-      const translations = project[i].translations
+      const project = parsedProject.folder_structure.children[0].children;
 
-      for (let t in translations) {
-        const translationValue = translations[t].value;
+      for (let i in project) {
+        const translations = project[i].translations
 
-        try {
+        for (let t in translations) {
+          const translationValue = translations[t].value;
+
           const translated = await translateText(
             translationValue,
             "German",
             getNewAddedLangs[0]
           );
-          console.log(translated);
 
-          const addNewTranslation = await TranslationService.updateTranslations({})
-        } catch (error) {
-          console.error("Translation failed:", error);
+          if (!translated) continue;
+
+          counter += 1;
+
+          if (counter !== 0) {
+            addNotification({
+              type: "info",
+              title: "Translating...",
+              description: `Translating text ${counter} of ${project.length} to ${getNewAddedLangs[0]}.`,
+
+            })
+            await delay(1000);
+          }
         }
-
-        await delay(1000);
       }
+    } catch (err) {
+      addNotification({
+        type: "error",
+        title: "Failed to translate",
+        description: "An error occurred during translation.",
+      });
+      console.error(err);
     }
-  }
+  };
 
   return {
     addComment,

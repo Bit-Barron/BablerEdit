@@ -18,8 +18,8 @@ import { handleTranslationProps } from "@/lib/types/editor.types"
 import { useTranslation } from "@/hooks/use-translation"
 
 export const PreTranslateDialog: React.FC = () => {
-  const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage
-  } = useEditorStore()
+  const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage } =
+    useEditorStore()
   const { setTranslationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
   const lang: { code: string }[] = parsedProject.languages
@@ -27,8 +27,7 @@ export const PreTranslateDialog: React.FC = () => {
   const [addedNewLanguage, setAddedNewLanguage] = useState<{
     code: string
   }>()
-  const { handleTranslation
-  } = useTranslation()
+  const { handleTranslation } = useTranslation()
 
   useEffect(() => {
     if (!preTranslateSelectedLanguage.length || !languages) return;
