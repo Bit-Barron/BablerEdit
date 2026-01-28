@@ -4,7 +4,6 @@ import { useNotification } from "@/components/elements/toast-notification";
 import * as TranslationService from "@/lib/services/translation.service";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
-import { invoke } from "@tauri-apps/api/core"
 import { handleTranslationProps } from "@/lib/types/editor.types"
 import { delay } from "@/lib/utils/translation";
 import { translateText } from "@/lib/helpers/translate-text";
@@ -191,7 +190,14 @@ export const useTranslation = () => {
     }
   };
 
-  const handleTranslation = async (langs: handleTranslationProps[], model: string) => {
+  const handleTranslation = async (langs: any[], options: string[], selectedModel: string) => {
+
+    console.log({
+      langs,
+      options,
+      selectedModel,
+    })
+
     try {
       const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
       let counter = 0;
@@ -226,7 +232,7 @@ export const useTranslation = () => {
           primaryTranslation.value,
           primaryLanguageCode,
           getNewAddedLangs[0],
-          model,
+          selectedModel,
         );
 
         if (translated) {

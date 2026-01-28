@@ -28,6 +28,7 @@ export const PreTranslateDialog: React.FC = () => {
     code: string
   }>()
   const { handleTranslation } = useTranslation()
+  const [options, setOptions] = useState<string[]>([])
 
   useEffect(() => {
     if (!preTranslateSelectedLanguage.length || !languages) return;
@@ -42,7 +43,7 @@ export const PreTranslateDialog: React.FC = () => {
 
   if (!languages) return;
 
-  const ultimateLang = addedNewLanguage
+  const ultimateLang: any[] = addedNewLanguage
     ? [...languages, {
       newAddedlanguage: true,
       code: addedNewLanguage.code.split("-")[0]
@@ -187,9 +188,8 @@ export const PreTranslateDialog: React.FC = () => {
                       key={option.id}
                       className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
                     >
-                      <CheckboxComponent id={option.id} className="mt-0.5" onClick={() => (option.id)}
-                      />
-                      <div className="flex flex-col">
+                      <CheckboxComponent id={option.id} className="mt-0.5" onClick={(prev) => setOptions((prev) => [...prev, option.id])} />
+                      <div className="">
                         <Label
                           htmlFor={option.id}
                           className="text-sm cursor-pointer"
@@ -220,7 +220,7 @@ export const PreTranslateDialog: React.FC = () => {
               <Button
                 size="sm"
                 onClick={() => {
-                  handleTranslation(ultimateLang as handleTranslationProps[], translationOptions)
+                  handleTranslation(ultimateLang, options, selectedModel)
                   setPreTranslateDialog(false)
                 }}
               >
@@ -232,6 +232,6 @@ export const PreTranslateDialog: React.FC = () => {
         </Dialog.Content>
       </Dialog>
       <PreAddLanguageDialog />
-    </section>
+    </section >
   )
 }
