@@ -7,6 +7,7 @@ import { ParsedProject } from "@/lib/types/project.types";
 import { invoke } from "@tauri-apps/api/core"
 import { handleTranslationProps } from "@/lib/types/editor.types"
 import { delay } from "@/lib/utils/translation";
+import { translateText } from "@/lib/helpers/translate-text";
 
 export const useTranslation = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
@@ -190,30 +191,6 @@ export const useTranslation = () => {
     }
   };
 
-  const translateText = async (
-    text: string,
-    sourceLang: string,
-    targetLang: string,
-    model: string,
-  ): Promise<string> => {
-    const response = await invoke<string>("translate_text", {
-      model: !model ? "nvidia/riva-translate-4b-instruct-v1.1" : model,
-      messages: [
-        {
-          role: "system",
-          content: `You are an expert at translating text from ${sourceLang} to ${targetLang}.`
-        },
-        {
-          role: "user",
-          content: `What is the ${targetLang} translation of: ${text}`
-        }
-      ]
-    });
-    const data = JSON.parse(response);
-
-    return data.choices[0].message.content;
-  };
-
   const handleTranslation = async (langs: handleTranslationProps[], model: string) => {
     try {
       const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
@@ -229,59 +206,67 @@ export const useTranslation = () => {
       };
 
       const project = parsedProject.folder_structure.children[0].children;
+      const translatedItems: { index: number; value: string }[] = [];
 
-      for (let i in project) {
-        const translations = project[i].translations
-        for (let t in translations) {
-          const translationValue = translations[t].value;
+      for (let i = 0; i < project.length; i++) {
+        const primaryTranslation = project[i].translations.find(
+          (t) => t.language === primaryLanguageCode
+        );
 
-          const translated = await translateText(
-            translationValue,
-            primaryLanguageCode,
-            getNewAddedLangs[0],
-            model,
-          );
+        if (!primaryTranslation?.value) continue;
 
-          if (!translated) continue;
+        counter += 1;
+        addNotification({
+          type: "info",
+          title: "Translating...",
+          description: `Translating text ${counter} of ${project.length} to ${getNewAddedLangs[0]}.`,
+        });
 
-          const updatedFolderStructure = {
-            ...parsedProject,
-            folder_structure: {
-              ...parsedProject.folder_structure,
-              children: parsedProject.folder_structure.children.map((pkg, index) =>
-                index === 0
-                  ? {
-                    ...pkg,
-                    children: pkg.children.map((t) => ({
-                      ...t,
+        const translated = await translateText(
+          primaryTranslation.value,
+          primaryLanguageCode,
+          getNewAddedLangs[0],
+          model,
+        );
+
+        if (translated) {
+          translatedItems.push({ index: i, value: translated });
+        }
+
+        await delay(1000);
+      }
+
+      const updatedFolderStructure = {
+        ...parsedProject,
+        folder_structure: {
+          ...parsedProject.folder_structure,
+          children: parsedProject.folder_structure.children.map((pkg, pkgIndex) =>
+            pkgIndex === 0
+              ? {
+                ...pkg,
+                children: pkg.children.map((item, itemIndex) => {
+                  const found = translatedItems.find((t) => t.index === itemIndex);
+                  return found
+                    ? {
+                      ...item,
                       translations: [
-                        ...t.translations,
+                        ...item.translations,
                         {
                           language: getNewAddedLangs[0],
-                          value: translated,
+                          value: found.value,
                           approved: false,
                         }
                       ]
-                    }))
-                  }
-                  : pkg
-              )
-            }
-          };
-          counter += 1;
-
-          if (counter !== 0) {
-            addNotification({
-              type: "info",
-              title: "Translating...",
-              description: `Translating text ${counter} of ${project.length} to ${getNewAddedLangs[0]}.`,
-
-            })
-            await delay(1000);
-          }
-          setParsedProject(updatedFolderStructure);
+                    }
+                    : item;
+                })
+              }
+              : pkg
+          )
         }
-      }
+      };
+
+      setParsedProject(updatedFolderStructure);
     } catch (err) {
       addNotification({
         type: "error",

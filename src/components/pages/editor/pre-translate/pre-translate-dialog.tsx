@@ -20,7 +20,7 @@ import { useTranslation } from "@/hooks/use-translation"
 export const PreTranslateDialog: React.FC = () => {
   const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage } =
     useEditorStore()
-  const { setTranslationOptions, translationOptions } = useTranslationStore()
+  const { translationOptions } = useTranslationStore()
   const { parsedProject } = useProjectStore()
   const lang: { code: string }[] = parsedProject.languages
   const [languages, setLanguages] = useState(lang)
