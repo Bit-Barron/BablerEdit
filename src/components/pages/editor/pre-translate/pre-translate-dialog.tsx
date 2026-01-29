@@ -187,7 +187,7 @@ export const PreTranslateDialog: React.FC = () => {
                       key={option.id}
                       className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
                     >
-                      <CheckboxComponent id={option.id} className="mt-0.5" onClick={(prev) => setOptions((prev) => [...prev, option.id])} />
+                      <CheckboxComponent id={option.id} className="mt-0.5" onClick={() => setOptions((prev) => [...prev, option.id])} />
                       <div className="">
                         <Label
                           htmlFor={option.id}

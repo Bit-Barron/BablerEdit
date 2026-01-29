@@ -33,6 +33,6 @@ export interface TranslationModel {
   value: string
   label: string
   description: string
-  speed: "fast" | "medium" | "slow"
+  speed: string
   quality: "good" | "great" | "best"
 }

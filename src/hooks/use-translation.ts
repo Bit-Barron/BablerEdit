@@ -191,13 +191,7 @@ export const useTranslation = () => {
 
   const handleTranslation = async (langs: any[], options: string[], selectedModel: string) => {
     try {
-      console.log({
-        langs,
-        options,
-        selectedModel,
-      })
-
-
+      console.log("OPTIONS,", options)
       const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
       let counter = 0;
 

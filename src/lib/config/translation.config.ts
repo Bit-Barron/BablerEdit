@@ -3,31 +3,31 @@ import { TranslationOptionsProps } from "../types/editor.types";
 
 export const NVIDIA_MODELS: TranslationModel[] = [
   {
-    value: "kimi-k2",
-    label: "Kimi K2 Instruct",
-    description: "Optimized for translations",
-    speed: "fast",
-    quality: "great",
-  },
-  {
-    value: "nemotron-70b",
-    label: "Nemotron 70B",
-    description: "Highest quality, slower",
-    speed: "slow",
-    quality: "best",
-  },
-  {
-    value: "mistral-nemo",
-    label: "Mistral Nemo 12B",
-    description: "Good balance speed/quality",
-    speed: "medium",
+    value: "Qwen/Qwen2.5-7B-Instruct",
+    label: "Qwen 2.5 7B Instruct",
+    description: "Good general-purpose model",
+    speed: "free",
     quality: "good",
   },
   {
-    value: "nemotron-51b",
-    label: "Nemotron 51B",
-    description: "Faster than 70B, very good",
-    speed: "medium",
+    value: "glm-4.5-flash",
+    label: "GLM 4.5 Flash",
+    description: "Enhanced version for translations",
+    speed: "free",
+    quality: "good",
+  },
+  {
+    value: "internlm/internlm2_5-7b-chat",
+    label: "InternLM 2.5 7B Chat",
+    description: "Solid choice for translations",
+    speed: "free",
+    quality: "good",
+  },
+  {
+    value: "tencent/Hunyuan-MT-7B",
+    label: "Hunyuan MT 7B",
+    description: "Specifically trained for machine translation",
+    speed: "free",
     quality: "great",
   },
 ]
