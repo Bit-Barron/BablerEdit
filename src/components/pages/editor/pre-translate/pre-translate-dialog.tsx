@@ -12,22 +12,21 @@ import { PlusIcon } from "@/components/icons/plus"
 import { Zap, Globe, Cpu, Sparkles, AlertCircle } from "lucide-react"
 import { NVIDIA_MODELS, OPTIONS } from "@/lib/config/translation.config"
 import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
-import { useTranslationStore } from "@/lib/store/translation.store"
 import { PreAddLanguageDialog } from "./add-lang-dialog"
-import { handleTranslationProps } from "@/lib/types/editor.types"
 import { useTranslation } from "@/hooks/use-translation"
 
 export const PreTranslateDialog: React.FC = () => {
-  const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage } =
+  const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage, } =
     useEditorStore()
-  const { translationOptions } = useTranslationStore()
+
   const { parsedProject } = useProjectStore()
+  const { handleTranslation } = useTranslation()
   const lang: { code: string }[] = parsedProject.languages
+
   const [languages, setLanguages] = useState(lang)
   const [addedNewLanguage, setAddedNewLanguage] = useState<{
     code: string
   }>()
-  const { handleTranslation } = useTranslation()
   const [options, setOptions] = useState<string[]>([])
 
   useEffect(() => {

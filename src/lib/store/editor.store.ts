@@ -74,7 +74,6 @@ interface EditorStore {
 
   preTranslateSelectedLanguage: string[],
   setPreTranslateSelectedLanguage: (preTranslateSelectedLanguage: string[]) => void
-
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
@@ -94,6 +93,7 @@ export const useEditorStore = create<EditorStore>((set) => ({
   commandPalettenOpen: false,
   newParsedProject: {} as ParsedProject,
   addLangDialogOpen: false,
+  options: [],
   translationId: "",
   translationText: "",
   configureLangDialogOpen: false,
