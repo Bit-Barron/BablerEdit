@@ -57,8 +57,7 @@ export async function selectJsonFiles(): Promise<SelectJsonFilesResult | null> {
           };
         } catch (error) {
           throw new Error(
-            `Failed to read file "${path}": ${
-              error instanceof Error ? error.message : "Unknown error"
+            `Failed to read file "${path}": ${error instanceof Error ? error.message : "Unknown error"
             }`
           );
         }
@@ -70,6 +69,6 @@ export async function selectJsonFiles(): Promise<SelectJsonFilesResult | null> {
     };
   } catch (error) {
     console.error("Error selecting JSON files:", error);
-    throw error;
+    throw new Error(error as string);
   }
 }

@@ -10,7 +10,7 @@ import { useEditorStore } from "@/lib/store/editor.store"
 import { useProjectStore } from "@/lib/store/project.store"
 import { PlusIcon } from "@/components/icons/plus"
 import { Zap, Globe, Cpu, Sparkles, AlertCircle } from "lucide-react"
-import { NVIDIA_MODELS, OPTIONS } from "@/lib/config/translation.config"
+import { TRANSLATION_MODELS, OPTIONS } from "@/lib/config/translation.config"
 import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
 import { PreAddLanguageDialog } from "./add-lang-dialog"
 import { useTranslation } from "@/hooks/use-translation"
@@ -61,9 +61,9 @@ export const PreTranslateDialog: React.FC = () => {
             <div className="flex gap-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
               <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Empty translations will be filled automatically via NVIDIA API.
-                Your texts will be sent to NVIDIA servers.
-                <span className="text-primary ml-1">Free Tier: ~5000 Credits</span>
+                Empty translations will be filled automatically via AI.
+                Your texts will be sent to the selected provider's servers.
+                <span className="text-primary ml-1">Free Tier</span>
               </p>
             </div>
 
@@ -79,7 +79,7 @@ export const PreTranslateDialog: React.FC = () => {
                   onValueChange={setSelectedModel}
                   className="space-y-1.5"
                 >
-                  {NVIDIA_MODELS.map((model) => (
+                  {TRANSLATION_MODELS.map((model) => (
                     <div
                       key={model.value}
                       onClick={() => {

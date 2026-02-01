@@ -191,7 +191,6 @@ export const useTranslation = () => {
 
   const handleTranslation = async (langs: any[], options: string[], selectedModel: string) => {
     try {
-      console.log("OPTIONS,", options)
       const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
       let counter = 0;
 
@@ -205,7 +204,6 @@ export const useTranslation = () => {
       };
 
       const project = parsedProject.folder_structure.children[0].children;
-      const translatedItems: { index: number; value: string }[] = [];
 
       for (let i = 0; i < project.length; i++) {
         const primaryTranslation = project[i].translations.find(
@@ -221,51 +219,20 @@ export const useTranslation = () => {
           description: `Translating text ${counter} of ${project.length} to ${getNewAddedLangs[0]}.`,
         });
 
-        const translated = await translateText(
+
+        const translated: any = await translateText(
           primaryTranslation.value,
           primaryLanguageCode,
           getNewAddedLangs[0],
-          selectedModel,
+          selectedModel
         );
-
-        if (translated) {
-          translatedItems.push({ index: i, value: translated });
-        }
+        console.log("TRANSLATED", translated)
 
         await delay(1000);
       }
 
-      const updatedFolderStructure = {
-        ...parsedProject,
-        folder_structure: {
-          ...parsedProject.folder_structure,
-          children: parsedProject.folder_structure.children.map((pkg, pkgIndex) =>
-            pkgIndex === 0
-              ? {
-                ...pkg,
-                children: pkg.children.map((item, itemIndex) => {
-                  const found = translatedItems.find((t) => t.index === itemIndex);
-                  return found
-                    ? {
-                      ...item,
-                      translations: [
-                        ...item.translations,
-                        {
-                          language: getNewAddedLangs[0],
-                          value: found.value,
-                          approved: false,
-                        }
-                      ]
-                    }
-                    : item;
-                })
-              }
-              : pkg
-          )
-        }
-      };
+      const newLangCode = getNewAddedLangs[0];
 
-      setParsedProject(updatedFolderStructure);
     } catch (err) {
       addNotification({
         type: "error",

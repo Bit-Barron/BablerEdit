@@ -8,8 +8,7 @@ export const getSpeedBadge = (speed: TranslationModel["speed"]) => {
   }
   const labels = { fast: "Fast", medium: "Medium", slow: "Slow" }
   return (
-    <span className={`text-[10px] px-1.5 py-0.5 rounded border ${styles[speed]}`
-    }>
+    <span className={`text-[10px] px-1.5 py-0.5 rounded border ${styles[speed]}`}>
       {labels[speed]}
     </span>
   )

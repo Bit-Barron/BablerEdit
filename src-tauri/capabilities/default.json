@@ -31,9 +31,11 @@
     {
       "identifier": "http:allow-fetch",
       "allow": [
-        {
-          "url": "https://integrate.api.nvidia.com/*"
-        }
+        { "url": "https://integrate.api.nvidia.com/*" },
+        { "url": "https://api.together.xyz/*" },
+        { "url": "https://api.fireworks.ai/*" },
+        { "url": "https://api.mistral.ai/*" },
+        { "url": "https://api.groq.com/*" }
       ]
     }
   ]

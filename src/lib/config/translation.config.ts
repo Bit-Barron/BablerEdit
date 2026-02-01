@@ -1,34 +1,41 @@
 import { TranslationModel } from "../types/config.types";
 import { TranslationOptionsProps } from "../types/editor.types";
 
-export const NVIDIA_MODELS: TranslationModel[] = [
+export const TRANSLATION_MODELS: TranslationModel[] = [
   {
-    value: "Qwen/Qwen2.5-7B-Instruct",
-    label: "Qwen 2.5 7B Instruct",
-    description: "Good general-purpose model",
-    speed: "free",
-    quality: "good",
-  },
-  {
-    value: "glm-4.5-flash",
-    label: "GLM 4.5 Flash",
-    description: "Enhanced version for translations",
-    speed: "free",
-    quality: "good",
-  },
-  {
-    value: "internlm/internlm2_5-7b-chat",
-    label: "InternLM 2.5 7B Chat",
-    description: "Solid choice for translations",
-    speed: "free",
-    quality: "good",
-  },
-  {
-    value: "tencent/Hunyuan-MT-7B",
-    label: "Hunyuan MT 7B",
-    description: "Specifically trained for machine translation",
-    speed: "free",
+    value: "nvidia:meta/llama-3.3-70b-instruct",
+    label: "NVIDIA NIM – Llama 3.3 70B",
+    description: "Highest rate limit (~120 RPM), great for bulk translations",
+    speed: "fast",
     quality: "great",
+  },
+  {
+    value: "groq:llama-3.3-70b-versatile",
+    label: "Groq – Llama 3.3 70B",
+    description: "Fastest inference speed, near-instant translations",
+    speed: "fast",
+    quality: "great",
+  },
+  {
+    value: "together:meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    label: "Together AI – Llama 3.3 70B Turbo",
+    description: "Reliable provider with solid rate limit (~60 RPM)",
+    speed: "medium",
+    quality: "great",
+  },
+  {
+    value: "fireworks:accounts/fireworks/models/llama-v3p3-70b-instruct",
+    label: "Fireworks – Llama 3.3 70B",
+    description: "Reliable infrastructure, good rate limit (~60 RPM)",
+    speed: "medium",
+    quality: "good",
+  },
+  {
+    value: "mistral:mistral-small-latest",
+    label: "Mistral – Small Latest",
+    description: "Strong multilingual model, non-Llama alternative (~60 RPM)",
+    speed: "medium",
+    quality: "good",
   },
 ]
 

@@ -6,4 +6,5 @@ For translations, these are your best free options:
 - internlm/internlm2_5-7b-chat - Another solid choice
 - tencent/Hunyuan-MT-7B - "MT" suggests it's specifically trained for machine translation
 
+[Log] {text: "Soll {{name}} wirklich entfernt werden?", sourceLang: "de", targetLang: "am", model: "glm-4.5-flash"} (translate-text.ts, line 3)
 
