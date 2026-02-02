@@ -1,10 +1,5 @@
 import { fetch } from "@tauri-apps/plugin-http";
 
-// NVIDIA AI IS WORKING; FAST
-// FIREWORK AI IS WORKING; FAST.
-// MISTRAL IS WORKING; FAST
-// TOGEHTER AI NOT WORKING RN  // ISSUE CREDITS
-
 export const translateText = async (
   text: string,
   sourceLang: string,
@@ -30,13 +25,6 @@ export const translateText = async (
       MODEL = "nvidia/llama-3.3-nemotron-super-49b-v1.5"
       API_KEY = "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"
       console.log("Using NVIDIA model")
-
-    } else if (splitModel === "groq") {
-
-      BASEURL = "https://integrate.api.nvidia.com/v1/chat/completions"
-      MODEL = "nvidia/llama-3.3-nemotron-super-49b-v1.5"
-      API_KEY = "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"
-      console.log("Using GROQ model")
 
     } else if (splitModel === "together") {
 
@@ -76,6 +64,7 @@ export const translateText = async (
         presence_penalty: 0,
       }),
     });
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error("API error:", response.status, errorText);
@@ -84,9 +73,8 @@ export const translateText = async (
 
     const data = await response.json();
     const translated = data.choices?.[0]?.message?.content ?? "";
-    console.log("TRANSLATED TEXT", translated)
 
-    return translated
+    return translated;
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Translation error:", message);

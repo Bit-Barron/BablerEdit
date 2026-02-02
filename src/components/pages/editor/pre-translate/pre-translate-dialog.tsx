@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Dialog } from "@/components/ui/retroui/dialog"
 import { Button } from "@/components/ui/retroui/button"
 import { Label } from "@/components/ui/retroui/label"
@@ -9,8 +9,8 @@ import { CheckboxComponent } from "@/components/ui/retroui/checkbox"
 import { useEditorStore } from "@/lib/store/editor.store"
 import { useProjectStore } from "@/lib/store/project.store"
 import { PlusIcon } from "@/components/icons/plus"
-import { Zap, Globe, Cpu, Sparkles, AlertCircle } from "lucide-react"
-import { TRANSLATION_MODELS, OPTIONS } from "@/lib/config/translation.config"
+import { Zap, Globe, Cpu, AlertCircle } from "lucide-react"
+import { TRANSLATION_MODELS } from "@/lib/config/translation.config"
 import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
 import { PreAddLanguageDialog } from "./add-lang-dialog"
 import { useTranslation } from "@/hooks/use-translation"
@@ -24,30 +24,17 @@ export const PreTranslateDialog: React.FC = () => {
   const lang: { code: string }[] = parsedProject.languages
 
   const [languages, setLanguages] = useState(lang)
-  const [addedNewLanguage, setAddedNewLanguage] = useState<{
-    code: string
-  }>()
   const [options, setOptions] = useState<string[]>([])
-
-  useEffect(() => {
-    if (!preTranslateSelectedLanguage.length || !languages) return;
-    for (let i in preTranslateSelectedLanguage) {
-      const addCode = {
-        code: preTranslateSelectedLanguage[i]
-      }
-
-      setAddedNewLanguage(addCode)
-    }
-  }, [preTranslateSelectedLanguage, languages])
 
   if (!languages) return;
 
-  const ultimateLang: any[] = addedNewLanguage
-    ? [...languages, {
+  const ultimateLang: any[] = [
+    ...languages,
+    ...preTranslateSelectedLanguage.map((code) => ({
       newAddedlanguage: true,
-      code: addedNewLanguage.code.split("-")[0]
-    }]
-    : languages
+      code: code.split("-")[0],
+    })),
+  ]
 
   return (
     <section>
@@ -174,60 +161,60 @@ export const PreTranslateDialog: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-3 pt-2 border-t border-border">
+            {/*   <div className="space-y-3 pt-2 border-t border-border"> */}
+            {/*     <div className="flex items-center gap-2"> */}
+            {/*       <Sparkles className="w-4 h-4 text-muted-foreground" /> */}
+            {/*       <h3 className="text-sm font-medium">Options</h3> */}
+            {/*     </div> */}
+            {/**/}
+            {/*     <div className="grid grid-cols-1 gap-1"> */}
+            {/*       {OPTIONS.map((option) => { */}
+            {/*         return ( */}
+            {/*           <div */}
+            {/*             key={option.id} */}
+            {/*             className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50" */}
+            {/*           > */}
+            {/*             <CheckboxComponent id={option.id} className="mt-0.5" onClick={() => setOptions((prev) => [...prev, option.id])} /> */}
+            {/*             <div className=""> */}
+            {/*               <Label */}
+            {/*                 htmlFor={option.id} */}
+            {/*                 className="text-sm cursor-pointer" */}
+            {/*               > */}
+            {/*                 {option.label} */}
+            {/*               </Label> */}
+            {/*               <span className="text-[11px] text-muted-foreground"> */}
+            {/*                 {option.desc} */}
+            {/*               </span> */}
+            {/*             </div> */}
+            {/*           </div> */}
+            {/*         ) */}
+            {/*       } */}
+            {/*       )} */}
+            {/*     </div> */}
+            {/*   </div> */}
+          </div>
+
+            <div className="px-6 py-4 bg-muted/30 border-t border-border flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-muted-foreground" />
-                <h3 className="text-sm font-medium">Options</h3>
-              </div>
-
-              <div className="grid grid-cols-1 gap-1">
-                {OPTIONS.map((option) => {
-                  return (
-                    <div
-                      key={option.id}
-                      className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
-                    >
-                      <CheckboxComponent id={option.id} className="mt-0.5" onClick={() => setOptions((prev) => [...prev, option.id])} />
-                      <div className="">
-                        <Label
-                          htmlFor={option.id}
-                          className="text-sm cursor-pointer"
-                        >
-                          {option.label}
-                        </Label>
-                        <span className="text-[11px] text-muted-foreground">
-                          {option.desc}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                }
-                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPreTranslateDialog(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    handleTranslation(ultimateLang, options, selectedModel)
+                    setPreTranslateDialog(false)
+                  }}
+                >
+                  <Zap className="w-3.5 h-3.5 mr-1.5" />
+                  Translate
+                </Button>
               </div>
             </div>
-          </div>
-
-          <div className="px-6 py-4 bg-muted/30 border-t border-border flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPreTranslateDialog(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => {
-                  handleTranslation(ultimateLang, options, selectedModel)
-                  setPreTranslateDialog(false)
-                }}
-              >
-                <Zap className="w-3.5 h-3.5 mr-1.5" />
-                Translate
-              </Button>
-            </div>
-          </div>
         </Dialog.Content>
       </Dialog>
       <PreAddLanguageDialog />

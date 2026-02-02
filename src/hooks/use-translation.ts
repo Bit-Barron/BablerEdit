@@ -7,6 +7,7 @@ import { ParsedProject } from "@/lib/types/project.types";
 import { delay } from "@/lib/utils/translation";
 import { translateText } from "@/lib/helpers/translate-text";
 
+
 export const useTranslation = () => {
   const { selectedNode, setSelectedNode } = useEditorStore();
   const { parsedProject, setParsedProject, primaryLanguageCode } = useProjectStore();
@@ -201,12 +202,37 @@ export const useTranslation = () => {
           description: "Please select at least one new language to translate.",
         });
         return;
+      }
+
+      const langCode = getNewAddedLangs[0];
+
+      const updatedLanguages = parsedProject.languages.some((l) => l.code === langCode)
+        ? parsedProject.languages
+        : [...parsedProject.languages, { code: langCode }];
+
+      const updatedTranslationPackages = parsedProject.translation_packages.map((pkg) => {
+        if (pkg.translation_urls.some((url) => url.language === langCode)) return pkg;
+        return {
+          ...pkg,
+          translation_urls: [
+            ...pkg.translation_urls,
+            { path: `${langCode}.json`, language: langCode },
+          ],
+        };
+      });
+
+      let currentProject: ParsedProject = {
+        ...parsedProject,
+        languages: updatedLanguages,
+        translation_packages: updatedTranslationPackages,
       };
 
-      const project = parsedProject.folder_structure.children[0].children;
+      setParsedProject(currentProject);
 
-      for (let i = 0; i < project.length; i++) {
-        const primaryTranslation = project[i].translations.find(
+      const concepts = currentProject.folder_structure.children[0].children;
+
+      for (let i = 0; i < concepts.length; i++) {
+        const primaryTranslation = concepts[i].translations.find(
           (t) => t.language === primaryLanguageCode
         );
 
@@ -216,23 +242,41 @@ export const useTranslation = () => {
         addNotification({
           type: "info",
           title: "Translating...",
-          description: `Translating text ${counter} of ${project.length} to ${getNewAddedLangs[0]}.`,
+          description: `Translating text ${counter} of ${concepts.length} to ${langCode}.`,
         });
-
 
         const translated: any = await translateText(
           primaryTranslation.value,
           primaryLanguageCode,
-          getNewAddedLangs[0],
+          langCode,
           selectedModel
         );
-        console.log("TRANSLATED", translated)
 
+        currentProject = {
+          ...currentProject,
+          folder_structure: {
+            ...currentProject.folder_structure,
+            children: currentProject.folder_structure.children.map((pkg) => ({
+              ...pkg,
+              children: pkg.children.map((concept) => {
+                if (concept.name !== concepts[i].name) return concept;
+
+                const hasLang = concept.translations.some((t) => t.language === langCode);
+                const updatedTranslations = hasLang
+                  ? concept.translations.map((t) =>
+                    t.language === langCode ? { ...t, value: translated } : t
+                  )
+                  : [...concept.translations, { language: langCode, value: translated, approved: false }];
+
+                return { ...concept, translations: updatedTranslations };
+              }),
+            })),
+          },
+        };
+
+        setParsedProject(currentProject);
         await delay(1000);
       }
-
-      const newLangCode = getNewAddedLangs[0];
-
     } catch (err) {
       addNotification({
         type: "error",

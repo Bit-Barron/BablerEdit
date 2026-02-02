@@ -10,20 +10,6 @@ export const TRANSLATION_MODELS: TranslationModel[] = [
     quality: "great",
   },
   {
-    value: "groq:llama-3.3-70b-versatile",
-    label: "Groq – Llama 3.3 70B",
-    description: "Fastest inference speed, near-instant translations",
-    speed: "fast",
-    quality: "great",
-  },
-  {
-    value: "together:meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    label: "Together AI – Llama 3.3 70B Turbo",
-    description: "Reliable provider with solid rate limit (~60 RPM)",
-    speed: "medium",
-    quality: "great",
-  },
-  {
     value: "fireworks:accounts/fireworks/models/llama-v3p3-70b-instruct",
     label: "Fireworks – Llama 3.3 70B",
     description: "Reliable infrastructure, good rate limit (~60 RPM)",

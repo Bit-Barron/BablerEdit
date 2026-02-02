@@ -114,8 +114,7 @@ export function toggleTranslationApproval(params: ToggleApprovalParams) {
 
   if (!findNode) {
     throw new Error(
-      `Translation key "${
-        selectedNodeId?.data.id || "undefined"
+      `Translation key "${selectedNodeId?.data.id || "undefined"
       }" not found in project. Unable to toggle approval for language "${language}".`
     );
   }
@@ -225,8 +224,7 @@ export function addCommentToTranslationId(
 
   if (!findNode) {
     throw new Error(
-      `Translation key "${
-        selectedNodeId?.data.id || "undefined"
+      `Translation key "${selectedNodeId?.data.id || "undefined"
       }" not found in project. Unable to add comment.`
     );
   }
@@ -261,22 +259,18 @@ interface RemoveTranslationUrlParams {
 export async function removeTranslationUrl(params: RemoveTranslationUrlParams) {
   const { project, translation } = params;
 
-  const result = project.translation_packages.map((tp) => {
-    const findTranslationUrls = tp.translation_urls.find(
-      (url) => url.language === translation
-    );
+  const updatedTranslationPackages: ParsedProject["translation_packages"] = project.translation_packages.map((tp) => ({
+    ...tp,
+    translation_urls: tp.translation_urls.filter(
+      (url) => url.language !== translation
+    ),
+  }));
 
-    if (findTranslationUrls) {
-      // remove the translation url from the translation package
-      tp.translation_urls = tp.translation_urls.filter(
-        (url) => url.language !== translation
-      );
-    }
+  const updatedLanguages: ParsedProject["languages"] = project.languages.filter(
+    (lang) => lang.code !== translation
+  );
 
-    return tp;
-  });
-
-  const updatedFolderStructure = {
+  const updatedFolderStructure: ParsedProject["folder_structure"] = {
     ...project.folder_structure,
     children: project.folder_structure.children.map((pkg) => ({
       ...pkg,
@@ -289,11 +283,12 @@ export async function removeTranslationUrl(params: RemoveTranslationUrlParams) {
     })),
   };
 
-  const updateTranslations = {
+  const updatedProject: ParsedProject = {
     ...project,
-    translation_packages: result,
     folder_structure: updatedFolderStructure,
+    translation_packages: updatedTranslationPackages,
+    languages: updatedLanguages,
   };
 
-  return updateTranslations;
+  return updatedProject;
 }
