@@ -8,6 +8,7 @@ import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { CheckCheckIcon } from "@/components/icons/check-check";
 import React, { useState } from "react";
+import { useNotification } from "@/components/elements/toast-notification";
 
 countries.registerLocale(enLocale);
 
@@ -18,6 +19,7 @@ export const PreAddLanguageDialog: React.FC = ({ }) => {
   } =
     useEditorStore();
   const [search, setSearch] = useState("");
+  const { addNotification } = useNotification()
 
   const uniqueArray = [...new Set(preTranslateSelectedLanguage)];
 
@@ -33,6 +35,7 @@ export const PreAddLanguageDialog: React.FC = ({ }) => {
       countryName.includes(q)
     );
   });
+
 
   return (
     <Dialog open={preTranslateAddLangDialog} onOpenChange={setPreTranslateAddLangDialog}>
@@ -60,12 +63,20 @@ export const PreAddLanguageDialog: React.FC = ({ }) => {
                 key={locale}
                 type="button"
                 onClick={() => {
-                  if (!uniqueArray.includes(locale)) {
-                    setPreTranslateSelectedLanguage([...preTranslateSelectedLanguage, locale]);
-                  } else {
+                  if (uniqueArray.includes(locale)) {
                     setPreTranslateSelectedLanguage(
                       preTranslateSelectedLanguage.filter((l) => l !== locale)
                     );
+                  } else {
+                    if (preTranslateSelectedLanguage.length >= 1) {
+                      addNotification({
+                        title: "Limit reached",
+                        description: "Only one language can be translated at a time.",
+                        type: "error",
+                      });
+                      return;
+                    }
+                    setPreTranslateSelectedLanguage([locale]);
                   }
                 }}
                 className="flex items-center justify-between px-4 py-3 text-left transition-colors hover:bg-muted/50 border-b last:border-b-0 w-full"
@@ -78,10 +89,10 @@ export const PreAddLanguageDialog: React.FC = ({ }) => {
                     {locale}
                   </div>
                 </div>
-
                 {uniqueArray.includes(locale) && (
                   <CheckCheckIcon className="shrink-0 ml-2" />
                 )}
+
               </button>
             );
           })}

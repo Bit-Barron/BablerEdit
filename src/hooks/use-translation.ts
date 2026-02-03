@@ -6,6 +6,7 @@ import { useTranslationStore } from "@/lib/store/translation.store";
 import { ParsedProject } from "@/lib/types/project.types";
 import { delay } from "@/lib/utils/translation";
 import { translateText } from "@/lib/helpers/translate-text";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 
 export const useTranslation = () => {
@@ -227,6 +228,22 @@ export const useTranslation = () => {
         translation_packages: updatedTranslationPackages,
       };
 
+      const initialJson: Record<string, any> = {};
+      const existingConcepts = currentProject.folder_structure.children[0].children;
+      for (const concept of existingConcepts) {
+        const keys = concept.name.split(".");
+        let cur = initialJson;
+        for (let k = 0; k < keys.length - 1; k++) {
+          if (!cur[keys[k]]) cur[keys[k]] = {};
+          cur = cur[keys[k]];
+        }
+        cur[keys[keys.length - 1]] = "";
+      }
+      await writeTextFile(
+        `${parsedProject.source_root_dir}${langCode}.json`,
+        JSON.stringify(initialJson, null, 2)
+      );
+
       setParsedProject(currentProject);
 
       const concepts = currentProject.folder_structure.children[0].children;
@@ -277,6 +294,23 @@ export const useTranslation = () => {
         setParsedProject(currentProject);
         await delay(1000);
       }
+
+      // Write the new language file to disk
+      const newLangJson: Record<string, any> = {};
+      const allConcepts = currentProject.folder_structure.children[0].children;
+      for (const concept of allConcepts) {
+        const translation = concept.translations.find((t) => t.language === langCode);
+        const keys = concept.name.split(".");
+        let current = newLangJson;
+        for (let k = 0; k < keys.length - 1; k++) {
+          if (!current[keys[k]]) current[keys[k]] = {};
+          current = current[keys[k]];
+        }
+        current[keys[keys.length - 1]] = translation?.value ?? "";
+      }
+
+      const filePath = `${parsedProject.source_root_dir}${langCode}.json`;
+      await writeTextFile(filePath, JSON.stringify(newLangJson, null, 2));
     } catch (err) {
       addNotification({
         type: "error",

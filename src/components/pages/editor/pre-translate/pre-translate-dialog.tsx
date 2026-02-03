@@ -117,23 +117,6 @@ export const PreTranslateDialog: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                  {languages.map((lang) => (
-                    <div
-                      key={lang.code}
-                      className="group flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50 border border-transparent hover:border-border"
-                      onClick={() => setLanguages(
-                        languages.filter((language) => language.code !== lang.code)
-                      )}
-                    >
-                      <CheckboxComponent id={lang.code} defaultChecked />
-                      <Label
-                        htmlFor={lang.code}
-                        className="text-sm cursor-pointer flex-1"
-                      >
-                        {lang.code}
-                      </Label>
-                    </div>
-                  ))}
                   {preTranslateSelectedLanguage.map((l) => (
                     <div
                       key={l}
@@ -194,27 +177,27 @@ export const PreTranslateDialog: React.FC = () => {
             {/*   </div> */}
           </div>
 
-            <div className="px-6 py-4 bg-muted/30 border-t border-border flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setPreTranslateDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => {
-                    handleTranslation(ultimateLang, options, selectedModel)
-                    setPreTranslateDialog(false)
-                  }}
-                >
-                  <Zap className="w-3.5 h-3.5 mr-1.5" />
-                  Translate
-                </Button>
-              </div>
+          <div className="px-6 py-4 bg-muted/30 border-t border-border flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPreTranslateDialog(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => {
+                  handleTranslation(ultimateLang, options, selectedModel)
+                  setPreTranslateDialog(false)
+                }}
+              >
+                <Zap className="w-3.5 h-3.5 mr-1.5" />
+                Translate
+              </Button>
             </div>
+          </div>
         </Dialog.Content>
       </Dialog>
       <PreAddLanguageDialog />

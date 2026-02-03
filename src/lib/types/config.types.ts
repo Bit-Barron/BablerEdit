@@ -6,6 +6,7 @@ export interface MenuItem {
   hasSubmenu?: boolean;
   checked?: boolean;
   divider?: boolean;
+  action?: string;
 }
 
 export interface Menu {
