@@ -81,7 +81,7 @@ export const FilterDialog: React.FC = () => {
                   }}
                 >
                   <SelectTrigger className="col-span-3 w-full">
-                    <SelectValue />
+                    <SelectValue>{translationTextStatus}</SelectValue>
                   </SelectTrigger>
                   <SelectContent sideOffset={4}>
                     <SelectItem value="any">any</SelectItem>
@@ -102,7 +102,7 @@ export const FilterDialog: React.FC = () => {
                   }}
                 >
                   <SelectTrigger className="col-span-3 w-full">
-                    <SelectValue />
+                    <SelectValue>{approvalStateStatus}</SelectValue>
                   </SelectTrigger>
                   <SelectContent sideOffset={4}>
                     <SelectItem value="any">any</SelectItem>
@@ -123,7 +123,7 @@ export const FilterDialog: React.FC = () => {
                   }}
                 >
                   <SelectTrigger className="col-span-3 w-full">
-                    <SelectValue />
+                    <SelectValue>{usageStatus}</SelectValue>
                   </SelectTrigger>
                   <SelectContent sideOffset={4}>
                     <SelectItem value="any">any</SelectItem>

@@ -6,6 +6,7 @@ import { DeleteIcon } from "@/components/icons/delete";
 import { SlidersHorizontalIcon } from "@/components/icons/sliders-horizontal";
 import { EarthIcon } from "@/components/icons/earth";
 import { LanguagesIcon } from "@/components/icons/languages";
+import { AlertTriangle } from "lucide-react";
 export const TOOLBAR: ToolbarType[] = [
   {
     id: "open",
@@ -41,6 +42,13 @@ export const TOOLBAR: ToolbarType[] = [
     id: "filter",
     icon: SlidersHorizontalIcon,
     label: "Set Filter",
+    enabledIn: ["/editor"],
+    disabled: false,
+  },
+  {
+    id: "consistency-check",
+    icon: AlertTriangle,
+    label: "Consistency Check",
     enabledIn: ["/editor"],
     disabled: false,
   },

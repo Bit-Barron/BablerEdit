@@ -4,7 +4,9 @@ import { useProjectStore } from "@/lib/store/project.store";
 import { Dialog } from "@/components/ui/retroui/dialog";
 import { Button } from "@/components/ui/retroui/button";
 import { validateAllPlaceholders, PlaceholderValidationResult } from "@/lib/helpers/placeholder-validator";
-import { AlertTriangleIcon, SearchIcon } from "lucide-react";
+import { translateText } from "@/lib/helpers/translate-text";
+import { useNotification } from "@/components/elements/toast-notification";
+import { AlertTriangleIcon, SearchIcon, Wand2Icon } from "lucide-react";
 
 interface ConsistencyIssue {
   type: "duplicate-source" | "placeholder" | "empty";
@@ -15,8 +17,10 @@ interface ConsistencyIssue {
 
 export const ConsistencyDialog: React.FC = () => {
   const { consistencyDialogOpen, setConsistencyDialogOpen } = useEditorStore();
-  const { parsedProject } = useProjectStore();
+  const { parsedProject, setParsedProject, primaryLanguageCode } = useProjectStore();
+  const { addNotification } = useNotification();
   const [tab, setTab] = useState<"consistency" | "placeholders">("consistency");
+  const [isFixing, setIsFixing] = useState(false);
 
   const consistencyIssues = useMemo<ConsistencyIssue[]>(() => {
     if (!parsedProject?.folder_structure?.children?.[0]?.children) return [];
@@ -88,6 +92,119 @@ export const ConsistencyDialog: React.FC = () => {
       parsedProject.framework
     );
   }, [parsedProject]);
+
+  const emptyTranslationIssues = useMemo(() => {
+    return consistencyIssues.filter((i) => i.type === "empty");
+  }, [consistencyIssues]);
+
+  const handleFixAll = async () => {
+    if (!parsedProject || emptyTranslationIssues.length === 0) return;
+
+    setIsFixing(true);
+    const concepts = parsedProject.folder_structure.children[0].children;
+    let fixedCount = 0;
+    let currentProject = parsedProject;
+
+    addNotification({
+      type: "info",
+      title: "Auto-fixing translations...",
+      description: `Translating ${emptyTranslationIssues.length} missing translations using Google Translate.`,
+    });
+
+    // Group issues by language for efficiency
+    const issuesByLanguage = new Map<string, ConsistencyIssue[]>();
+    for (const issue of emptyTranslationIssues) {
+      if (!issue.language) continue;
+      if (!issuesByLanguage.has(issue.language)) {
+        issuesByLanguage.set(issue.language, []);
+      }
+      issuesByLanguage.get(issue.language)!.push(issue);
+    }
+
+    try {
+      for (const [targetLang, issues] of issuesByLanguage) {
+        for (const issue of issues) {
+          const concept = concepts.find((c) => c.name === issue.ids[0]);
+          if (!concept) continue;
+
+          const primaryTranslation = concept.translations.find(
+            (t) => t.language === primaryLanguageCode
+          );
+
+          if (!primaryTranslation?.value) continue;
+
+          // Skip if already translated in this iteration
+          const existingTranslation = concept.translations.find(
+            (t) => t.language === targetLang && t.value && t.value.trim() !== ""
+          );
+          if (existingTranslation) continue;
+
+          try {
+            const translated = await translateText(
+              primaryTranslation.value,
+              primaryLanguageCode,
+              targetLang,
+              "google"
+            );
+
+            // Update the project
+            currentProject = {
+              ...currentProject,
+              folder_structure: {
+                ...currentProject.folder_structure,
+                children: currentProject.folder_structure.children.map((pkg) => ({
+                  ...pkg,
+                  children: pkg.children.map((c) => {
+                    if (c.name !== concept.name) return c;
+
+                    const hasLang = c.translations.some((t) => t.language === targetLang);
+                    const updatedTranslations = hasLang
+                      ? c.translations.map((t) =>
+                          t.language === targetLang
+                            ? { ...t, value: translated }
+                            : t
+                        )
+                      : [
+                          ...c.translations,
+                          {
+                            language: targetLang,
+                            value: translated,
+                            approved: false,
+                          },
+                        ];
+
+                    return { ...c, translations: updatedTranslations };
+                  }),
+                })),
+              },
+            };
+
+            setParsedProject(currentProject);
+            fixedCount++;
+
+            // Small delay to prevent rate limiting
+            await new Promise((resolve) => setTimeout(resolve, 300));
+          } catch (err) {
+            console.error(`Failed to translate ${issue.ids[0]} to ${targetLang}:`, err);
+          }
+        }
+      }
+
+      addNotification({
+        type: "success",
+        title: "Auto-fix complete!",
+        description: `Successfully translated ${fixedCount} missing translations.`,
+      });
+    } catch (err) {
+      addNotification({
+        type: "error",
+        title: "Auto-fix failed",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+      });
+    } finally {
+      setIsFixing(false);
+    }
+  };
 
   return (
     <Dialog open={consistencyDialogOpen} onOpenChange={setConsistencyDialogOpen}>
@@ -193,7 +310,16 @@ export const ConsistencyDialog: React.FC = () => {
           )}
         </div>
 
-        <Dialog.Footer className="px-6 pb-6">
+        <Dialog.Footer className="px-6 pb-6 flex justify-between">
+          <Button
+            variant="default"
+            onClick={handleFixAll}
+            disabled={isFixing || emptyTranslationIssues.length === 0}
+            className="gap-2"
+          >
+            <Wand2Icon size={16} />
+            {isFixing ? "Fixing..." : `Auto-fix Missing (${emptyTranslationIssues.length})`}
+          </Button>
           <Button onClick={() => setConsistencyDialogOpen(false)}>Close</Button>
         </Dialog.Footer>
       </Dialog.Content>

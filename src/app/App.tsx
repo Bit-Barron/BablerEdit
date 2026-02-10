@@ -35,6 +35,7 @@ function AppContent() {
     setCommandPaletteOpen,
     setRenameDialogOpen,
     toggleToolbar,
+    setConsistencyDialogOpen,
   } = useEditorStore();
   const { parsedProject } = useProjectStore();
   const { saveProject, openProject } = useEditor();
@@ -200,6 +201,9 @@ function AppContent() {
           break;
         case "languages":
           setConfigureLangDialogOpen(true);
+          break;
+        case "consistency-check":
+          setConsistencyDialogOpen(true);
           break;
         default:
           break;
