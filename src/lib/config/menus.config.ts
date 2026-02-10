@@ -1,74 +1,63 @@
 import { Menu } from "@/lib/types/config.types";
 
+const isMac =
+  typeof navigator !== "undefined" &&
+  /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+
+const mod = isMac ? "⌘" : "Ctrl+";
+
 export const MENUS: Menu[] = [
   {
     label: "File",
     items: [
-      { label: "New Project...", shortcut: "⌘N", action: "newProject" },
-      { label: "Open Project...", shortcut: "⌘O", action: "openProject" },
-      { label: "Open Recent", hasSubmenu: true, action: "openRecent" },
+      { label: "New Project...", shortcut: `${mod}N`, action: "newProject" },
+      { label: "Open Project...", shortcut: `${mod}O`, action: "openProject" },
       { divider: true },
-      { label: "Close Project", shortcut: "⌘W", action: "closeProject" },
-      { label: "Save Project", shortcut: "⌘S", action: "saveProject" },
-      { label: "Save Project As...", shortcut: "⇧⌘S", action: "saveProjectAs" },
+      { label: "Close Project", shortcut: `${mod}W`, action: "closeProject" },
+      { label: "Save Project", shortcut: `${mod}S`, action: "saveProject" },
       { divider: true },
-      { label: "Import...", action: "import" },
-      { label: "Export...", action: "export" },
+      { label: "Export to CSV...", action: "exportCsv" },
+      { label: "Import from CSV...", action: "importCsv" },
       { divider: true },
-      { label: "Quit", shortcut: "⌘Q", action: "quit" },
-    ],
-  },
-  {
-    label: "Edit",
-    items: [
-      { label: "Undo", shortcut: "⌘Z", action: "undo" },
-      { label: "Redo", shortcut: "⇧⌘Z", action: "redo" },
-      { divider: true },
-      { label: "Cut", shortcut: "⌘X", action: "cut" },
-      { label: "Copy", shortcut: "⌘C", action: "copy" },
-      { label: "Paste", shortcut: "⌘V", action: "paste" },
-      { divider: true },
-      { label: "Find...", shortcut: "⌘F", action: "find" },
-      { label: "Replace...", shortcut: "⌘R", action: "replace" },
+      { label: "Quit", shortcut: `${mod}Q`, action: "quit" },
     ],
   },
   {
     label: "Find",
     items: [
-      { label: "Find Translation...", shortcut: "⌘F", action: "findTranslation" },
-      { label: "Find Next", shortcut: "⌘G", action: "findNext" },
-      { label: "Find Previous", shortcut: "⇧⌘G", action: "findPrevious" },
+      { label: "Find Translation...", shortcut: `${mod}F`, action: "findTranslation" },
     ],
   },
   {
     label: "View",
     items: [
-      { label: "Show Toolbar", checked: true, action: "toggleToolbar" },
-      { label: "Show Status Bar", checked: true, action: "toggleStatusBar" },
+      { label: "Show Toolbar", shortcut: `${mod}${isMac ? "" : "Shift+"}${isMac ? "⇧T" : "T"}`, checked: true, action: "toggleToolbar" },
       { divider: true },
-      { label: "Zoom In", shortcut: "⌘+", action: "zoomIn" },
-      { label: "Zoom Out", shortcut: "⌘-", action: "zoomOut" },
-      { label: "Actual Size", shortcut: "⌘0", action: "zoomReset" },
+      { label: "Zoom In", shortcut: `${mod}+`, action: "zoomIn" },
+      { label: "Zoom Out", shortcut: `${mod}-`, action: "zoomOut" },
+      { label: "Actual Size", shortcut: `${mod}0`, action: "zoomReset" },
     ],
   },
   {
     label: "Tools",
     items: [
-      { label: "Pre-Translate...", action: "preTranslate" },
+      { label: "Pre-Translate...", shortcut: `${mod}${isMac ? "" : "Shift+"}${isMac ? "⇧P" : "P"}`, action: "preTranslate" },
       { label: "Machine Translation...", action: "machineTranslation" },
       { label: "Consistency Check...", action: "consistencyCheck" },
       { divider: true },
       { label: "Validate Translations", action: "validateTranslations" },
       { label: "Statistics...", action: "statistics" },
+      { divider: true },
+      { label: "API Keys...", action: "apiKeys" },
+      { divider: true },
+      { label: "Settings...", shortcut: `${mod},`, action: "openSettings" },
     ],
   },
   {
     label: "Window",
     items: [
-      { label: "Minimize", shortcut: "⌘M", action: "minimize" },
+      { label: "Minimize", shortcut: `${mod}M`, action: "minimize" },
       { label: "Zoom", action: "zoomWindow" },
-      { divider: true },
-      { label: "Bring All to Front", action: "bringAllToFront" },
     ],
   },
 ];

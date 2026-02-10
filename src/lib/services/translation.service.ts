@@ -251,6 +251,277 @@ export function addCommentToTranslationId(
   };
 }
 
+interface RenameTranslationIdParams {
+  oldId: string;
+  newId: string;
+  project: ParsedProject;
+}
+
+export async function renameTranslationId(
+  params: RenameTranslationIdParams
+): Promise<ParsedProject> {
+  const { oldId, newId, project } = params;
+
+  if (oldId === newId) return project;
+
+  const existing = project.folder_structure.children[0].children.find(
+    (c) => c.name === newId
+  );
+  if (existing) {
+    throw new Error(`Translation ID "${newId}" already exists.`);
+  }
+
+  const TRANSLATION_FILES = project.translation_packages[0].translation_urls;
+
+  for (const trans of TRANSLATION_FILES) {
+    const filePath = trans.path;
+    const jsonFilePath = `${project.source_root_dir}${filePath}`;
+    const obj = await FileService.readTranslationFile({
+      path: filePath,
+      rootDir: project.source_root_dir,
+    });
+
+    const oldKeys = oldId.split(".");
+    const newKeys = newId.split(".");
+
+    // Get the value at old path
+    let current: any = obj;
+    let parent: any = null;
+    for (let i = 0; i < oldKeys.length; i++) {
+      parent = current;
+      current = current?.[oldKeys[i]];
+    }
+
+    const value = current;
+
+    // Delete old key
+    if (parent && oldKeys.length > 0) {
+      delete parent[oldKeys[oldKeys.length - 1]];
+    }
+
+    // Set new key
+    let target: any = obj;
+    for (let i = 0; i < newKeys.length - 1; i++) {
+      if (!target[newKeys[i]] || typeof target[newKeys[i]] !== "object") {
+        target[newKeys[i]] = {};
+      }
+      target = target[newKeys[i]];
+    }
+    target[newKeys[newKeys.length - 1]] = value;
+
+    await writeTextFile(jsonFilePath, JSON.stringify(obj, null, 2));
+  }
+
+  const updatedProject: ParsedProject = {
+    ...project,
+    folder_structure: {
+      ...project.folder_structure,
+      children: project.folder_structure.children.map((pkg) => ({
+        ...pkg,
+        children: pkg.children.map((node) =>
+          node.name === oldId ? { ...node, name: newId } : node
+        ),
+      })),
+    },
+  };
+
+  return updatedProject;
+}
+
+interface DuplicateIdParams {
+  sourceId: string;
+  project: ParsedProject;
+}
+
+export async function duplicateTranslationId(
+  params: DuplicateIdParams
+): Promise<ParsedProject> {
+  const { sourceId, project } = params;
+
+  const existing = project.folder_structure.children[0].children;
+
+  // Build new ID: keep same parent path, append _COPY to leaf
+  const parts = sourceId.split(".");
+  const lastPart = parts[parts.length - 1];
+  parts[parts.length - 1] = `${lastPart}_COPY`;
+  let newId = parts.join(".");
+  let counter = 1;
+  while (existing.find((c) => c.name === newId)) {
+    parts[parts.length - 1] = `${lastPart}_COPY_${counter}`;
+    newId = parts.join(".");
+    counter++;
+  }
+
+  // Update all translation files on disk
+  const TRANSLATION_FILES = project.translation_packages[0].translation_urls;
+  for (const trans of TRANSLATION_FILES) {
+    const filePath = trans.path;
+    const jsonFilePath = `${project.source_root_dir}${filePath}`;
+    const obj = await FileService.readTranslationFile({
+      path: filePath,
+      rootDir: project.source_root_dir,
+    });
+
+    // Read value at source path
+    const sourceKeys = sourceId.split(".");
+    let current: any = obj;
+    for (const key of sourceKeys) {
+      current = current?.[key];
+    }
+    const value = current;
+
+    // Write value at new path
+    const newKeys = newId.split(".");
+    let target: any = obj;
+    for (let i = 0; i < newKeys.length - 1; i++) {
+      if (!target[newKeys[i]] || typeof target[newKeys[i]] !== "object") {
+        target[newKeys[i]] = {};
+      }
+      target = target[newKeys[i]];
+    }
+    target[newKeys[newKeys.length - 1]] = value;
+
+    await writeTextFile(jsonFilePath, JSON.stringify(obj, null, 2));
+  }
+
+  // Update project structure
+  const sourceConcept = existing.find((c) => c.name === sourceId);
+  if (!sourceConcept) throw new Error(`Source concept "${sourceId}" not found`);
+
+  const newConcept = {
+    ...sourceConcept,
+    name: newId,
+    translations: sourceConcept.translations.map((t) => ({ ...t, approved: false })),
+  };
+
+  const updatedProject: ParsedProject = {
+    ...project,
+    folder_structure: {
+      ...project.folder_structure,
+      children: project.folder_structure.children.map((pkg) => ({
+        ...pkg,
+        children: [...pkg.children, newConcept],
+      })),
+    },
+  };
+
+  return updatedProject;
+}
+
+interface PasteTranslationIdParams {
+  sourceId: string;
+  targetParentId: string | null;
+  mode: "cut" | "copy";
+  project: ParsedProject;
+}
+
+export async function pasteTranslationId(
+  params: PasteTranslationIdParams
+): Promise<ParsedProject> {
+  const { sourceId, targetParentId, mode, project } = params;
+
+  const existing = project.folder_structure.children[0].children;
+
+  // Build target ID: put the leaf name under the target parent
+  const sourceParts = sourceId.split(".");
+  const leafName = sourceParts[sourceParts.length - 1];
+
+  let newId: string;
+  if (targetParentId) {
+    newId = `${targetParentId}.${leafName}`;
+  } else {
+    newId = leafName;
+  }
+
+  // If same location, append _COPY suffix (for copy mode or if target == source parent)
+  if (newId === sourceId || existing.find((c) => c.name === newId)) {
+    const baseParts = newId.split(".");
+    const baseLast = baseParts[baseParts.length - 1];
+    baseParts[baseParts.length - 1] = `${baseLast}_COPY`;
+    newId = baseParts.join(".");
+    let counter = 1;
+    while (existing.find((c) => c.name === newId)) {
+      baseParts[baseParts.length - 1] = `${baseLast}_COPY_${counter}`;
+      newId = baseParts.join(".");
+      counter++;
+    }
+  }
+
+  // Update all translation files on disk
+  const TRANSLATION_FILES = project.translation_packages[0].translation_urls;
+  for (const trans of TRANSLATION_FILES) {
+    const filePath = trans.path;
+    const jsonFilePath = `${project.source_root_dir}${filePath}`;
+    const obj = await FileService.readTranslationFile({
+      path: filePath,
+      rootDir: project.source_root_dir,
+    });
+
+    // Read value at source path
+    const sourceKeys = sourceId.split(".");
+    let current: any = obj;
+    for (const key of sourceKeys) {
+      current = current?.[key];
+    }
+    const value = current;
+
+    // Write value at new path
+    const newKeys = newId.split(".");
+    let target: any = obj;
+    for (let i = 0; i < newKeys.length - 1; i++) {
+      if (!target[newKeys[i]] || typeof target[newKeys[i]] !== "object") {
+        target[newKeys[i]] = {};
+      }
+      target = target[newKeys[i]];
+    }
+    target[newKeys[newKeys.length - 1]] = value;
+
+    // If cut, delete the source
+    if (mode === "cut") {
+      let parent: any = obj;
+      for (let i = 0; i < sourceKeys.length - 1; i++) {
+        parent = parent?.[sourceKeys[i]];
+      }
+      if (parent && typeof parent === "object") {
+        delete parent[sourceKeys[sourceKeys.length - 1]];
+      }
+    }
+
+    await writeTextFile(jsonFilePath, JSON.stringify(obj, null, 2));
+  }
+
+  // Update project structure
+  const sourceConcept = existing.find((c) => c.name === sourceId);
+  if (!sourceConcept) throw new Error(`Source concept "${sourceId}" not found`);
+
+  const newConcept = {
+    ...sourceConcept,
+    name: newId,
+    translations: sourceConcept.translations.map((t) => ({
+      ...t,
+      approved: mode === "copy" ? false : t.approved,
+    })),
+  };
+
+  let updatedChildren = [...existing, newConcept];
+  if (mode === "cut") {
+    updatedChildren = updatedChildren.filter((c) => c.name !== sourceId);
+  }
+
+  const updatedProject: ParsedProject = {
+    ...project,
+    folder_structure: {
+      ...project.folder_structure,
+      children: project.folder_structure.children.map((pkg) => ({
+        ...pkg,
+        children: updatedChildren,
+      })),
+    },
+  };
+
+  return updatedProject;
+}
+
 interface RemoveTranslationUrlParams {
   project: ParsedProject;
   translation: string;

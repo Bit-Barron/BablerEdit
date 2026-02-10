@@ -79,6 +79,7 @@ export async function saveSettingsToFile(state: any) {
     recentProjects: state.recentProjects,
     darkMode: state.darkMode,
     lastOpenedProject: state.lastOpenedProject,
+    designSettings: state.designSettings,
   };
 
   await writeTextFile(settingsPath, JSON.stringify(jsonContent, null, 2));

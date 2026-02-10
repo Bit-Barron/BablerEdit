@@ -1,40 +1,46 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { Dialog } from "@/components/ui/retroui/dialog"
-import { Button } from "@/components/ui/retroui/button"
-import { Label } from "@/components/ui/retroui/label"
-import { RadioGroup } from "@/components/retroui/Radio"
-import { CheckboxComponent } from "@/components/ui/retroui/checkbox"
-import { useEditorStore } from "@/lib/store/editor.store"
-import { useProjectStore } from "@/lib/store/project.store"
-import { PlusIcon } from "@/components/icons/plus"
-import { Zap, Globe, Cpu, AlertCircle } from "lucide-react"
-import { TRANSLATION_MODELS } from "@/lib/config/translation.config"
-import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper"
-import { PreAddLanguageDialog } from "./add-lang-dialog"
-import { useTranslation } from "@/hooks/use-translation"
+import React, { useState } from "react";
+import { Dialog } from "@/components/ui/retroui/dialog";
+import { Button } from "@/components/ui/retroui/button";
+import { Label } from "@/components/ui/retroui/label";
+import { RadioGroup } from "@/components/retroui/Radio";
+import { CheckboxComponent } from "@/components/ui/retroui/checkbox";
+import { useEditorStore } from "@/lib/store/editor.store";
+import { useProjectStore } from "@/lib/store/project.store";
+import { PlusIcon } from "@/components/icons/plus";
+import { Zap, Globe, Cpu, AlertCircle } from "lucide-react";
+import { TRANSLATION_MODELS, OPTIONS } from "@/lib/config/translation.config";
+import { getQualityDots, getSpeedBadge } from "@/lib/utils/translation.helper";
+import { PreAddLanguageDialog } from "./add-lang-dialog";
+import { useTranslation } from "@/hooks/use-translation";
 
 export const PreTranslateDialog: React.FC = () => {
-  const { preTranslateDialog, setPreTranslateAddLangDialog, setPreTranslateDialog, setSelectedModel, selectedModel, preTranslateSelectedLanguage, } =
-    useEditorStore()
+  const {
+    preTranslateDialog,
+    setPreTranslateAddLangDialog,
+    setPreTranslateDialog,
+    setSelectedModel,
+    selectedModel,
+    preTranslateSelectedLanguage,
+    preTranslateOptions,
+    togglePreTranslateOption,
+  } = useEditorStore();
+  const { parsedProject } = useProjectStore();
 
-  const { parsedProject } = useProjectStore()
-  const { handleTranslation } = useTranslation()
-  const lang: { code: string }[] = parsedProject.languages
+  const lang: { code: string }[] = parsedProject.languages;
 
-  const [languages, setLanguages] = useState(lang)
-  const [options, setOptions] = useState<string[]>([])
-
+  const { handleTranslation } = useTranslation();
+  const [languages, setLanguages] = useState(lang);
   if (!languages) return;
 
-  const ultimateLang: any[] = [
+  const ultimateLang = [
     ...languages,
     ...preTranslateSelectedLanguage.map((code) => ({
       newAddedlanguage: true,
       code: code.split("-")[0],
     })),
-  ]
+  ];
 
   return (
     <section>
@@ -48,8 +54,8 @@ export const PreTranslateDialog: React.FC = () => {
             <div className="flex gap-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
               <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Empty translations will be filled automatically via AI.
-                Your texts will be sent to the selected provider's servers.
+                Empty translations will be filled automatically via AI. Your
+                texts will be sent to the selected provider's servers.
                 <span className="text-primary ml-1">Free Tier</span>
               </p>
             </div>
@@ -70,12 +76,13 @@ export const PreTranslateDialog: React.FC = () => {
                     <div
                       key={model.value}
                       onClick={() => {
-                        setSelectedModel(model.value)
+                        setSelectedModel(model.value);
                       }}
-                      className={`group relative flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all duration-150 border ${selectedModel === model.value
-                        ? "bg-primary/10 border-primary/40"
-                        : "border-transparent hover:bg-muted/50 hover:border-border"
-                        }`}
+                      className={`group relative flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all duration-150 border ${
+                        selectedModel === model.value
+                          ? "bg-primary/10 border-primary/40"
+                          : "border-transparent hover:bg-muted/50 hover:border-border"
+                      }`}
                     >
                       <RadioGroup.Item
                         value={model.value}
@@ -96,7 +103,9 @@ export const PreTranslateDialog: React.FC = () => {
                           <span className="text-[11px] text-muted-foreground">
                             {model.description}
                           </span>
-                          <span className="text-[10px] text-muted-foreground/60">•</span>
+                          <span className="text-[10px] text-muted-foreground/60">
+                            •
+                          </span>
                           {getQualityDots(model.quality)}
                         </div>
                       </div>
@@ -121,9 +130,11 @@ export const PreTranslateDialog: React.FC = () => {
                     <div
                       key={l}
                       className="group flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50 border border-transparent hover:border-border"
-                      onClick={() => setLanguages(
-                        languages.filter((language) => language.code !== l)
-                      )}
+                      onClick={() =>
+                        setLanguages(
+                          languages.filter((language) => language.code !== l),
+                        )
+                      }
                     >
                       <CheckboxComponent id={l} defaultChecked />
                       <Label
@@ -133,48 +144,54 @@ export const PreTranslateDialog: React.FC = () => {
                         {l.split("-")[0]}
                       </Label>
                     </div>
-                  ))
-                  }
+                  ))}
                 </div>
 
-                <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => setPreTranslateAddLangDialog(true)}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full mt-2"
+                  onClick={() => setPreTranslateAddLangDialog(true)}
+                >
                   <PlusIcon size={14} />
                   <span className="ml-1.5">Add language</span>
                 </Button>
               </div>
             </div>
 
-            {/*   <div className="space-y-3 pt-2 border-t border-border"> */}
-            {/*     <div className="flex items-center gap-2"> */}
-            {/*       <Sparkles className="w-4 h-4 text-muted-foreground" /> */}
-            {/*       <h3 className="text-sm font-medium">Options</h3> */}
-            {/*     </div> */}
-            {/**/}
-            {/*     <div className="grid grid-cols-1 gap-1"> */}
-            {/*       {OPTIONS.map((option) => { */}
-            {/*         return ( */}
-            {/*           <div */}
-            {/*             key={option.id} */}
-            {/*             className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50" */}
-            {/*           > */}
-            {/*             <CheckboxComponent id={option.id} className="mt-0.5" onClick={() => setOptions((prev) => [...prev, option.id])} /> */}
-            {/*             <div className=""> */}
-            {/*               <Label */}
-            {/*                 htmlFor={option.id} */}
-            {/*                 className="text-sm cursor-pointer" */}
-            {/*               > */}
-            {/*                 {option.label} */}
-            {/*               </Label> */}
-            {/*               <span className="text-[11px] text-muted-foreground"> */}
-            {/*                 {option.desc} */}
-            {/*               </span> */}
-            {/*             </div> */}
-            {/*           </div> */}
-            {/*         ) */}
-            {/*       } */}
-            {/*       )} */}
-            {/*     </div> */}
-            {/*   </div> */}
+            <div className="space-y-3 pt-2 border-t border-border">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-muted-foreground" />
+                <h3 className="text-sm font-medium">Options</h3>
+              </div>
+
+              <div className="grid grid-cols-1 gap-1">
+                {OPTIONS.map((option) => (
+                  <div
+                    key={option.id}
+                    className="group flex items-start gap-3 p-2.5 rounded-lg cursor-pointer transition-all duration-150 hover:bg-muted/50"
+                    onClick={() => togglePreTranslateOption(option.id)}
+                  >
+                    <CheckboxComponent
+                      id={option.id}
+                      className="mt-0.5"
+                      checked={preTranslateOptions.includes(option.id)}
+                    />
+                    <div>
+                      <Label
+                        htmlFor={option.id}
+                        className="text-sm cursor-pointer"
+                      >
+                        {option.label}
+                      </Label>
+                      <span className="text-[11px] text-muted-foreground">
+                        {option.desc}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="px-6 py-4 bg-muted/30 border-t border-border flex items-center justify-between">
@@ -189,8 +206,12 @@ export const PreTranslateDialog: React.FC = () => {
               <Button
                 size="sm"
                 onClick={() => {
-                  handleTranslation(ultimateLang, options, selectedModel)
-                  setPreTranslateDialog(false)
+                  handleTranslation(
+                    ultimateLang,
+                    selectedModel,
+                    preTranslateOptions,
+                  );
+                  setPreTranslateDialog(false);
                 }}
               >
                 <Zap className="w-3.5 h-3.5 mr-1.5" />
@@ -201,6 +222,6 @@ export const PreTranslateDialog: React.FC = () => {
         </Dialog.Content>
       </Dialog>
       <PreAddLanguageDialog />
-    </section >
-  )
-}
+    </section>
+  );
+};

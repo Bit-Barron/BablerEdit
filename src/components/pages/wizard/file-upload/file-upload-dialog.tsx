@@ -1,4 +1,4 @@
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, ChevronDown, Check } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/retroui/dialog";
 import { MultiFileUpload } from "./file-upload";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useProjectStore } from "@/lib/store/project.store";
 import { Button } from "@/components/ui/retroui/button";
 import * as ProjectService from "@/lib/services/project.service";
+import * as FileService from "@/lib/services/file.service";
 import { useNotification } from "@/components/elements/toast-notification";
 import { useTranslationStore } from "@/lib/store/translation.store";
 
@@ -23,16 +24,90 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
     setParsedProject,
     setProjectSnapshot,
     primaryLanguageCode,
+    setPrimaryLanguageCode,
   } = useProjectStore();
-  const { translationFiles, setTranslationFiles } = useTranslationStore()
+  const { translationFiles, setTranslationFiles } = useTranslationStore();
   const [dialogOpen, setDialogOpen] = useState(open);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const { addNotification } = useNotification();
 
   useEffect(() => {
     setDialogOpen(open);
   }, [open]);
 
+  // Auto-select primary language from first uploaded file
+  useEffect(() => {
+    if (translationFiles.length > 0 && !primaryLanguageCode) {
+      const firstLang = translationFiles[0].name.split(".")[0];
+      setPrimaryLanguageCode(firstLang);
+    }
+  }, [translationFiles, primaryLanguageCode, setPrimaryLanguageCode]);
+
+  // Clear selected file if it no longer exists in the list
+  useEffect(() => {
+    if (selectedFile && !translationFiles.some((f) => f.name === selectedFile)) {
+      setSelectedFile(null);
+    }
+  }, [translationFiles, selectedFile]);
+
   const navigate = useNavigate();
+
+  const langCodes = translationFiles.map((f) => f.name.split(".")[0]);
+
+  const handleAddLanguage = async () => {
+    try {
+      const result = await FileService.selectJsonFiles();
+      if (!result) return;
+
+      const existingNames = new Set(translationFiles.map((f) => f.name));
+      const newFiles = result.files.filter((f) => !existingNames.has(f.name));
+
+      if (newFiles.length === 0) {
+        addNotification({
+          type: "warning",
+          title: "No new files",
+          description: "All selected files are already in the list.",
+        });
+        return;
+      }
+
+      setTranslationFiles([...translationFiles, ...newFiles]);
+
+      addNotification({
+        type: "success",
+        title: "Files added",
+        description: `Added ${newFiles.length} language file${newFiles.length > 1 ? "s" : ""}.`,
+      });
+    } catch (err) {
+      console.error("Error adding language files:", err);
+      addNotification({
+        type: "error",
+        title: "Failed to add files",
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
+  };
+
+  const handleRemoveLanguage = () => {
+    if (!selectedFile) return;
+
+    const removedLang = selectedFile.split(".")[0];
+    const updated = translationFiles.filter((f) => f.name !== selectedFile);
+    setTranslationFiles(updated);
+    setSelectedFile(null);
+
+    // If the removed file was the primary language, reset it
+    if (removedLang === primaryLanguageCode) {
+      if (updated.length > 0) {
+        setPrimaryLanguageCode(updated[0].name.split(".")[0]);
+      } else {
+        setPrimaryLanguageCode("");
+      }
+    }
+  };
+
+  const canRemove = selectedFile !== null && translationFiles.length > 1;
 
   const parseProject = async () => {
     try {
@@ -45,10 +120,19 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
         return;
       }
 
+      if (!primaryLanguageCode) {
+        addNotification({
+          type: "warning",
+          title: "No primary language",
+          description: "Please select a primary language.",
+        });
+        return;
+      }
+
       const project = await ProjectService.createProject({
         files: translationFiles,
         framework: selectedFramework!,
-        primaryLanguage: primaryLanguageCode!,
+        primaryLanguage: primaryLanguageCode,
       });
 
       if (!project) return;
@@ -93,20 +177,59 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
             <MultiFileUpload
               files={translationFiles}
               onFilesChange={setTranslationFiles}
+              selectedFile={selectedFile}
+              onSelectFile={setSelectedFile}
             />
           </section>
 
-          <div className="mt-1.5">
-            <Button size="sm" variant="ghost">
-              Primary Language: {primaryLanguageCode}
-            </Button>
+          <div className="mt-1.5 relative">
+            <label className="text-xs font-medium text-muted-foreground mb-1 block">
+              Primary Language
+            </label>
+            <button
+              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+              className="flex items-center justify-between w-full px-3 py-2 text-sm border-2 border-border rounded hover:border-foreground/40 transition-all cursor-pointer bg-background"
+            >
+              <span className={primaryLanguageCode ? "text-foreground" : "text-muted-foreground"}>
+                {primaryLanguageCode || "Select primary language..."}
+              </span>
+              <ChevronDown size={14} className={`text-muted-foreground transition-transform ${langDropdownOpen ? "rotate-180" : ""}`} />
+            </button>
+            {langDropdownOpen && langCodes.length > 0 && (
+              <div className="absolute z-50 mt-1 w-full bg-popover border border-border rounded-md shadow-lg p-1">
+                {langCodes.map((code) => (
+                  <div
+                    key={code}
+                    onClick={() => {
+                      setPrimaryLanguageCode(code);
+                      setLangDropdownOpen(false);
+                    }}
+                    className="flex items-center justify-between px-3 py-1.5 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <span>{code}</span>
+                    {primaryLanguageCode === code && <Check size={14} />}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <div className="flex items-center gap-2 mt-2">
-            <Button variant="outline" size="sm" className="gap-2">
+          <div className="flex items-center gap-2 mt-3">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={handleAddLanguage}
+            >
               <Plus className="h-4 w-4" />
               Add language
             </Button>
-            <Button variant="outline" size="sm" className="gap-2" disabled>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              disabled={!canRemove}
+              onClick={handleRemoveLanguage}
+            >
               <Minus className="h-4 w-4" />
               Remove language
             </Button>
@@ -124,7 +247,7 @@ export const FileUploadDialog: React.FC<FileUploadDialogProps> = ({
           >
             Cancel
           </Button>
-          <Button onClick={parseProject}>Save</Button>
+          <Button onClick={parseProject} disabled={!primaryLanguageCode}>Save</Button>
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog>

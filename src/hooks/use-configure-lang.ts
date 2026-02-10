@@ -6,9 +6,20 @@ import { ParsedProject } from "@/lib/types/project.types";
 import { useEditorStore } from "@/lib/store/editor.store";
 
 export const useConfigureLang = () => {
-  const { parsedProject, setParsedProject } = useProjectStore();
+  const { parsedProject, setParsedProject, projectSnapshot } = useProjectStore();
   const { addNotification } = useNotification()
-  const { setLanguageToAdd, setTranslationId, setTranslationText, translationText, languageToAdd, setApprovalStateStatus, setTranslationTextStatus, setUsageStatus
+  const {
+    setLanguageToAdd,
+    setTranslationId,
+    setTranslationText,
+    translationId,
+    translationText,
+    translationTextStatus,
+    approvalStateStatus,
+    languageToAdd,
+    setApprovalStateStatus,
+    setTranslationTextStatus,
+    setUsageStatus,
   } = useEditorStore()
 
   const addPathTolanguage = async (locale: string) => {
@@ -91,25 +102,63 @@ export const useConfigureLang = () => {
 
 
   const handleFilter = async () => {
-    const obj = parsedProject.folder_structure.children[0].children;
-    const filtered = obj.filter((filt) =>
-      filt.name.toLowerCase().includes(translationText.toLowerCase())
-    );
+    // Use the snapshot (original unfiltered data) as the source, not the current (possibly already filtered) project
+    const sourceProject = projectSnapshot && Object.keys(projectSnapshot).length > 0
+      ? projectSnapshot
+      : parsedProject;
 
-    if (!filtered) {
-      addNotification(
-        {
-          title: "No filter found",
-          type: "error"
+    const allConcepts = sourceProject.folder_structure.children[0].children;
+
+    const filtered = allConcepts.filter((concept) => {
+      // Filter by Translation ID substring
+      if (translationId && translationId.trim() !== "") {
+        if (!concept.name.toLowerCase().includes(translationId.toLowerCase())) {
+          return false;
         }
-      )
+      }
+
+      // Filter by Translation text substring (search across all language values)
+      if (translationText && translationText.trim() !== "") {
+        const hasMatch = concept.translations.some((t) =>
+          t.value.toLowerCase().includes(translationText.toLowerCase())
+        );
+        if (!hasMatch) return false;
+      }
+
+      // Filter by translation text status
+      if (translationTextStatus === "translated") {
+        const allTranslated = concept.translations.every((t) => t.value && t.value.trim() !== "");
+        if (!allTranslated) return false;
+      } else if (translationTextStatus === "untranslated") {
+        const hasEmpty = concept.translations.some((t) => !t.value || t.value.trim() === "");
+        if (!hasEmpty) return false;
+      }
+
+      // Filter by approval state
+      if (approvalStateStatus === "approved") {
+        const allApproved = concept.translations.every((t) => t.approved);
+        if (!allApproved) return false;
+      } else if (approvalStateStatus === "not-approved") {
+        const hasUnapproved = concept.translations.some((t) => !t.approved);
+        if (!hasUnapproved) return false;
+      }
+
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      addNotification({
+        title: "No results",
+        description: "No translations match the current filter.",
+        type: "info"
+      });
       return;
     }
 
     const updatedFolder: ParsedProject = {
       ...parsedProject,
       folder_structure: {
-        name: "main",
+        ...parsedProject.folder_structure,
         children: parsedProject.folder_structure.children.map((pkg) => ({
           ...pkg,
           children: filtered
@@ -118,14 +167,31 @@ export const useConfigureLang = () => {
     }
 
     setParsedProject(updatedFolder)
+
+    addNotification({
+      title: "Filter applied",
+      description: `Showing ${filtered.length} of ${allConcepts.length} translations.`,
+      type: "success"
+    });
   }
 
   const handleReset = () => {
+    // Clear form inputs
     setTranslationId("")
     setTranslationText("")
     setTranslationTextStatus("any")
     setApprovalStateStatus("any")
     setUsageStatus("any")
+
+    // Restore original unfiltered project data from snapshot
+    if (projectSnapshot && Object.keys(projectSnapshot).length > 0) {
+      setParsedProject(projectSnapshot);
+      addNotification({
+        title: "Filter cleared",
+        description: "Showing all translations.",
+        type: "success"
+      });
+    }
   }
 
   return {

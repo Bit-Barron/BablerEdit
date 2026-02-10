@@ -14,6 +14,8 @@ type FileStatus = "idle" | "dragging";
 interface MultiFileUploadProps {
   files: FileWithPath[];
   onFilesChange: (files: FileWithPath[]) => void;
+  selectedFile?: string | null;
+  onSelectFile?: (fileName: string | null) => void;
   className?: string;
 }
 
@@ -114,6 +116,8 @@ const UploadIllustration = () => (
 export function MultiFileUpload({
   files,
   onFilesChange,
+  selectedFile,
+  onSelectFile,
   className,
 }: MultiFileUploadProps) {
   const [status, setStatus] = useState<FileStatus>("idle");
@@ -164,7 +168,7 @@ export function MultiFileUpload({
     };
   }, [files, onFilesChange]);
 
-  // Drag Over Event für visuelle Feedback
+  // Drag Over Event for visual feedback
   useEffect(() => {
     let unlisten: (() => void) | undefined;
 
@@ -302,32 +306,45 @@ export function MultiFileUpload({
         <div className="max-h-32 overflow-y-auto pr-1 bg-background">
           <div className="space-y-1.5">
           <AnimatePresence mode="popLayout">
-            {files.map((file: FileWithPath, index: number) => (
-              <motion.div
-                key={`${file.name}-${index}`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20, height: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.3 }}
-                className="flex items-center gap-2.5 rounded-md border border-border p-2 bg-card opacity-100"
-              >
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate text-foreground">
-                    {file.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {file.path} • {formatBytes(file.size)}
-                  </p>
-                </div>
-                <button
-                  onClick={() => removeFile(file.path)}
-                  className="flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted transition-colors"
-                  type="button"
+            {files.map((file: FileWithPath, index: number) => {
+              const isSelected = selectedFile === file.name;
+
+              return (
+                <motion.div
+                  key={`${file.name}-${index}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20, height: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.3 }}
+                  className={cn(
+                    "flex items-center gap-2.5 rounded-md border p-2 bg-card opacity-100 cursor-pointer transition-all",
+                    isSelected
+                      ? "border-primary bg-primary/5 border-2"
+                      : "border-border hover:border-foreground/30"
+                  )}
+                  onClick={() => onSelectFile?.(isSelected ? null : file.name)}
                 >
-                  <X className="h-4 w-4 text-muted-foreground" />
-                </button>
-              </motion.div>
-            ))}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate text-foreground">
+                      {file.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {file.path} • {formatBytes(file.size)}
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(file.path);
+                    }}
+                    className="flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted transition-colors"
+                    type="button"
+                  >
+                    <X className="h-4 w-4 text-muted-foreground" />
+                  </button>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
           </div>
         </div>

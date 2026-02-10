@@ -23,27 +23,46 @@ export const TRANSLATION_MODELS: TranslationModel[] = [
     speed: "medium",
     quality: "good",
   },
-]
+  {
+    value: "google:translate",
+    label: "Google Translate",
+    description: "Industry standard, 500K chars/month free tier",
+    speed: "fast",
+    quality: "best",
+  },
+  {
+    value: "deepl:translate",
+    label: "DeepL",
+    description: "Best quality for European languages, 500K chars/month free",
+    speed: "fast",
+    quality: "best",
+  },
+  {
+    value: "microsoft:translate",
+    label: "Microsoft Translator",
+    description: "Azure Cognitive Services, 2M chars/month free tier",
+    speed: "fast",
+    quality: "great",
+  },
+];
 
 export const OPTIONS: TranslationOptionsProps[] = [
   {
     id: "reset",
     label: "Reset Approved flag",
     desc: "Clear approval status after translation",
-    selected: false
+    selected: false,
   },
   {
     id: "selected",
     label: "Translate selected items only",
     desc: "Only process currently selected rows",
-    selected: false
+    selected: false,
   },
   {
     id: "overwrite",
     label: "Overwrite existing translations",
     desc: "Replace translations that already exist",
-    selected: false
+    selected: false,
   },
-]
-
-
+];

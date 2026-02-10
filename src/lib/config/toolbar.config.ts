@@ -6,7 +6,6 @@ import { DeleteIcon } from "@/components/icons/delete";
 import { SlidersHorizontalIcon } from "@/components/icons/sliders-horizontal";
 import { EarthIcon } from "@/components/icons/earth";
 import { LanguagesIcon } from "@/components/icons/languages";
-
 export const TOOLBAR: ToolbarType[] = [
   {
     id: "open",

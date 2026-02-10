@@ -82,6 +82,9 @@ interface IDialogContentProps
 }
 
 import { motion } from "framer-motion";
+import { useSettingsStore } from "@/lib/store/setting.store";
+
+const SHAKE_ANIMATION = { x: [0, -10, 10, -8, 8, -4, 4, 0] };
 
 const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
   function DialogContent(inputProps: IDialogContentProps, forwardedRef) {
@@ -95,6 +98,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
 
     const contentRef = React.useRef<HTMLDivElement>(null);
     const [shakeKey, setShakeKey] = React.useState(0);
+    const dialogShake = useSettingsStore((s) => s.designSettings.dialogShake);
 
     React.useEffect(() => {
       function handleOutsideClick(event: MouseEvent | TouchEvent) {
@@ -112,6 +116,9 @@ const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
       };
     }, []);
 
+    // Only shake after an outside click (shakeKey > 0) and when the setting is on
+    const shouldShake = dialogShake && shakeKey > 0;
+
     return (
       <Dialog.Portal>
         <DialogBackdrop {...overlay} />
@@ -123,7 +130,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
           <motion.div
             key={shakeKey}
             ref={contentRef}
-            animate={{ x: [0, -10, 10, -8, 8, -4, 4, 0] }}
+            animate={shouldShake ? SHAKE_ANIMATION : { x: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="flex flex-col relative"
           >

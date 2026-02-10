@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { NodeApi } from "react-arborist";
 import { ParsedProject } from "@/lib/types/project.types";
 import { TreeNodeType } from "@/lib/types/editor.types";
 import { useTranslation } from "@/hooks/use-translation";
 import { useTranslationStore } from "@/lib/store/translation.store";
+import { useEditorStore } from "@/lib/store/editor.store";
 import { Separator } from "@/components/ui/separator";
 import { TranslationInput } from "@/components/elements/translation-input";
 import { MessageSquareIcon } from "@/components/icons/message-square";
@@ -11,6 +12,7 @@ import { Dialog } from "@/components/ui/retroui/dialog";
 import { Textarea } from "@/components/ui/retroui/textarea";
 import { PlaneIcon } from "lucide-react";
 import { Button } from "@/components/ui/retroui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -31,8 +33,14 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     commentDialogOpen,
     setCommentDialogOpen
   } = useTranslationStore();
+  const { secondaryLanguage, setSecondaryLanguage } = useEditorStore();
   const { toggleApproved, changeTranslationValue, addComment } =
     useTranslation();
+
+  const referenceTranslation = useMemo(() => {
+    if (!secondaryLanguage) return null;
+    return translationForKey.find((t) => t.language === secondaryLanguage);
+  }, [secondaryLanguage, translationForKey]);
 
   useEffect(() => {
     const findTranslationForKey = () => {
@@ -138,15 +146,43 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </div>
       )}
 
+      {/* Reference language selector and display */}
+      <div className="px-4 py-2 bg-muted/10 border-b border-border flex items-center gap-3">
+        <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">Reference:</span>
+        <Select value={secondaryLanguage || "none"} onValueChange={(v: string | null) => setSecondaryLanguage(!v || v === "none" ? "" : v)}>
+          <SelectTrigger className="h-7 text-xs w-28">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent sideOffset={4}>
+            <SelectItem value="none">None</SelectItem>
+            {project.languages.map((lang) => (
+              <SelectItem key={lang.code} value={lang.code}>
+                {lang.code.toUpperCase()}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {referenceTranslation && referenceTranslation.value && (
+          <div className="flex-1 text-sm text-muted-foreground italic truncate bg-secondary/50 px-3 py-1 rounded border border-border">
+            {referenceTranslation.value}
+          </div>
+        )}
+      </div>
+
       <div className="flex-1 overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="space-y-4">
           {translationForKey.map((t: any) => {
+            const primaryT = translationForKey.find(
+              (tr) => tr.language === project.primary_language
+            );
             return (
               <TranslationInput
                 key={t.language}
                 translation={t}
                 toggleApproved={toggleApproved}
                 changeTranslationValue={changeTranslationValue}
+                primaryTranslation={primaryT}
+                framework={project.framework}
               />
             );
           })}

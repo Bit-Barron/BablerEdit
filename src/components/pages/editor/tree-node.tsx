@@ -13,12 +13,16 @@ interface TreeNodeProps {
   tree: TreeApi<TreeNodeType>;
   dragHandle?: (el: HTMLDivElement | null) => void;
   preview?: boolean;
+  onClick?: (node: NodeApi<TreeNodeType>, isMultiSelect: boolean) => void;
+  onContextMenu?: (e: React.MouseEvent, node: NodeApi<TreeNodeType>) => void;
 }
 
 export const TreeNode: React.FC<TreeNodeProps> = ({
   node,
   style,
   dragHandle,
+  onClick,
+  onContextMenu,
 }) => {
   const isFolder = !node.isLeaf;
 
@@ -26,7 +30,15 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
     <div
       style={style}
       ref={dragHandle}
-      onClick={() => node.isInternal && node.toggle()}
+      onClick={(e) => {
+        if (node.isInternal) node.toggle();
+        const isMultiSelect = e.ctrlKey || e.metaKey;
+        onClick?.(node, isMultiSelect);
+      }}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        onContextMenu?.(e, node);
+      }}
       className={`flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-accent/50 transition-colors border-l-2 ${
         node.isSelected
           ? "bg-primary/10 border-l-primary"

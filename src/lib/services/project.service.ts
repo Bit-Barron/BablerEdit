@@ -30,7 +30,8 @@ export async function createProject(
 
   let primaryFlat: Record<string, string> = {};
   for (const file of files) {
-    if (file.name === `${primaryLanguage}.json`) {
+    const fileLangCode = file.name.split(".")[0];
+    if (fileLangCode === primaryLanguage) {
       foundPrimaryLanguage = true;
 
       const json = await parseJSONFile({
@@ -49,7 +50,7 @@ export async function createProject(
 
   if (!foundPrimaryLanguage) {
     throw new Error(
-      `Primary language file "${primaryLanguage}.json" is missing.`
+      `Primary language file for "${primaryLanguage}" is missing.`
     );
   }
 
@@ -247,33 +248,35 @@ export async function moveJsonNodeProject(
 
       for (let i = 0; i < dragId.length; i++) {
         parent = current;
+        if (current == null || typeof current !== "object") {
+          current = undefined;
+          break;
+        }
         current = current[dragId[i]];
       }
 
-      if (parent === null) {
-        throw new Error("Cannot find parent of dragged item");
-      }
-
-      const movedValue = current;
       const movedKey = dragId[dragId.length - 1];
 
-      delete parent[movedKey];
+      if (parent != null && typeof parent === "object" && movedKey in parent) {
+        const movedValue = current;
+        delete parent[movedKey];
 
-      let parentCurrent: any = obj;
+        let parentCurrent: any = obj;
 
-      if (parentId === null || parentId === "") {
-        parentCurrent[movedKey] = movedValue;
-      } else {
-        const splitParentId = parentId.split(".");
+        if (parentId === null || parentId === "") {
+          parentCurrent[movedKey] = movedValue;
+        } else {
+          const splitParentId = parentId.split(".");
 
-        for (let i = 0; i < splitParentId.length; i++) {
-          if (!parentCurrent[splitParentId[i]]) {
-            parentCurrent[splitParentId[i]] = {};
+          for (let i = 0; i < splitParentId.length; i++) {
+            if (!parentCurrent[splitParentId[i]]) {
+              parentCurrent[splitParentId[i]] = {};
+            }
+            parentCurrent = parentCurrent[splitParentId[i]];
           }
-          parentCurrent = parentCurrent[splitParentId[i]];
-        }
 
-        parentCurrent[movedKey] = movedValue;
+          parentCurrent[movedKey] = movedValue;
+        }
       }
 
       const finalContent = JSON.stringify(obj, null, 2);
@@ -319,6 +322,9 @@ export async function updateProjectFolderStructure(
       };
     })
   );
+  if (loadedTranslations.length === 0) {
+    throw new Error("No translation files found in project.");
+  }
   const allKeys = Object.keys(loadedTranslations[0].data);
 
   const updatedProject: ParsedProject = {

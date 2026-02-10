@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import { useMemo } from "react";
 import { filterItems, useHandleOpenCommandPalette } from "react-cmdk";
 
-export const useEditor = () => {
+export const useEditor = (onSelectId?: (id: string) => void) => {
   const { setLastOpenedProject, addRecentProject } = useSettingsStore();
   const { setParsedProject, setProjectSnapshot, parsedProject } =
     useProjectStore();
@@ -64,11 +64,14 @@ export const useEditor = () => {
           id: `id-${id}`,
           children: id,
           icon: "DocumentTextIcon",
-          onClick: () => { },
+          onClick: () => {
+            onSelectId?.(id);
+            setCommandPaletteOpen(false);
+          },
         })),
       },
     ],
-    search
+    search,
   );
 
   const commandPalette = {
@@ -80,7 +83,7 @@ export const useEditor = () => {
   };
 
   const saveProject = async (
-    project: ParsedProject
+    project: ParsedProject,
   ): Promise<ParsedProject | null> => {
     try {
       const shouldPromptForPath =

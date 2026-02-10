@@ -9,12 +9,12 @@ import { Input } from "@/components/ui/retroui/input";
 import ISO6391 from "iso-639-1";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
-import { useEffect } from "react"
+import { useEffect } from "react";
 import { useConfigureLang } from "@/hooks/use-configure-lang";
 
 countries.registerLocale(enLocale);
 
-export const ConfigureLangDialog: React.FC = ({ }) => {
+export const ConfigureLangDialog: React.FC = ({}) => {
   const {
     configureLangDialogOpen,
     setConfigureLangDialogOpen,
@@ -22,10 +22,10 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
     setLanguageToAdd,
     setAddLangDialogOpen,
     translationUrls,
-    setTranslationUrls
+    setTranslationUrls,
   } = useEditorStore();
   const { parsedProject } = useProjectStore();
-  const { addPathTolanguage, handleDelete } = useConfigureLang()
+  const { addPathTolanguage, handleDelete } = useConfigureLang();
 
   useEffect(() => {
     if (parsedProject && configureLangDialogOpen) {
@@ -54,10 +54,10 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
       >
         <Dialog.Content size="md" className="p-0 bg-background">
           <Dialog.Header className="px-6 pt-6 pb-4 bg-primary text-primary-foreground">
-            Configure Languages
+            Configure Language
           </Dialog.Header>
 
-          <div className="flex justify-center flex-col gap-4 p-6 bg-muted/30 max-h-100 overflow-y-auto">
+          <div className="flex justify-center flex-col gap-4 p-6 max-h-100 overflow-y-auto mt-6">
             {languageToAdd.length > 0 && (
               <div className="space-y-3">
                 <Text className="font-bold mt-5 text-sm px-1">
@@ -86,7 +86,7 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
                             size="icon"
                             onClick={() => {
                               setLanguageToAdd(
-                                languageToAdd.filter((l) => l !== locale)
+                                languageToAdd.filter((l) => l !== locale),
                               );
                             }}
                             className="shrink-0 hover:bg-destructive/10 hover:text-destructive h-8 w-8 p-2"
@@ -112,9 +112,10 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
                               className="shrink-0 h-10 w-10 bg-background"
                               title="Browse for file"
                             >
-                              <FolderOpen onClick={() => addPathTolanguage(
-                                locale
-                              )} className="w-4 h-4" />
+                              <FolderOpen
+                                onClick={() => addPathTolanguage(locale)}
+                                className="w-4 h-4"
+                              />
                             </Button>
                           </div>
                         </div>
@@ -162,7 +163,10 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
                           size="icon"
                           className="shrink-0 hover:bg-destructive/10 hover:text-destructive h-8 w-8 p-2"
                         >
-                          <Trash2 onClick={() => handleDelete(url)} className="w-4 h-4" />
+                          <Trash2
+                            onClick={() => handleDelete(url)}
+                            className="w-4 h-4"
+                          />
                         </Button>
                       </div>
                       <div className="flex gap-2 items-center">
@@ -177,7 +181,10 @@ export const ConfigureLangDialog: React.FC = ({ }) => {
                           className="shrink-0 h-10 w-10 bg-background"
                           title="Browse for file"
                         >
-                          <FolderOpen onClick={() => addPathTolanguage(url)} className="w-4 h-4" />
+                          <FolderOpen
+                            onClick={() => addPathTolanguage(url)}
+                            className="w-4 h-4"
+                          />
                         </Button>
                       </div>
                     </div>

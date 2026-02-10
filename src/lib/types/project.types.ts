@@ -13,7 +13,10 @@ export type FrameworkType =
   | "flutter"
   | "laravel"
   | "ruby"
-  | "resx";
+  | "resx"
+  | "xliff"
+  | "vue"
+  | "properties";
 
 export interface FrameworkConfig {
   id: FrameworkType;

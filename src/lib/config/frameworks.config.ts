@@ -16,6 +16,8 @@ const FRAMEWORK_ICONS: Record<string, string> = {
   resx: ".NET",
   json: "{ }",
   yaml: "≡",
+  xliff: "📋",
+  properties: "☕",
 };
 
 export function getFrameworkIcon(id: string): string {
@@ -35,6 +37,24 @@ export const FILETYPES: FileType[] = [
     name: "Ruby on Rails",
     subtitle: "YAML",
     color: "text-red-700",
+  },
+  {
+    id: "xliff",
+    name: "XLIFF",
+    subtitle: "XML",
+    color: "text-purple-600",
+  },
+  {
+    id: "vue",
+    name: "Vue i18n",
+    subtitle: "JSON",
+    color: "text-green-600",
+  },
+  {
+    id: "properties",
+    name: "Java",
+    subtitle: "Properties",
+    color: "text-amber-700",
   },
 ];
 
@@ -192,6 +212,95 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
       return { valid: true };
     },
     parser: async (content) => content,
+  },
+
+  xliff: {
+    id: "xliff",
+    name: "XLIFF",
+    acceptedExtensions: [".xlf", ".xliff"],
+    maxFiles: 10,
+    maxSize: 5 * 1024 * 1024,
+    validator: async (file) => {
+      const content = await file.text();
+      if (!content.includes("<xliff") && !content.includes("<trans-unit")) {
+        return { valid: false, error: "Invalid XLIFF format" };
+      }
+      return { valid: true };
+    },
+    parser: async (content) => {
+      // Parse XLIFF XML into key-value pairs
+      const result: Record<string, string> = {};
+      const unitRegex = /<trans-unit[^>]*id="([^"]*)"[^>]*>[\s\S]*?<target[^>]*>([\s\S]*?)<\/target>[\s\S]*?<\/trans-unit>/g;
+      let match;
+      while ((match = unitRegex.exec(content)) !== null) {
+        result[match[1]] = match[2].trim();
+      }
+      // Fallback: try source if no target
+      if (Object.keys(result).length === 0) {
+        const sourceRegex = /<trans-unit[^>]*id="([^"]*)"[^>]*>[\s\S]*?<source[^>]*>([\s\S]*?)<\/source>[\s\S]*?<\/trans-unit>/g;
+        while ((match = sourceRegex.exec(content)) !== null) {
+          result[match[1]] = match[2].trim();
+        }
+      }
+      return result;
+    },
+  },
+
+  vue: {
+    id: "vue",
+    name: "Vue i18n",
+    acceptedExtensions: [".json"],
+    maxFiles: 10,
+    maxSize: 5 * 1024 * 1024,
+    validator: async (file) => {
+      try {
+        const content = await file.text();
+        const data = parseJson(content);
+        if (typeof data !== "object") {
+          return { valid: false, error: "Vue i18n files must be JSON objects" };
+        }
+        return { valid: true };
+      } catch (error) {
+        console.error(error);
+        return { valid: false, error: "Invalid JSON format" };
+      }
+    },
+    parser: async (content) => JSON.parse(content),
+  },
+
+  properties: {
+    id: "properties",
+    name: "Java Properties",
+    acceptedExtensions: [".properties"],
+    maxFiles: 10,
+    maxSize: 5 * 1024 * 1024,
+    validator: async (file) => {
+      const content = await file.text();
+      if (!content.trim()) {
+        return { valid: false, error: "Empty properties file" };
+      }
+      return { valid: true };
+    },
+    parser: async (content) => {
+      const result: Record<string, string> = {};
+      const lines = content.split("\n");
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("!")) continue;
+        const eqIdx = trimmed.indexOf("=");
+        const colonIdx = trimmed.indexOf(":");
+        let sepIdx = -1;
+        if (eqIdx >= 0 && colonIdx >= 0) sepIdx = Math.min(eqIdx, colonIdx);
+        else if (eqIdx >= 0) sepIdx = eqIdx;
+        else if (colonIdx >= 0) sepIdx = colonIdx;
+        if (sepIdx >= 0) {
+          const key = trimmed.substring(0, sepIdx).trim();
+          const value = trimmed.substring(sepIdx + 1).trim();
+          result[key] = value;
+        }
+      }
+      return result;
+    },
   },
 };
 

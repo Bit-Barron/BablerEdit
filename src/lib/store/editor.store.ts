@@ -6,8 +6,10 @@ import type { SetStateAction } from "react"
 import type { ParsedProject } from "../types/project.types"
 
 interface EditorStore {
+  selectedNodes: NodeApi<TreeNodeType>[]
+  setSelectedNodes: (nodes: NodeApi<TreeNodeType>[]) => void
+  // Keep selectedNode for backward compatibility (first selected node)
   selectedNode: NodeApi<TreeNodeType> | null
-  setSelectedNode: (node: NodeApi<TreeNodeType> | null) => void
 
   onProjectClick: string
   setOnProjectClick: (id: string) => void
@@ -74,6 +76,31 @@ interface EditorStore {
 
   preTranslateSelectedLanguage: string[],
   setPreTranslateSelectedLanguage: (preTranslateSelectedLanguage: string[]) => void
+
+  renameDialogOpen: boolean;
+  setRenameDialogOpen: (open: boolean) => void;
+
+  statisticsDialogOpen: boolean;
+  setStatisticsDialogOpen: (open: boolean) => void;
+
+  consistencyDialogOpen: boolean;
+  setConsistencyDialogOpen: (open: boolean) => void;
+
+  secondaryLanguage: string;
+  setSecondaryLanguage: (lang: string) => void;
+
+  apiKeysDialogOpen: boolean;
+  setApiKeysDialogOpen: (open: boolean) => void;
+
+  toolbarVisible: boolean;
+  toggleToolbar: () => void;
+
+  preTranslateOptions: string[];
+  togglePreTranslateOption: (id: string) => void;
+
+  clipboardNodes: { id: string; mode: 'cut' | 'copy' }[];
+  addClipboardNode: (node: { id: string; mode: 'cut' | 'copy' }) => void;
+  clearClipboard: () => void;
 }
 
 export const useEditorStore = create<EditorStore>((set) => ({
@@ -85,6 +112,7 @@ export const useEditorStore = create<EditorStore>((set) => ({
   translationTextStatus: "any",
   approvalStateStatus: "any",
   usageStatus: "any",
+  selectedNodes: [],
   selectedNode: null,
   search: "",
   languageToAdd: [],
@@ -102,6 +130,25 @@ export const useEditorStore = create<EditorStore>((set) => ({
   onProjectClick: "",
   currentRoute: "wizard",
   disabledButtons: false,
+  renameDialogOpen: false,
+  statisticsDialogOpen: false,
+  consistencyDialogOpen: false,
+  secondaryLanguage: "",
+  setRenameDialogOpen: (open) => set({ renameDialogOpen: open }),
+  setStatisticsDialogOpen: (open) => set({ statisticsDialogOpen: open }),
+  setConsistencyDialogOpen: (open) => set({ consistencyDialogOpen: open }),
+  setSecondaryLanguage: (lang) => set({ secondaryLanguage: lang }),
+  apiKeysDialogOpen: false,
+  setApiKeysDialogOpen: (open) => set({ apiKeysDialogOpen: open }),
+  toolbarVisible: true,
+  toggleToolbar: () => set((state) => ({ toolbarVisible: !state.toolbarVisible })),
+  preTranslateOptions: [],
+  togglePreTranslateOption: (id) =>
+    set((state) => ({
+      preTranslateOptions: state.preTranslateOptions.includes(id)
+        ? state.preTranslateOptions.filter((o) => o !== id)
+        : [...state.preTranslateOptions, id],
+    })),
   setSelectedModel: (selectedModel: string) => set({
     selectedModel
   }),
@@ -114,7 +161,10 @@ export const useEditorStore = create<EditorStore>((set) => ({
   setTranslationTextStatus: (translationTextStatus) => set({ translationTextStatus }),
   setApprovalStateStatus: (approvalStateStatus: string) => set({ approvalStateStatus }),
   setUsageStatus: (usageStatus: string) => set({ usageStatus }),
-  setSelectedNode: (node) => set({ selectedNode: node }),
+  setSelectedNodes: (nodes) => set({
+    selectedNodes: nodes,
+    selectedNode: nodes.length > 0 ? nodes[0] : null
+  }),
   setSelectedLanguage: (selectedLanguage: string[]) => set({ selectedLanguage }),
   setFilterDialogOpen: (filterDialogOpen: boolean) => set({ filterDialogOpen: filterDialogOpen }),
   setLanguageToAdd: (langs: string[]) => set({ languageToAdd: langs }),
@@ -139,4 +189,12 @@ export const useEditorStore = create<EditorStore>((set) => ({
   setCurrentRoute: (route: string) => set({ currentRoute: route }),
   setDisabledButtons: (disabled: boolean) => set({ disabledButtons: disabled }),
   setAddIdDialogOpen: (open: boolean) => set({ addIdDialogOpen: open }),
+  clipboardNodes: [],
+  addClipboardNode: (node) =>
+    set((state) => {
+      // Don't add duplicates
+      if (state.clipboardNodes.some((n) => n.id === node.id)) return state;
+      return { clipboardNodes: [...state.clipboardNodes, node] };
+    }),
+  clearClipboard: () => set({ clipboardNodes: [] }),
 }))

@@ -17,7 +17,9 @@ export default function Toolbar() {
             const isEnabled = button.enabledIn.includes(location.pathname);
 
             const isDisabled =
-              button.id === "remove-ids" ? !selectedNode : button.disabled;
+              button.id === "remove-ids"
+                ? !selectedNode
+                : button.disabled;
 
             const shouldBeDisabled = !isEnabled || isDisabled;
 
@@ -29,13 +31,13 @@ export default function Toolbar() {
                       variant="ghost"
                       size="sm"
                       disabled={shouldBeDisabled}
+                      onClick={() => {
+                        if (shouldBeDisabled) return;
+                        setOnProjectClick(button.id);
+                      }}
                       className="flex items-center gap-2 h-9 px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   }
-                  onClick={() => {
-                    if (shouldBeDisabled) return;
-                    setOnProjectClick(button.id);
-                  }}
                 >
                   <button.icon size={15} className="h-4 w-4" />
                   <span className="text-xs whitespace-nowrap">

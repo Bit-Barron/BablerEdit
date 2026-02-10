@@ -69,6 +69,8 @@ export async function selectJsonFiles(): Promise<SelectJsonFilesResult | null> {
     };
   } catch (error) {
     console.error("Error selecting JSON files:", error);
-    throw new Error(error as string);
+    throw new Error(
+      error instanceof Error ? error.message : String(error)
+    );
   }
 }

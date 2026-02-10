@@ -60,6 +60,6 @@ export const useProjectStore = create<ProjectStore>((set) => ({
       };
     }),
 
-  primaryLanguageCode: "de",
+  primaryLanguageCode: "",
   setPrimaryLanguageCode: (code) => set({ primaryLanguageCode: code }),
 }));

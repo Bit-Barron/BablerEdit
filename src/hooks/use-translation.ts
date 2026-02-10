@@ -8,10 +8,10 @@ import { delay } from "@/lib/utils/translation";
 import { translateText } from "@/lib/helpers/translate-text";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
-
 export const useTranslation = () => {
-  const { selectedNode, setSelectedNode } = useEditorStore();
-  const { parsedProject, setParsedProject, primaryLanguageCode } = useProjectStore();
+  const { selectedNode, setSelectedNodes } = useEditorStore();
+  const { parsedProject, setParsedProject, primaryLanguageCode } =
+    useProjectStore();
   const { addNotification } = useNotification();
   const {
     setTranslationForKey,
@@ -62,7 +62,7 @@ export const useTranslation = () => {
         project: parsedProject!,
       });
 
-      setSelectedNode(null);
+      setSelectedNodes([]);
       addNotification({
         type: "success",
         title: "ID removed!",
@@ -167,6 +167,32 @@ export const useTranslation = () => {
     }
   };
 
+  const renameId = async (oldId: string, newId: string) => {
+    try {
+      if (!parsedProject) return;
+      const result = await TranslationService.renameTranslationId({
+        oldId,
+        newId,
+        project: parsedProject,
+      });
+      setParsedProject(result);
+      addNotification({
+        type: "success",
+        title: "ID renamed!",
+        description: `"${oldId}" → "${newId}"`,
+      });
+      return result;
+    } catch (err) {
+      console.error(err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      addNotification({
+        type: "error",
+        title: "Failed to rename ID",
+        description: message,
+      });
+    }
+  };
+
   const handleDeleteLanguage = async (url: string) => {
     try {
       if (!parsedProject) return;
@@ -180,20 +206,23 @@ export const useTranslation = () => {
       setParsedProject(result);
 
       setTranslationUrls(translationUrls.filter((u) => u !== url));
-
     } catch (err) {
       addNotification({
         type: "error",
-        title: "Failed to add comment",
-      })
+        title: "Failed to delete language",
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
 
-      console.error(err)
+      console.error(err);
     }
   };
 
-  const handleTranslation = async (langs: any[], options: string[], selectedModel: string) => {
+  const handleTranslation = async (langs: any[], selectedModel: string, options: string[] = []) => {
     try {
-      const getNewAddedLangs = langs.filter((l) => l.newAddedlanguage).map((t) => t.code);
+      const getNewAddedLangs = langs
+        .filter((l) => l.newAddedlanguage)
+        .map((t) => t.code);
+
       let counter = 0;
 
       if (!getNewAddedLangs.length) {
@@ -205,22 +234,31 @@ export const useTranslation = () => {
         return;
       }
 
+      const shouldOverwrite = options.includes("overwrite");
+      const shouldReset = options.includes("reset");
+      const selectedOnly = options.includes("selected");
+
       const langCode = getNewAddedLangs[0];
 
-      const updatedLanguages = parsedProject.languages.some((l) => l.code === langCode)
+      const updatedLanguages = parsedProject.languages.some(
+        (l) => l.code === langCode,
+      )
         ? parsedProject.languages
         : [...parsedProject.languages, { code: langCode }];
 
-      const updatedTranslationPackages = parsedProject.translation_packages.map((pkg) => {
-        if (pkg.translation_urls.some((url) => url.language === langCode)) return pkg;
-        return {
-          ...pkg,
-          translation_urls: [
-            ...pkg.translation_urls,
-            { path: `${langCode}.json`, language: langCode },
-          ],
-        };
-      });
+      const updatedTranslationPackages = parsedProject.translation_packages.map(
+        (pkg) => {
+          if (pkg.translation_urls.some((url) => url.language === langCode))
+            return pkg;
+          return {
+            ...pkg,
+            translation_urls: [
+              ...pkg.translation_urls,
+              { path: `${langCode}.json`, language: langCode },
+            ],
+          };
+        },
+      );
 
       let currentProject: ParsedProject = {
         ...parsedProject,
@@ -229,7 +267,10 @@ export const useTranslation = () => {
       };
 
       const initialJson: Record<string, any> = {};
-      const existingConcepts = currentProject.folder_structure.children[0].children;
+
+      const existingConcepts =
+        currentProject.folder_structure.children[0]?.children ?? [];
+
       for (const concept of existingConcepts) {
         const keys = concept.name.split(".");
         let cur = initialJson;
@@ -241,19 +282,28 @@ export const useTranslation = () => {
       }
       await writeTextFile(
         `${parsedProject.source_root_dir}${langCode}.json`,
-        JSON.stringify(initialJson, null, 2)
+        JSON.stringify(initialJson, null, 2),
       );
 
       setParsedProject(currentProject);
 
-      const concepts = currentProject.folder_structure.children[0].children;
+      let concepts = currentProject.folder_structure.children[0].children;
+
+      if (selectedOnly && selectedNode) {
+        concepts = concepts.filter((c) => c.name === selectedNode.data.id);
+      }
 
       for (let i = 0; i < concepts.length; i++) {
         const primaryTranslation = concepts[i].translations.find(
-          (t) => t.language === primaryLanguageCode
+          (t) => t.language === primaryLanguageCode,
         );
 
         if (!primaryTranslation?.value) continue;
+
+        const existingTranslation = concepts[i].translations.find(
+          (t) => t.language === langCode,
+        );
+        if (!shouldOverwrite && existingTranslation?.value) continue;
 
         counter += 1;
         addNotification({
@@ -266,7 +316,7 @@ export const useTranslation = () => {
           primaryTranslation.value,
           primaryLanguageCode,
           langCode,
-          selectedModel
+          selectedModel,
         );
 
         currentProject = {
@@ -278,12 +328,23 @@ export const useTranslation = () => {
               children: pkg.children.map((concept) => {
                 if (concept.name !== concepts[i].name) return concept;
 
-                const hasLang = concept.translations.some((t) => t.language === langCode);
+                const hasLang = concept.translations.some(
+                  (t) => t.language === langCode,
+                );
                 const updatedTranslations = hasLang
                   ? concept.translations.map((t) =>
-                    t.language === langCode ? { ...t, value: translated } : t
-                  )
-                  : [...concept.translations, { language: langCode, value: translated, approved: false }];
+                      t.language === langCode
+                        ? { ...t, value: translated, ...(shouldReset ? { approved: false } : {}) }
+                        : t,
+                    )
+                  : [
+                      ...concept.translations,
+                      {
+                        language: langCode,
+                        value: translated,
+                        approved: false,
+                      },
+                    ];
 
                 return { ...concept, translations: updatedTranslations };
               }),
@@ -299,7 +360,9 @@ export const useTranslation = () => {
       const newLangJson: Record<string, any> = {};
       const allConcepts = currentProject.folder_structure.children[0].children;
       for (const concept of allConcepts) {
-        const translation = concept.translations.find((t) => t.language === langCode);
+        const translation = concept.translations.find(
+          (t) => t.language === langCode,
+        );
         const keys = concept.name.split(".");
         let current = newLangJson;
         for (let k = 0; k < keys.length - 1; k++) {
@@ -312,12 +375,71 @@ export const useTranslation = () => {
       const filePath = `${parsedProject.source_root_dir}${langCode}.json`;
       await writeTextFile(filePath, JSON.stringify(newLangJson, null, 2));
     } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
       addNotification({
         type: "error",
         title: "Failed to translate",
-        description: "An error occurred during translation.",
+        description: message,
       });
+      console.error("handleTranslation error:", err);
+    }
+  };
+
+  const duplicateId = async (sourceId: string) => {
+    try {
+      if (!parsedProject) return;
+      const result = await TranslationService.duplicateTranslationId({
+        sourceId,
+        project: parsedProject,
+      });
+      setParsedProject(result);
+      addNotification({
+        type: "success",
+        title: "ID duplicated!",
+        description: `"${sourceId}" duplicated successfully`,
+      });
+      return result;
+    } catch (err) {
       console.error(err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      addNotification({
+        type: "error",
+        title: "Failed to duplicate ID",
+        description: message,
+      });
+    }
+  };
+
+  const pasteId = async (
+    sourceId: string,
+    targetParentId: string | null,
+    mode: "cut" | "copy",
+    project?: ParsedProject
+  ) => {
+    try {
+      const currentProject = project || parsedProject;
+      if (!currentProject) return;
+      const result = await TranslationService.pasteTranslationId({
+        sourceId,
+        targetParentId,
+        mode,
+        project: currentProject,
+      });
+      setParsedProject(result);
+      addNotification({
+        type: "success",
+        title: mode === "cut" ? "ID moved!" : "ID pasted!",
+        description: `"${sourceId}" ${mode === "cut" ? "moved" : "pasted"} successfully`,
+      });
+      return result;
+    } catch (err) {
+      console.error(err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      addNotification({
+        type: "error",
+        title: "Failed to paste ID",
+        description: message,
+      });
     }
   };
 
@@ -326,6 +448,9 @@ export const useTranslation = () => {
     toggleApproved,
     addIdToJson,
     removeIdFromJson,
+    renameId,
+    duplicateId,
+    pasteId,
     changeTranslationValue,
     handleDeleteLanguage,
     handleTranslation,
