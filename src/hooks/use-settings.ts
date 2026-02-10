@@ -8,7 +8,7 @@ import { useSettingsStore } from "@/lib/store/setting.store";
 let hasLoadedSettings = false;
 
 export const useSettings = () => {
-  const { setParsedProject, setProjectSnapshot } = useProjectStore();
+  const { setParsedProject, setProjectSnapshot, setPrimaryLanguageCode } = useProjectStore();
   const navigate = useNavigate();
   const { loading, setLoading } = useProjectStore();
   const { setCurrentProjectPath } = useProjectStore();
@@ -32,6 +32,7 @@ export const useSettings = () => {
           if (result.lastOpenedProjectExist) {
             setParsedProject(result.parsedProject);
             setProjectSnapshot(result.parsedProject);
+            setPrimaryLanguageCode(result.parsedProject.primary_language || "");
             setCurrentProjectPath(result.lastOpenedProjectPath as string);
             navigate("/editor");
           }
@@ -59,6 +60,7 @@ export const useSettings = () => {
       if (result) {
         setParsedProject(result.parsedProject);
         setProjectSnapshot(result.parsedProject);
+        setPrimaryLanguageCode(result.parsedProject.primary_language || "");
         setCurrentProjectPath(projectPath);
         navigate("/editor");
       } else {

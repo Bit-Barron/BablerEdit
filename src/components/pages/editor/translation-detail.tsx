@@ -12,7 +12,13 @@ import { Dialog } from "@/components/ui/retroui/dialog";
 import { Textarea } from "@/components/ui/retroui/textarea";
 import { PlaneIcon } from "lucide-react";
 import { Button } from "@/components/ui/retroui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface TranslationDetailProps {
   selectedNode: NodeApi<TreeNodeType>;
@@ -31,7 +37,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     comment,
     setComment,
     commentDialogOpen,
-    setCommentDialogOpen
+    setCommentDialogOpen,
   } = useTranslationStore();
   const { secondaryLanguage, setSecondaryLanguage } = useEditorStore();
   const { toggleApproved, changeTranslationValue, addComment } =
@@ -46,22 +52,21 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
     const findTranslationForKey = () => {
       const mainPackage = project.folder_structure.children[0];
       const conceptNode = mainPackage.children.find(
-        (child) => child.name === selectedNode!.data.id
+        (child) => child.name === selectedNode!.data.id,
       );
       if (!conceptNode?.translations) return;
 
-      setTranslationForKey(conceptNode.translations)
+      setTranslationForKey(conceptNode.translations);
     };
 
     findTranslationForKey();
   }, [selectedNode, project]);
 
-
   useEffect(() => {
     const findTranslationComment = () => {
       const mainPackage = project.folder_structure.children[0];
       const conceptNode = mainPackage.children.find(
-        (child) => child.name === selectedNode!.data.id
+        (child) => child.name === selectedNode!.data.id,
       );
 
       setDisplayComment(conceptNode?.comment as string);
@@ -77,8 +82,9 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         <div className="flex items-center gap-4 justify-between">
           {project.languages.map((lang, idx) => (
             <React.Fragment key={lang.code}>
-              <div className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-md border border-primary/20">{`${lang.code
-                }-${lang.code.toUpperCase()}`}</div>
+              <div className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-md border border-primary/20">{`${
+                lang.code
+              }-${lang.code.toUpperCase()}`}</div>
               {idx < project.languages.length - 1 && (
                 <Separator orientation="vertical" className="h-5" />
               )}
@@ -146,10 +152,16 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         </div>
       )}
 
-      {/* Reference language selector and display */}
       <div className="px-4 py-2 bg-muted/10 border-b border-border flex items-center gap-3">
-        <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">Reference:</span>
-        <Select value={secondaryLanguage || "none"} onValueChange={(v: string | null) => setSecondaryLanguage(!v || v === "none" ? "" : v)}>
+        <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
+          Reference:
+        </span>
+        <Select
+          value={secondaryLanguage || "none"}
+          onValueChange={(v: string | null) =>
+            setSecondaryLanguage(!v || v === "none" ? "" : v)
+          }
+        >
           <SelectTrigger className="h-7 text-xs w-28">
             <SelectValue />
           </SelectTrigger>
@@ -173,7 +185,7 @@ export const TranslationDetail: React.FC<TranslationDetailProps> = ({
         <div className="space-y-4">
           {translationForKey.map((t: any) => {
             const primaryT = translationForKey.find(
-              (tr) => tr.language === project.primary_language
+              (tr) => tr.language === project.primary_language,
             );
             return (
               <TranslationInput

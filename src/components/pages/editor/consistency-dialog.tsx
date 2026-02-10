@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/retroui/button";
 import { validateAllPlaceholders, PlaceholderValidationResult } from "@/lib/helpers/placeholder-validator";
 import { translateText } from "@/lib/helpers/translate-text";
 import { useNotification } from "@/components/elements/toast-notification";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { AlertTriangleIcon, SearchIcon, Wand2Icon } from "lucide-react";
 
 interface ConsistencyIssue {
@@ -16,8 +17,8 @@ interface ConsistencyIssue {
 }
 
 export const ConsistencyDialog: React.FC = () => {
-  const { consistencyDialogOpen, setConsistencyDialogOpen } = useEditorStore();
-  const { parsedProject, setParsedProject, primaryLanguageCode } = useProjectStore();
+  const { consistencyDialogOpen, setConsistencyDialogOpen, selectedModel } = useEditorStore();
+  const { parsedProject, setParsedProject } = useProjectStore();
   const { addNotification } = useNotification();
   const [tab, setTab] = useState<"consistency" | "placeholders">("consistency");
   const [isFixing, setIsFixing] = useState(false);
@@ -101,14 +102,16 @@ export const ConsistencyDialog: React.FC = () => {
     if (!parsedProject || emptyTranslationIssues.length === 0) return;
 
     setIsFixing(true);
-    const concepts = parsedProject.folder_structure.children[0].children;
     let fixedCount = 0;
     let currentProject = parsedProject;
+
+    // Use the selected model from pre-translate, default to NVIDIA if not set
+    const modelToUse = selectedModel || "nvidia:meta/llama-3.3-70b-instruct";
 
     addNotification({
       type: "info",
       title: "Auto-fixing translations...",
-      description: `Translating ${emptyTranslationIssues.length} missing translations using Google Translate.`,
+      description: `Translating ${emptyTranslationIssues.length} missing translations using AI.`,
     });
 
     // Group issues by language for efficiency
@@ -121,19 +124,28 @@ export const ConsistencyDialog: React.FC = () => {
       issuesByLanguage.get(issue.language)!.push(issue);
     }
 
+    let failedCount = 0;
+    let aborted = false;
+
     try {
       for (const [targetLang, issues] of issuesByLanguage) {
+        if (aborted) break;
+
         for (const issue of issues) {
-          const concept = concepts.find((c) => c.name === issue.ids[0]);
+          if (aborted) break;
+
+          const concept = currentProject.folder_structure.children[0].children.find(
+            (c) => c.name === issue.ids[0]
+          );
           if (!concept) continue;
 
           const primaryTranslation = concept.translations.find(
-            (t) => t.language === primaryLanguageCode
+            (t) => t.language === parsedProject.primary_language
           );
 
           if (!primaryTranslation?.value) continue;
 
-          // Skip if already translated in this iteration
+          // Skip if already translated
           const existingTranslation = concept.translations.find(
             (t) => t.language === targetLang && t.value && t.value.trim() !== ""
           );
@@ -142,9 +154,9 @@ export const ConsistencyDialog: React.FC = () => {
           try {
             const translated = await translateText(
               primaryTranslation.value,
-              primaryLanguageCode,
+              parsedProject.primary_language,
               targetLang,
-              "google"
+              modelToUse
             );
 
             // Update the project
@@ -181,20 +193,66 @@ export const ConsistencyDialog: React.FC = () => {
 
             setParsedProject(currentProject);
             fixedCount++;
+            // Reset fail streak on success
+            failedCount = 0;
 
             // Small delay to prevent rate limiting
-            await new Promise((resolve) => setTimeout(resolve, 300));
+            await new Promise((resolve) => setTimeout(resolve, 500));
           } catch (err) {
             console.error(`Failed to translate ${issue.ids[0]} to ${targetLang}:`, err);
+            failedCount++;
+
+            // Stop after 2 consecutive failures — likely a provider-level issue
+            if (failedCount >= 2) {
+              aborted = true;
+              addNotification({
+                type: "error",
+                title: "Auto-fix stopped",
+                description: `Provider error: ${err instanceof Error ? err.message : "Unknown error"}. Please select a different model in Pre-Translate settings.`,
+              });
+            }
+          }
+        }
+
+        // Save the language file to disk after all translations for this language
+        if (fixedCount > 0) {
+          try {
+            const langJson: Record<string, any> = {};
+            const allConcepts = currentProject.folder_structure.children[0].children;
+            for (const concept of allConcepts) {
+              const translation = concept.translations.find(
+                (t) => t.language === targetLang
+              );
+              const keys = concept.name.split(".");
+              let current = langJson;
+              for (let k = 0; k < keys.length - 1; k++) {
+                if (!current[keys[k]]) current[keys[k]] = {};
+                current = current[keys[k]];
+              }
+              current[keys[keys.length - 1]] = translation?.value ?? "";
+            }
+
+            const filePath = `${currentProject.source_root_dir}${targetLang}.json`;
+            await writeTextFile(filePath, JSON.stringify(langJson, null, 2));
+          } catch (err) {
+            console.error(`Failed to save ${targetLang}.json:`, err);
           }
         }
       }
 
-      addNotification({
-        type: "success",
-        title: "Auto-fix complete!",
-        description: `Successfully translated ${fixedCount} missing translations.`,
-      });
+      if (!aborted) {
+        addNotification({
+          type: "success",
+          title: "Auto-fix complete!",
+          description: `Successfully translated ${fixedCount} missing translations.`,
+        });
+      } else if (fixedCount > 0) {
+        addNotification({
+          type: "warning",
+          title: "Auto-fix partially complete",
+          description: `Translated ${fixedCount} before stopping due to errors. Try a different model.`,
+        });
+      }
     } catch (err) {
       addNotification({
         type: "error",

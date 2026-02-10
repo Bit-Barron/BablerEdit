@@ -14,7 +14,7 @@ export const useEditor = (onSelectId?: (id: string) => void) => {
   const { setLastOpenedProject, addRecentProject } = useSettingsStore();
   const { setParsedProject, setProjectSnapshot, parsedProject } =
     useProjectStore();
-  const { setCurrentProjectPath, setHasUnsavedChanges, currentProjectPath } =
+  const { setCurrentProjectPath, setHasUnsavedChanges, currentProjectPath, setPrimaryLanguageCode } =
     useProjectStore();
   const {
     setAddIdDialogOpen,
@@ -143,6 +143,7 @@ export const useEditor = (onSelectId?: (id: string) => void) => {
 
       setParsedProject(loadResult?.project as ParsedProject);
       setProjectSnapshot(loadResult?.project as ParsedProject);
+      setPrimaryLanguageCode(loadResult?.project.primary_language || "");
 
       setCurrentProjectPath(loadResult?.projectPath);
 
