@@ -1,15 +1,32 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import { useSettingsStore } from "@/lib/store/setting.store";
 
+const LLM_PROVIDERS: Record<string, { url: string; model: string }> = {
+  nvidia: {
+    url: "https://integrate.api.nvidia.com/v1/chat/completions",
+    model: "nvidia/llama-3.3-nemotron-super-49b-v1.5",
+  },
+  fireworks: {
+    url: "https://api.fireworks.ai/inference/v1/chat/completions",
+    model: "accounts/fireworks/models/llama-v3p3-70b-instruct",
+  },
+  mistral: {
+    url: "https://api.mistral.ai/v1/chat/completions",
+    model: "mistral-small-2506",
+  },
+};
+
 async function translateWithLLM(
   text: string,
   sourceLang: string,
   targetLang: string,
-  provider: string
+  provider: string,
+  apiKey: string
 ): Promise<string> {
-  let BASEURL = "";
-  let MODEL = "";
-  let API_KEY = "";
+  const config = LLM_PROVIDERS[provider];
+  if (!config) {
+    throw new Error(`Unknown LLM provider: "${provider}".`);
+  }
 
   const content = `You are a professional translator. Translate the provided text from ${sourceLang} to ${targetLang}. Rules:
         - Output ONLY the translated text, nothing else
@@ -17,32 +34,14 @@ async function translateWithLLM(
         - Do not add explanations, notes, or commentary
         - Keep proper nouns, brand names, and technical terms as-is unless they have an official translation`;
 
-  if (provider === "nvidia") {
-    BASEURL = "https://integrate.api.nvidia.com/v1/chat/completions";
-    MODEL = "nvidia/llama-3.3-nemotron-super-49b-v1.5";
-    API_KEY = "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";
-  } else if (provider === "together") {
-    BASEURL = "https://api.together.xyz/v1/chat/completions";
-    MODEL = "meta-llama/Llama-3.2-3B-Instruct-Turbo";
-    API_KEY = "tgp_v1_sU05Wxh7GAwfUxAGpBpRoZdGv_wC0bmi77nPtcuAo1o";
-  } else if (provider === "fireworks") {
-    BASEURL = "https://api.fireworks.ai/inference/v1/chat/completions";
-    MODEL = "accounts/fireworks/models/llama-v3p3-70b-instruct";
-    API_KEY = "fw_8enJPJ8t36H7JH3TXY7a89";
-  } else if (provider === "mistral") {
-    BASEURL = "https://api.mistral.ai/v1/chat/completions";
-    MODEL = "mistral-small-2506";
-    API_KEY = "n6MABaBgi3x09tIJbZVCSMip04NWMZbC";
-  }
-
-  const response = await fetch(BASEURL, {
+  const response = await fetch(config.url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: MODEL,
+      model: config.model,
       messages: [
         { role: "system", content },
         { role: "user", content: text },
@@ -183,8 +182,19 @@ export const translateText = async (
       return await translateWithMicrosoft(text, sourceLang, targetLang, apiKeys.microsoftTranslator);
     }
 
-    // LLM providers (nvidia, together, fireworks, mistral)
-    return await translateWithLLM(text, sourceLang, targetLang, provider);
+    // LLM providers (nvidia, fireworks, mistral)
+    const llmKeyMap: Record<string, keyof typeof apiKeys> = {
+      nvidia: "nvidia",
+      fireworks: "fireworks",
+      mistral: "mistral",
+    };
+    const keyName = llmKeyMap[provider];
+    if (!keyName || !apiKeys[keyName]) {
+      throw new Error(
+        `${provider.charAt(0).toUpperCase() + provider.slice(1)} API key not configured. Set it in Tools > API Keys.`
+      );
+    }
+    return await translateWithLLM(text, sourceLang, targetLang, provider, apiKeys[keyName]);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Translation error:", message);

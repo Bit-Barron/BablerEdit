@@ -7,6 +7,9 @@ export interface ApiKeys {
   googleTranslate: string;
   deepl: string;
   microsoftTranslator: string;
+  nvidia: string;
+  fireworks: string;
+  mistral: string;
 }
 
 export interface SettingsState {
@@ -33,6 +36,9 @@ export const useSettingsStore = create<SettingsState>((set) => ({
     googleTranslate: "",
     deepl: "",
     microsoftTranslator: "",
+    nvidia: "",
+    fireworks: "",
+    mistral: "",
   },
   setApiKey: (provider: keyof ApiKeys, key: string) => {
     set((state) => {

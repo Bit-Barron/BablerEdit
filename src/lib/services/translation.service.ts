@@ -46,7 +46,7 @@ export async function addTranslationId(
     }
 
     const updateContent = JSON.stringify(obj, null, 2);
-    writeTextFile(jsonFilePath, updateContent);
+    await writeTextFile(jsonFilePath, updateContent);
   }
 
   const result = await projectService.updateProjectFolderStructure({
@@ -90,7 +90,7 @@ export async function removeTranslationId(
     }
 
     const updateContent = JSON.stringify(obj, null, 2);
-    writeTextFile(jsonFilePath, updateContent);
+    await writeTextFile(jsonFilePath, updateContent);
   }
 
   const result = await projectService.updateProjectFolderStructure({
@@ -134,7 +134,7 @@ export function toggleTranslationApproval(params: ToggleApprovalParams) {
         {
           ...project.folder_structure.children[0],
           children: project.folder_structure.children[0].children.map((node) =>
-            node.name === selectedNodeId.data.id //TODO when using this service parse selectedNode.data.id
+            node.name === selectedNodeId.data.id
               ? { ...node, translations: updatedTranslations! }
               : node
           ),

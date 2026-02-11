@@ -36,11 +36,57 @@ export const ApiKeysDialog: React.FC<ApiKeysDialogProps> = ({
         <Dialog.Header className="px-6 pt-6 pb-3 bg-primary text-primary-foreground rounded-t-lg">
           API Keys Configuration
         </Dialog.Header>
-        <section className="px-6 pt-4 pb-6 space-y-5">
+        <section className="px-6 pt-4 pb-6 space-y-5 overflow-y-auto">
           <p className="text-xs text-muted-foreground">
-            Configure API keys for premium translation providers. LLM providers
-            (NVIDIA, Fireworks, Mistral) work out of the box with free tiers.
+            Configure API keys for translation providers. Get free API keys from
+            each provider's website to enable AI-powered translations.
           </p>
+
+          <h3 className="text-sm font-semibold pt-2">LLM Providers</h3>
+
+          <div className="space-y-2">
+            <Label>NVIDIA NIM API Key</Label>
+            <Input
+              type="password"
+              value={localKeys.nvidia}
+              onChange={(e) =>
+                setLocalKeys((k) => ({ ...k, nvidia: e.target.value }))
+              }
+              placeholder="Enter NVIDIA NIM API key (nvapi-...)..."
+              className="w-full"
+            />
+            <p className="text-xs text-muted-foreground">Free at build.nvidia.com</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Fireworks API Key</Label>
+            <Input
+              type="password"
+              value={localKeys.fireworks}
+              onChange={(e) =>
+                setLocalKeys((k) => ({ ...k, fireworks: e.target.value }))
+              }
+              placeholder="Enter Fireworks API key (fw_...)..."
+              className="w-full"
+            />
+            <p className="text-xs text-muted-foreground">Free at fireworks.ai</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Mistral API Key</Label>
+            <Input
+              type="password"
+              value={localKeys.mistral}
+              onChange={(e) =>
+                setLocalKeys((k) => ({ ...k, mistral: e.target.value }))
+              }
+              placeholder="Enter Mistral API key..."
+              className="w-full"
+            />
+            <p className="text-xs text-muted-foreground">Free at console.mistral.ai</p>
+          </div>
+
+          <h3 className="text-sm font-semibold pt-2">Translation APIs</h3>
 
           <div className="space-y-2">
             <Label>Google Translate API Key</Label>

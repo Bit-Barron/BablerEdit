@@ -6,7 +6,7 @@ type AutoSizedTreeProps<T> = Omit<
   React.ComponentProps<typeof Tree<T>>,
   "width" | "height"
 > & {
-  treeRef?: React.Ref<TreeApi<T>>;
+  treeRef?: React.RefObject<TreeApi<T> | null>;
 };
 
 
@@ -15,7 +15,7 @@ export function TranslationTree<T>({ treeRef, ...props }: AutoSizedTreeProps<T>)
 
   return (
     <div ref={ref} className="flex-1 min-h-0 border-border-subtle">
-      {height > 0 && <Tree<T> ref={treeRef} {...props} width={width} height={height} />}
+      {height > 0 && <Tree<T> ref={treeRef as any} {...props} width={width} height={height} />}
     </div>
   );
 }

@@ -32,11 +32,9 @@ export default function MenuBar() {
         openProject();
         break;
       case "closeProject":
-        // WORKING!!!!
         navigate("/");
         break;
       case "saveProject":
-        // WORKING!!!!
         saveProject(parsedProject);
         break;
       case "quit":

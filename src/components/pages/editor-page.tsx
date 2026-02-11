@@ -11,7 +11,10 @@ import { AddIdDialog } from "@/components/pages/wizard/add-id-dialog";
 import { TranslationDetail } from "@/components/pages/editor/translation-detail";
 import { TranslationTree } from "@/components/pages/editor/translation-tree";
 import { TreeNode } from "@/components/pages/editor/tree-node";
-import { TreeContextMenu, ContextMenuState } from "@/components/pages/editor/tree-context-menu";
+import {
+  TreeContextMenu,
+  ContextMenuState,
+} from "@/components/pages/editor/tree-context-menu";
 import { buildTranslationTree } from "@/lib/helpers/tree-builder";
 import "react-cmdk/dist/cmdk.css";
 import CommandPalette, { getItemIndex } from "react-cmdk";
@@ -26,27 +29,39 @@ import { ApiKeysDialog } from "./editor/api-keys-dialog";
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
   const {
-    addIdDialogOpen, setAddIdDialogOpen,
-    selectedNode, selectedNodes, setSelectedNodes,
-    apiKeysDialogOpen, setApiKeysDialogOpen,
+    addIdDialogOpen,
+    setAddIdDialogOpen,
+    selectedNode,
+    selectedNodes,
+    setSelectedNodes,
+    apiKeysDialogOpen,
+    setApiKeysDialogOpen,
     setRenameDialogOpen,
-    clipboardNodes, addClipboardNode, clearClipboard,
+    clipboardNodes,
+    addClipboardNode,
+    clearClipboard,
   } = useEditorStore();
   const { removeIdFromJson, duplicateId, pasteId } = useTranslation();
   const treeRef = useRef<TreeApi<TreeNodeType>>(null);
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
-  const handleSelectId = useCallback((id: string) => {
-    const tree = treeRef.current;
-    if (!tree) return;
-    const node = tree.get(id);
-    if (!node) return;
-    node.openParents();
-    node.select();
-    tree.scrollTo(id);
-    setSelectedNodes([node as NodeApi<TreeNodeType>]);
-  }, [setSelectedNodes]);
+
+  const handleSelectId = useCallback(
+    (id: string) => {
+      const tree = treeRef.current;
+      if (!tree) return;
+      const node = tree.get(id);
+      if (!node) return;
+      node.openParents();
+      node.select();
+      tree.scrollTo(id);
+      setSelectedNodes([node as NodeApi<TreeNodeType>]);
+    },
+    [setSelectedNodes],
+  );
+
   const { moveJsonNode, commandPalette } = useEditor(handleSelectId);
   const [allExpanded, setAllExpanded] = useState(false);
+
   const initialTreeData = useMemo(() => {
     if (!parsedProject) return [];
 
@@ -124,11 +139,18 @@ export const EditorPage: React.FC = () => {
               onClick={(node, isMultiSelect) => {
                 if (isMultiSelect) {
                   // Toggle selection for multi-select
-                  const isAlreadySelected = selectedNodes.some(n => n.id === node.id);
+                  const isAlreadySelected = selectedNodes.some(
+                    (n) => n.id === node.id,
+                  );
                   if (isAlreadySelected) {
-                    setSelectedNodes(selectedNodes.filter(n => n.id !== node.id));
+                    setSelectedNodes(
+                      selectedNodes.filter((n) => n.id !== node.id),
+                    );
                   } else {
-                    setSelectedNodes([...selectedNodes, node as NodeApi<TreeNodeType>]);
+                    setSelectedNodes([
+                      ...selectedNodes,
+                      node as NodeApi<TreeNodeType>,
+                    ]);
                   }
                 } else {
                   setSelectedNodes([node as NodeApi<TreeNodeType>]);
@@ -158,16 +180,16 @@ export const EditorPage: React.FC = () => {
             duplicateId(node.data.id);
           }}
           onCut={() => {
-            selectedNodes.forEach(node => {
+            selectedNodes.forEach((node) => {
               if (node.isLeaf) {
-                addClipboardNode({ id: node.data.id, mode: 'cut' });
+                addClipboardNode({ id: node.data.id, mode: "cut" });
               }
             });
           }}
           onCopy={() => {
-            selectedNodes.forEach(node => {
+            selectedNodes.forEach((node) => {
               if (node.isLeaf) {
-                addClipboardNode({ id: node.data.id, mode: 'copy' });
+                addClipboardNode({ id: node.data.id, mode: "copy" });
               }
             });
           }}
@@ -176,7 +198,8 @@ export const EditorPage: React.FC = () => {
             let targetParentId: string | null = null;
             if (node.isLeaf) {
               const parts = node.data.id.split(".");
-              targetParentId = parts.length > 1 ? parts.slice(0, -1).join(".") : null;
+              targetParentId =
+                parts.length > 1 ? parts.slice(0, -1).join(".") : null;
             } else {
               targetParentId = node.data.id;
             }
@@ -184,7 +207,12 @@ export const EditorPage: React.FC = () => {
             clearClipboard();
             let currentProject = parsedProject;
             for (const item of items) {
-              const result = await pasteId(item.id, targetParentId, item.mode, currentProject);
+              const result = await pasteId(
+                item.id,
+                targetParentId,
+                item.mode,
+                currentProject,
+              );
               if (result) {
                 currentProject = result;
               }
@@ -212,7 +240,10 @@ export const EditorPage: React.FC = () => {
         <RenameIdDialog />
         <StatisticsDialog />
         <ConsistencyDialog />
-        <ApiKeysDialog open={apiKeysDialogOpen} onOpenChange={setApiKeysDialogOpen} />
+        <ApiKeysDialog
+          open={apiKeysDialogOpen}
+          onOpenChange={setApiKeysDialogOpen}
+        />
       </div>
     </div>
   );
