@@ -1,12 +1,7 @@
-// Built-in API keys per LLM provider - rotates to next key when credits are exhausted
 export const BUILTIN_API_KEYS: Record<string, string[]> = {
   nvidia: [
-    // Add your NVIDIA NIM API keys here
+    "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",
   ],
-  fireworks: [
-    // Add your Fireworks API keys here
-  ],
-  mistral: [
-    // Add your Mistral API keys here
-  ],
+  fireworks: ["fw_8enJPJ8t36H7JH3TXY7a89"],
+  mistral: ["n6MABaBgi3x09tIJbZVCSMip04NWMZbC"],
 };

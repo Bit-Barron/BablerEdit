@@ -1,6 +1,6 @@
 [package]
 name = "bableredit"
-version = "0.1.7"
+version = "0.1.8"
 description = "BablerEdit"
 authors = ["you"]
 edition = "2021"

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Dialog } from "@/components/ui/retroui/dialog";
 import { Button } from "@/components/ui/retroui/button";
 import { Label } from "@/components/ui/retroui/label";
-import { RadioGroup } from "@/components/retroui/Radio";
+import { RadioGroup } from "@/components/ui/retroui/radio";
 import { CheckboxComponent } from "@/components/ui/retroui/checkbox";
 import { useEditorStore } from "@/lib/store/editor.store";
 import { useProjectStore } from "@/lib/store/project.store";
@@ -32,6 +32,7 @@ export const PreTranslateDialog: React.FC = () => {
 
   const { handleTranslation } = useTranslation();
   const [languages, setLanguages] = useState(lang);
+
   if (!languages) return;
 
   const ultimateLang = [

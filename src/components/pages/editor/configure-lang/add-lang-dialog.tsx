@@ -11,10 +11,14 @@ import { CheckCheckIcon } from "@/components/icons/check-check";
 
 countries.registerLocale(enLocale);
 
-export const AddLanguageDialog: React.FC = ({ }) => {
-  const { addLangDialogOpen, selectedLanguage, setSelectedLanguage, setLanguageToAdd, setAddLangDialogOpen
-  } =
-    useEditorStore();
+export const AddLanguageDialog: React.FC = ({}) => {
+  const {
+    addLangDialogOpen,
+    selectedLanguage,
+    setSelectedLanguage,
+    setLanguageToAdd,
+    setAddLangDialogOpen,
+  } = useEditorStore();
   const [search, setSearch] = useState("");
 
   const uniqueArray = [...new Set(selectedLanguage)];
@@ -66,7 +70,7 @@ export const AddLanguageDialog: React.FC = ({ }) => {
                     setSelectedLanguage([...selectedLanguage, locale]);
                   } else {
                     setSelectedLanguage(
-                      selectedLanguage.filter((l) => l !== locale)
+                      selectedLanguage.filter((l) => l !== locale),
                     );
                   }
                 }}
