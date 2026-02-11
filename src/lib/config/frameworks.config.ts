@@ -64,7 +64,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "Generic JSON",
     acceptedExtensions: [".json"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       try {
         const content = await file.text();
@@ -83,7 +83,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "Generic YAML",
     acceptedExtensions: [".yaml", ".yml"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       const content = await file.text();
       if (!content.trim()) {
@@ -101,7 +101,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "i18next",
     acceptedExtensions: [".json"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       try {
         const content = await file.text();
@@ -123,7 +123,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "Flutter ARB",
     acceptedExtensions: [".arb"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       try {
         const content = await file.text();
@@ -143,7 +143,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "React i18n",
     acceptedExtensions: [".json"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       try {
         const content = await file.text();
@@ -162,7 +162,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "Laravel",
     acceptedExtensions: [".php", ".json"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       const ext = file.name.split(".").pop()?.toLowerCase();
       if (ext === "json") {
@@ -187,7 +187,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "Ruby on Rails",
     acceptedExtensions: [".yml", ".yaml"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       const content = await file.text();
       if (!content.trim()) {
@@ -203,7 +203,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: ".NET RESX",
     acceptedExtensions: [".resx"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       const content = await file.text();
       if (!content.includes("<?xml") || !content.includes("<root>")) {
@@ -219,7 +219,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "XLIFF",
     acceptedExtensions: [".xlf", ".xliff"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       const content = await file.text();
       if (!content.includes("<xliff") && !content.includes("<trans-unit")) {
@@ -251,7 +251,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "Vue i18n",
     acceptedExtensions: [".json"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       try {
         const content = await file.text();
@@ -273,7 +273,7 @@ export const FRAMEWORK_CONFIGS: Record<FrameworkType, FrameworkConfig> = {
     name: "Java Properties",
     acceptedExtensions: [".properties"],
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024,
+
     validator: async (file) => {
       const content = await file.text();
       if (!content.trim()) {

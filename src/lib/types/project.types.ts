@@ -23,7 +23,7 @@ export interface FrameworkConfig {
   name: string;
   acceptedExtensions: string[];
   maxFiles: number;
-  maxSize: number;
+  maxSize?: number;
   requiresPairs?: boolean;
   validator?: (file: File) => Promise<{ valid: boolean; error?: string }>;
   parser: (content: string) => Promise<any>;

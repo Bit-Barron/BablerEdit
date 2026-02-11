@@ -1,67 +1,69 @@
 import "@/app/App.css";
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { WizardFrameworkSelector } from "@/components/pages/wizard/framework-selector";
 import { WizardRecentProjects } from "@/components/pages/wizard/recent-projects";
 import { FileUploadDialog } from "@/components/pages/wizard/file-upload/file-upload-dialog";
 import { useProjectStore } from "@/lib/store/project.store";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { FileWithPath } from "@/lib/types/project.types";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 
 export const WizardPage: React.FC = () => {
   const { fileUploadDialog, setFileUploadDialog } = useProjectStore();
   const { setTranslationFiles } = useTranslationStore();
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
+    const setup = async () => {
+      try {
+        unlisten = await getCurrentWindow().onDragDropEvent(async (event) => {
+          if (event.payload.type === "over" || event.payload.type === "enter") {
+            setIsDragging(true);
+          } else if (event.payload.type === "leave") {
+            setIsDragging(false);
+          } else if (event.payload.type === "drop") {
+            setIsDragging(false);
 
-  const handleDrop = useCallback(
-    async (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
+            const droppedPaths = event.payload.paths;
+            const jsonFiles = droppedPaths.filter((p) => p.endsWith(".json"));
 
-      const droppedFiles = Array.from(e.dataTransfer.files);
-      const validFiles = droppedFiles.filter((f) => {
-        const ext = f.name.split(".").pop()?.toLowerCase();
-        return ext === "json";
-      });
+            if (jsonFiles.length === 0) return;
 
-      if (validFiles.length === 0) return;
+            const filesWithPath: FileWithPath[] = await Promise.all(
+              jsonFiles.map(async (filePath) => {
+                const content = await readTextFile(filePath);
+                const fileName = filePath.split(/[/\\]/).pop() || "";
+                return {
+                  name: fileName,
+                  path: filePath,
+                  content,
+                  size: content.length,
+                };
+              })
+            );
 
-      const filesWithPath: FileWithPath[] = await Promise.all(
-        validFiles.map(async (file) => {
-          const content = await file.text();
-          return {
-            name: file.name,
-            path: file.name,
-            content,
-            size: file.size,
-          };
-        })
-      );
+            setTranslationFiles(filesWithPath);
+            setFileUploadDialog(true);
+          }
+        });
+      } catch (err) {
+        console.error("Error setting up drag drop listener:", err);
+      }
+    };
 
-      setTranslationFiles(filesWithPath);
-      setFileUploadDialog(true);
-    },
-    [setFileUploadDialog, setTranslationFiles]
-  );
+    setup();
+
+    return () => {
+      if (unlisten) unlisten();
+    };
+  }, [setFileUploadDialog, setTranslationFiles]);
 
   return (
     <div
       className="flex flex-col overflow-hidden h-full"
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
     >
       {isDragging && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-primary/10 border-4 border-dashed border-primary rounded-lg m-4 pointer-events-none">

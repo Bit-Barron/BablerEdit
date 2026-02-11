@@ -89,9 +89,6 @@ interface EditorStore {
   secondaryLanguage: string;
   setSecondaryLanguage: (lang: string) => void;
 
-  apiKeysDialogOpen: boolean;
-  setApiKeysDialogOpen: (open: boolean) => void;
-
   toolbarVisible: boolean;
   toggleToolbar: () => void;
 
@@ -138,8 +135,6 @@ export const useEditorStore = create<EditorStore>((set) => ({
   setStatisticsDialogOpen: (open) => set({ statisticsDialogOpen: open }),
   setConsistencyDialogOpen: (open) => set({ consistencyDialogOpen: open }),
   setSecondaryLanguage: (lang) => set({ secondaryLanguage: lang }),
-  apiKeysDialogOpen: false,
-  setApiKeysDialogOpen: (open) => set({ apiKeysDialogOpen: open }),
   toolbarVisible: true,
   toggleToolbar: () => set((state) => ({ toolbarVisible: !state.toolbarVisible })),
   preTranslateOptions: [],

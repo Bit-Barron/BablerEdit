@@ -1,5 +1,5 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import { useSettingsStore } from "@/lib/store/setting.store";
+import { BUILTIN_API_KEYS } from "@/lib/config/api-keys.config";
 
 const LLM_PROVIDERS: Record<string, { url: string; model: string }> = {
   nvidia: {
@@ -15,6 +15,21 @@ const LLM_PROVIDERS: Record<string, { url: string; model: string }> = {
     model: "mistral-small-2506",
   },
 };
+
+// Track current key index per provider for rotation
+const keyIndices: Record<string, number> = {};
+
+function getNextKey(provider: string): string {
+  const keys = BUILTIN_API_KEYS[provider];
+  if (!keys || keys.length === 0) {
+    throw new Error(`No API keys configured for provider "${provider}".`);
+  }
+
+  const currentIndex = keyIndices[provider] ?? 0;
+  const key = keys[currentIndex];
+  keyIndices[provider] = (currentIndex + 1) % keys.length;
+  return key;
+}
 
 async function translateWithLLM(
   text: string,
@@ -63,94 +78,6 @@ async function translateWithLLM(
   return data.choices?.[0]?.message?.content ?? "";
 }
 
-async function translateWithGoogle(
-  text: string,
-  sourceLang: string,
-  targetLang: string,
-  apiKey: string
-): Promise<string> {
-  const response = await fetch(
-    `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        q: text,
-        source: sourceLang,
-        target: targetLang,
-        format: "text",
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Google Translate error ${response.status}: ${errorText}`);
-  }
-
-  const data = await response.json();
-  return data.data?.translations?.[0]?.translatedText ?? "";
-}
-
-async function translateWithDeepL(
-  text: string,
-  sourceLang: string,
-  targetLang: string,
-  apiKey: string
-): Promise<string> {
-  const baseUrl = apiKey.endsWith(":fx")
-    ? "https://api-free.deepl.com/v2/translate"
-    : "https://api.deepl.com/v2/translate";
-
-  const response = await fetch(baseUrl, {
-    method: "POST",
-    headers: {
-      Authorization: `DeepL-Auth-Key ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      text: [text],
-      source_lang: sourceLang.toUpperCase(),
-      target_lang: targetLang.toUpperCase(),
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`DeepL error ${response.status}: ${errorText}`);
-  }
-
-  const data = await response.json();
-  return data.translations?.[0]?.text ?? "";
-}
-
-async function translateWithMicrosoft(
-  text: string,
-  sourceLang: string,
-  targetLang: string,
-  apiKey: string
-): Promise<string> {
-  const response = await fetch(
-    `https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=${sourceLang}&to=${targetLang}`,
-    {
-      method: "POST",
-      headers: {
-        "Ocp-Apim-Subscription-Key": apiKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify([{ text }]),
-    }
-  );
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Microsoft Translator error ${response.status}: ${errorText}`);
-  }
-
-  const data = await response.json();
-  return data[0]?.translations?.[0]?.text ?? "";
-}
-
 export const translateText = async (
   text: string,
   sourceLang: string,
@@ -159,42 +86,37 @@ export const translateText = async (
 ): Promise<string> => {
   try {
     const provider = model.split(":")[0];
-    const apiKeys = useSettingsStore.getState().apiKeys;
+    const keys = BUILTIN_API_KEYS[provider];
 
-    if (provider === "google") {
-      if (!apiKeys.googleTranslate) {
-        throw new Error("Google Translate API key not configured. Set it in Tools > API Keys.");
-      }
-      return await translateWithGoogle(text, sourceLang, targetLang, apiKeys.googleTranslate);
-    }
-
-    if (provider === "deepl") {
-      if (!apiKeys.deepl) {
-        throw new Error("DeepL API key not configured. Set it in Tools > API Keys.");
-      }
-      return await translateWithDeepL(text, sourceLang, targetLang, apiKeys.deepl);
-    }
-
-    if (provider === "microsoft") {
-      if (!apiKeys.microsoftTranslator) {
-        throw new Error("Microsoft Translator API key not configured. Set it in Tools > API Keys.");
-      }
-      return await translateWithMicrosoft(text, sourceLang, targetLang, apiKeys.microsoftTranslator);
-    }
-
-    // LLM providers (nvidia, fireworks, mistral)
-    const llmKeyMap: Record<string, keyof typeof apiKeys> = {
-      nvidia: "nvidia",
-      fireworks: "fireworks",
-      mistral: "mistral",
-    };
-    const keyName = llmKeyMap[provider];
-    if (!keyName || !apiKeys[keyName]) {
+    if (!keys || keys.length === 0) {
       throw new Error(
-        `${provider.charAt(0).toUpperCase() + provider.slice(1)} API key not configured. Set it in Tools > API Keys.`
+        `No API keys configured for provider "${provider}".`
       );
     }
-    return await translateWithLLM(text, sourceLang, targetLang, provider, apiKeys[keyName]);
+
+    const maxRetries = keys.length;
+    let lastError: Error | null = null;
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      const apiKey = getNextKey(provider);
+      try {
+        return await translateWithLLM(text, sourceLang, targetLang, provider, apiKey);
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error(String(err));
+        // Retry on quota/rate-limit errors, throw on others
+        const isQuotaError =
+          lastError.message.includes("429") ||
+          lastError.message.includes("402") ||
+          lastError.message.toLowerCase().includes("quota") ||
+          lastError.message.toLowerCase().includes("rate limit");
+        if (!isQuotaError || attempt === maxRetries - 1) {
+          throw lastError;
+        }
+        console.warn(`Key exhausted for ${provider}, rotating to next key (attempt ${attempt + 1}/${maxRetries})`);
+      }
+    }
+
+    throw lastError ?? new Error("Translation failed");
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Translation error:", message);

@@ -4,7 +4,7 @@ import { UploadCloud, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { type DragEvent, useCallback, useEffect, useState } from "react";
 import { FileWithPath } from "@/lib/types/project.types";
-import { listen } from "@tauri-apps/api/event";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { cn } from "@/lib/utils";
 import * as FileService from "@/lib/services/file.service";
@@ -125,90 +125,55 @@ export function MultiFileUpload({
   useEffect(() => {
     let unlisten: (() => void) | undefined;
 
-    const setupDragDrop = async () => {
+    const setup = async () => {
       try {
-        unlisten = await listen<string[]>("tauri://file-drop", async (event) => {
-          try {
-            const droppedPaths = event.payload;
-            const jsonFiles = droppedPaths.filter((p) => p.endsWith(".json"));
+        unlisten = await getCurrentWindow().onDragDropEvent(async (event) => {
+          if (event.payload.type === "drop") {
+            try {
+              const droppedPaths = event.payload.paths;
+              const jsonFiles = droppedPaths.filter((p) => p.endsWith(".json"));
 
-            if (jsonFiles.length === 0) {
-              return;
+              if (jsonFiles.length === 0) {
+                setStatus("idle");
+                return;
+              }
+
+              const filesWithPaths = await Promise.all(
+                jsonFiles.map(async (path) => {
+                  const content = await readTextFile(path);
+                  const fileName = path.split(/[/\\]/).pop() || "";
+                  return {
+                    name: fileName,
+                    path: path,
+                    content: content,
+                    size: content.length,
+                  };
+                })
+              );
+
+              onFilesChange([...files, ...filesWithPaths]);
+              setStatus("idle");
+            } catch (err) {
+              console.error("Error processing dropped files:", err);
+              setStatus("idle");
             }
-
-            const filesWithPaths = await Promise.all(
-              jsonFiles.map(async (path) => {
-                const content = await readTextFile(path);
-                const fileName = path.split(/[/\\]/).pop() || "";
-                return {
-                  name: fileName,
-                  path: path,
-                  content: content,
-                  size: content.length,
-                };
-              })
-            );
-
-            onFilesChange([...files, ...filesWithPaths]);
-            setStatus("idle");
-          } catch (err) {
-            console.error("Error processing dropped files:", err);
+          } else if (event.payload.type === "enter" || event.payload.type === "over") {
+            setStatus("dragging");
+          } else if (event.payload.type === "leave") {
             setStatus("idle");
           }
         });
       } catch (err) {
-        console.error("Error setting up file drop listener:", err);
+        console.error("Error setting up drag drop listener:", err);
       }
     };
 
-    setupDragDrop();
+    setup();
 
     return () => {
       if (unlisten) unlisten();
     };
   }, [files, onFilesChange]);
-
-  // Drag Over Event for visual feedback
-  useEffect(() => {
-    let unlisten: (() => void) | undefined;
-
-    const setupDragOver = async () => {
-      try {
-        unlisten = await listen("tauri://file-drop-hover", () => {
-          setStatus("dragging");
-        });
-      } catch (err) {
-        console.error("Error setting up drag over listener:", err);
-      }
-    };
-
-    setupDragOver();
-
-    return () => {
-      if (unlisten) unlisten();
-    };
-  }, []);
-
-  // Drag Leave Event
-  useEffect(() => {
-    let unlisten: (() => void) | undefined;
-
-    const setupDragLeave = async () => {
-      try {
-        unlisten = await listen("tauri://file-drop-cancelled", () => {
-          setStatus("idle");
-        });
-      } catch (err) {
-        console.error("Error setting up drag leave listener:", err);
-      }
-    };
-
-    setupDragLeave();
-
-    return () => {
-      if (unlisten) unlisten();
-    };
-  }, []);
 
   const handleSelect = async () => {
     try {
@@ -284,7 +249,7 @@ export function MultiFileUpload({
                   Drag and drop or click
                 </h3>
                 <p className="text-muted-foreground text-xs transition-colors duration-300 group-hover/upload:text-foreground/70">
-                  JSON files up to 5 MB
+                  JSON translation files
                 </p>
               </div>
 
