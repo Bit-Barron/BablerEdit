@@ -51,15 +51,53 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v__VERSION__
-          releaseName: 'BablerEdit v__VERSION__'
+          tagName: ${{ github.ref_name }}
+          releaseName: 'BablerEdit ${{ github.ref_name }}'
           releaseBody: |
-            See the [CHANGELOG](https://github.com/Bit-Barron/BablerEdit/blob/main/CHANGELOG.md) for details.
-
             ## Downloads
             - **Windows**: `.exe` installer or `.msi`
             - **macOS**: `.dmg` (Apple Silicon & Intel)
-            - **Linux**: `.deb` or `.AppImage`
-          releaseDraft: true
+            - **Linux**: `.deb`, `.rpm`, or `.AppImage`
+
+            ### Install from AUR (Arch Linux)
+            ```
+            yay -S bableredit-bin
+            ```
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
+  # Auto-update AUR package after Linux build succeeds
+  update-aur:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Update PKGBUILD version
+        run: |
+          cd packaging/aur
+          sed -i "s/pkgver=.*/pkgver=${{ steps.version.outputs.version }}/" PKGBUILD
+          sed -i "s/pkgrel=.*/pkgrel=1/" PKGBUILD
+
+      - name: Generate .SRCINFO
+        uses: hapakaien/archlinux-package-action@v2
+        with:
+          path: packaging/aur
+          flags: ''
+          namcap: false
+          srcinfo: true
+
+      - name: Publish to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v3.0.1
+        with:
+          pkgname: bableredit-bin
+          pkgbuild: packaging/aur/PKGBUILD
+          commit_username: Bit-Barron
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_KEY }}
+          commit_message: "Update to ${{ steps.version.outputs.version }}"

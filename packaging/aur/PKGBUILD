@@ -9,14 +9,12 @@ license=('MIT')
 depends=('webkit2gtk-4.1' 'gtk3' 'libappindicator-gtk3' 'librsvg' 'openssl')
 provides=('bableredit')
 conflicts=('bableredit')
-source=("${pkgname}-${pkgver}.deb::https://github.com/Bit-Barron/BablerEdit/releases/download/v${pkgver}/babler-edit_${pkgver}_amd64.deb")
+source=("${pkgname}-${pkgver}.deb::https://github.com/Bit-Barron/BablerEdit/releases/download/v${pkgver}/BablerEdit_${pkgver}_amd64.deb")
 sha256sums=('SKIP')
 
 package() {
-    # Extract the deb package
     bsdtar -xf data.tar.* -C "${pkgdir}/"
 
-    # Install license
     install -Dm644 "${pkgdir}/usr/share/doc/babler-edit/copyright" \
         "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" 2>/dev/null || true
 }
