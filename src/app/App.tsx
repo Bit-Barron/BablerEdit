@@ -231,16 +231,18 @@ function AppContent() {
   }
 
   return (
-    <>
+    <div className="flex flex-col h-full w-full overflow-hidden">
       <MenuBar />
       {toolbarVisible && <Toolbar />}
-      <Routes>
-        <Route path="/" element={<WizardPage />} />
-        <Route path="/editor" element={<EditorPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/settings/shortcuts" element={<ShortcutsPage />} />
-      </Routes>
-    </>
+      <div className="flex-1 overflow-auto">
+        <Routes>
+          <Route path="/" element={<WizardPage />} />
+          <Route path="/editor" element={<EditorPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings/shortcuts" element={<ShortcutsPage />} />
+        </Routes>
+      </div>
+    </div>
   );
 }
 
