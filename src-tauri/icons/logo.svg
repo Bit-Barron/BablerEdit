@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+
+  <!-- Bold "B" for Babler -->
+  <path fill-rule="evenodd" fill="white" d="
+    M 148 80
+    L 296 80
+    C 364 80 408 116 408 168
+    C 408 204 388 236 352 252
+    C 392 268 416 296 416 340
+    C 416 396 372 432 304 432
+    L 148 432
+    Z
+    M 224 152
+    L 284 152
+    C 320 152 344 172 344 200
+    C 344 228 320 248 284 248
+    L 224 248
+    Z
+    M 224 304
+    L 296 304
+    C 336 304 360 324 360 356
+    C 360 388 336 404 296 404
+    L 224 404
+    Z
+  "/>
+</svg>
