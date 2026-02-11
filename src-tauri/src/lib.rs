@@ -9,15 +9,23 @@ pub fn run() {
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
-            // Force a resize cycle on startup to fix WebKit2GTK sizing on X11.
-            // Without this, the WebView may not fill the window correctly on X11.
             let window = app.get_webview_window("main").unwrap();
-            let size = window.outer_size()?;
-            window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-                width: size.width + 1,
-                height: size.height,
-            }))?;
-            window.set_size(tauri::Size::Physical(size))?;
+
+            // Delayed resize to fix WebKit2GTK layout on X11.
+            // The WebView needs time to initialize before the resize triggers a proper reflow.
+            let win = window.clone();
+            std::thread::spawn(move || {
+                std::thread::sleep(std::time::Duration::from_millis(200));
+                if let Ok(size) = win.outer_size() {
+                    let _ = win.set_size(tauri::Size::Physical(tauri::PhysicalSize {
+                        width: size.width + 1,
+                        height: size.height,
+                    }));
+                    std::thread::sleep(std::time::Duration::from_millis(50));
+                    let _ = win.set_size(tauri::Size::Physical(size));
+                }
+            });
+
             Ok(())
         })
         .run(tauri::generate_context!())
