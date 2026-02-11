@@ -41,12 +41,41 @@ jobs:
           releaseName: 'BablerEdit ${{ github.ref_name }}'
           releaseBody: |
             ## Downloads
+            - **Windows**: `.exe` (NSIS installer)
             - **Linux**: `.deb`, `.rpm`, or `.AppImage`
 
             ### Install from AUR (Arch Linux)
             ```
             yay -S bableredit-bin
             ```
+          releaseDraft: false
+          prerelease: false
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: bun install
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'BablerEdit ${{ github.ref_name }}'
           releaseDraft: false
           prerelease: false
 
