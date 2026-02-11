@@ -7,12 +7,18 @@ import { useProjectStore } from "@/lib/store/project.store";
 import { useTranslationStore } from "@/lib/store/translation.store";
 import { FileWithPath } from "@/lib/types/project.types";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { getVersion } from "@tauri-apps/api/app";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 
 export const WizardPage: React.FC = () => {
   const { fileUploadDialog, setFileUploadDialog } = useProjectStore();
   const { setTranslationFiles } = useTranslationStore();
   const [isDragging, setIsDragging] = useState(false);
+  const [version, setVersion] = useState("");
+
+  useEffect(() => {
+    getVersion().then(setVersion);
+  }, []);
 
   useEffect(() => {
     let unlisten: (() => void) | undefined;
@@ -94,6 +100,12 @@ export const WizardPage: React.FC = () => {
           <WizardRecentProjects />
         </div>
       </div>
+
+      {version && (
+        <div className="px-6 pb-3 text-right">
+          <span className="text-[11px] text-muted-foreground/50">v{version}</span>
+        </div>
+      )}
 
       <FileUploadDialog
         onOpenChange={setFileUploadDialog}
