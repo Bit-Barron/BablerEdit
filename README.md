@@ -6,9 +6,10 @@ BablerEdit helps developers and translators manage translation files across 11+ 
 
 ## Showcase
 
-![BablerEdit Translation Editor](public/images/image.webp)
-
-![BablerEdit Translation Editor](public/images/image2.webp)
+<p>
+  <img src="public/images/image.webp" width="49%" alt="BablerEdit Translation Editor">
+  <img src="public/images/image2.webp" width="49%" alt="BablerEdit Translation Editor">
+</p>
 
 ## Features
 
