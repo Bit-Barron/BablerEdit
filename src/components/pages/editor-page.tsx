@@ -46,12 +46,16 @@ export const EditorPage: React.FC = () => {
     (id: string) => {
       const tree = treeRef.current;
       if (!tree) return;
-      const node = tree.get(id);
-      if (!node) return;
-      node.openParents();
-      node.select();
-      tree.scrollTo(id);
-      setSelectedNodes([node as NodeApi<TreeNodeType>]);
+
+      // tree.get() only finds *visible* nodes (parents must be expanded).
+      // scrollTo() uses DFS on the full tree to open parents, then waits
+      // for the node to appear in the visible index before scrolling.
+      tree.scrollTo(id)?.then(() => {
+        const node = tree.get(id);
+        if (!node) return;
+        node.select();
+        setSelectedNodes([node as NodeApi<TreeNodeType>]);
+      });
     },
     [setSelectedNodes],
   );
