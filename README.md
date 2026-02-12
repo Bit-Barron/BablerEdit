@@ -95,6 +95,16 @@ Download the latest release for your platform from the [Releases](https://github
 ```bash
 yay -S bableredit-bin
 ```
+### Mac
+```
+brew install --cask bableredit
+xattr -r -d com.apple.quarantine /Applications/BablerEdit.app
+```
+
+### Windows
+```
+Install the newest release
+```
 
 ## Build from Source
 
