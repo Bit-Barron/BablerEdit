@@ -67,7 +67,7 @@ function AppContent() {
       },
       cut: () => {
         const { selectedNodes, addClipboardNode } = useEditorStore.getState();
-        selectedNodes.forEach(node => {
+        selectedNodes.forEach((node) => {
           if (node.isLeaf) {
             addClipboardNode({ id: node.data.id, mode: "cut" });
           }
@@ -75,20 +75,25 @@ function AppContent() {
       },
       copy: () => {
         const { selectedNodes, addClipboardNode } = useEditorStore.getState();
-        selectedNodes.forEach(node => {
+        selectedNodes.forEach((node) => {
           if (node.isLeaf) {
             addClipboardNode({ id: node.data.id, mode: "copy" });
           }
         });
       },
       paste: async () => {
-        const { clipboardNodes, selectedNode: node, clearClipboard } = useEditorStore.getState();
+        const {
+          clipboardNodes,
+          selectedNode: node,
+          clearClipboard,
+        } = useEditorStore.getState();
         if (!clipboardNodes.length) return;
         let targetParentId: string | null = null;
         if (node) {
           if (node.isLeaf) {
             const parts = node.data.id.split(".");
-            targetParentId = parts.length > 1 ? parts.slice(0, -1).join(".") : null;
+            targetParentId =
+              parts.length > 1 ? parts.slice(0, -1).join(".") : null;
           } else {
             targetParentId = node.data.id;
           }
@@ -97,7 +102,12 @@ function AppContent() {
         clearClipboard();
         let currentProject = parsedProject;
         for (const item of items) {
-          const result = await pasteId(item.id, targetParentId, item.mode, currentProject);
+          const result = await pasteId(
+            item.id,
+            targetParentId,
+            item.mode,
+            currentProject,
+          );
           if (result) {
             currentProject = result;
           }
@@ -140,17 +150,18 @@ function AppContent() {
       setRenameDialogOpen,
       setPreTranslateDialog,
       toggleToolbar,
-    ]
+    ],
   );
 
   useShortcut(shortcutActions);
 
   const { designSettings } = useSettingsStore();
 
-  // Apply design settings as CSS variables
   useEffect(() => {
     const root = document.documentElement;
-    const scheme = COLOR_SCHEMES.find((s) => s.id === designSettings.colorScheme);
+    const scheme = COLOR_SCHEMES.find(
+      (s) => s.id === designSettings.colorScheme,
+    );
     if (scheme) {
       root.style.setProperty("--primary", scheme.primary);
       root.style.setProperty("--primary-hover", scheme.primaryHover);
@@ -161,11 +172,19 @@ function AppContent() {
       root.style.setProperty("--ring", isDark ? scheme.ringDark : scheme.ring);
       // Update sidebar colors to match
       root.style.setProperty("--sidebar-primary", scheme.primary);
-      root.style.setProperty("--sidebar-primary-foreground", scheme.primaryForeground);
+      root.style.setProperty(
+        "--sidebar-primary-foreground",
+        scheme.primaryForeground,
+      );
       root.style.setProperty("--sidebar-accent", scheme.accent);
-      root.style.setProperty("--sidebar-accent-foreground", scheme.accentForeground);
+      root.style.setProperty(
+        "--sidebar-accent-foreground",
+        scheme.accentForeground,
+      );
     }
-    const radius = BORDER_RADIUS_OPTIONS.find((r) => r.id === designSettings.borderRadius);
+    const radius = BORDER_RADIUS_OPTIONS.find(
+      (r) => r.id === designSettings.borderRadius,
+    );
     if (radius) {
       root.style.setProperty("--radius", radius.value);
     }

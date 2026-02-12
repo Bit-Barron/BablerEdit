@@ -55,10 +55,7 @@ export const RenameIdDialog: React.FC = () => {
           </div>
         </section>
         <Dialog.Footer className="px-6 pb-6 gap-2">
-          <Button
-            variant="outline"
-            onClick={() => setRenameDialogOpen(false)}
-          >
+          <Button variant="outline" onClick={() => setRenameDialogOpen(false)}>
             Cancel
           </Button>
           <Button

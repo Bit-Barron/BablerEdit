@@ -27,12 +27,9 @@ export const PreTranslateDialog: React.FC = () => {
     togglePreTranslateOption,
   } = useEditorStore();
   const { parsedProject } = useProjectStore();
-
   const lang: { code: string }[] = parsedProject.languages;
-
   const { handleTranslation } = useTranslation();
   const [languages, setLanguages] = useState(lang);
-
   if (!languages) return;
 
   const ultimateLang = [
