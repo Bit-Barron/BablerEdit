@@ -23,6 +23,27 @@ export const TRANSLATION_MODELS: TranslationModel[] = [
     speed: "medium",
     quality: "good",
   },
+  {
+    value: "google:translate",
+    label: "Google Translate",
+    description: "Industry standard, 500K chars/month free tier",
+    speed: "fast",
+    quality: "best",
+  },
+  {
+    value: "deepl:translate",
+    label: "DeepL",
+    description: "Best quality for European languages, 500K chars/month free",
+    speed: "fast",
+    quality: "best",
+  },
+  {
+    value: "microsoft:translate",
+    label: "Microsoft Translator",
+    description: "Azure Cognitive Services, 2M chars/month free tier",
+    speed: "fast",
+    quality: "great",
+  },
 ];
 
 export const OPTIONS: TranslationOptionsProps[] = [

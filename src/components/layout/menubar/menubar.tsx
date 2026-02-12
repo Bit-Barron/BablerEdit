@@ -17,7 +17,7 @@ import { useCallback } from "react";
 
 export default function MenuBar() {
   const { hasUnsavedChanges, parsedProject, setParsedProject, setCurrentProjectPath, setHasUnsavedChanges, setFileUploadDialog } = useProjectStore();
-  const { setPreTranslateDialog, setFilterDialogOpen, setConfigureLangDialogOpen, setAddIdDialogOpen, setCommandPaletteOpen, setStatisticsDialogOpen, setConsistencyDialogOpen, toggleToolbar } = useEditorStore();
+  const { setPreTranslateDialog, setFilterDialogOpen, setConfigureLangDialogOpen, setAddIdDialogOpen, setCommandPaletteOpen, setStatisticsDialogOpen, setConsistencyDialogOpen, setApiKeysDialogOpen, toggleToolbar } = useEditorStore();
   const { saveProject, openProject } = useEditor();
   const navigate = useNavigate();
 
@@ -97,6 +97,9 @@ export default function MenuBar() {
         break;
       case "validateTranslations":
         setConsistencyDialogOpen(true);
+        break;
+      case "apiKeys":
+        setApiKeysDialogOpen(true);
         break;
       case "openSettings":
         navigate("/settings");

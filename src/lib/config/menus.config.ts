@@ -48,6 +48,8 @@ export const MENUS: Menu[] = [
       { label: "Validate Translations", action: "validateTranslations" },
       { label: "Statistics...", action: "statistics" },
       { divider: true },
+      { label: "API Keys...", action: "apiKeys" },
+      { divider: true },
       { label: "Settings...", shortcut: `${mod},`, action: "openSettings" },
     ],
   },

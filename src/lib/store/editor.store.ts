@@ -1,72 +1,71 @@
-
-import { create } from "zustand"
-import type { NodeApi } from "react-arborist"
-import type { TreeNodeType } from "@/lib/types/editor.types"
-import type { SetStateAction } from "react"
-import type { ParsedProject } from "../types/project.types"
+import { create } from "zustand";
+import type { NodeApi } from "react-arborist";
+import type { TreeNodeType } from "@/lib/types/editor.types";
+import type { SetStateAction } from "react";
+import type { ParsedProject } from "../types/project.types";
 
 interface EditorStore {
-  selectedNodes: NodeApi<TreeNodeType>[]
-  setSelectedNodes: (nodes: NodeApi<TreeNodeType>[]) => void
-  // Keep selectedNode for backward compatibility (first selected node)
-  selectedNode: NodeApi<TreeNodeType> | null
+  selectedNodes: NodeApi<TreeNodeType>[];
+  setSelectedNodes: (nodes: NodeApi<TreeNodeType>[]) => void;
 
-  onProjectClick: string
-  setOnProjectClick: (id: string) => void
+  selectedNode: NodeApi<TreeNodeType> | null;
 
-  currentRoute: string
-  setCurrentRoute: (route: string) => void
+  onProjectClick: string;
+  setOnProjectClick: (id: string) => void;
 
-  disabledButtons: boolean
-  setDisabledButtons: (disabled: boolean) => void
+  currentRoute: string;
+  setCurrentRoute: (route: string) => void;
 
-  addIdDialogOpen: boolean
-  setAddIdDialogOpen: (open: boolean) => void
+  disabledButtons: boolean;
+  setDisabledButtons: (disabled: boolean) => void;
 
-  search: string
-  setSearch: (search: string) => void
+  addIdDialogOpen: boolean;
+  setAddIdDialogOpen: (open: boolean) => void;
 
-  commandPalettenOpen: boolean
-  setCommandPaletteOpen: (open: SetStateAction<boolean>) => void
+  search: string;
+  setSearch: (search: string) => void;
 
-  configureLangDialogOpen: boolean
-  setConfigureLangDialogOpen: (open: boolean) => void
+  commandPalettenOpen: boolean;
+  setCommandPaletteOpen: (open: SetStateAction<boolean>) => void;
 
-  removeLangDialogOpen: boolean
-  setRemoveLangDialogOpen: (open: boolean) => void
+  configureLangDialogOpen: boolean;
+  setConfigureLangDialogOpen: (open: boolean) => void;
 
-  languageToAdd: string[]
-  setLanguageToAdd: (langs: string[]) => void
+  removeLangDialogOpen: boolean;
+  setRemoveLangDialogOpen: (open: boolean) => void;
 
-  addLangDialogOpen: boolean
-  setAddLangDialogOpen: (open: boolean) => void
+  languageToAdd: string[];
+  setLanguageToAdd: (langs: string[]) => void;
 
-  selectedLanguage: string[]
-  setSelectedLanguage: (selectedLanguage: string[]) => void
+  addLangDialogOpen: boolean;
+  setAddLangDialogOpen: (open: boolean) => void;
 
-  filterDialogOpen: boolean
-  setFilterDialogOpen: (filterDialogOpen: boolean) => void
+  selectedLanguage: string[];
+  setSelectedLanguage: (selectedLanguage: string[]) => void;
 
-  translationId: string
-  setTranslationId: (translationId: string) => void
+  filterDialogOpen: boolean;
+  setFilterDialogOpen: (filterDialogOpen: boolean) => void;
 
-  translationText: string
-  setTranslationText: (translationText: string) => void
+  translationId: string;
+  setTranslationId: (translationId: string) => void;
 
-  translationTextStatus: string
-  setTranslationTextStatus: (translationTextStatus: string) => void
+  translationText: string;
+  setTranslationText: (translationText: string) => void;
 
-  approvalStateStatus: string
-  setApprovalStateStatus: (approvalStateStatus: string) => void
+  translationTextStatus: string;
+  setTranslationTextStatus: (translationTextStatus: string) => void;
 
-  usageStatus: string
-  setUsageStatus: (usageStatus: string) => void
+  approvalStateStatus: string;
+  setApprovalStateStatus: (approvalStateStatus: string) => void;
+
+  usageStatus: string;
+  setUsageStatus: (usageStatus: string) => void;
 
   preTranslateDialog: boolean;
   setPreTranslateDialog: (preTranslateDialog: boolean) => void;
 
   setTranslationUrls: (translationUrls: string[]) => void;
-  translationUrls: string[]
+  translationUrls: string[];
 
   selectedModel: string;
   setSelectedModel: (selectedModel: string) => void;
@@ -74,8 +73,10 @@ interface EditorStore {
   preTranslateAddLangDialog: boolean;
   setPreTranslateAddLangDialog: (preTranslateAddLangDialog: boolean) => void;
 
-  preTranslateSelectedLanguage: string[],
-  setPreTranslateSelectedLanguage: (preTranslateSelectedLanguage: string[]) => void
+  preTranslateSelectedLanguage: string[];
+  setPreTranslateSelectedLanguage: (
+    preTranslateSelectedLanguage: string[],
+  ) => void;
 
   renameDialogOpen: boolean;
   setRenameDialogOpen: (open: boolean) => void;
@@ -89,14 +90,17 @@ interface EditorStore {
   secondaryLanguage: string;
   setSecondaryLanguage: (lang: string) => void;
 
+  apiKeysDialogOpen: boolean;
+  setApiKeysDialogOpen: (open: boolean) => void;
+
   toolbarVisible: boolean;
   toggleToolbar: () => void;
 
   preTranslateOptions: string[];
   togglePreTranslateOption: (id: string) => void;
 
-  clipboardNodes: { id: string; mode: 'cut' | 'copy' }[];
-  addClipboardNode: (node: { id: string; mode: 'cut' | 'copy' }) => void;
+  clipboardNodes: { id: string; mode: "cut" | "copy" }[];
+  addClipboardNode: (node: { id: string; mode: "cut" | "copy" }) => void;
   clearClipboard: () => void;
 }
 
@@ -135,8 +139,11 @@ export const useEditorStore = create<EditorStore>((set) => ({
   setStatisticsDialogOpen: (open) => set({ statisticsDialogOpen: open }),
   setConsistencyDialogOpen: (open) => set({ consistencyDialogOpen: open }),
   setSecondaryLanguage: (lang) => set({ secondaryLanguage: lang }),
+  apiKeysDialogOpen: false,
+  setApiKeysDialogOpen: (open) => set({ apiKeysDialogOpen: open }),
   toolbarVisible: true,
-  toggleToolbar: () => set((state) => ({ toolbarVisible: !state.toolbarVisible })),
+  toggleToolbar: () =>
+    set((state) => ({ toolbarVisible: !state.toolbarVisible })),
   preTranslateOptions: [],
   togglePreTranslateOption: (id) =>
     set((state) => ({
@@ -144,41 +151,53 @@ export const useEditorStore = create<EditorStore>((set) => ({
         ? state.preTranslateOptions.filter((o) => o !== id)
         : [...state.preTranslateOptions, id],
     })),
-  setSelectedModel: (selectedModel: string) => set({
-    selectedModel
-  }),
-  setPreTranslateSelectedLanguage: (preTranslateSelectedLanguage: string[]) => set({
-    preTranslateSelectedLanguage: preTranslateSelectedLanguage
-  }),
-  setPreTranslateAddLangDialog: (open) => set({
-    preTranslateAddLangDialog: open
-  }),
-  setTranslationTextStatus: (translationTextStatus) => set({ translationTextStatus }),
-  setApprovalStateStatus: (approvalStateStatus: string) => set({ approvalStateStatus }),
+  setSelectedModel: (selectedModel: string) =>
+    set({
+      selectedModel,
+    }),
+  setPreTranslateSelectedLanguage: (preTranslateSelectedLanguage: string[]) =>
+    set({
+      preTranslateSelectedLanguage: preTranslateSelectedLanguage,
+    }),
+  setPreTranslateAddLangDialog: (open) =>
+    set({
+      preTranslateAddLangDialog: open,
+    }),
+  setTranslationTextStatus: (translationTextStatus) =>
+    set({ translationTextStatus }),
+  setApprovalStateStatus: (approvalStateStatus: string) =>
+    set({ approvalStateStatus }),
   setUsageStatus: (usageStatus: string) => set({ usageStatus }),
-  setSelectedNodes: (nodes) => set({
-    selectedNodes: nodes,
-    selectedNode: nodes.length > 0 ? nodes[0] : null
-  }),
-  setSelectedLanguage: (selectedLanguage: string[]) => set({ selectedLanguage }),
-  setFilterDialogOpen: (filterDialogOpen: boolean) => set({ filterDialogOpen: filterDialogOpen }),
+  setSelectedNodes: (nodes) =>
+    set({
+      selectedNodes: nodes,
+      selectedNode: nodes.length > 0 ? nodes[0] : null,
+    }),
+  setSelectedLanguage: (selectedLanguage: string[]) =>
+    set({ selectedLanguage }),
+  setFilterDialogOpen: (filterDialogOpen: boolean) =>
+    set({ filterDialogOpen: filterDialogOpen }),
   setLanguageToAdd: (langs: string[]) => set({ languageToAdd: langs }),
   setSearch: (search: string) => set({ search }),
   setCommandPaletteOpen: (open: SetStateAction<boolean>) =>
     set((state) => ({
-      commandPalettenOpen: typeof open === "function" ? open(state.commandPalettenOpen) : open,
+      commandPalettenOpen:
+        typeof open === "function" ? open(state.commandPalettenOpen) : open,
     })),
-  setTranslationUrls: (translationUrls: string[]) => set({
-    translationUrls
-  }),
+  setTranslationUrls: (translationUrls: string[]) =>
+    set({
+      translationUrls,
+    }),
 
   setPreTranslateDialog: (open) => set({ preTranslateDialog: open }),
 
   setAddLangDialogOpen: (open: boolean) => set({ addLangDialogOpen: open }),
   setTranslationId: (translationId: string) => set({ translationId }),
   setTranslationText: (translationText: string) => set({ translationText }),
-  setConfigureLangDialogOpen: (open: boolean) => set({ configureLangDialogOpen: open }),
-  setRemoveLangDialogOpen: (open: boolean) => set({ removeLangDialogOpen: open }),
+  setConfigureLangDialogOpen: (open: boolean) =>
+    set({ configureLangDialogOpen: open }),
+  setRemoveLangDialogOpen: (open: boolean) =>
+    set({ removeLangDialogOpen: open }),
 
   setOnProjectClick: (id: string) => set({ onProjectClick: id }),
   setCurrentRoute: (route: string) => set({ currentRoute: route }),
@@ -192,4 +211,4 @@ export const useEditorStore = create<EditorStore>((set) => ({
       return { clipboardNodes: [...state.clipboardNodes, node] };
     }),
   clearClipboard: () => set({ clipboardNodes: [] }),
-}))
+}));

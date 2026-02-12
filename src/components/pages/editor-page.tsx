@@ -24,6 +24,7 @@ import { PreTranslateDialog } from "./editor/pre-translate/pre-translate-dialog"
 import { RenameIdDialog } from "./editor/rename-id-dialog";
 import { StatisticsDialog } from "./editor/statistics-dialog";
 import { ConsistencyDialog } from "./editor/consistency-dialog";
+import { ApiKeysDialog } from "./editor/api-keys-dialog";
 
 export const EditorPage: React.FC = () => {
   const { parsedProject } = useProjectStore();
@@ -33,6 +34,8 @@ export const EditorPage: React.FC = () => {
     selectedNode,
     selectedNodes,
     setSelectedNodes,
+    apiKeysDialogOpen,
+    setApiKeysDialogOpen,
     setRenameDialogOpen,
     clipboardNodes,
     addClipboardNode,
@@ -241,6 +244,10 @@ export const EditorPage: React.FC = () => {
         <RenameIdDialog />
         <StatisticsDialog />
         <ConsistencyDialog />
+        <ApiKeysDialog
+          open={apiKeysDialogOpen}
+          onOpenChange={setApiKeysDialogOpen}
+        />
       </div>
     </div>
   );
