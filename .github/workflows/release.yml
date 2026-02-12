@@ -42,7 +42,14 @@ jobs:
           releaseBody: |
             ## Downloads
             - **Windows**: `.exe` (NSIS installer)
+            - **macOS**: `.dmg` (Universal binary - Intel & Apple Silicon)
             - **Linux**: `.deb`, `.rpm`, or `.AppImage`
+
+            ### Install from Homebrew (macOS)
+            ```
+            brew tap Bit-Barron/tap
+            brew install --cask bableredit
+            ```
 
             ### Install from AUR (Arch Linux)
             ```
@@ -79,6 +86,37 @@ jobs:
           releaseDraft: false
           prerelease: false
 
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - name: Install frontend dependencies
+        run: bun install
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'BablerEdit ${{ github.ref_name }}'
+          releaseDraft: false
+          prerelease: false
+          args: --target universal-apple-darwin
+
   update-aur:
     needs: build-linux
     runs-on: ubuntu-22.04
@@ -112,3 +150,64 @@ jobs:
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_KEY }}
           commit_message: "Update to ${{ steps.version.outputs.version }}"
+
+  update-homebrew:
+    needs: build-macos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Wait for release assets
+        run: sleep 30
+
+      - name: Get DMG SHA256
+        id: sha
+        run: |
+          DMG_URL="https://github.com/Bit-Barron/BablerEdit/releases/download/${{ github.ref_name }}/BablerEdit_${{ steps.version.outputs.version }}_universal.dmg"
+          echo "Downloading from: $DMG_URL"
+          for i in {1..5}; do
+            SHA=$(curl -sL "$DMG_URL" | shasum -a 256 | cut -d ' ' -f 1) && break
+            echo "Attempt $i failed, retrying..."
+            sleep 10
+          done
+          echo "sha256=$SHA" >> $GITHUB_OUTPUT
+
+      - name: Checkout homebrew-tap
+        uses: actions/checkout@v4
+        with:
+          repository: Bit-Barron/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: homebrew-tap
+
+      - name: Update Cask formula
+        run: |
+          cat > homebrew-tap/Casks/bableredit.rb << 'EOF'
+          cask "bableredit" do
+            version "${{ steps.version.outputs.version }}"
+            sha256 "${{ steps.sha.outputs.sha256 }}"
+
+            url "https://github.com/Bit-Barron/BablerEdit/releases/download/v#{version}/BablerEdit_#{version}_universal.dmg"
+            name "BablerEdit"
+            desc "Translation editor for developers"
+            homepage "https://github.com/Bit-Barron/BablerEdit"
+
+            app "BablerEdit.app"
+
+            zap trash: [
+              "~/Library/Application Support/com.barron.bableredit",
+              "~/Library/Caches/com.barron.bableredit",
+              "~/Library/Preferences/com.barron.bableredit.plist",
+            ]
+          end
+          EOF
+
+      - name: Commit and push
+        run: |
+          cd homebrew-tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/bableredit.rb
+          git commit -m "Update bableredit to ${{ steps.version.outputs.version }}"
+          git push
