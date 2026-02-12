@@ -4,6 +4,12 @@ A modern, open-source desktop translation editor for managing multi-language loc
 
 BablerEdit helps developers and translators manage translation files across 11+ frameworks with a tree-based UI, AI-powered translations, consistency checking, and CSV import/export.
 
+## Showcase
+
+![BablerEdit Translation Editor](public/images/image.webp)
+
+![BablerEdit Translation Editor](public/images/image2.webp)
+
 ## Features
 
 **Core Editor**

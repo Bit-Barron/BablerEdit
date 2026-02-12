@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 public/**
+!public/images/
+!public/images/**
 de.json
 fr.json
 it.json
